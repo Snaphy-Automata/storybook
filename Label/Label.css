@@ -1,0 +1,35 @@
+/* Created by Nikita Mittal */
+
+
+.label-container{
+    max-width: 50px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 10px;
+    color: white;
+    padding: 1px;
+    min-width: 20px;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.label-empty-container{
+    max-width: 30px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 10px;
+    color: black;
+    padding: 1px;
+    background-color: lightgray;
+    min-width: 20px;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 2px;
+    padding-right: 2px;
+}

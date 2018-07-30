@@ -1,0 +1,427 @@
+/* Created By Robins Gupta */
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400');
+
+.react-calendar-timeline{
+    font-family: 'Lato', sans-serif;
+    color: #707070;
+    /* border-top: 1px solid #eee; */
+}
+
+.react-calendar-timeline .rct-item{
+    border: none;
+}
+
+.rct-sidebar{
+    font-size: 11px;
+}
+
+.rct-label{
+    font-size: 11px !important;
+    font-weight: 600;
+    color: #707070 !important;
+}
+
+.react-calendar-timeline .rct-items .rct-item.analysis {
+    background-color: #68efad;
+}
+
+/* Odd ROw */
+.react-calendar-timeline .rct-horizontal-lines .rct-hl-odd{
+    background-color: #fff;
+}
+
+.react-calendar-timeline .rct-sidebar-header{
+    font-family: 'Lato', sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+    border-bottom: 1px solid #eeeeee;
+    border-right: 1px solid #ddd;
+    font-size: 12px;
+    font-weight: 600;
+    color: #000000;
+    text-transform: uppercase;
+    padding-left: 7px;
+    height: 23px;
+    line-height: 23px;
+}
+
+.react-calendar-timeline .rct-sidebar{
+    border-right: solid 0.3px #f3f3f3;
+}
+
+.rct-sidebar-row-odd{
+    background: #ffffff !important;
+}
+
+.rct-sidebar-row{
+    border-bottom: 1px solid #eeeeee !important;
+    border-right: 1px solid #ddd;
+    padding-left: 7px !important;
+    
+}
+
+
+/* style for displaying vertical lines for Sat and Sun column */
+.react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-6, .react-calendar-timeline .rct-vertical-lines .rct-vl.rct-day-0{
+    background-color: rgba(250, 246, 225, 0.2)
+}
+
+.react-calendar-timeline .rct-vertical-lines .rct-vl {
+    position: absolute;
+    border-left: 1px solid #eee;
+    z-index: 30;
+}
+
+.react-calendar-timeline .rct-horizontal-lines .rct-hl-even, .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd{
+    border-bottom: 1px solid #eeeeee !important;
+}
+
+
+.react-calendar-timeline .rct-header .rct-label {
+    border-left: 1px solid #eee;
+    color: #707070;
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+}
+
+.react-calendar-timeline .rct-item .rct-item-content{
+    padding: 0;
+    width: inherit;
+}
+
+
+
+
+/* GroupRenderer Component */
+.gantt-chart-group-wrapper{
+    background: #ffffff;
+}
+
+
+.gantt-chart-group-title{
+    font-family: Lato;
+    font-size: 10px;
+    font-weight: 500;
+    text-align: left;
+    color: #707070;
+    padding-left: 8px;
+}
+
+
+
+/*----------- Item Renderer------ */
+
+
+.gantt-chart-item-container{
+    width: inherit;
+    background-color: red;
+    opacity: 0.36;
+    border-radius: 10px;
+    height: 16px;
+    position: relative;
+    top: 4px;
+    line-height: 18px;
+}
+
+
+
+.gantt-chart-item-container.pending{
+    background-color: #ffc162;
+    border: 1px solid #e9b15a;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-item-container.pending.selected{
+    background-color: #ffc162;
+    border: 1px solid #e9b15a;
+    opacity: 0.40;
+}
+
+
+
+.gantt-chart-item-icon.pending{
+    background-color: #e2ab58;
+    border: 1px solid #e9b15a;
+}
+
+
+.gantt-chart-item-container.unassigned{
+    background-color: #75818d;
+    border: 1px solid #75818d;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-item-container.unassigned.selected{
+    background-color: #75818d;
+    border: 1px solid #75818d;
+    opacity: 0.40;
+}
+
+.gantt-chart-item-icon.unassigned{
+    background-color: #75818d;
+    border: 1px solid #75818d;
+}
+
+
+.gantt-chart-item-container.completed{
+    background-color: #5ee2a0;
+    border: 1px solid #5ee2a0;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-item-container.completed.selected{
+    opacity: 0.40;
+    background-color: #5ee2a0;
+    border: 1px solid #5ee2a0;
+}
+
+.gantt-chart-item-icon.completed{
+    background-color: #5ee2a0;
+    border: 1px solid #5ee2a0;
+}
+
+
+
+.gantt-chart-item-container.in_progress{
+    background-color: #a177ff;
+    border: 1px solid #a177ff;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-item-container.in_progress.selected{
+    background-color: #a177ff;
+    border: 1px solid #a177ff;
+    opacity: 0.40;
+}
+
+.gantt-chart-item-icon.in_progress{
+    background-color: #a177ff;
+    border: 1px solid #a177ff;
+}
+
+
+
+.gantt-chart-item-container.delayed{
+    background-color: #ff4141;
+    border: 1px solid #ff4141;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-item-container.delayed.selected{
+    background-color: #ff4141;
+    border: 1px solid #ff4141;
+    opacity: 0.40;
+}
+
+.gantt-chart-item-icon.delayed{
+    background-color: #e03a3a;
+    border: 1px solid #e03a3a;
+}
+
+
+.gantt-chart-item-title{
+    /* width: 50px; */
+    width: calc(100% - 32px);
+    display: inline-block;
+
+}
+
+/* Item Renderer ICON */
+.gantt-chart-item-icon{
+    font-size: 13px;
+    width: 16px;
+    /* float: right; */
+    line-height: 10px;
+    text-align: center;
+    color: #fff;
+    border-radius: 17px;
+    display: inline-block;
+    height: 10px;
+}
+
+.gantt-chart-item-icon.left{
+    cursor: w-resize;
+}
+
+.gantt-chart-item-icon.right{
+    cursor: e-resize;
+}
+
+.gantt-chart-item-completed-container{
+    width: inherit;
+    height: 100%;
+    background-color:#2ecc71;
+}
+
+.gantt-chart-group-item-completed-type{
+    /* z-index: -999 !important; */
+    opacity: 0.35;
+    pointer-events: none;
+}
+
+
+.gantt-chart-group-item-type{
+    z-index: 99999 !important;
+}
+
+/* .gantt-chart-item-completed-box{
+    width: 100%;
+    background-color:#2ecc71;
+    height: 100%;
+} */
+
+/* ---------END ITEM-RENDERER------ */
+
+
+
+/* Info Label on Scroll display */
+.rct-infolabel{
+    display: none;
+    visibility: hidden;
+}
+
+
+/* END GroupRenderer Component */
+
+
+
+/* Colors */
+.gantt-chart-group-item{
+    border-radius: 24px;
+    background-color: transparent !important;
+    background: transparent;
+    border: none;
+    /* background-color: #ffc16233;
+    border: 1px solid #e9b15a33 !important; */
+}
+
+/* 
+
+.gantt-chart-group-item.pending{
+    background-color: #ffc162;
+    border: 1px solid #e9b15a;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-group-item.pending.selected{
+    background-color: #ffc162;
+    border: 1px solid #e9b15a;
+    opacity: 0.40;
+}
+
+
+
+.gantt-chart-item-icon.pending{
+    background-color: #e2ab58;
+    border: 1px solid #e9b15a;
+}
+
+
+.gantt-chart-group-item.unassigned{
+    background-color: #75818d;
+    border: 1px solid #75818d;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-group-item.unassigned.selected{
+    background-color: #75818d;
+    border: 1px solid #75818d;
+    opacity: 0.40;
+}
+
+.gantt-chart-item-icon.unassigned{
+    background-color: #75818d;
+    border: 1px solid #75818d;
+}
+
+
+.gantt-chart-group-item.completed{
+    background-color: #5ee2a0;
+    border: 1px solid #5ee2a0;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-group-item.completed.selected{
+    opacity: 0.40;
+    background-color: #5ee2a0;
+    border: 1px solid #5ee2a0;
+}
+
+.gantt-chart-item-icon.completed{
+    background-color: #5ee2a0;
+    border: 1px solid #5ee2a0;
+}
+
+
+
+.gantt-chart-group-item.in_progress{
+    background-color: #a177ff;
+    border: 1px solid #a177ff;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-group-item.in_progress.selected{
+    background-color: #a177ff;
+    border: 1px solid #a177ff;
+    opacity: 0.40;
+}
+
+.gantt-chart-item-icon.in_progress{
+    background-color: #a177ff;
+    border: 1px solid #a177ff;
+}
+
+
+
+.gantt-chart-group-item.delayed{
+    background-color: #ff4141;
+    border: 1px solid #ff4141;
+    opacity: 0.30;
+}
+
+
+.gantt-chart-group-item.delayed.selected{
+    background-color: #ff4141;
+    border: 1px solid #ff4141;
+    opacity: 0.40;
+}
+
+.gantt-chart-item-icon.delayed{
+    background-color: #e03a3a;
+    border: 1px solid #e03a3a;
+}
+*/
+/* END Color */
+
+.react-calendar-timeline .rct-item.selected{
+    background: transparent;
+    border: none;
+}
+
+
+.gantt-chart-top-subheading-container{
+    display: inline-block;
+    padding-left: 65px;
+}
+
+
+.gantt-chart-top-heading-title{
+    padding-left: 7px !important;
+}
+
+.gantt-chart-top-heading-title:hover{
+    background: transparent !important;
+}
+
+ 
+
+

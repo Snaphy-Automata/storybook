@@ -1,0 +1,89 @@
+/* Created By Robins Gupta */
+
+.team-circle-icon-wrapper{
+    background-color: #f3f3f3;
+    border-radius: 32px;
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    display: inline-block;
+    font-family: Lato;
+    color: #707070;
+    cursor: pointer;
+    text-align: center;
+}
+
+
+.team-circle-icon-wrapper .icon{
+    margin: 0;
+}
+
+
+.team-circle-icon-wrapper:hover{
+    background-color: #ececec;
+}
+
+
+/* mini | tiny | small | large | big | huge | massive */
+
+.team-circle-icon-wrapper.mini{
+    font-size: 10px;
+    height: 17px;
+    width: 17px;
+    line-height: 17px;
+    border-radius: 10px;
+}
+
+.team-circle-icon-wrapper.tiny{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+
+.team-circle-icon-wrapper.small{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+
+.team-circle-icon-wrapper.large{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+
+.team-circle-icon-wrapper.big{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+
+.team-circle-icon-wrapper.huge{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+
+.team-circle-icon-wrapper.massive{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+.team-circle-icon-image-container{
+    width: 30px;
+    height: 30px;
+    border-radius: 32px;
+}

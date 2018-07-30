@@ -1,0 +1,26 @@
+.overflow-label-container{
+    display: inline-block;
+    border-radius: 20px;
+    color: #fff;
+    padding: 5px 10px 5px 10px;
+    margin-right: 10px
+    
+}
+
+.overflow-label-container-with-border{
+    display: inline-block;
+    border-radius: 20px;
+    color: #fff;
+    padding: 5px 10px 5px 10px;
+    margin-right: 10px;
+    background-color: #fff;
+    border: solid 0.7px #eee;
+    
+}
+
+.overflow-label-icon-container{
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background-color: #000;
+}

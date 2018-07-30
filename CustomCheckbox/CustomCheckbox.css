@@ -1,0 +1,52 @@
+.custom-checkbox-wrapper{
+    background-color: #ffffff;
+    border-radius: 32px;
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    display: inline-block;
+    font-family: Lato;
+    color: #707070;
+    cursor: pointer;
+    text-align: center;
+    border-color:lightgray;
+    border-width: 1px;
+    border-style:solid;
+}
+
+
+
+.custom-checkbox-wrapper.isSelected{
+    background-color: #1ed0c1;
+    color: #ffffff;
+    border-color:  #1ed0c1;
+}
+
+.custom-checkbox-wrapper.mini{
+    font-size: 11px;
+    height: 23px;
+    width: 23px;
+    line-height: 23px;
+}
+
+.custom-checkbox-wrapper.isSelected.mini{
+    font-size: 11px;
+    height: 23px;
+    width: 23px;
+    line-height: 23px;
+}
+
+.custom-checkbox-wrapper.isSelected.tiny{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}
+
+.custom-checkbox-wrapper.tiny{
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+}

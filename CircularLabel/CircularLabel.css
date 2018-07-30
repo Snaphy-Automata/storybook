@@ -1,0 +1,108 @@
+/*
+Created by Robins 
+28th July 2018 
+*/
+
+
+.circular-label-container{
+    display: inline-block;
+    padding-right: 20px;
+}
+
+.circular-label-circular-icon{
+    display: inline-block;
+    border-radius: 6px;
+    vertical-align: middle;
+    background-color: #75818d;
+}
+
+.circular-label-circular-icon.mini{
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+}
+
+
+.circular-label-circular-icon.tiny{
+    width: 14px;
+    height: 14px;
+    border-radius: 8px;
+}
+
+
+.circular-label-circular-icon.small{
+    width: 12px;
+    height: 12px;
+}
+
+
+.circular-label-circular-icon.large{
+    width: 12px;
+    height: 12px;
+}
+
+
+
+.circular-label-circular-icon.big{
+    width: 12px;
+    height: 12px;
+}
+
+
+.circular-label-circular-icon.huge{
+    width: 12px;
+    height: 12px;
+}
+
+.circular-label-circular-icon.massive{
+    width: 12px;
+    height: 12px;
+}
+
+
+.circular-label-circular-icon.yellow{
+    background-color: #ffc16233;
+}
+
+
+.circular-label-circular-icon.red{
+    background-color: #ff414133;
+}
+
+
+.circular-label-circular-icon.purple{
+    background-color: #a177ff33;
+}
+
+
+.circular-label-circular-icon.green{
+    background-color: #5ee2a033;
+}
+
+
+.circular-label-circular-icon.grey{
+    background-color: #75818d;
+}
+
+
+.circular-label-circular-text{
+    font-family: Lato;
+    font-size: 10px;
+    text-align: left;
+    color: #707070;
+    text-transform: uppercase;
+    display: inline-block;
+    padding-left: 8px;
+    vertical-align: initial;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.circular-label-circular-text.tiny{
+    font-size: 12px;
+}
