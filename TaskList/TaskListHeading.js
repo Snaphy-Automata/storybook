@@ -156,8 +156,8 @@ const TaskListHeading = (props) => {
             return `angle right`
         }
     }
-    headingClassName = headingClassName || "";
-    let headingClassName_ = `task-list-heading-container ${headingClassName}`
+    let headingClassName_ = headingClassName || "";
+    headingClassName_ = `task-list-heading-container ${headingClassName_}`
 
     const onStateChanged = () => {
         const isTabOpen = !isSectionOpened;
