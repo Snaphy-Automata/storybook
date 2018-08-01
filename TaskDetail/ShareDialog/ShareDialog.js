@@ -4,15 +4,15 @@ import {Modal, Icon, Input, Button} from 'semantic-ui-react';
 import './ShareDialog.css';
 
 
-const ShareDialog = () => {
+const ShareDialog = ({onClose, isShareDialogOpened}) => {
     return (
         <div>
-            <Modal size="small" open>
+            <Modal size="small" open = {isShareDialogOpened}>
                 <div>
                     <div className="share-dialog-header">
                         <Icon name="share alternate"></Icon>
                         <div style={{display:"inline-block", marginLeft:10}}>Share with others</div>
-                        <div style={{float:"right", cursor:'pointer'}}>
+                        <div style={{float:"right", cursor:'pointer'}} onClick={onClose}>
                             <Icon name="close"/>
                         </div>
                     </div>
