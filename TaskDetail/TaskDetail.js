@@ -13,7 +13,7 @@ import TagContainer from '../TagContainer';
 import DatePickerForm from '../CustomDatePicker/DatePickerForm';
 import ShareDialog from './ShareDialog';
 import IconLabel from '../IconLabel';
-import DropDownFieldUI from '../DropDownField'
+import DropDownFieldUI from '../DropDownField';
 import SnaphyForm from '../SnaphyForm'
 import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
