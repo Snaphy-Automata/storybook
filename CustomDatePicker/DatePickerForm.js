@@ -3,10 +3,10 @@ import {Field, reduxForm} from 'redux-form';
 
 import CustomDatePicker from './CustomDatePicker';
 
-const DatePickerForm = () =>{
+const DatePickerForm = (props) =>{
 
     return (
-        <Field width={6} inline  required name="dateValue" component={CustomDatePicker} placeholder="Select Date"></Field>
+        <Field width={6} inline  required name="dateValue" {...props} component={CustomDatePicker}></Field>
     )
 
 }

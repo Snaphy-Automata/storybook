@@ -16,35 +16,36 @@ import MomentLocaleUtils, {
 } from 'react-day-picker/moment';
 
 //Custom Import 
-import InputWithIcon from '../DatePickerElement/InputWithIcon';
+import InputWithIcon from './InputWithIcon';
 import IconLabel    from '../IconLabel';
 
 //import Action..
-import {onOpenDatePickerAction, setDateAction} from '../DatePickerElement/DatePickerAction';
+//import {onOpenDatePickerAction, setDateAction} from '../DatePickerElement/DatePickerAction';
 
 //Style..
-import "./DatePicker.css";
+//import "./DatePicker.css";
 
 
 
 const DatePicker = (props) => {
-  let { format, meta: { touched, error }, width,  required, onOpenDatePickerAction, setDateAction, isDatePickerOpened, dateData} = props;
+  let { format, meta: { touched, error }, width,  required, isDatePickerOpened, dateData, onOpenDatePicker, onDayChangedAction, title, onRemoveDate} = props;
   format = format || "DD/MM/YYYY";
 
-  const onOpenDataPicker = function(){
-    onOpenDatePickerAction(true);
-  }
+  // const onOpenDataPicker = function(){
+  //   onOpenDatePickerAction(true);
+  // }
 
   const onDayChanged = function(day){
-    console.log("Day Changed", day);
     if(day){
-      onOpenDatePickerAction(false);
-     // let date =  moment(day).format("DD MMMM")
-      setDateAction(day);
+      onDayChangedAction(day);
     }
 
     return props.input.onChange(day);
   
+}
+
+const onBlurEvent = function(){
+  console.log("Blur getting called", e);
 }
 
   const getDate = function(){
@@ -53,7 +54,7 @@ const DatePicker = (props) => {
       let date = moment(dateData).format("DD MMMM");
         value = date;
     } else{
-        value = "Start Date";
+        value = title;
     }
     return value;
 }
@@ -81,6 +82,7 @@ const DatePicker = (props) => {
         parseDate={parseDate}
         inputProps={{...props.input}}
         onDayChange = {onDayChanged}
+        onBlur = {onBlurEvent}
         // onDayChange={(date, modifiers) => {
         //   console.log("date", date);
         //   return props.input.onChange(date);
@@ -88,7 +90,8 @@ const DatePicker = (props) => {
         />}
         {touched && error && <span>{error}</span>}
       </Form.Field>
-      {!isDatePickerOpened &&  <IconLabel size="tiny" icon="calendar minus outline" name={getDate()} onClick={onOpenDataPicker}></IconLabel>}
+      {!isDatePickerOpened &&  dateData && <IconLabel size="tiny" icon="calendar minus outline" name={getDate()} isLabel onClick={onOpenDatePicker} onRemove={onRemoveDate}></IconLabel>}
+      {!isDatePickerOpened && !dateData && <IconLabel size="tiny" icon="calendar minus outline" name={getDate()} onClick={onOpenDatePicker}></IconLabel>}
     </div>
    
   );
@@ -103,8 +106,8 @@ DatePicker.propTypes = {
 // Retrieve data from store as props
 function mapStateToProps(store) {
   return {
-      isDatePickerOpened : store.DatePickerReducer.isDatePickerOpened,
-      dateData : store.DatePickerReducer.dateData
+      // isDatePickerOpened : store.DatePickerReducer.isDatePickerOpened,
+      // dateData : store.DatePickerReducer.dateData
   };
 }
 
@@ -112,8 +115,8 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
 //map action here
-onOpenDatePickerAction,
-setDateAction
+// onOpenDatePickerAction,
+// setDateAction
 };
 
 
