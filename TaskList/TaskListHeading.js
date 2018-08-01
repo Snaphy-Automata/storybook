@@ -157,7 +157,7 @@ const TaskListHeading = (props) => {
         }
     }
     headingClassName = headingClassName || "";
-    headingClassName = `task-list-heading-container ${headingClassName}`
+    let headingClassName_ = `task-list-heading-container ${headingClassName}`
 
     const onStateChanged = () => {
         const isTabOpen = !isSectionOpened;
@@ -195,7 +195,7 @@ const TaskListHeading = (props) => {
                     <div className="task-list-heading-drag-icon" {...provided.dragHandleProps}><Icon name="compress"></Icon></div>
                 </div> */}
                
-            <div className={headingClassName}>
+            <div className={headingClassName_}>
                 <div onClick={onStateChanged} className={"task-list-heading-wrapper task-not-selectable"}>
                     <div className="task-list-heading-icon"> <Icon name={getIcon()} ></Icon></div>
                     <div className="task-list-heading-title">
