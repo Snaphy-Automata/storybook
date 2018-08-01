@@ -12,7 +12,7 @@
     width: 100%;
     margin-top: 10px;
     border: none;
-    min-height: 40px
+    min-height: 40px;
 }
 
 .tag-container-type-container{
@@ -50,3 +50,4 @@
     border-width: 0px 0px 1px 0px;
     border-color: #eee;
 }
+
