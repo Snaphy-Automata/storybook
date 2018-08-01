@@ -7,8 +7,20 @@ import './TaskList.css';
 
 const TaskListHeading = ({ heading, onArchiveClicked, defaultText, type, items, taskHeadingReducer, sectionId, sectionExpandedAction, provided, populateSectionTaskList, sectionList}) => {
 
-
-    const taskHeadingConfig = taskHeadingReducer[sectionId];
+    const {
+        heading, 
+        onArchiveClicked, 
+        defaultText, 
+        type, 
+        items,
+        taskListReducer,
+        sectionId, 
+        sectionExpandedAction, 
+        provided, 
+        populateSectionTaskList, 
+        sectionList
+    } = props;
+    const taskHeadingConfig = taskListReducer[sectionId];
     const isSectionOpened = taskHeadingConfig && taskHeadingConfig.isOpened ? true : false;
     const getIcon = function () {
         if (!isSectionOpened) {
