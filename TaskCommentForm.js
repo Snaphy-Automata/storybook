@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-import InputElement from '../InputElement'
-import SubmitButton from '../SubmitButton'
+import InputElement from './InputElement'
+import SubmitButton from './SubmitButton'
 
 const TaskCommentForm = (props) => {
 
