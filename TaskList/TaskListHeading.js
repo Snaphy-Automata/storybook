@@ -5,7 +5,7 @@ import { Icon, Input } from 'semantic-ui-react'
 
 import './TaskList.css';
 
-const TaskListHeading = ({ heading, onArchiveClicked, defaultText, type, items, taskHeadingReducer, sectionId, sectionExpandedAction, provided, populateSectionTaskList, sectionList}) => {
+const TaskListHeading = (props) => {
 
     const {
         heading, 
