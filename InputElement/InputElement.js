@@ -5,58 +5,72 @@ import {Input, Form} from 'semantic-ui-react';
 
 //Import Actions..
 import {inputFocusChagedAction} from './InputElementAction';
+import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
 
-const InputElement = ({placeholder, size, isFocused, inputFocusChagedAction}) => {
+const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows}) => {
 
+   
 
+    let inputElementState = inputElementReducer[label];
+    let isFocused = inputElementState && inputElementState.isFocused ? true : false;
+    //console.log("Input Element Props", inputElementReducer, isFocused);
 
    const onFocusChanged = function(){
-       if(!isFocused){
-        inputFocusChagedAction(true);
-       }
+        inputFocusChagedAction(true, label);
     }
 
     const onBlurEvent = function(){
-        if(isFocused){
-            inputFocusChagedAction(false);
-        }
+        inputFocusChagedAction(false, label);
         //call autosave function..
     }
 
     const onKeyPress = function(e){
         if(e.key === 'Enter'){
-            if(isFocused){
-                inputFocusChagedAction(false);
-            }
+            inputFocusChagedAction(false, label);
             //call autosave function..
         }
     }
+
+    const onChange = function(event, data){
+        console.log("On Change Title Data getting called", data.value);
+        //taskTitleDataAction(data.value);
+        return input.onChange(data.value);
+    }
+
+  
+
+
     return (
-        <Form>
-            {isFocused && <Form.Input
+       <div>
+            {isFocused && <Form.TextArea
                 placeholder={placeholder}
                 size={size}
-                fluid
+                {...input}
                 autoFocus
+                rows = {rows}
+                autoHeight
                 onBlur = {onBlurEvent}
                 onKeyPress = {onKeyPress}
             />}
-            {!isFocused && <Form.Input
+            {!isFocused && <Form.TextArea
                 placeholder={placeholder}
                 size={size}
-                fluid
-                transparent
-                style={{padding: ".67857143em 1em"}}
+                autoHeight
+                rows= {rows}
+                {...input}
+                style={{padding: ".67857143em 1em", height: "52px !important", border:'none'}}
                 onFocus = {onFocusChanged}
             />}
-        </Form>
+        </div>
     )
 }
 
   // Retrieve data from store as props
 function mapStateToProps(store) {
+    const inputElementReducer = store.InputElementReducer;
     return {
-        isFocused : store.InputElementReducer.isFocused
+        inputElementReducer,
+       // isFocused : store.InputElementReducer.isFocused
     };
 }
 
@@ -64,7 +78,8 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
   //map action here
-  inputFocusChagedAction
+  inputFocusChagedAction,
+  taskTitleDataAction
 };
 
 

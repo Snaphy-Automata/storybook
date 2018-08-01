@@ -4,7 +4,6 @@ import {
 
 
 const initialState = {
-    isFocused : false
 }
 
 const InputElementReducer = (state = initialState, action) => {
@@ -12,7 +11,10 @@ const InputElementReducer = (state = initialState, action) => {
         case ON_INPUT_FOCUSED:{
             state = {
                 ...state,
-                isFocused : action.payload
+                [action.payload.label]:{
+                    isFocused : action.payload.isFocused
+                }
+                
             }
             break;
         }
