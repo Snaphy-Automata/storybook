@@ -118,6 +118,7 @@ const TaskDetail = (props) => {
                     <div>Assigned To</div>
                     <TagContainer
                         type="user"
+                        {...props}
                         onAddButtonClickedAction={props.onUserAddButtonClicked}
                         isButtonClicked={props.isUserButtonClicked}
                         totalItemList={props.totalUserItemList}
@@ -157,6 +158,7 @@ const TaskDetail = (props) => {
                     <div>Labels</div>
                     <TagContainer
                         type="label"
+                        {...props}
                         onAddButtonClickedAction={props.onLabelAddButtonClicked}
                         isButtonClicked={props.isLabelButtonClicked}
                         totalItemList={props.totalLabelItemList}
