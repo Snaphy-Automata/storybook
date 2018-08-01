@@ -207,7 +207,7 @@ const TaskListHeading = (props) => {
                     !subHeadingComponent && 
                     <div className="task-list-sub-heading-wrapper">
                         <div className="task-list-heading-archive-container on-subheading-hover" >
-                            <div on>
+                            <div>
                                 <Icon style={{display:"inline"}} name="archive" onClick={onArchiveClicked}></Icon>
                                 <div style={{display: "inline", marginLeft: "5px"}} onClick={onArchiveClicked}>Archive</div>
                             </div>
