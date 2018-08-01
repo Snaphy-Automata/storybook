@@ -12,7 +12,7 @@ import SubmitButton from '../SubmitButton';
 import SnaphyForm from '../SnaphyForm';
 
 //Import Actions
-import {initializeLabelDialogFormAction, deleteLabelAction, labelDialogOpenedAction} from '../../AllTaskActions';
+//import {initializeLabelDialogFormAction, deleteLabelAction, labelDialogOpenedAction} from '../../AllTaskActions';
 
 
 
