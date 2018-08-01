@@ -8,13 +8,13 @@ import map from 'lodash/map';
 import './TaskDetail.css';
 import SubTask from './SubTask';
 import TaskAttachment from './TaskAttachment'
-import InputElement from '../../../../../commonComponents/InputElement';
+import InputElement from '../InputElement';
 import TagContainer from '../TagContainer';
 import DatePickerForm from '../CustomDatePicker/DatePickerForm';
 import ShareDialog from './ShareDialog';
-import IconLabel from '../../../../../commonComponents/IconLabel';
-import DropDownFieldUI from '../../../../../commonComponents/ReduxForm/DropDownField'
-import SnaphyForm from '../../../../../commonComponents/ReduxForm/SnaphyForm'
+import IconLabel from '../IconLabel';
+import DropDownFieldUI from '../DropDownField'
+import SnaphyForm from '../SnaphyForm'
 import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
 
