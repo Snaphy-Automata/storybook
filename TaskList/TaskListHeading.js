@@ -215,7 +215,7 @@ const TaskListHeading = (props) => {
                         </div>
                         <div className="task-list-heading-add-new-container on-subheading-hover" >
                             <div onClick={onNewTaskAdded}>
-                                <Icon style={{display: "inline"}} name="clipboard outline" onClick={onNewTaskClicked}></Icon>
+                                <Icon style={{display: "inline"}} name="clipboard outline"></Icon>
                                 <div style={{display: "inline", marginLeft: "5px"}} >Add New Task</div>
                             </div>    
                         </div>
