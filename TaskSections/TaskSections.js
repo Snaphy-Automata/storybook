@@ -2,13 +2,21 @@ import React from 'react'
 import { connect } from 'react-redux';
 import map from 'lodash/map';
 import TaskList from '../TaskList';
+
+// import DragDropContext from 'react-beautiful-dnd';
+// import Droppable from 'react-beautiful-dnd';
+// import Draggable from 'react-beautiful-dnd';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 //Custom Import
-import { populateSectionTaskList } from '../TaskList/TaskListActions';
 
 
-const TaskSections = ({ sectionList, populateSectionTaskList }) => {
+const TaskSections = (props) => {
+
+    const {
+        sectionList, 
+        populateSectionTaskList 
+    } = props;
 
     /**
  * Move item from list to another list
@@ -32,7 +40,7 @@ const TaskSections = ({ sectionList, populateSectionTaskList }) => {
     };
 
 
-    // function to reorder the list after draging the item to particualr position..
+    // function to reorder the list after draging the item to particular position..
     const reorder = (list, startIndex, endIndex) => {
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
@@ -132,7 +140,7 @@ const TaskSections = ({ sectionList, populateSectionTaskList }) => {
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}>
                                                     <div key={index} style={{ marginBottom: 10, background: "#ffffff" }}>
-                                                        <TaskList heading={section.title} items={section.items} type="custom" sectionId={section.sectionId.toString()} provided = {provided} onArchiveClicked={() => { console.log("Archive has been clicked") }} onNewTaskClicked={() => { console.log("New Task has been Clicked") }}></TaskList>
+                                                        <TaskList heading={section.title} items={section.items} type="custom" sectionId={section.sectionId.toString()} provided = {provided} onArchiveClicked={() => { console.log("Archive has been clicked") }} onNewTaskClicked={props.onAddNewTask}></TaskList>
                                                     </div>
 
                                                 </div>
@@ -177,20 +185,5 @@ export function getList(droppableId, sectionList) {
 }
 
 
-// Retrieve data from store as props
-function mapStateToProps(store) {
-    return {
-        sectionList: store.TaskListReducer.sectionList
-    };
-}
 
-//Map Redux Actions to Props..
-const mapActionsToProps = {
-    //map action here
-    populateSectionTaskList
-};
-
-
-
-
-export default connect(mapStateToProps, mapActionsToProps)(TaskSections);
+export default TaskSections;
