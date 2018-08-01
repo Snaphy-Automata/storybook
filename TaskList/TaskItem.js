@@ -6,9 +6,8 @@ import { Icon, Input} from 'semantic-ui-react'
 import moment from 'moment';
 
 import './TaskList.css';
-import TeamCircleIcon from '../../../../commonComponents/TeamCircleIcon'
-import InputField from '../../../../commonComponents/ReduxForm/InputField'
-
+import TeamCircleIcon from '../TeamCircleIcon'
+import InputField from '../InputField';
 const TaskItem = (props) => {
 
     const { 
