@@ -118,12 +118,29 @@
 .task-list-item-side-line{
     display: inline-block;
     width: 5%;
-    text-align: center
+    text-align: center;
+}
+
+.task-list-item-side-line-edit{
+    display: inline-block;
+    width: 5%;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: perspective(1px) translateY(-50%);
 }
 
 .task-list-item-icon{
     display:inline-block;
     width: 5%;
+}
+
+.task-list-item-icon-edit{
+    display:inline-block;
+    width: 5%;
+    position: relative;
+    top: 50%;
+    transform: perspective(1px) translateY(-50%);
 }
 
 .task-list-item-title{
@@ -132,6 +149,25 @@
     white-space: nowrap;
     overflow: hidden; 
     text-overflow: ellipsis;
+    position: relative;
+    top: 50%;
+    transform: perspective(1px) translateY(-50%);
+}
+
+.task-list-item-title-text-overlow{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.task-list-item-other-container{
+    width: 50%;
+    display: inline-block;
+}
+
+.task-list-item-other-container-edit{
+    width: 50%;
+    display: inline-block;
     position: relative;
     top: 50%;
     transform: perspective(1px) translateY(-50%);
