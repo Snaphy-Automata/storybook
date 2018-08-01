@@ -147,7 +147,7 @@ const TagContainer = (props) => {
                         })
                     }
                 </div>}
-                 {type==="label" && <LabelDialog isDialogOpened= {isDialogOpened} totalItemList = {totalItemList} initialValues={initializeLabelDialogFormData} onSubmit={onSubmit}></LabelDialog>}
+                 {type==="label" && <LabelDialog isDialogOpened= {isDialogOpened} totalItemList = {totalItemList} initialValues={initializeLabelDialogFormData} onSubmit={onSubmit} labelDialogOpenedAction={labelDialogOpenedAction}></LabelDialog>}
         </div>
     )
 }
