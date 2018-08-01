@@ -140,7 +140,7 @@ const TaskSections = (props) => {
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}>
                                                     <div key={index} style={{ marginBottom: 10, background: "#ffffff" }}>
-                                                        <TaskList heading={section.title} items={section.items} type="custom" sectionId={section.sectionId.toString()} provided = {provided} onArchiveClicked={() => { console.log("Archive has been clicked") }} onNewTaskClicked={props.onAddNewTask}></TaskList>
+                                                        <TaskList heading={section.title} items={section.items} type="custom" sectionId={section.sectionId.toString()} provided = {provided} onArchiveClicked={() => { console.log("Archive has been clicked") }} onNewTaskClicked={props.onAddNewTask} {...props}></TaskList>
                                                     </div>
 
                                                 </div>
