@@ -21,13 +21,13 @@
    text-align: center;
 }
 
-.task-detail-attachment-container{
+.task-detail-add-attachment-container{
     display: inline-block;
     width: 30%;
     font-size: 12px;
     color: #707070;
+    cursor: pointer;
     text-align: center;
-   
 }
 
 .task-detail-add-subtask-button-conatiner{
@@ -35,6 +35,7 @@
     width : 30%;
     font-size: 12px;
     color: #707070;
+    cursor: pointer;
     text-align: center;
 }
 
@@ -58,7 +59,6 @@
 }
 
 .task-detail-task-name-container{
-    font-size: 20px;
     padding-bottom: 5px;
     line-height: 1.6;
     font-family: Lato;
@@ -78,14 +78,14 @@
 }
 
 .task-detail-status-container{
-    width: 25%;
+    width: 30%;
     display:inline-block;
     text-align: left;
     font-size: 12px;
 }
 
 .task-detail-archive-container{
-    width: 40%;
+    width: 35%;
     display: inline-block;
     text-align: right;
     font-size: 12px;
@@ -144,20 +144,35 @@
 }
 
 .task-detail-due-date-container{
-    width: 30%;
-    display: inline-block;
     font-family: Lato;
+    float: left;
 }
 
 .task-detail-start-date-container{
-    width: 30%;
     display: inline-block;
     font-family: Lato;
+    margin-left: 50px;
+}
+
+.task-detail-duration-container{
+    display: inline-block;
+    font-family: Lato;
+    margin-left: 50px;
 }
 
 .task-detail-labels-container{
     width: 100%;
     margin-top: 10px;
+}
+
+.task-detail-sub-tasks-container{
+    width: 100%;
+    margin-top:15px;
+}
+
+.task-detail-attachment-container{
+    width: 100%;
+    margin-top:15px;
 }
 
 .task-detail-labels-data-container{
@@ -197,9 +212,10 @@
 .task-detail-comment-container{
     width: 100%;
     margin-top: 15px;
+    padding:10px;
     border-style: solid;
-    border-width: 0px 0px 0px 0px;
-    border-color: lightgrey; 
+    border-width: 1px 0px 0px 0px;
+    border-color: #eeeeee; 
 }
 
 .task-detail-comment-data-container{
@@ -223,9 +239,9 @@
     width: 100%;
     border-style: solid;
     border-width: 0px 0px 1px 0px;
-    border-color: lightgray;
+    border-color: #eeeeee;
     padding-top: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 .task-detail-subtask-checkbox-container{
@@ -250,7 +266,7 @@
     width: 100%;
     border-style: solid;
     border-width: 0px 0px 1px 0px;
-    border-color: lightgray;
+    border-color: #eeeeee;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -269,6 +285,28 @@
     width: 20%;
     display: inline-block;
 }
+
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

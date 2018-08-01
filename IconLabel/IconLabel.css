@@ -14,11 +14,10 @@
     padding-right: 2px;
     min-width: 50px;
     display: inline-block;
-    cursor: pointer;
     background-color: #f3f3f3;
 }
 
-.label-icon-container:hover {
+.label-icon-container:hover{
     border-color : #707070;
     border-width: 1px;
     border-style: solid;
@@ -55,7 +54,8 @@
 
 
 .label-icon-cross-button-container{
-    display:none;
-    color:#707070;
+    display: none;
+    color: #707070;
     text-align: center;
+    cursor: pointer;
 }

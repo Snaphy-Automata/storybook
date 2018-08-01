@@ -8,7 +8,7 @@ import './IconLabel.css';
 
 import TeamCircleIcon from '../TeamCircleIcon';
 
-const IconLabel = ({size, icon, title, src, name, isLabel, onClick}) => {
+const IconLabel = ({size, icon, title, src, name, isLabel, onClick, onRemove}) => {
     return(
         <div onClick={onClick}>
             {!src && <div className="label-icon-container">
@@ -18,7 +18,7 @@ const IconLabel = ({size, icon, title, src, name, isLabel, onClick}) => {
                 </div>
                 <div className="label-icon-name-container">{name}</div>
 
-                {isLabel && <div className="label-icon-cross-button-container">
+                {isLabel && <div className="label-icon-cross-button-container" onClick={onRemove}>
                     <Icon name="close"></Icon>
                 </div>
                 }
