@@ -14,75 +14,103 @@ const TaskItem = (props) => {
     const {
         task,
         memberObj,
+        statusObj,
         sectionId,
         onKeyPress,
         onBlur,
-        isNew
+        isNew,
+        isActiveTaskSection,
     } = props;
 
 
     const taskHelper = new TaskHelper(task);
 
     const isDelayed = taskHelper.isDelayed();
-    const iconObj   = taskHelper.getIcon(memberObj);
-
+    const iconObj = taskHelper.getIcon(memberObj);
+    const statusData = taskHelper.getStatus(statusObj);
+    const duration = taskHelper.getDurationInText();
+    const subTaskObj = taskHelper.getSubtaskStats();
+    const attachmentObj = taskHelper.getAttachmentStats();
+    const formattedDueDateObj = taskHelper.getFormattedDueDate();
     const delayedClassName = isDelayed ? `task-list-item-delayed-wrapper delayed` : `task-list-item-delayed-wrapper`;
-    
+
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
 
     return (
         <div className="task-list-item-wrapper">
-            {!isNew && 
+            {!isNew &&
                 <div className={delayedClassName}>
                     <div className={taskItemContainerClassName} >
-                        <div className={'task-list-item-side-line'}>
-                            {/* {task && <div className="task-list-item-drag-icon">
-                                <Icon name="compress"></Icon>
-                            </div>} */}
-                        </div>
-                        <div className={'task-list-item-icon'}>
-                            <div>
-                                {iconObj.title && <TeamCircleIcon size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip}/>}
-                                {iconObj.icon && <TeamCircleIcon size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
+                        <div className="task-list-item-side-bar-container">
+                            <div className={'task-list-item-side-line'}>
+                                {/* {task && <div className="task-list-item-drag-icon"> */}
+                                <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+                                <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+                                    {/* </div>} */}
+                            </div>
+                            <div className={'task-list-item-icon'}>
+                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
+                                {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
                             </div>
                         </div>
+                        
                         <div className="task-list-item-title">
-                            {task && taskItem && id !== taskItem.id && <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{taskHelper.getTitle}</div>}
+                            <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>
                         </div>
-                        {task && <div className={getOtherDataClass()}>
-                            {status && <div className="task-list-item-status" style={{ color: status.color }}>{taskHelper.getStatus}</div>}
-                            <div className="task-list-item-sub-task-attachment-container">
-                                {subTask && <div style={{ display: "inline-block", width: "50%" }}>
-                                    <Icon name="unordered list" style={{ display: "inline" }}></Icon>
-                                    <div style={{ display: "inline", marginLeft: "2px" }}>{taskHelper.getSubtaskStats().complete}/{taskHelper.getSubtaskStats().total}</div>
-                                </div>}
-                                {attachment && <div style={{ display: "inline-block", width: "50%" }}>
-                                    <Icon name="attach" style={{ display: "inline" }}></Icon>
-                                    <div style={{ display: "inline", marginLeft: "2px" }}>{taskHelper.getAttachmentStats().total}</div>
-                                </div>
+                        <div className="task-list-item-other-container">
+                            <div className="task-list-item-status-duration-container">
+                                {isActiveTaskSection &&
+                                    <div className="task-list-item-status" style={{ color: statusData.colorCode }}>{statusData.title}</div>
+
+                                }
+                                {!isActiveTaskSection &&
+                                    // Add duration class..
+                                    <div className="task-list-item-status">{duration}</div>
                                 }
                             </div>
+
+
+                            <div className="task-list-item-sub-task-attachment-container">
+                                <div style={{ display: "inline-block", width: "50%" }}>
+                                    {
+                                        subTaskObj &&
+                                        <div>
+                                            <Icon name="unordered list" style={{ display: "inline" }}></Icon>
+                                            <div style={{ display: "inline", marginLeft: "2px" }}>{subTaskObj.completed}/{subTaskObj.total}</div>
+                                        </div>
+                                    }
+
+                                </div>
+
+                                <div style={{ display: "inline-block", width: "50%" }}>
+                                    {
+                                        attachmentObj &&
+                                        <div>
+                                            <Icon name="attach" style={{ display: "inline" }}></Icon>
+                                            <div style={{ display: "inline", marginLeft: "2px" }}>{attachmentObj.total}</div>
+                                        </div>
+                                    }
+
+                                </div>
+
+                               
+                            </div>
                             <div className="task-list-item-tags-container">
-                                <div style={{ display: "inline" }}>
                                     <div style={{ display: "inline" }}>
-                                        {/* <Label title="Bug" color="#ff9b00"></Label> */}
+                                        <div style={{ display: "inline" }}>
+                                           
+                                        </div>
                                     </div>
+
                                 </div>
-
+                                <div className="task-list-item-date-container">
+                                    <div style={{ color: formattedDueDateObj.color }}>
+                                        <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
+                                        <div style={{ display: "inline", marginLeft: "5px", color: formattedDueDateObj.color }}>{formattedDueDateObj.date}</div>
+                                    </div>
                             </div>
-                            <div className="task-list-item-date-container">
-                                <div style={{ color: taskHelper.getFormattedDueDate().color }}>
-                                    <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
-                                    <div style={{ display: "inline", marginLeft: "5px", color: taskHelper.getFormattedDueDate().color }}>{taskHelper.getFormattedDueDate().date}</div>
-                                </div>
-
-
-
-
-                            </div>
-                        </div>}
-
+                        </div> {/*Other Container div end*/}
                     </div>
                 </div>
             }
@@ -94,6 +122,7 @@ const TaskItem = (props) => {
             }
         </div>
     )
+
 }
 
 const TaskItemForm = reduxForm({
