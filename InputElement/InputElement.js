@@ -5,7 +5,7 @@ import {Input, Form} from 'semantic-ui-react';
 
 //Import Actions..
 import {inputFocusChagedAction} from './InputElementAction';
-import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
+//import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
 
 const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows}) => {
 
@@ -79,7 +79,7 @@ function mapStateToProps(store) {
 const mapActionsToProps = {
   //map action here
   inputFocusChagedAction,
-  taskTitleDataAction
+  //taskTitleDataAction
 };
 
 

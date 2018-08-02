@@ -137,7 +137,7 @@ const TaskListHeading = (props) => {
         defaultText, 
         type, 
         items,
-        taskListReducer,
+        taskHeadingReducer,
         sectionId, 
         sectionExpandedAction, 
         provided, 
@@ -147,7 +147,7 @@ const TaskListHeading = (props) => {
         headingClassName
     } = props;
 
-    const taskHeadingConfig = taskListReducer[sectionId];
+    const taskHeadingConfig = taskHeadingReducer[sectionId];
     const isSectionOpened = taskHeadingConfig && taskHeadingConfig.isOpened ? true : false;
     const getIcon = function () {
         if (!isSectionOpened) {
