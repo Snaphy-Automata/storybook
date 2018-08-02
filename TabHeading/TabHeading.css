@@ -1,0 +1,84 @@
+/*
+  Created By Robins
+  28th June 2018
+*/
+
+/* Top Header Tabs */
+.grid-view-top-header-tab-container{
+  padding-top: 17px;
+}
+
+.grid-view-top-header-tab-container-list-wrapper{
+  font-family: Lato;
+  list-style: none;
+  padding-left: 0;
+  font-size: 11px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #4d4f5c;
+  margin: 0;
+}
+
+.grid-view-top-header-tab-container-list-item{
+  display: inline-block;
+  padding-bottom: 3px;
+  cursor: pointer;
+}
+
+.grid-view-top-header-border-active {
+  display: inline-block;
+}
+
+.grid-view-top-header-tab-container-list-item.active .grid-view-top-header-border-active {
+  border-bottom: solid 2px #2d7dd2;
+}
+
+
+
+.grid-view-close-btn-filter{
+  font-family: Lato;
+  font-size: 11px;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  color: #2d7dd2;
+  display: inline-block;
+  padding-left: 12px;
+  float: right;
+  padding-right: 10px;
+}
+
+.grid-view-close-btn-filter:hover{
+  color: #276cb6;
+  text-decoration-line: underline;
+}
+
+
+
+/* -------------------------Small devices--------------------- */
+@media (max-width: 600px) {
+
+
+
+}
+
+
+/* Tablet */
+@media (min-width: 600px) and (max-width: 991px) {
+
+
+
+
+}
+
+
+
+/*CSS for big screens.*/
+@media(min-width: 1380px) {
+
+
+
+}

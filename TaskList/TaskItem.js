@@ -95,6 +95,12 @@ const TaskItem = (props) => {
         return delayedColor;
     }
 
+
+    const isDelayed = () => {
+
+    };
+
+
     const getSelectedColor = function(){
         let background ;
         if(id && taskItem){
@@ -141,12 +147,13 @@ const TaskItem = (props) => {
 
    
 
+    const delayedClassName = `task-list-item-delayed-wrapper`;
 
 
     //console.log("Due Date Value", getDuedate(), moment().subtract(1, 'days').format("DD MMMM YYYY"), getDelayedColor());
     return (
-        <div style={{width: "100%", borderBottom: "1px solid #eeeeee"}}>
-        <div style={{borderLeftColor: getDelayedColor(), borderLeftStyle:"solid", borderLeftWidth: "2px", height:'80%'}}>
+    <div className="task-list-item-wrapper">
+        <div className={delayedClassName} style={{borderLeftColor: getDelayedColor(), borderLeftStyle:"solid", borderLeftWidth: "2px", height:'80%'}}>
             <div className="task-list-item-container" style={{backgroundColor: getSelectedColor()}} onClick={getTaskItemData}>
                 <div className={getSideLineClass()}>
                     {!isNew && <div className="task-list-item-drag-icon">
@@ -236,9 +243,8 @@ const TaskItem = (props) => {
                 </div>}
 
             </div>
-            </div>
-
         </div>
+    </div>
     )
 }
 
