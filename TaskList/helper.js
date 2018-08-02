@@ -67,8 +67,8 @@ import moment from 'moment';
                 type = "tommorow"
                 date = "tomorrow";
             } else {
-                let dueDateArray = moment(dueDate).format("DD MMMM YYYY").split(" ");
-                date = dueDateArray[0] + " " + dueDateArray[1];
+                let dueDateArray = moment(dueDate).format("DD MMM");
+                date = dueDateArray;
                 type = this.isDelayed()? "delayed":"coming";
             }
         }

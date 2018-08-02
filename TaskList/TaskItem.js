@@ -47,14 +47,14 @@ const TaskItem = (props) => {
                                 {/* {task && <div className="task-list-item-drag-icon"> */}
                                 <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
                                 <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-                                    {/* </div>} */}
+                                {/* </div>} */}
                             </div>
                             <div className={'task-list-item-icon'}>
                                 {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
                                 {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
                             </div>
                         </div>
-                        
+
                         <div className="task-list-item-title">
                             <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>
                         </div>
@@ -94,21 +94,19 @@ const TaskItem = (props) => {
 
                                 </div>
 
-                               
+
                             </div>
                             <div className="task-list-item-tags-container">
+                                <div style={{ display: "inline" }}>
                                     <div style={{ display: "inline" }}>
-                                        <div style={{ display: "inline" }}>
-                                           
-                                        </div>
-                                    </div>
 
-                                </div>
-                                <div className="task-list-item-date-container">
-                                    <div style={{ color: formattedDueDateObj.color }}>
-                                        <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
-                                        <div style={{ display: "inline", marginLeft: "5px", color: formattedDueDateObj.color }}>{formattedDueDateObj.date}</div>
                                     </div>
+                                </div>
+
+                            </div>
+                            <div className="task-list-item-date-container" style={{color: formattedDueDateObj.color}}>
+                                <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
+                                <div style={{ display: "inline", marginLeft: "5px", color: formattedDueDateObj.color }}>{formattedDueDateObj.date}</div>
                             </div>
                         </div> {/*Other Container div end*/}
                     </div>
