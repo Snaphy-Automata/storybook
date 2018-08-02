@@ -190,7 +190,7 @@ function mapStateToProps(store) {
         // totalLabelItemList: store.AllTaskReducer.totalLabelItemList,
         // selectedLabelItemList: store.AllTaskReducer.selectedLabelItemList,
         // sectionList: store.AllTaskReducer.sectionList,
-        // taskListReducer
+         taskListReducer
 
     };
 }
