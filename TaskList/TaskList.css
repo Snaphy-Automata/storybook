@@ -113,7 +113,6 @@
 .task-list-item-container{
     width: 100%;
     height: inherit;
-    line-height: 30px;
     display: inline-block;
 }
 
@@ -132,7 +131,9 @@
 
 .task-list-item-side-bar-container{
     width: 56px;
-    display: inline-block;
+    float: left;
+    height: 41px;
+    line-height: 41px;
 }
 
 .task-list-item-side-line{
@@ -141,8 +142,7 @@
     width: 21px;
     height: inherit;
     color: #a6b9cc;
-    font-size: 12px;
-    vertical-align: middle;
+    font-size: 11px;
     margin-left: 2px;
 
 }
@@ -151,7 +151,6 @@
 .task-list-item-drag-icon{
     margin: 0 !important;
     width: 5px !important;
-    vertical-align: top;
 }
 
 
@@ -161,20 +160,21 @@
     text-align: center;
     position: relative;
     top: 50%;
+    vertical-align: initial;
     transform: perspective(1px) translateY(-50%);
 }
 
 .task-list-item-icon{
     display: inline-block;
     /* width: 5%; */
-    width: 20px;
+    width: 21px;
     margin-left: 3px;
-    margin-right: 10px;
+    margin-right: 9px;
 }
 
 .task-list-item-icon-team-circular{
-    vertical-align: super;
-    display: inline-block;
+    position: relative;
+    bottom: 1px;
 }
 
 
@@ -192,6 +192,8 @@
     white-space: nowrap;
     overflow: hidden; 
     text-overflow: ellipsis;
+    height: 41px;
+    line-height: 41px;
 }
 
 .task-list-item-title-item{
@@ -207,8 +209,9 @@
 
 .task-list-item-other-container{
     width: 345px;
-    display: inline-block;
     vertical-align: super;
+    float: right;
+    line-height: 41px;
 }
 
 .task-list-item-other-container-edit{

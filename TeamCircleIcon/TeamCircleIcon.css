@@ -28,10 +28,10 @@
 /* mini | tiny | small | large | big | huge | massive */
 
 .team-circle-icon-wrapper.mini{
-    font-size: 10px;
-    height: 23px;
-    width: 23px;
-    line-height: 23px;
+    font-size: 9px;
+    height: 21px;
+    width: 21px;
+    line-height: 21px;
 }
 
 .team-circle-icon-wrapper.tiny{
