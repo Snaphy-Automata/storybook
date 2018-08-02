@@ -117,12 +117,12 @@
 }
 
 .task-list-item-container.active{
-    background-color: rgba(197, 175, 247, 0.2);
+    background-color: #f1f1f1;
 }
 
 .task-list-item-container:hover{
     cursor: pointer;
-    background: rgba(197, 175, 247, 0.2)
+    background-color: #f9f9f9;
 }
 
 /* .task-list-item-container:hover .task-list-item-drag-icon{
@@ -144,7 +144,7 @@
     color: #a6b9cc;
     font-size: 11px;
     margin-left: 2px;
-
+    cursor: -webkit-grab;
 }
 
 
@@ -253,4 +253,15 @@
     font-size: 10px;
     font-weight: 500;
     text-align: right;
+}
+
+
+.task-list-item-sub-task-stats{
+    margin-left: 8px;
+    display: inline;
+}
+
+.task-list-item-attachment-stats{
+    margin-left: 5px;
+    display: inline;
 }

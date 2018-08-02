@@ -8,6 +8,7 @@ import './TaskList.css';
 import TeamCircleIcon from '../TeamCircleIcon'
 import InputField from '../InputField';
 import TaskHelper from './helper';
+import Label from '../Label';
 
 const TaskItem = (props) => {
 
@@ -76,19 +77,19 @@ const TaskItem = (props) => {
                                     {
                                         subTaskObj &&
                                         <div>
-                                            <Icon name="unordered list" style={{ display: "inline" }}></Icon>
-                                            <div style={{ display: "inline", marginLeft: "2px" }}>{subTaskObj.completed}/{subTaskObj.total}</div>
+                                            <Icon name="unordered list" style={{ display: "inline", margin:'0' }}></Icon>
+                                            <div className="task-list-item-sub-task-stats">{subTaskObj.completed}/{subTaskObj.total}</div>
                                         </div>
                                     }
 
                                 </div>
 
-                                <div style={{ display: "inline-block", width: "50%" }}>
+                                <div style={{ display: "inline-block", width: "50%", textAlign: 'center' }}>
                                     {
                                         attachmentObj &&
                                         <div>
                                             <Icon name="attach" style={{ display: "inline" }}></Icon>
-                                            <div style={{ display: "inline", marginLeft: "2px" }}>{attachmentObj.total}</div>
+                                            <div className="task-list-item-attachment-stats">{attachmentObj.total}</div>
                                         </div>
                                     }
 
