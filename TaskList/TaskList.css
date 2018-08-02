@@ -112,6 +112,10 @@
     display: inline-block;
 }
 
+.task-list-item-container.active{
+    background-color: rgba(197, 175, 247, 0.2);
+}
+
 .task-list-item-container:hover{
     cursor: pointer;
     background: rgba(197, 175, 247, 0.2)

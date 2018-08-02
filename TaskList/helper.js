@@ -185,6 +185,38 @@ import moment from 'moment';
      }
  }
 
+ const getSideLineClass = function () {
+    let className = `task-list-item-side-line`
+    if (id && taskItem) {
+        if (taskItem.id === id) {
+            className = `task-list-item-side-line-edit`
+        }
+    }
+    return className;
+}
+
+const getIconClass = function () {
+    let className = `task-list-item-icon`
+    if (id && taskItem) {
+        if (taskItem.id === id) {
+            className = `task-list-item-icon-edit`
+        }
+    } else if (isNew) {
+        className = `task-list-item-icon-edit`
+    }
+    return className;
+}
+
+const getOtherDataClass = function () {
+    let className = `task-list-item-other-container`
+    if (id && taskItem) {
+        if (taskItem.id === id) {
+            className = `task-list-item-other-container-edit`
+        }
+    }
+    return className;
+}
+
 
 
  export default TaskHelper

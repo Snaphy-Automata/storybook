@@ -7,6 +7,7 @@ import { Icon } from 'semantic-ui-react'
 
 import "./TeamCircleIcon.css";
 
+//FIXME: Implement tooltip.. 2nd Aug 2018 Robins
 
 const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src})=>{
     //size = mini | tiny | small | large | big | huge | massive;
@@ -19,16 +20,20 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src})=>{
     
     return (
         <div onClick={onClick} className={className} style={style}>
-            { char && char}
-            {icon && <Icon  name={icon} />}
-            {src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png"/>}
+            { !icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png"/>}
+            { char && !src && char}
+            { !char && icon && <Icon  name={icon} />}
         </div>
     )
 };
 
 
 TeamCircleIcon.propTypes = {
-
+    src: PropTypes.string,
+    icon: PropTypes.string,
+    title: PropTypes.string,
+    tooltip: PropTypes.string,
+    size: PropTypes.string,
 }
 
 
