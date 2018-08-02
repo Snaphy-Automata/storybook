@@ -35,13 +35,13 @@ const TaskList = (props) => {
 
     //const taskHeadingConfig = props.taskListReducer[props.sectionId];
     //const isSectionOpened = taskHeadingConfig && taskHeadingConfig.isOpened ? true : false;
-    const isSectionOpenend = true;
+    const isSectionOpened = true;
 
 
     return (
         <div style={{ backgroundColor: "#fff" }}>
             <TaskListHeading heading={props.heading} onArchiveClicked={props.onArchiveClicked} onNewTaskClicked={props.onNewTaskClicked} onStateChanged={props.onStateChanged} defaultText={props.defaultText} type={props.type} items={props.items} sectionId={props.sectionId} provided={props.provided} {...props}></TaskListHeading>
-            {isSectionOpened && props.items && props.items.length &&
+            {isSectionOpenend && props.items && props.items.length &&
                 <Droppable droppableId={props.sectionId}>
                     {(provided, snapshot) => (
                         <div
