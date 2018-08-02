@@ -149,15 +149,16 @@ const TaskItem = (props) => {
         <div style={{borderLeftColor: getDelayedColor(), borderLeftStyle:"solid", borderLeftWidth: "2px", height:'80%'}}>
             <div className="task-list-item-container" style={{backgroundColor: getSelectedColor()}} onClick={getTaskItemData}>
                 <div className={getSideLineClass()}>
-                    {!isNew && <div className="task-list-item-drag-icon"  {...provided.dragHandleProps}>
+                    {!isNew && <div className="task-list-item-drag-icon">
                         <Icon name="compress"></Icon>
                     </div>}
 
                 </div>
                 <div className={getIconClass()}>
                     <div>
-                        {icon.title && <TeamCircleIcon size="mini" title={icon.title} onClick={() => { console.log("Icon has been clicked") }}></TeamCircleIcon>}
-                        {icon.icon && <TeamCircleIcon size="mini" icon={icon.icon} onClick={() => { console.log("Icon has been clicked") }}></TeamCircleIcon>}
+                    <TeamCircleIcon size="mini" title="Nikita" onClick={() => { console.log("Icon has been clicked") }}></TeamCircleIcon>
+                        {/* {icon.title && <TeamCircleIcon size="mini" title={icon.title} onClick={() => { console.log("Icon has been clicked") }}></TeamCircleIcon>}
+                        {icon.icon && <TeamCircleIcon size="mini" icon={icon.icon} onClick={() => { console.log("Icon has been clicked") }}></TeamCircleIcon>} */}
                     </div>
                   
                     {/* {icon && <TeamCircleIcon size="mini" icon={icon} onClick={() => { console.log("Icon has been clicked") }}></TeamCircleIcon>} */}
