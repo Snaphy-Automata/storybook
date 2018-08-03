@@ -101,6 +101,15 @@
     height: 41px;
 }
 
+.task-list-item-wrapper:hover{
+    border-bottom: 1px solid #dddddd;
+    background-color: #f9f9f9;
+}
+
+.task-list-item-wrapper.active{
+    background-color: #f1f1f1;
+}
+
 .task-list-item-delayed-wrapper{
     height: inherit;
 }
@@ -116,13 +125,10 @@
     display: inline-block;
 }
 
-.task-list-item-container.active{
-    background-color: #f1f1f1;
-}
+
 
 .task-list-item-container:hover{
     cursor: pointer;
-    background-color: #f9f9f9;
 }
 
 
