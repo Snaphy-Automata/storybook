@@ -123,9 +123,8 @@ const TaskItem = (props) => {
                                 !formattedDueDateObj.date && 
                                     <div className="task-list-item-date-default-container">
                                         <div style={{position:"relative", top:"2px"}}>
-                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny"></TeamCircleIcon>
+                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date"></TeamCircleIcon>
                                         </div>
-
                                     </div>
                             }
 
@@ -143,8 +142,22 @@ const TaskItem = (props) => {
             }
             {
                 isNew &&
-                <div>
-                    Implement new task here..
+                <div className="task-list-item-delayed-wrapper">
+                    <div className={taskItemContainerClassName} >
+                        <div className={delayedClassName}></div>
+                        <div className="task-list-item-side-bar-container">
+                            <div className={'task-list-item-side-line'}>
+                            </div>
+                            <div className={'task-list-item-icon'}>
+                            </div>
+                        </div>
+
+                        <div className="task-list-item-title">
+                            <div style={{position:"relative", top:"10px"}}>
+                                <Input style={{marginLeft:0}} transparent placeholder="Write Task" autoFocus fluid onKeyPress={onKeyPress} onBlur={onBlur}></Input>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
         </div>
