@@ -119,17 +119,24 @@ const TaskItem = (props) => {
 
                                 }
                             </div>
-                            <div className="task-list-item-date-default-container">
-                                <div style={{position:"relative", top:"2px"}}>
-                                    <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny"></TeamCircleIcon>
-                                </div>
+                            { 
+                                !formattedDueDateObj.date && 
+                                    <div className="task-list-item-date-default-container">
+                                        <div style={{position:"relative", top:"2px"}}>
+                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny"></TeamCircleIcon>
+                                        </div>
 
-                            </div>
-                            {/* <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
-                                
-                                <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
-                                <div className="task-list-item-date-item" style={{color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
-                            </div> */}
+                                    </div>
+                            }
+
+                            {
+                                formattedDueDateObj.date &&  
+                                    <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                                        <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
+                                        <div className="task-list-item-date-item" style={{color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
+                                    </div>
+                            }
+                           
                         </div> {/*Other Container div end*/}
                     </div>
                 </div>

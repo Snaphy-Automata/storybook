@@ -209,11 +209,11 @@ import moment from 'moment';
 
 
  const getDueDateObj = (date, type) => {
-     const colorCode = dueDateColorCode[type];
-     return {
-         date,
-         colorCode
-     }
+    const colorCode = dueDateColorCode[type];
+    return {
+        date,
+        colorCode
+    }
  }
 
  const getSideLineClass = function () {
