@@ -292,7 +292,8 @@
 
 .task-list-item-date-container{
     float:left;
-    width: 70px;
+    width: 90px;
+    padding-right: 13px;
     font-size: 10px;
     font-weight: 500;
     text-align: right;
