@@ -83,7 +83,7 @@ const TaskItem = (props) => {
 
 
                             <div className="task-list-item-sub-task-attachment-container">
-                                <div style={{ display: "inline-block", width: "50%" }}>
+                                <div style={{ display: "inline-block", width: "60%"}}>
                                     {
                                         subTaskObj &&
                                         <div>
@@ -94,7 +94,7 @@ const TaskItem = (props) => {
 
                                 </div>
 
-                                <div style={{ display: "inline-block", width: "50%", textAlign: 'center' }}>
+                                <div style={{ display: "inline-block", width: "40%", textAlign: 'left' }}>
                                     {
                                         attachmentObj &&
                                         <div>
@@ -114,7 +114,7 @@ const TaskItem = (props) => {
                                     <div className="task-list-item-tag-item">
                                         <Label title={labels[0].title} color={labels[0].colorCode} style={{ float: 'left' }} />
                                         {labels.length > 1 && 
-                                        <Label title="..." style={{ float: 'right' }} tooltip={labelObjData.tooltip}/>}
+                                        <Label title="..." style={{ float: 'right', marginRight: '10px' }} tooltip={labelObjData.tooltip}/>}
                                     </div>
 
                                 }
