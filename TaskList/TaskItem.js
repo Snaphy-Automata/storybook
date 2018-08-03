@@ -36,7 +36,7 @@ const TaskItem = (props) => {
     const subTaskObj = taskHelper.getSubtaskStats();
     const attachmentObj = taskHelper.getAttachmentStats();
     const formattedDueDateObj = taskHelper.getFormattedDueDate();
-    const delayedClassName = isDelayed ? `task-list-item-delayed-wrapper delayed` : `task-list-item-delayed-wrapper`;
+    const delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
     const labels  = taskHelper.getLabels(labelObj);
 
     console.log("Tooltip", iconObj);
@@ -48,8 +48,9 @@ const TaskItem = (props) => {
     return (
         <div className="task-list-item-wrapper">
             {!isNew &&
-                <div className={delayedClassName}>
+                <div className="task-list-item-delayed-wrapper">
                     <div className={taskItemContainerClassName} >
+                        <div className={delayedClassName}></div>
                         <div className="task-list-item-side-bar-container">
                             <div className={'task-list-item-side-line'}>
                                 <div className="task-list-item-drag-icon-container">

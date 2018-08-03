@@ -114,8 +114,15 @@
     height: inherit;
 }
 
+
+.task-item-delayed-block{
+    float: left;
+    width: 2px;
+    height: inherit;
+}
+
 /* Side left border.. */
-.task-list-item-delayed-wrapper .delayed{
+.task-item-delayed-block.delayed{
     border-left: solid 2px #ff1744;
 }
 

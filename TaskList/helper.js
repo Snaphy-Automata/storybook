@@ -71,12 +71,18 @@ import moment from 'moment';
                 date: "today"
             } else if (moment().subtract(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
                 type = "yesterday"
-                date = "yesturday";
+                date = "yesterday";
             } else if (moment().add(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
                 type = "tommorow"
                 date = "tomorrow";
             } else {
-                let dueDateArray = moment(dueDate).format("DD MMM");
+                let dueDateArray;
+                if(moment.utc().year() === moment.utc(dueDate).year()){
+                    dueDateArray = moment.utc(dueDate).format("DD MMM");
+                }else{
+                    dueDateArray = moment.utc(dueDate).format("DD MMM YYYY");
+                }
+                   
                 date = dueDateArray;
                 type = this.isDelayed()? "delayed":"coming";
             }
@@ -181,7 +187,7 @@ import moment from 'moment';
 
  const dueDateColorCode = {
      today: "#1ed0c1",
-     yesturday: "#ff1744",
+     yesterday: "#ff1744",
      tomorrow: "#1ed0c1",
      coming: "#9e9e9e",
      delayed: "#ff1744"
