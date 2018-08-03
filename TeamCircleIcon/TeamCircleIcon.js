@@ -31,7 +31,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
                 content={tooltip}
                 position='bottom center'
                 inverted
-                style={{fontSize:'10px', paddingRight:"20px", paddingLeft:"20px"}}
+                style={{fontSize:'10px', paddingRight:"20px", paddingLeft:"20px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word"}}
                 size='mini'
                 > 
 

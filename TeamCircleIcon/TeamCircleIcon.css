@@ -14,6 +14,15 @@
     text-align: center;
 }
 
+.team-circle-icon-tooltip-container{
+    font-size: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    max-width: 200px;
+    letter-spacing: 0.5px;
+    word-break: break-word;
+}
+
 
 .team-circle-icon-wrapper .icon{
     margin: 0;
