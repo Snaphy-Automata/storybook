@@ -151,16 +151,13 @@ import moment from 'moment';
                         if(index === 0){
                             tooltip = `${member.firstName}`;
                         }else{
-                            tooltip = `${tooltip} ${member.firstName}`;
+                            tooltip = `${tooltip}, ${member.firstName}`;
                         }
                         
                         if(member.lastName){
                             tooltip = `${tooltip} ${member.lastName}`;
                         }   
 
-                        if(!isLast){
-                            tooltip = `${tooltip}, `;
-                        }
                     }
                 });
                 iconObj.tooltip = tooltip;
