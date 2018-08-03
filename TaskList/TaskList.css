@@ -300,6 +300,15 @@
     text-transform: capitalize;
 }
 
+.task-list-item-date-default-container{
+    float:left;
+    width: 90px;
+    font-size: 10px;
+    font-weight: 500;
+    text-align: right;
+    text-transform: capitalize;
+}
+
 .task-list-item-date-item{
     display: inline;
     margin-left: 2px;

@@ -83,7 +83,7 @@ const TaskItem = (props) => {
 
 
                             <div className="task-list-item-sub-task-attachment-container">
-                                <div style={{ display: "inline-block", width: "60%"}}>
+                                <div style={{ display: "inline-block", width: "60%" }}>
                                     {
                                         subTaskObj &&
                                         <div>
@@ -113,21 +113,23 @@ const TaskItem = (props) => {
                                     labels.length &&
                                     <div className="task-list-item-tag-item">
                                         <Label title={labels[0].title} color={labels[0].colorCode} style={{ float: 'left' }} />
-                                        {labels.length > 1 && 
-                                        <Label title="..." style={{ float: 'right', marginRight: '10px' }} tooltip={labelObjData.tooltip}/>}
+                                        {labels.length > 1 &&
+                                            <Label title="..." style={{ float: 'right' }} tooltip={labelObjData.tooltip} />}
                                     </div>
 
                                 }
                             </div>
-                            {/* <div className="task-list-item-date-container">
-                                <Icon name="calendar alternate outline" circular/>
+                            <div className="task-list-item-date-default-container">
+                                <div style={{position:"relative", top:"2px"}}>
+                                    <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny"></TeamCircleIcon>
+                                </div>
 
-                            </div> */}
-                            <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                            </div>
+                            {/* <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
                                 
                                 <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
                                 <div className="task-list-item-date-item" style={{color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
-                            </div>
+                            </div> */}
                         </div> {/*Other Container div end*/}
                     </div>
                 </div>
