@@ -226,6 +226,15 @@
     line-height: 41px;
 }
 
+.task-list-item-new-task-title{
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    height: 41px;
+    line-height: 41px;
+    padding-right: 10px;
+}
+
 .task-list-item-title-item{
     text-overflow: ellipsis;
     overflow: hidden;
@@ -306,8 +315,9 @@
 }
 
 .task-list-item-date-container{
-    float:left;
-    width: 90px;
+    float: left;
+    width: 100px;
+    padding-right: 10px;
     font-size: 10px;
     font-weight: 500;
     text-align: right;
@@ -315,8 +325,9 @@
 }
 
 .task-list-item-date-default-container{
-    float:left;
-    width: 90px;
+    float: left;
+    width: 100px;
+    padding-right: 10px;
     font-size: 10px;
     font-weight: 500;
     text-align: right;

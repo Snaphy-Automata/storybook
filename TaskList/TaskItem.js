@@ -160,9 +160,9 @@ const TaskItem = (props) => {
                             </div>
                         </div>
 
-                        <div className="task-list-item-title">
+                        <div className="task-list-item-new-task-title">
                             <div className="task-list-item-new-task-container">
-                                <Input transparent placeholder="Write Task" autoFocus fluid onKeyPress={onKeyPress} onBlur={onBlur} className="task-list-item-new-task"></Input>
+                                <Field name="title" placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField}/>
                             </div>
                         </div>
                     </div>

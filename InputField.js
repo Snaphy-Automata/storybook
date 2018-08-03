@@ -29,6 +29,7 @@ const InputField = (props) => {
         autoFocus,
         disabled,
         transparent,
+        className,
         meta: { touched, error, warning }
     } = props;
 
@@ -41,11 +42,13 @@ const InputField = (props) => {
 
     return(
         <Form.Input
+            className={className}
             width={width}
             error={(touched && error)?true:false}
             fluid
             style={{textOverflow : "ellipsis"}}
             required
+            autoFocus = {autoFocus}
             disabled = {disabled}
             transparent = {props.transparent}
             size={size}
