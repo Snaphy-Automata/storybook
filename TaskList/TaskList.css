@@ -222,6 +222,7 @@
 .task-list-item-title-item{
     text-overflow: ellipsis;
     overflow: hidden;
+    color: #000000;
 }
 
 .task-list-item-title-text-overlow{
