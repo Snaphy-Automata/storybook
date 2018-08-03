@@ -17,6 +17,7 @@
     text-overflow: ellipsis;
     padding-left: 2px;
     padding-right: 2px;
+    letter-spacing: 0.5px;
     /* display: inline-block; */
     text-transform: capitalize;
 }

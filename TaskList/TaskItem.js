@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, Popup } from 'redux-form'
 import { Icon, Input } from 'semantic-ui-react'
 import map from 'lodash/map';
 
@@ -44,7 +44,7 @@ const TaskItem = (props) => {
 
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
-
+    console.log("Task Data", task);
     return (
         <div className="task-list-item-wrapper">
             {!isNew &&
@@ -58,7 +58,8 @@ const TaskItem = (props) => {
                                 </div>
                             </div>
                             <div className={'task-list-item-icon'}>
-                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
+                                {iconObj.title && 
+                                <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
                                 {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
                             </div>
                         </div>
@@ -110,6 +111,7 @@ const TaskItem = (props) => {
                                     labels.length && 
                                     <div className="task-list-item-tag-item" style={{ display: "inline" }}>
                                         <Label title={labels[0].title} color={labels[0].colorCode} />
+                                        <Label title="..."/>
                                     </div>
                                 }
                             </div>

@@ -21,15 +21,19 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
     return (
         <div>
             {
-                tooltip && <Popup trigger={
-                    <div onClick={onClick} className={className} style={style}>
+                tooltip && <Popup 
+                trigger={<div onClick={onClick} className={className} style={style}>
                 { !icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png"/>}
                 { char && !src && char}
 
                 { !char && icon && <Icon  name={icon} />}
-                </div>
-                } content={tooltip}
-                position="bottom center"> 
+                </div>} 
+                content={tooltip}
+                position='bottom center'
+                inverted
+                style={{fontSize:'10px', paddingRight:"20px", paddingLeft:"20px"}}
+                size='mini'
+                > 
 
                 </Popup>
             }
