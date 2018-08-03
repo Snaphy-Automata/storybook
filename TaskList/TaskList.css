@@ -218,7 +218,7 @@
 
 .task-list-item-title{
     display: inline-block;
-    width: calc(100% - 409px);
+    width: calc(100% - 418px);
     white-space: nowrap;
     overflow: hidden; 
     text-overflow: ellipsis;
@@ -239,7 +239,7 @@
 }
 
 .task-list-item-other-container{
-    width: 351px;
+    width: 360px;
     float: right;
     line-height: 41px;
     height: 41px;
@@ -263,6 +263,7 @@
     font-size: 10px;
     font-weight: 500;
     text-transform: capitalize;
+    text-align: center;
 }
 
 .task-list-item-sub-task-attachment-container{
@@ -279,7 +280,7 @@
 
 .task-list-item-tags-container{
     float:left;
-    width: 86px;
+    width: 85px;
     text-align: center;
     line-height: 41px;
     height: 41px;
@@ -296,7 +297,6 @@
     font-size: 10px;
     font-weight: 500;
     text-align: right;
-    padding-right: 13px;
     text-transform: capitalize;
 }
 
@@ -319,6 +319,6 @@
 }
 
 .task-list-item-attachment-stats{
-    margin-left: 5px;
+    margin-left: 2px;
     display: inline;
 }

@@ -119,7 +119,12 @@ const TaskItem = (props) => {
 
                                 }
                             </div>
+                            {/* <div className="task-list-item-date-container">
+                                <Icon name="calendar alternate outline" circular/>
+
+                            </div> */}
                             <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                                
                                 <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
                                 <div className="task-list-item-date-item" style={{color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
                             </div>
