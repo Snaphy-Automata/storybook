@@ -134,7 +134,12 @@ import moment from 'moment';
                     }
                     const member = membersObj[assignedId];
                     if(member.firstName){
-                        tooltip = `${member.firstName}`;
+                        if(index === 0){
+                            tooltip = `${member.firstName}`;
+                        }else{
+                            tooltip = `${tooltip} ${member.firstName}`;
+                        }
+                        
                         if(member.lastName){
                             tooltip = `${tooltip} ${member.lastName}`;
                         }   
@@ -164,7 +169,7 @@ import moment from 'moment';
             }
         }else{
             iconObj.icon = "user";
-            iconObj.tooltip = "not assigned";
+            iconObj.tooltip = "Assign this task";
         }   
         return iconObj;
     }
