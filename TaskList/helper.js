@@ -42,15 +42,29 @@ import moment from 'moment';
      */
     getLabels(labelObj){
         const labelList = [];
+        let tooltip = "";
         if(this.task && this.task.labels && this.task.labels.length){
-            this.task.labels.forEach(labelId => {
+            this.task.labels.forEach((labelId, index) => {
+                let isLast = false;
+                if(index + 1 === this.task.labels.length){
+                    isLast = true;
+                }
                 const label = labelObj[labelId];
                 if(label){
                     labelList.push(label);
+                    if(index >0){
+                        tooltip = `${tooltip} ${label.title}`
+                    }
+                    if(!isLast && index >1){
+                        tooltip = `${tooltip}, `
+                    }
                 }  
             });
         }
-        return labelList;
+        return {
+            labelList : labelList,
+            tooltip : tooltip
+        }
        
 
     }

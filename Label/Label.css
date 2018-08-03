@@ -2,7 +2,7 @@
 
 
 .label-container{
-    max-width: 50px;
+    max-width: 100px;
     height: 20px;
     line-height: 20px;
     border-radius: 10px;
@@ -15,26 +15,35 @@
     overflow: hidden;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
     letter-spacing: 0.5px;
     /* display: inline-block; */
     text-transform: capitalize;
 }
 
 .label-empty-container{
-    max-width: 30px;
+    max-width: 100px;
     height: 20px;
+    line-height: 20px;
     border-radius: 10px;
     text-align: center;
     font-size: 10px;
-    color: black;
-    padding: 1px;
-    background-color: lightgray;
+    color: #848f99;
+    background-color: #f3f3f3;
     min-width: 20px;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    letter-spacing: 0.5px;
+    /* display: inline-block; */
+    text-transform: capitalize;
 }
+
+.label-empty-container:hover{
+    background-color: #ececec;
+}
+

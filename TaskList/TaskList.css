@@ -196,7 +196,7 @@
 
 .task-list-item-title{
     display: inline-block;
-    width: calc(100% - 403px);
+    width: calc(100% - 418px);
     white-space: nowrap;
     overflow: hidden; 
     text-overflow: ellipsis;
@@ -216,7 +216,7 @@
 }
 
 .task-list-item-other-container{
-    width: 345px;
+    width: 360px;
     float: right;
     line-height: 41px;
     height: 41px;
@@ -233,6 +233,7 @@
 .task-list-item-status-duration-container{
     float:left;
     width: 80px;
+    letter-spacing: 0.5px;
 }
 
 .task-list-item-status{
@@ -251,8 +252,10 @@
 
 .task-list-item-tags-container{
     float:left;
-    width: 61px;
-    text-align: center
+    width: 76px;
+    text-align: center;
+    line-height: 41px;
+    height: 41px;
 }
 
 .task-list-item-tag-item{

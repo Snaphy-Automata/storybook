@@ -37,9 +37,10 @@ const TaskItem = (props) => {
     const attachmentObj = taskHelper.getAttachmentStats();
     const formattedDueDateObj = taskHelper.getFormattedDueDate();
     const delayedClassName = isDelayed ? `task-list-item-delayed-wrapper delayed` : `task-list-item-delayed-wrapper`;
-    const labels  = taskHelper.getLabels(labelObj);
+    const labelObjData = taskHelper.getLabels(labelObj);
+    const labels = labelObjData.labelList;
 
-    console.log("Tooltip", iconObj);
+    console.log("Tooltip", labels);
 
 
     //FIXME: When selected add `selected` class.
@@ -58,8 +59,8 @@ const TaskItem = (props) => {
                                 </div>
                             </div>
                             <div className={'task-list-item-icon'}>
-                                {iconObj.title && 
-                                <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
+                                {iconObj.title &&
+                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
                                 {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
                             </div>
                         </div>
@@ -85,7 +86,7 @@ const TaskItem = (props) => {
                                     {
                                         subTaskObj &&
                                         <div>
-                                            <Icon name="unordered list" style={{ display: "inline", margin:'0' }}></Icon>
+                                            <Icon name="unordered list" style={{ display: "inline", margin: '0' }}></Icon>
                                             <div className="task-list-item-sub-task-stats">{subTaskObj.completed}/{subTaskObj.total}</div>
                                         </div>
                                     }
@@ -106,16 +107,18 @@ const TaskItem = (props) => {
 
                             </div>
                             <div className="task-list-item-tags-container">
-                                { 
-                                    labels && 
-                                    labels.length && 
-                                    <div className="task-list-item-tag-item" style={{ display: "inline" }}>
-                                        <Label title={labels[0].title} color={labels[0].colorCode} />
-                                        <Label title="..."/>
+                                {
+                                    labels &&
+                                    labels.length &&
+                                    <div className="task-list-item-tag-item">
+                                        <Label title={labels[0].title} color={labels[0].colorCode} style={{ float: 'left' }} />
+                                        {labels.length > 1 && 
+                                        <Label title="..." style={{ float: 'right' }} tooltip={labelObjData.tooltip}/>}
                                     </div>
+
                                 }
                             </div>
-                            <div className="task-list-item-date-container" style={{color: formattedDueDateObj.colorCode}}>
+                            <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
                                 <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
                                 <div style={{ display: "inline", marginLeft: "5px", color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
                             </div>
