@@ -52,10 +52,10 @@ const TaskItem = (props) => {
                     <div className={taskItemContainerClassName} >
                         <div className="task-list-item-side-bar-container">
                             <div className={'task-list-item-side-line'}>
-                                {/* {task && <div className="task-list-item-drag-icon"> */}
-                                <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-                                <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-                                {/* </div>} */}
+                                <div className="task-list-item-drag-icon-container">
+                                    <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+                                    <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+                                </div>
                             </div>
                             <div className={'task-list-item-icon'}>
                                 {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
