@@ -232,6 +232,20 @@
     color: #000000;
 }
 
+.task-list-item-new-task-container{
+    position: relative;
+    top: 10px;
+}
+
+.task-list-item-new-task{
+    margin: 0;
+}
+
+.task-list-item-new-task input[type="text"] {
+    font-size: 14px;
+    color: #000;
+}
+
 .task-list-item-title-text-overlow{
   text-overflow: ellipsis;
   white-space: nowrap;

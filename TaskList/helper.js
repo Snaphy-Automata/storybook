@@ -98,7 +98,7 @@ import moment from 'moment';
                 if(moment.utc().year() === moment.utc(dueDate).year()){
                     dueDateArray = moment.utc(dueDate).format("DD MMM");
                 }else{
-                    dueDateArray = moment.utc(dueDate).format("DD MMM YYYY");
+                    dueDateArray = moment.utc(dueDate).format("DD MMM, YYYY");
                 }
                    
                 date = dueDateArray;

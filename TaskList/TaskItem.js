@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm, Popup } from 'redux-form'
-import { Icon, Input } from 'semantic-ui-react'
+import { Field, reduxForm } from 'redux-form'
+import { Icon, Input, Popup  } from 'semantic-ui-react'
 import map from 'lodash/map';
 
 //Custom import..
@@ -119,23 +119,31 @@ const TaskItem = (props) => {
 
                                 }
                             </div>
-                            { 
-                                !formattedDueDateObj.date && 
-                                    <div className="task-list-item-date-default-container">
-                                        <div style={{position:"relative", top:"2px"}}>
-                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date"></TeamCircleIcon>
-                                        </div>
+                            {
+                                !formattedDueDateObj.date &&
+                                <div className="task-list-item-date-default-container">
+                                    <div style={{ position: "relative", top: "2px" }}>
+                                        <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date"></TeamCircleIcon>
                                     </div>
+                                </div>
                             }
 
                             {
-                                formattedDueDateObj.date &&  
-                                    <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                                formattedDueDateObj.date &&
+                                <Popup 
+                                    trigger={<div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
                                         <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
-                                        <div className="task-list-item-date-item" style={{color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
-                                    </div>
+                                        <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
+                                    </div>}
+                                    content="Change Date"
+                                    position='bottom center'
+                                    inverted
+                                    style={{ fontSize: '10px', paddingRight: "20px", paddingLeft: "20px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word" }}
+                                    size='mini'
+                                >
+                                </Popup>
                             }
-                           
+
                         </div> {/*Other Container div end*/}
                     </div>
                 </div>
@@ -153,8 +161,8 @@ const TaskItem = (props) => {
                         </div>
 
                         <div className="task-list-item-title">
-                            <div style={{position:"relative", top:"10px"}}>
-                                <Input style={{marginLeft:0}} transparent placeholder="Write Task" autoFocus fluid onKeyPress={onKeyPress} onBlur={onBlur}></Input>
+                            <div className="task-list-item-new-task-container">
+                                <Input transparent placeholder="Write Task" autoFocus fluid onKeyPress={onKeyPress} onBlur={onBlur} className="task-list-item-new-task"></Input>
                             </div>
                         </div>
                     </div>
