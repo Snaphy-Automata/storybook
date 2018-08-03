@@ -29,7 +29,11 @@ import moment from 'moment';
     }
 
     getStatus(statusObj){
-        return this.task.statusId && statusObj[this.task.statusId]? statusObj[this.task.statusId]: undefined; 
+        let statusData;
+        if(this.task){
+            statusData = this.task.statusId && statusObj[this.task.statusId]? statusObj[this.task.statusId]: undefined;
+        }
+        return statusData; 
     }
 
     /**
@@ -94,7 +98,7 @@ import moment from 'moment';
                 if(moment.utc().year() === moment.utc(dueDate).year()){
                     dueDateArray = moment.utc(dueDate).format("DD MMM");
                 }else{
-                    dueDateArray = moment.utc(dueDate).format("DD MMM YYYY");
+                    dueDateArray = moment.utc(dueDate).format("DD MMM, YYYY");
                 }
                    
                 date = dueDateArray;
@@ -127,7 +131,11 @@ import moment from 'moment';
 
 
     getTitle(){
-        return this.task.title;
+        let titleData;
+        if(this.task){
+            titleData = this.task.title;
+        }
+        return titleData;
     }
 
     /**
@@ -193,7 +201,11 @@ import moment from 'moment';
 
 
     getDurationInText(){
-        return this.task.durationInText;
+        let durationInTextData;
+        if(this.task){
+            durationInTextData = this.task.durationInText;
+        }
+        return durationInTextData;
     }
     
  }
@@ -209,11 +221,11 @@ import moment from 'moment';
 
 
  const getDueDateObj = (date, type) => {
-     const colorCode = dueDateColorCode[type];
-     return {
-         date,
-         colorCode
-     }
+    const colorCode = dueDateColorCode[type];
+    return {
+        date,
+        colorCode
+    }
  }
 
  const getSideLineClass = function () {

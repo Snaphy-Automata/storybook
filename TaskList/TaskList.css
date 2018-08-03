@@ -232,6 +232,20 @@
     color: #000000;
 }
 
+.task-list-item-new-task-container{
+    position: relative;
+    top: 10px;
+}
+
+.task-list-item-new-task{
+    margin: 0;
+}
+
+.task-list-item-new-task input[type="text"] {
+    font-size: 14px;
+    color: #000;
+}
+
 .task-list-item-title-text-overlow{
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -263,11 +277,12 @@
     font-size: 10px;
     font-weight: 500;
     text-transform: capitalize;
+    text-align: center;
 }
 
 .task-list-item-sub-task-attachment-container{
     float:left;
-    width: 114px;
+    width: 95px;
     font-size: 10px;
     font-weight: 500;
     color: #9e9e9e;
@@ -279,7 +294,7 @@
 
 .task-list-item-tags-container{
     float:left;
-    width: 76px;
+    width: 85px;
     text-align: center;
     line-height: 41px;
     height: 41px;
@@ -293,7 +308,15 @@
 .task-list-item-date-container{
     float:left;
     width: 90px;
-    padding-right: 13px;
+    font-size: 10px;
+    font-weight: 500;
+    text-align: right;
+    text-transform: capitalize;
+}
+
+.task-list-item-date-default-container{
+    float:left;
+    width: 90px;
     font-size: 10px;
     font-weight: 500;
     text-align: right;
@@ -314,11 +337,11 @@
 
 
 .task-list-item-sub-task-stats{
-    margin-left: 8px;
+    margin-left: 5px;
     display: inline;
 }
 
 .task-list-item-attachment-stats{
-    margin-left: 5px;
+    margin-left: 2px;
     display: inline;
 }
