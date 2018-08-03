@@ -125,9 +125,9 @@
     background-color: #f9f9f9;
 }
 
-/* .task-list-item-container:hover .task-list-item-drag-icon{
+.task-list-item-container:hover .task-list-item-drag-icon{
    display: block;
-} */
+}
 
 .task-list-item-side-bar-container{
     width: 56px;
@@ -151,6 +151,7 @@
 .task-list-item-drag-icon{
     margin: 0 !important;
     width: 5px !important;
+    display: none;
 }
 
 
@@ -209,9 +210,9 @@
 
 .task-list-item-other-container{
     width: 345px;
-    vertical-align: super;
     float: right;
     line-height: 41px;
+    height: 41px;
 }
 
 .task-list-item-other-container-edit{
@@ -223,7 +224,7 @@
 }
 
 .task-list-item-status-duration-container{
-    display: inline-block;
+    float:left;
     width: 80px;
 }
 
@@ -234,7 +235,7 @@
 }
 
 .task-list-item-sub-task-attachment-container{
-    display: inline-block;
+    float:left;
     width: 114px;
     font-size: 10px;
     font-weight: 500;
@@ -242,13 +243,18 @@
 }
 
 .task-list-item-tags-container{
-    display: inline-block;
+    float:left;
     width: 61px;
     text-align: center
 }
 
+.task-list-item-tag-item{
+    position: relative;
+    top: 10px;
+}
+
 .task-list-item-date-container{
-    display: inline-block;
+    float:left;
     width: 70px;
     font-size: 10px;
     font-weight: 500;

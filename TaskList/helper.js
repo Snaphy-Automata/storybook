@@ -32,7 +32,14 @@ import moment from 'moment';
         return this.task.statusId && statusObj[this.task.statusId]? statusObj[this.task.statusId]: undefined; 
     }
 
-
+    /**
+     * Will return labels with tooltip if more than one label
+     * @param {*} labelObj 
+     * {
+     *  label: {},
+     *  tooltip: ""
+     * }
+     */
     getLabels(labelObj){
         const labelList = [];
         if(this.task && this.task.labels && this.task.labels.length){
@@ -44,6 +51,8 @@ import moment from 'moment';
             });
         }
         return labelList;
+       
+
     }
 
     /**

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { Icon } from 'semantic-ui-react'
+import { Icon, Popup } from 'semantic-ui-react'
 
 //Custom Import
 
@@ -9,7 +9,7 @@ import "./TeamCircleIcon.css";
 
 //FIXME: Implement tooltip.. 2nd Aug 2018 Robins
 
-const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src})=>{
+const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip})=>{
     //size = mini | tiny | small | large | big | huge | massive;
 
     let char
@@ -19,11 +19,27 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src})=>{
     className = size? `${className} ${size}`: className;
     
     return (
-        <div onClick={onClick} className={className} style={style}>
-            { !icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png"/>}
-            { char && !src && char}
-            { !char && icon && <Icon  name={icon} />}
+        <div>
+            {
+                tooltip && <Popup trigger={
+                    <div onClick={onClick} className={className} style={style}>
+                { !icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png"/>}
+                { char && !src && char}
+                { !char && icon && <Icon  name={icon} />}
+                </div>
+                } content={tooltip}> 
+
+                </Popup>
+            }
+            {
+                !tooltip && <div onClick={onClick} className={className} style={style}>
+                { !icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png"/>}
+                { char && !src && char}
+                { !char && icon && <Icon  name={icon} />}
+                </div>
+            }
         </div>
+        
     )
 };
 
