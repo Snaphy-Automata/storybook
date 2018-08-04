@@ -6,6 +6,7 @@ import { Icon, Popup } from 'semantic-ui-react'
 //Custom Import
 
 import "./TeamCircleIcon.css";
+import AssignedUserDialog from   "../AssignedUserDialog";
 
 //FIXME: Implement tooltip.. 2nd Aug 2018 Robins
 
@@ -21,7 +22,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
     return (
         <div>
             {
-                tooltip && <Popup
+                tooltip && !onClick && <Popup
                     trigger={<div onClick={onClick} className={className} style={style}>
                         {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                         {char && !src && char}
@@ -36,6 +37,22 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
                 >
 
                 </Popup>
+            }
+            {
+                tooltip && onClick && <Popup
+                trigger={<div onClick={onClick} className={className} style={style}>
+                    {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
+                    {char && !src && char}
+
+                    {!char && icon && <Icon name={icon} />}
+                </div>}
+                content={<AssignedUserDialog/>}
+                position='bottom center'
+                style={{ width:"242px", height:"217px", padding:"0" }}
+                size='mini'
+            >
+
+            </Popup>
             }
             {
                 !tooltip && <div onClick={onClick} className={className} style={style}>

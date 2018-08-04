@@ -11,6 +11,7 @@ import TeamCircleIcon from '../TeamCircleIcon'
 import InputField from '../InputField';
 import TaskHelper from './helper';
 import Label from '../Label';
+import AssignedUserDialog from '../AssignedUserDialog';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -53,7 +54,9 @@ const TaskItem = (props) => {
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
     console.log("Task Data", task);
-    const openDialog = () => {}
+    const openDialog = () => {
+        return true;
+    }
     return (
         <div className="task-list-item-wrapper">
             {!isNew &&
@@ -68,9 +71,8 @@ const TaskItem = (props) => {
                                 </div>
                             </div>
                             <div className={'task-list-item-icon'}>
-                                {iconObj.title &&
-                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openDialog} />}
-                                {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
+                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openDialog} />}
+                                {iconObj.icon &&  <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openDialog} />}
                             </div>
                         </div>
 
