@@ -17,7 +17,7 @@ class AssignedUserDailog extends React.Component {
             <div className="assigned-user-dialog-container">
                 <div className="assigned-user-dialog-heading-container">
                     <div className="assigned-user-dialog-heading-text">Assign Users</div>
-                    <div className="assigned-user-dialog-close-container">
+                    <div className="assigned-user-dialog-close-container" onClick={this.props.onClose}>
                         <Icon name="close"/>
                     </div>
                 </div>

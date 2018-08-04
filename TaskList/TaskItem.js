@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
-import { Icon, Input, Popup  } from 'semantic-ui-react'
+import { Icon, Input, Popup } from 'semantic-ui-react'
 import map from 'lodash/map';
 
 //Custom import..
@@ -12,6 +12,9 @@ import InputField from '../InputField';
 import TaskHelper from './helper';
 import Label from '../Label';
 import AssignedUserDialog from '../AssignedUserDialog';
+import ChangeDateDialog from '../ChangeDateDialog';
+
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction } from './TaskListActions';
 
 const TaskItem = (props) => {
 
@@ -28,6 +31,7 @@ const TaskItem = (props) => {
     } = props;
 
 
+
     const taskHelper = new TaskHelper(task);
 
     const isDelayed = taskHelper.isDelayed();
@@ -41,15 +45,39 @@ const TaskItem = (props) => {
     const labelObjData = taskHelper.getLabels(labelObj);
     const labels = labelObjData.labelList;
 
-    console.log("Tooltip", labels);
+    const taskConfig = props.taskListReducer[task.id];
+    const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
+    const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
 
 
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
-    console.log("Task Data", task);
     const openDialog = () => {
         return true;
     }
+
+    const openSelectDateDialog = () => {
+        props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
+    }
+
+    const openAssignedUserDialog = () => {
+        //console.log("I am getting called");
+        props.onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
+    }
+
+    const onCloseDateDialog = () => {
+        props.onOpenChangeDateDialogAction(false, task.id);
+        
+    }
+
+    const onCloseAssignedUserDialog = () => {
+        props.onOpenAssignedUserDialogAction(false, task.id)
+    }
+
+    //console.log("Props For assigned", props.taskListReducer, task);
+
+
+
     return (
         <div className="task-list-item-wrapper">
             {!isNew &&
@@ -64,8 +92,8 @@ const TaskItem = (props) => {
                                 </div>
                             </div>
                             <div className={'task-list-item-icon'}>
-                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openDialog} />}
-                                {iconObj.icon &&  <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openDialog} />}
+                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog}/>}
+                                {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog}/>}
                             </div>
                         </div>
 
@@ -130,21 +158,35 @@ const TaskItem = (props) => {
                                     </div>
                                 </div>
                             }
-
                             {
                                 formattedDueDateObj.date &&
-                                <Popup 
-                                    trigger={<div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
-                                        <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
-                                        <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
-                                    </div>}
-                                    content="Change Due Date"
-                                    position='bottom center'
-                                    inverted
-                                    style={{ fontSize: '10px', paddingRight: "20px", paddingLeft: "20px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word" }}
-                                    size='mini'>
+                                <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                                    <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
+                                    {!isDateDialogOpened && <Popup trigger={<div style={{display:"inline"}}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
+                                        content="Change Due Date"
+                                        position='bottom center'
+                                        inverted
+                                        style={{ fontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity:"0.8" }}
+                                        size='mini'>
+
+                                    </Popup>}
+                                    <Popup trigger={
+                                        <div style={{display:"inline"}}>
+                                            {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
+                                        </div>
+                                        }
+                                        content={<ChangeDateDialog />}
+                                        position='bottom center'
+                                        on='click'
+                                        open={isDateDialogOpened}
+                                        onClose = {onCloseDateDialog}
+                                        style={{ padding: "0", width: "157px", height: "120px" }}
+                                        size='mini'>
 
                                     </Popup>
+
+
+                                </div>
                             }
 
                         </div> {/*Other Container div end*/}
@@ -165,7 +207,7 @@ const TaskItem = (props) => {
 
                         <div className="task-list-item-new-task-title">
                             <div className="task-list-item-new-task-container">
-                                <Field name="title" placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField}/>
+                                <Field name="title" placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} />
                             </div>
                         </div>
                     </div>
@@ -176,9 +218,25 @@ const TaskItem = (props) => {
 
 }
 
+// Retrieve data from store as props
+function mapStateToProps(store) {
+    const taskListReducer = store.TaskListReducer;
+    return {
+        taskListReducer
+    };
+}
+
+
+//Map Redux Actions to Props..
+const mapActionsToProps = {
+    //map action here
+    onOpenChangeDateDialogAction,
+    onOpenAssignedUserDialogAction
+};
+
 const TaskItemForm = reduxForm({
     form: "taskForm",
     enableReinitialize: true
 })(TaskItem)
 
-export default TaskItemForm;
+export default connect(mapStateToProps, mapActionsToProps)(TaskItemForm);
