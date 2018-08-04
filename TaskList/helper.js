@@ -9,8 +9,9 @@ import moment from 'moment';
 
 
  class TaskHelper {
-    constructor(task){
+    constructor(task, isCompletedColorCode){
         this.task = task;
+        this.isCompletedColorCode = isCompletedColorCode;
     }
 
     /**
@@ -105,7 +106,7 @@ import moment from 'moment';
                 type = this.isDelayed()? "delayed":"coming";
             }
         }
-        return getDueDateObj(date, type);
+        return getDueDateObj(date, type, this.task, this.isCompletedColorCode);
     }
 
 
@@ -220,45 +221,20 @@ import moment from 'moment';
  }
 
 
- const getDueDateObj = (date, type) => {
-    const colorCode = dueDateColorCode[type];
+ const getDueDateObj = (date, type, task, isCompletedColorCode) => {
+    let colorCode; 
+    if(task.isCompleted){
+        colorCode = isCompletedColorCode;
+    }else{
+        colorCode = dueDateColorCode[type];
+    }
+    
     return {
         date,
         colorCode
     }
  }
 
- const getSideLineClass = function () {
-    let className = `task-list-item-side-line`
-    if (id && taskItem) {
-        if (taskItem.id === id) {
-            className = `task-list-item-side-line-edit`
-        }
-    }
-    return className;
-}
-
-const getIconClass = function () {
-    let className = `task-list-item-icon`
-    if (id && taskItem) {
-        if (taskItem.id === id) {
-            className = `task-list-item-icon-edit`
-        }
-    } else if (isNew) {
-        className = `task-list-item-icon-edit`
-    }
-    return className;
-}
-
-const getOtherDataClass = function () {
-    let className = `task-list-item-other-container`
-    if (id && taskItem) {
-        if (taskItem.id === id) {
-            className = `task-list-item-other-container-edit`
-        }
-    }
-    return className;
-}
 
 
 

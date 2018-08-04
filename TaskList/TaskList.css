@@ -118,12 +118,19 @@
 .task-item-delayed-block{
     float: left;
     width: 2px;
-    height: inherit;
+    height: 39px;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 
 /* Side left border.. */
 .task-item-delayed-block.delayed{
     border-left: solid 2px #ff1744;
+}
+
+/* Side left border.. */
+.task-item-delayed-block.completed{
+    border-left: solid 2px #1ed0c1;
 }
 
 .task-list-item-container{
@@ -287,7 +294,8 @@
     font-size: 10px;
     font-weight: 500;
     text-transform: capitalize;
-    text-align: center;
+    text-align: left;
+    padding-left: 10px;
 }
 
 .task-list-item-sub-task-attachment-container{

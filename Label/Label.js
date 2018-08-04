@@ -5,8 +5,16 @@ import { Icon, Popup } from 'semantic-ui-react'
 
 import './Label.css'
 
+const getLabelDiv = (color, title) => {
+    return (
+        <div className="label-container" style={{backgroundColor:color}}>{title}</div>
+    )
+}
+
 
 const Label = ({title, color, className, style, tooltip}) => {
+
+
 
     return(
         <div className={className} style={style}>
@@ -17,7 +25,15 @@ const Label = ({title, color, className, style, tooltip}) => {
               position = 'bottom center'
               style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"20px", paddingLeft:"20px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word"}}
               />}
-              {title !== "..." && <div className="label-container" style={{backgroundColor:color}}>{title}</div>}
+              {title !== "..." && !tooltip && getLabelDiv(color, title)}
+              {title !== "..." && tooltip && 
+              <Popup 
+                trigger={getLabelDiv(color, title)}
+                content={tooltip}
+                inverted
+                position = 'bottom center'
+                style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"20px", paddingLeft:"20px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word"}}
+              />}
         </div>
       
     )
