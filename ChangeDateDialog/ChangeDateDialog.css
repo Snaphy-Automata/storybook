@@ -1,0 +1,23 @@
+.change-date-dialog-container{
+    width: 157px;
+    height: 120px;
+}
+
+.change-date-dialog-item-container{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.change-date-dialog-item-text{
+    float: left;
+    font-size: 11px;
+}
+
+.change-date-dialog-item-checkbox{
+    float: right;
+    position: relative;
+    top: 9px;
+}
