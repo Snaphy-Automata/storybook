@@ -135,7 +135,7 @@ const TaskItem = (props) => {
                                         <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
                                         <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
                                     </div>}
-                                    content="Change Date"
+                                    content="Change Due Date"
                                     position='bottom center'
                                     inverted
                                     style={{ fontSize: '10px', paddingRight: "20px", paddingLeft: "20px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word" }}
