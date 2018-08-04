@@ -1,0 +1,62 @@
+.assigned-user-dialog-container{
+    width : 242px;
+    height: 227px;
+}
+
+.assigned-user-dialog-heading-container{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 1px solid #eeeeee;
+
+}
+
+.assigned-user-dialog-heading-text{
+    float: left;
+}
+
+.assigned-user-dialog-close-container{
+    float: right;
+}
+
+.assigned-user-dialog-list-container{
+    height: 227px;
+}
+
+.assigned-user-dialog-item-container{
+    height: 35px;
+    line-height: 35px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: 1px solid #eeeeee;
+
+}
+.assined-user-dialog-icon-container{
+    float: left;
+    position: relative;
+    top: 7px;
+}
+
+.assined-user-dialog-name-container{
+    margin-left: 9px;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.assigned-user-dialog-checkbox-container{
+    float: right;
+    position: relative;
+    top: 7px;
+}
+
+.assigned-user-dialog-see-more-container{
+    height: 25px;
+    line-height: 25px;
+    color: #2d7dd2;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+

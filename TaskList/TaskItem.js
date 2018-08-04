@@ -46,6 +46,7 @@ const TaskItem = (props) => {
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
     console.log("Task Data", task);
+    const openDialog = () => {}
     return (
         <div className="task-list-item-wrapper">
             {!isNew &&
@@ -61,7 +62,7 @@ const TaskItem = (props) => {
                             </div>
                             <div className={'task-list-item-icon'}>
                                 {iconObj.title &&
-                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
+                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openDialog} />}
                                 {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
                             </div>
                         </div>
@@ -129,19 +130,17 @@ const TaskItem = (props) => {
                             }
 
                             {
-                                formattedDueDateObj.date &&
-                                <Popup 
-                                    trigger={<div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
-                                        <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
-                                        <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
-                                    </div>}
+                                formattedDueDateObj.date && <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                                    <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
+                                    <Popup trigger={ <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>}
                                     content="Change Date"
                                     position='bottom center'
                                     inverted
                                     style={{ fontSize: '10px', paddingRight: "20px", paddingLeft: "20px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word" }}
-                                    size='mini'
-                                >
-                                </Popup>
+                                    size='mini'>
+
+                                    </Popup>
+                                </div>
                             }
 
                         </div> {/*Other Container div end*/}
