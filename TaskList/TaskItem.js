@@ -29,7 +29,7 @@ const TaskItem = (props) => {
     } = props;
 
 
-    const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE);
+    const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
 
     const isDelayed = taskHelper.isDelayed();
     const iconObj = taskHelper.getIcon(memberObj);
@@ -39,24 +39,23 @@ const TaskItem = (props) => {
     const attachmentObj = taskHelper.getAttachmentStats();
     const formattedDueDateObj = taskHelper.getFormattedDueDate();
     let delayedClassName;
-    if(task.isCompleted){
-        delayedClassName = `task-item-delayed-block completed`;
+    if(isActiveTaskSection){
+        if(task.isCompleted){
+            delayedClassName = `task-item-delayed-block completed`;
+        }else{
+            delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
+        }
     }else{
-        delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
+        delayedClassName = `task-item-delayed-block`;
     }
+    
     
     const labelObjData = taskHelper.getLabels(labelObj);
     const labels = labelObjData.labelList;
 
-    console.log("Tooltip", labels);
-
-
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
-    console.log("Task Data", task);
-    const openDialog = () => {
-        return true;
-    }
+
     return (
         <div className="task-list-item-wrapper">
             {!isNew &&
@@ -71,8 +70,8 @@ const TaskItem = (props) => {
                                 </div>
                             </div>
                             <div className={'task-list-item-icon'}>
-                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openDialog} />}
-                                {iconObj.icon &&  <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openDialog} />}
+                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
+                                {iconObj.icon &&  <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} />}
                             </div>
                         </div>
 
@@ -87,7 +86,10 @@ const TaskItem = (props) => {
                                 }
                                 {!isActiveTaskSection && duration !== undefined &&
                                     // Add duration class..
-                                    <div className="task-list-item-status">{duration}</div>
+                                    <div className="task-list-item-status">
+                                        <Icon name="clock outline" style={{ display: "inline", margin: '0' }}></Icon>
+                                        <span className="task-list-item-status-duration">{duration}</span>
+                                    </div>
                                 }
                             </div>
 
@@ -137,7 +139,6 @@ const TaskItem = (props) => {
                                     </div>
                                 </div>
                             }
-
                             {
                                 formattedDueDateObj.date &&
                                 <Popup 
@@ -150,10 +151,8 @@ const TaskItem = (props) => {
                                     inverted
                                     style={{ fontSize: '10px', paddingRight: "20px", paddingLeft: "20px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word" }}
                                     size='mini'>
-
                                 </Popup>
                             }
-
                         </div> {/*Other Container div end*/}
                     </div>
                 </div>

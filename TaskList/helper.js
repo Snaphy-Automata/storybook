@@ -9,9 +9,10 @@ import moment from 'moment';
 
 
  class TaskHelper {
-    constructor(task, isCompletedColorCode){
-        this.task = task;
-        this.isCompletedColorCode = isCompletedColorCode;
+    constructor(task, isCompletedColorCode, isActiveTaskSection){
+        this.task                   = task;
+        this.isCompletedColorCode   = isCompletedColorCode;
+        this.isActiveTaskSection    = isActiveTaskSection;
     }
 
     /**
@@ -106,7 +107,7 @@ import moment from 'moment';
                 type = this.isDelayed()? "delayed":"coming";
             }
         }
-        return getDueDateObj(date, type, this.task, this.isCompletedColorCode);
+        return getDueDateObj(date, type, this.task, this.isCompletedColorCode, this.isActiveTaskSection);
     }
 
 
@@ -213,15 +214,16 @@ import moment from 'moment';
 
 
  const dueDateColorCode = {
+     default: "#9e9e9e",
      today: "#1ed0c1",
      yesterday: "#ff1744",
      tomorrow: "#1ed0c1",
      coming: "#9e9e9e",
      delayed: "#ff1744"
- }
+}
 
 
- const getDueDateObj = (date, type, task, isCompletedColorCode) => {
+ const getDueDateObj = (date, type, task, isCompletedColorCode, isActiveTaskSection) => {
     let colorCode; 
     if(task.isCompleted){
         colorCode = isCompletedColorCode;
@@ -229,9 +231,12 @@ import moment from 'moment';
         colorCode = dueDateColorCode[type];
     }
     
+    if(!isActiveTaskSection){
+        colorCode = dueDateColorCode.default;
+    }
     return {
         date,
-        colorCode
+        colorCode,
     }
  }
 
