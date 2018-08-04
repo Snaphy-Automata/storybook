@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import map from 'lodash/map';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-
-
 import './TaskList.css';
 
 import TaskListHeading from './TaskListHeading';
@@ -26,7 +24,7 @@ const TaskList = (props) => {
     const isSectionOpened = true;
 
     return (
-        <div style={{ background: "#fff"}}>
+        <div style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
             <TaskListHeading heading="Active Tasks" type="fixed"/>
             {taskList && taskList.length!==0 && <div>
                 {

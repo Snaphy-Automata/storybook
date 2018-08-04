@@ -118,12 +118,19 @@
 .task-item-delayed-block{
     float: left;
     width: 2px;
-    height: inherit;
+    height: 39px;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 
 /* Side left border.. */
 .task-item-delayed-block.delayed{
     border-left: solid 2px #ff1744;
+}
+
+/* Side left border.. */
+.task-item-delayed-block.completed{
+    border-left: solid 2px #1ed0c1;
 }
 
 .task-list-item-container{
@@ -287,7 +294,13 @@
     font-size: 10px;
     font-weight: 500;
     text-transform: capitalize;
-    text-align: center;
+    text-align: left;
+    padding-left: 10px;
+    color: #9e9e9e;
+}
+
+.task-list-item-status-duration{
+    padding-left: 3px;
 }
 
 .task-list-item-sub-task-attachment-container{
@@ -324,6 +337,7 @@
     font-weight: 500;
     text-align: right;
     text-transform: capitalize;
+    color: #9e9e9e;
 }
 
 .task-list-item-date-default-container{
@@ -341,6 +355,7 @@
     margin-left: 2px;
     padding-bottom: 3px;
     letter-spacing: 0.5px;
+    color: #9e9e9e;
 }
 
 .task-list-item-date-container:hover .task-list-item-date-item{

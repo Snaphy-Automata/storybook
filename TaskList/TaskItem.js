@@ -16,8 +16,9 @@ import ChangeDateDialog from '../ChangeDateDialog';
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction } from './TaskListActions';
 
-const TaskItem = (props) => {
+const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
+const TaskItem = (props) => {
     const {
         task,
         memberObj,
@@ -31,8 +32,7 @@ const TaskItem = (props) => {
     } = props;
 
 
-
-    const taskHelper = new TaskHelper(task);
+    const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
 
     const isDelayed = taskHelper.isDelayed();
     const iconObj = taskHelper.getIcon(memberObj);
@@ -41,7 +41,18 @@ const TaskItem = (props) => {
     const subTaskObj = taskHelper.getSubtaskStats();
     const attachmentObj = taskHelper.getAttachmentStats();
     const formattedDueDateObj = taskHelper.getFormattedDueDate();
-    const delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
+    let delayedClassName;
+    if(isActiveTaskSection){
+        if(task.isCompleted){
+            delayedClassName = `task-item-delayed-block completed`;
+        }else{
+            delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
+        }
+    }else{
+        delayedClassName = `task-item-delayed-block`;
+    }
+    
+    
     const labelObjData = taskHelper.getLabels(labelObj);
     const labels = labelObjData.labelList;
 
@@ -108,7 +119,10 @@ const TaskItem = (props) => {
                                 }
                                 {!isActiveTaskSection && duration !== undefined &&
                                     // Add duration class..
-                                    <div className="task-list-item-status">{duration}</div>
+                                    <div className="task-list-item-status">
+                                        <Icon name="clock outline" style={{ display: "inline", margin: '0' }}></Icon>
+                                        <span className="task-list-item-status-duration">{duration}</span>
+                                    </div>
                                 }
                             </div>
 
@@ -143,7 +157,7 @@ const TaskItem = (props) => {
                                     labels &&
                                     labels.length > 0 &&
                                     <div className="task-list-item-tag-item">
-                                        <Label title={labels[0].title} color={labels[0].colorCode} style={{ float: 'left' }} />
+                                        <Label title={labels[0].title} color={labels[0].colorCode} tooltip={labels[0].title} style={{ float: 'left' }} />
                                         {labels.length > 1 &&
                                             <Label title="..." style={{ float: 'right' }} tooltip={labelObjData.tooltip} />}
                                     </div>
@@ -188,7 +202,6 @@ const TaskItem = (props) => {
 
                                 </div>
                             }
-
                         </div> {/*Other Container div end*/}
                     </div>
                 </div>

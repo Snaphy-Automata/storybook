@@ -9,8 +9,10 @@ import moment from 'moment';
 
 
  class TaskHelper {
-    constructor(task){
-        this.task = task;
+    constructor(task, isCompletedColorCode, isActiveTaskSection){
+        this.task                   = task;
+        this.isCompletedColorCode   = isCompletedColorCode;
+        this.isActiveTaskSection    = isActiveTaskSection;
     }
 
     /**
@@ -105,7 +107,7 @@ import moment from 'moment';
                 type = this.isDelayed()? "delayed":"coming";
             }
         }
-        return getDueDateObj(date, type);
+        return getDueDateObj(date, type, this.task, this.isCompletedColorCode, this.isActiveTaskSection);
     }
 
 
@@ -212,53 +214,32 @@ import moment from 'moment';
 
 
  const dueDateColorCode = {
+     default: "#9e9e9e",
      today: "#1ed0c1",
      yesterday: "#ff1744",
      tomorrow: "#1ed0c1",
      coming: "#9e9e9e",
      delayed: "#ff1744"
- }
+}
 
 
- const getDueDateObj = (date, type) => {
-    const colorCode = dueDateColorCode[type];
+ const getDueDateObj = (date, type, task, isCompletedColorCode, isActiveTaskSection) => {
+    let colorCode; 
+    if(task.isCompleted){
+        colorCode = isCompletedColorCode;
+    }else{
+        colorCode = dueDateColorCode[type];
+    }
+    
+    if(!isActiveTaskSection){
+        colorCode = dueDateColorCode.default;
+    }
     return {
         date,
-        colorCode
+        colorCode,
     }
  }
 
- const getSideLineClass = function () {
-    let className = `task-list-item-side-line`
-    if (id && taskItem) {
-        if (taskItem.id === id) {
-            className = `task-list-item-side-line-edit`
-        }
-    }
-    return className;
-}
-
-const getIconClass = function () {
-    let className = `task-list-item-icon`
-    if (id && taskItem) {
-        if (taskItem.id === id) {
-            className = `task-list-item-icon-edit`
-        }
-    } else if (isNew) {
-        className = `task-list-item-icon-edit`
-    }
-    return className;
-}
-
-const getOtherDataClass = function () {
-    let className = `task-list-item-other-container`
-    if (id && taskItem) {
-        if (taskItem.id === id) {
-            className = `task-list-item-other-container-edit`
-        }
-    }
-    return className;
-}
 
 
 
