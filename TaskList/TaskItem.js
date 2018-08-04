@@ -145,7 +145,6 @@ const TaskItem = (props) => {
                                     size='mini'>
 
                                     </Popup>
-                                </div>
                             }
 
                         </div> {/*Other Container div end*/}
