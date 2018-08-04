@@ -71,11 +71,11 @@ const TaskItem = (props) => {
                         </div>
                         <div className="task-list-item-other-container">
                             <div className="task-list-item-status-duration-container">
-                                {isActiveTaskSection &&
+                                {isActiveTaskSection && statusData &&
                                     <div className="task-list-item-status" style={{ color: statusData.colorCode }}>{statusData.title}</div>
 
                                 }
-                                {!isActiveTaskSection &&
+                                {!isActiveTaskSection && duration !== undefined &&
                                     // Add duration class..
                                     <div className="task-list-item-status">{duration}</div>
                                 }
@@ -110,7 +110,7 @@ const TaskItem = (props) => {
                             <div className="task-list-item-tags-container">
                                 {
                                     labels &&
-                                    labels.length &&
+                                    labels.length > 0 &&
                                     <div className="task-list-item-tag-item">
                                         <Label title={labels[0].title} color={labels[0].colorCode} style={{ float: 'left' }} />
                                         {labels.length > 1 &&
