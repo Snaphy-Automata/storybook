@@ -132,10 +132,13 @@ const TaskItem = (props) => {
                             }
 
                             {
-                                formattedDueDateObj.date && <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
-                                    <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
-                                    <Popup trigger={ <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>}
-                                    content="Change Date"
+                                formattedDueDateObj.date &&
+                                <Popup 
+                                    trigger={<div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                                        <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
+                                        <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }}>{formattedDueDateObj.date}</div>
+                                    </div>}
+                                    content="Change Due Date"
                                     position='bottom center'
                                     inverted
                                     style={{ fontSize: '10px', paddingRight: "20px", paddingLeft: "20px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word" }}
