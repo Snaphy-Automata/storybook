@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import map from 'lodash/map';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-
-
 import './TaskList.css';
 
 import TaskListHeading from './TaskListHeading';
