@@ -40,12 +40,9 @@ const TaskItem = (props) => {
         onBlur,
         isNew,
         isActiveTaskSection,
-<<<<<<< HEAD
         isDateDialogOpened,
-        isAssinedUserDialogOpened
-=======
+        isAssinedUserDialogOpened,
         index,
->>>>>>> 2b4ae053a7b2d4881bae7ebc1487972f7214e1a8
     } = props;
 
 
