@@ -5,10 +5,8 @@ import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup  } from 'semantic-ui-react'
 import map from 'lodash/map';
 import {
-    SortableContainer,
     SortableElement,
     SortableHandle,
-    arrayMove,
   } from 'react-sortable-hoc';
   
 
@@ -32,7 +30,8 @@ const DragHandle = SortableHandle(() => (
     </div>
 )); // This can be any component you want
 
-const TaskItem = (props) => {
+const TaskItem = SortableElement((props) => {
+   
     const {
         task,
         memberObj,
@@ -72,7 +71,6 @@ const TaskItem = (props) => {
 
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
-
     return (
         <div className="task-list-item-wrapper">
             {!isNew &&
@@ -192,9 +190,8 @@ const TaskItem = (props) => {
                 </div>
             }
         </div>
-    )
-
-}
+    );
+});
 
 const TaskItemForm = reduxForm({
     form: "taskForm",
