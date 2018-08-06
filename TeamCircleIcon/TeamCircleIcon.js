@@ -20,7 +20,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
     className = size ? `${className} ${size}` : className;
 
     return (
-        <div>
+        <div className={className}>
             {
                 tooltip &&
                 // <Popup
@@ -41,7 +41,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
                 <div>
                     {
                         !isAssinedUserDialogOpened && <Popup
-                            trigger={<div>{!isAssinedUserDialogOpened && <div onClick={onClick} className={className} style={style}>
+                            trigger={<div>{!isAssinedUserDialogOpened && <div onClick={onClick}  style={style}>
                                 {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                                 {char && !src && char}
 
@@ -57,7 +57,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
                         </Popup>
                     }
                     <Popup
-                        trigger={<div>{isAssinedUserDialogOpened && <div onClick={onClick} className={className} style={style}>
+                        trigger={<div>{isAssinedUserDialogOpened && <div onClick={onClick} style={style}>
                             {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                             {char && !src && char}
 

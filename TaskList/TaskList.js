@@ -29,7 +29,7 @@ const TaskList = (props) => {
                      // This must be passed through to the rendered row element.
       }) {
         const task = taskList[index];
-
+        const content = <TaskItem index={index} task={task} isActiveTaskSection  memberObj={memberObj} statusObj={statusObj} labelObj ={labelObj}/>;
         // Style is required since it specifies how the row is to be sized and positioned.
         // React Virtualized depends on this sizing/positioning for proper scrolling behavior.
         // By default, the List component provides following style properties:
@@ -42,7 +42,7 @@ const TaskList = (props) => {
         // Key is also required by React to more efficiently manage the array of rows.
         return (
             <div style={style} key={key}>
-                <TaskItem index={index} task={task} isActiveTaskSection  memberObj={memberObj} statusObj={statusObj} labelObj ={labelObj}/>
+                {content}
             </div>
         )
     }
