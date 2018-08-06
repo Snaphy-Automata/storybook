@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { List, WindowScroller } from 'react-virtualized';
 import './TaskList.css';
 
@@ -50,18 +49,7 @@ const TaskList = (props) => {
 
     const isSectionOpened = true;
 
-    const reorder = (list, startIndex, endIndex) => {
-        const result = Array.from(list);
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-      
-        return result;
-      };
-
-    const onDragEnd = (result) => {
-        console.log("On Drag End", result);
-    };
-
+   
     return (
         <div>
             <div style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
@@ -72,27 +60,16 @@ const TaskList = (props) => {
                     <WindowScroller>
                         {({ height, isScrolling, registerChild, scrollTop }) => (
                             <div ref={registerChild}>
-                                <DragDropContext onDragEnd={onDragEnd}>
-                                    <Droppable droppableId="droppable">
-                                    {(provided, snapshot) => (
-                                        <div ref={provided.innerRef} >
-                                            {
-                                                <List
-                                                    width={800}
-                                                    rowCount={taskList.length}
-                                                    rowHeight={41}
-                                                    rowRenderer={rowRenderer}
-                                                    autoHeight
-                                                    height={height}
-                                                    isScrolling={isScrolling}
-                                                    scrollTop={scrollTop}
-                                                />
-                                            }
-                                        </div>
-                                    )}
-                                </Droppable>
-                            </DragDropContext>
-                                
+                                <List
+                                    width={800}
+                                    rowCount={taskList.length}
+                                    rowHeight={41}
+                                    rowRenderer={rowRenderer}
+                                    autoHeight
+                                    height={height}
+                                    isScrolling={isScrolling}
+                                    scrollTop={scrollTop}
+                                />
                             </div>
                         )}
                     </WindowScroller>
@@ -100,7 +77,6 @@ const TaskList = (props) => {
             </div>
         </div>
     )
-
 };
 
 // Retrieve data from store as props
