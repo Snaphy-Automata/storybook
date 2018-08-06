@@ -37,8 +37,6 @@ const TaskList = (props) => {
       }) {
         const task = taskList[index];
 
-        // If row content is complex, consider rendering a light-weight placeholder while scrolling.
-        const content = isScrolling ? '...' : '...';
         // Style is required since it specifies how the row is to be sized and positioned.
         // React Virtualized depends on this sizing/positioning for proper scrolling behavior.
         // By default, the List component provides following style properties:
@@ -58,35 +56,58 @@ const TaskList = (props) => {
     
 
     return (
-        <WindowScroller>
-        {({ height, isScrolling, registerChild, scrollTop }) => (
+        <div>
             <div style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
                 <TaskListHeading heading="Active Tasks" type="fixed"/>
-                {taskList && taskList.length!==0 && <div>        
-                    <div ref={registerChild}>
-                        <List
-                            width={800}
-                            rowCount={taskList.length}
-                            rowHeight={41}
-                            rowRenderer={rowRenderer}
-                            autoHeight
-                            height={height}
-                            isScrolling={isScrolling}
-                            scrollTop={scrollTop}
-                        />
-                    </div>
-                    {/* <List
-                        width={300}
-                        height={300}
-                        rowCount={taskList.length}
-                        rowHeight={41}
-                        rowRenderer={rowRenderer}
-                    /> */}
-                </div>}
-
+                    {
+                        taskList && 
+                        taskList.length!==0 && 
+                        <div>        
+                            <WindowScroller>
+                                {({ height, isScrolling, registerChild, scrollTop }) => (
+                                    <div ref={registerChild}>
+                                        <List
+                                            width={800}
+                                            rowCount={taskList.length}
+                                            rowHeight={41}
+                                            rowRenderer={rowRenderer}
+                                            autoHeight
+                                            height={height}
+                                            isScrolling={isScrolling}
+                                            scrollTop={scrollTop}
+                                        />
+                                    </div>
+                                )}
+                            </WindowScroller>
+                        </div>
+                    }
             </div>
-        )}
-        </WindowScroller>
+            <div style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
+                <TaskListHeading heading="All Tasks" type="fixed"/>
+                    {
+                        taskList && 
+                        taskList.length!==0 && 
+                        <div>        
+                            <WindowScroller>
+                                {({ height, isScrolling, registerChild, scrollTop }) => (
+                                    <div ref={registerChild}>
+                                        <List
+                                            width={800}
+                                            rowCount={taskList.length}
+                                            rowHeight={41}
+                                            rowRenderer={rowRenderer}
+                                            autoHeight
+                                            height={height}
+                                            isScrolling={isScrolling}
+                                            scrollTop={scrollTop}
+                                        />
+                                    </div>
+                                )}
+                            </WindowScroller>
+                        </div>
+                    }
+            </div>
+        </div>
     )
 }
 
