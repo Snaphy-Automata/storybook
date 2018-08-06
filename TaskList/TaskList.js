@@ -26,19 +26,21 @@ const TaskList = SortableContainer((props) => {
     const isSectionOpened = true;
 
     return (
-        <div style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
-            <TaskListHeading heading="Active Tasks" type="fixed"/>
-            {taskList && taskList.length!==0 && <div>
-                {
-                    map(taskList, function(task, index){
+        <div>
+            <div style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
+                <TaskListHeading heading="Active Tasks" type="fixed"/>
+                {taskList && taskList.length!==0 && <div>
+                    {
+                        map(taskList, function(task, index){
 
-                        return(
-                            <TaskItem index={index} key={index} task={task} isActiveTaskSection  memberObj={memberObj} statusObj={statusObj} labelObj ={labelObj}/>
-                        )
-                    })
-                }
-            </div>}
+                            return(
+                                <TaskItem index={index} key={index} task={task} isActiveTaskSection  memberObj={memberObj} statusObj={statusObj} labelObj ={labelObj}/>
+                            )
+                        })
+                    }
+                </div>}
 
+            </div>
         </div>
     )
 
