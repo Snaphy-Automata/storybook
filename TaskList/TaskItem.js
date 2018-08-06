@@ -14,7 +14,7 @@ import Label from '../Label';
 import AssignedUserDialog from '../AssignedUserDialog';
 import ChangeDateDialog from '../ChangeDateDialog';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction } from './TaskListActions';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction } from './TaskListActions';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -29,6 +29,8 @@ const TaskItem = (props) => {
         onBlur,
         isNew,
         isActiveTaskSection,
+        isDateDialogOpened,
+        isAssinedUserDialogOpened
     } = props;
 
 
@@ -56,9 +58,9 @@ const TaskItem = (props) => {
     const labelObjData = taskHelper.getLabels(labelObj);
     const labels = labelObjData.labelList;
 
-    const taskConfig = props.taskListReducer[task.id];
-    const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
-    const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
+    // const taskConfig = props.taskListReducer[task.id];
+    // const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
+    // const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
 
 
     //FIXME: When selected add `selected` class.
@@ -85,7 +87,11 @@ const TaskItem = (props) => {
         props.onOpenAssignedUserDialogAction(false, task.id)
     }
 
-    //console.log("Props For assigned", props.taskListReducer, task);
+    const onDateSelected = (type, data) => {
+        props.onSelectDateAction(type, data);
+    }
+
+    console.log("task Item getting called");
 
 
 
@@ -189,7 +195,7 @@ const TaskItem = (props) => {
                                             {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
                                         </div>
                                         }
-                                        content={<ChangeDateDialog />}
+                                        content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task}/>}
                                         position='bottom center'
                                         on='click'
                                         open={isDateDialogOpened}
@@ -231,12 +237,23 @@ const TaskItem = (props) => {
 
 }
 
-// Retrieve data from store as props
-function mapStateToProps(store) {
+
+
+function mapStateToProps(store, props){
     const taskListReducer = store.TaskListReducer;
+    const taskConfig = taskListReducer[props.task.id]
+    const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
+    const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
+    const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;
+    const isTomorrowSelected = taskConfig && taskConfig.isTomorrowSelected ? true : false;
+    const isNextWeekSelected = taskConfig && taskConfig.isNextWeekSelected ? true : false;
     return {
-        taskListReducer
-    };
+        isTodaySelected,
+        isTomorrowSelected,
+        isNextWeekSelected,
+        isDateDialogOpened,
+        isAssinedUserDialogOpened
+    }
 }
 
 
@@ -244,12 +261,14 @@ function mapStateToProps(store) {
 const mapActionsToProps = {
     //map action here
     onOpenChangeDateDialogAction,
-    onOpenAssignedUserDialogAction
+    onOpenAssignedUserDialogAction,
+    onSelectDateAction
 };
 
 const TaskItemForm = reduxForm({
     form: "taskForm",
     enableReinitialize: true
 })(TaskItem)
+
 
 export default connect(mapStateToProps, mapActionsToProps)(TaskItemForm);

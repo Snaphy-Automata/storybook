@@ -19,8 +19,6 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
     className = className ? `team-circle-icon-wrapper ${className}` : `team-circle-icon-wrapper`;
     className = size ? `${className} ${size}` : className;
 
-    console.log("Icon Props", isAssinedUserDialogOpened);
-
     return (
         <div>
             {

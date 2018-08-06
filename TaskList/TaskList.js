@@ -23,6 +23,8 @@ const TaskList = (props) => {
 
     const isSectionOpened = true;
 
+    console.log("Task List getting called");
+
     return (
         <div style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
             <TaskListHeading heading="Active Tasks" type="fixed"/>
@@ -188,7 +190,7 @@ const TaskList = (props) => {
 function mapStateToProps(store) {
     const taskListReducer = store.AllTaskReducer;
     return {
-
+        
     };
 }
 

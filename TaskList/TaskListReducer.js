@@ -4,14 +4,19 @@ import {
     ON_SECTION_EXPANDED,
     SECTION_TASK_LIST,
     ON_OPEN_CHANGE_DATE_DIALOG,
-    ON_OPEN_ASSIGNED_USER_DIALOG
+    ON_OPEN_ASSIGNED_USER_DIALOG,
+    ON_SELECT_DATE
 } from './TaskListActions';
+import { isToday } from 'date-fns';
 
 
 const initialState = {
     isOpened: false,
     isDateDialogOpened : false,
     isAssinedUserDialogOpened : false,
+    isTodaySelected : false,
+    isTomorrowSelected : false,
+    isNextWeekSelected : false,
     sectionList: [
         {
             sectionId: "section1",
@@ -305,6 +310,7 @@ const initialState = {
 }
 
 const TaskListReducer = (state = initialState, action) => {
+    //console.log("Reducer called Init", action, state);
     switch (action.type) {
         case ON_TASK_LIST_EXAPANDED: {
             state = {
@@ -354,6 +360,40 @@ const TaskListReducer = (state = initialState, action) => {
                     isAssinedUserDialogOpened : action.payload.data
                 }
             }
+            break;
+        }
+        case ON_SELECT_DATE:{
+            
+            let type = action.payload.dataType;
+            let todayValue;
+            let tomorrowValue;
+            let nextWeekValue;
+            if(type === "today"){
+                todayValue = action.payload.data;
+                tomorrowValue = false;
+                nextWeekValue = false;
+            } else if(type === "tomorrow"){
+                tomorrowValue = action.payload.data;
+                todayValue = false;
+                nextWeekValue = false;
+            } else if(type === "next week"){
+                nextWeekValue = action.payload.data;
+                todayValue = false;
+                tomorrowValue = false;
+            }
+            state = {
+                ...state,
+                [action.payload.id]: {
+                    isTodaySelected : todayValue,
+                    isTomorrowSelected : tomorrowValue,
+                    isNextWeekSelected : nextWeekValue
+                }
+               
+
+            }
+            //console.log("Date Reducer getting called", state.isTodaySelected, state.isTomorrowSelected, state.isNextWeekSelected);
+
+           
             break;
         }
     }

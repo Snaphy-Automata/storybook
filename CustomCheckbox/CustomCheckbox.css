@@ -18,9 +18,19 @@
 
 
 .custom-checkbox-wrapper.isSelected{
-    background-color: #1ed0c1;
     color: #ffffff;
+    background-color: #1ed0c1;
     border-color:  #1ed0c1;
+}
+
+.custom-checkbox-wrapper.isSelected.green{
+    background-color: #1ed0c1;
+    border-color:  #1ed0c1;
+}
+
+.custom-checkbox-wrapper.isSelected.blue{
+    background-color: #00c5e4;
+    border-color: #00c5e4;
 }
 
 .custom-checkbox-wrapper.mini{
