@@ -23,7 +23,7 @@ const Label = ({title, color, className, style, tooltip}) => {
               content={tooltip}
               inverted
               position = 'bottom center'
-              style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"20px", paddingLeft:"20px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word"}}
+              style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"10px", paddingLeft:"10px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word", opacity: "0.8"}}
               />}
               {title !== "..." && !tooltip && getLabelDiv(color, title)}
               {title !== "..." && tooltip && 
@@ -32,7 +32,7 @@ const Label = ({title, color, className, style, tooltip}) => {
                 content={tooltip}
                 inverted
                 position = 'bottom center'
-                style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"20px", paddingLeft:"20px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word"}}
+                style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"10px", paddingLeft:"10px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word", opacity: "0.8"}}
               />}
         </div>
       

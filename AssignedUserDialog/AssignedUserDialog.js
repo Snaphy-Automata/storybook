@@ -19,6 +19,7 @@ import {getSelectedMemberListAction} from '../TaskList/TaskListActions';
 
 class AssignedUserDailog extends React.Component {
 
+
     componentDidMount(){
         this.memberList = MEMBERS;
         let selectedMemberDataList = [];
@@ -28,9 +29,11 @@ class AssignedUserDailog extends React.Component {
             });
             this.props.getSelectedMemberListAction(selectedMemberDataList);
         }
+       
     }
 
     render() {
+        console.log("Member List", MEMBERS);
         const taskHelper = new TaskHelper(this.props.task);
         const checkSelected = (member) =>{
             let selectedMemberList_ = this.props.selectedMemberList;
@@ -50,7 +53,6 @@ class AssignedUserDailog extends React.Component {
             }
             return isSelected_;
         }
-        console.log("Member List", this.props.selectedMemberList);
 
         return(
             <div className="assigned-user-dialog-container">
@@ -62,10 +64,12 @@ class AssignedUserDailog extends React.Component {
                 </div>
                 <div className="assigned-user-dialog-list-container">
 
-                    {this.memberList && this.memberList.length !== 0 && <div>
+                    {MEMBERS && MEMBERS.length !== 0 && <div>
                         {
-                            map(this.memberList, function(member, index){
+                            map(MEMBERS, function(member, index){
                                 if(index<4){
+
+                                    console.log("Blank list getting called");
                                    
                                     return (
                                         <div key={index} className="assigned-user-dialog-item-container">
@@ -82,7 +86,7 @@ class AssignedUserDailog extends React.Component {
                         
                     </div>
                     }
-                    {this.memberList && this.memberList.length > 4 && <div className="assigned-user-dialog-see-more-container">See More</div>}
+                    {MEMBERS && MEMBERS.length > 4 && <div className="assigned-user-dialog-see-more-container">See More</div>}
                 </div>
             </div>
 

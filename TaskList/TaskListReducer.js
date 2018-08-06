@@ -347,17 +347,6 @@ const TaskListReducer = (state = initialState, action) => {
             break;
         }
         case ON_OPEN_CHANGE_DATE_DIALOG:{
-            // state = {
-            //     ...state,
-            //     [action.payload.id]:{
-            //         isDateDialogOpened : action.payload.data,
-            //         isAssinedUserDialogOpened : state.[action.payload.id].isAssinedUserDialogOpened ? state.action.payload.id.isAssinedUserDialogOpened : false,
-            //         isTodaySelected : state.action.payload.id.isTodaySelected ? state.action.payload.id.isTodaySelected : false,
-            //         isTomorrowSelected : state.action.payload.id.isTomorrowSelected ? state.action.payload.id.isTomorrowSelected : false,
-            //         isNextWeekSelected : state.action.payload.id.isNextWeekSelected ? state.action.payload.id.isNextWeekSelected : false
-            //     }
-                
-            // }
             state = {
                 ...state,
                 [action.payload.id]:{
