@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
 import { List, WindowScroller } from 'react-virtualized';
-// import {
-//     sortableContainer,
-//     sortableElement,
-//     arrayMove,
-//     DragLayer
-//   } from './react-sortable-multiple-hoc'
+import {
+    sortableContainer,
+    sortableElement,
+    arrayMove,
+    DragLayer
+  } from './react-sortable-multiple-hoc'
 
 //Custom Import
 import './TaskList.css';
@@ -16,7 +16,7 @@ import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 
 
-//const dragLayer = new DragLayer()
+const dragLayer = new DragLayer()
 
 const TaskList = (props => {
 

@@ -7,9 +7,9 @@ import {
     ON_OPEN_ASSIGNED_USER_DIALOG,
     ON_SELECT_DATE,
     SELECTED_MEMBER_LIST,
-    ON_MEMBER_SELECTED
+    ON_MEMBER_SELECTED,
+    ON_DATE_PICKER_OPENED
 } from './TaskListActions';
-import { isToday } from 'date-fns';
 
 
 const initialState = {
@@ -394,8 +394,16 @@ const TaskListReducer = (state = initialState, action) => {
                
 
             }
+            break;
+        }
 
-           
+        case ON_DATE_PICKER_OPENED:{
+            state = {
+                ...state,
+                [action.payload.id]:{
+                    isDatePickerOpened : action.payload.data
+                }
+            }
             break;
         }
 

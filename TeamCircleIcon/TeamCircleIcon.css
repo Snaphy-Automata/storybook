@@ -95,3 +95,9 @@
     height: 30px;
     border-radius: 32px;
 }
+
+/************************************************* Date Picker Class ****************************************************/
+
+.date-picker-container{
+    display:inline;
+}
