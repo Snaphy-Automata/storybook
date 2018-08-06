@@ -14,7 +14,7 @@ import Label from '../Label';
 import AssignedUserDialog from '../AssignedUserDialog';
 import ChangeDateDialog from '../ChangeDateDialog';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction } from './TaskListActions';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction } from './TaskListActions';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -42,6 +42,7 @@ const TaskItem = (props) => {
         isActiveTaskSection,
         isDateDialogOpened,
         isAssinedUserDialogOpened,
+        isDatePickerOpened,
         index,
     } = props;
 
@@ -87,6 +88,10 @@ const TaskItem = (props) => {
         props.onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
     }
 
+    const openDatePickerDialog = () => {
+        props.onDatePickerOpenedAction(!isDatePickerOpened, task.id)
+    }
+
     const onCloseDateDialog = () => {
         props.onOpenChangeDateDialogAction(false, task.id);
         
@@ -94,6 +99,10 @@ const TaskItem = (props) => {
 
     const onCloseAssignedUserDialog = () => {
         props.onOpenAssignedUserDialogAction(false, task.id)
+    }
+
+    const onCloseDatePickerDialog = () => {
+        props.onDatePickerOpenedAction(false, task.id)
     }
 
     return (
@@ -172,7 +181,7 @@ const TaskItem = (props) => {
                                 !formattedDueDateObj.date &&
                                 <div className="task-list-item-date-default-container">
                                     <div style={{ position: "relative", top: "2px" }}>
-                                        <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date"></TeamCircleIcon>
+                                        <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
                                     </div>
                                 </div>
                             }
@@ -241,6 +250,7 @@ function mapStateToProps(store, props){
     const taskConfig = taskListReducer[props.task.id]
     const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
     const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
+    const isDatePickerOpened = taskConfig && taskConfig.isDatePickerOpened ? true : false;
     const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;
     const isTomorrowSelected = taskConfig && taskConfig.isTomorrowSelected ? true : false;
     const isNextWeekSelected = taskConfig && taskConfig.isNextWeekSelected ? true : false;
@@ -249,7 +259,8 @@ function mapStateToProps(store, props){
         isTomorrowSelected,
         isNextWeekSelected,
         isDateDialogOpened,
-        isAssinedUserDialogOpened
+        isAssinedUserDialogOpened,
+        isDatePickerOpened
     }
 }
 
@@ -259,7 +270,8 @@ const mapActionsToProps = {
     //map action here
     onOpenChangeDateDialogAction,
     onOpenAssignedUserDialogAction,
-    onSelectDateAction
+    onSelectDateAction,
+    onDatePickerOpenedAction
 };
 
 const TaskItemForm = reduxForm({

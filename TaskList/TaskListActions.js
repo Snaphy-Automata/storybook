@@ -1,13 +1,14 @@
-export const ON_TASK_LIST_EXAPANDED = "on_all_task_list_expanded";
-export const TASK_LIST              = "task_list";
+export const ON_TASK_LIST_EXAPANDED         = "on_all_task_list_expanded";
+export const TASK_LIST                      = "task_list";
+export const ON_SECTION_EXPANDED            = "on_section_expanded";
+export const SECTION_TASK_LIST              = "section_task_list";
+export const ON_OPEN_CHANGE_DATE_DIALOG     = "on_open_change_date_dialog";
+export const ON_OPEN_ASSIGNED_USER_DIALOG   = "on_open_assigned_user_dialog";
+export const ON_SELECT_DATE                 = "on_select_date";
+export const SELECTED_MEMBER_LIST           = "selected_member_list";
+export const ON_MEMBER_SELECTED             = "on_member_selected";
+export const ON_DATE_PICKER_OPENED          = "on_date_picker_opened";
 
-export const ON_SECTION_EXPANDED    = "on_section_expanded";
-export const SECTION_TASK_LIST      = "section_task_list";
-export const ON_OPEN_CHANGE_DATE_DIALOG = "on_open_change_date_dialog";
-export const ON_OPEN_ASSIGNED_USER_DIALOG = "on_open_assigned_user_dialog";
-export const ON_SELECT_DATE = "on_select_date";
-export const SELECTED_MEMBER_LIST = "selected_member_list";
-export const ON_MEMBER_SELECTED = "on_member_selected";
 
 
 export function sectionExpandedAction(sectionKey, isOpened){
@@ -52,7 +53,7 @@ export function populateTaskListAction(taskList){
 }
 
 export function onOpenChangeDateDialogAction(data, id){
-    console.log("Change date Dialog Action called", data, id)
+    //console.log("Change date Dialog Action called", data, id)
     return (dispatch) => {
         dispatch({
             type : ON_OPEN_CHANGE_DATE_DIALOG,
@@ -108,6 +109,18 @@ export function onMemberSelectedAction(memberId, isSelected){
             payload : {
                 memberId,
                 isSelected
+            }
+        })
+    }
+}
+
+export function onDatePickerOpenedAction(data, id){
+    return (dispatch) => {
+        dispatch({
+            type : ON_DATE_PICKER_OPENED,
+            payload : {
+                id,
+                data
             }
         })
     }
