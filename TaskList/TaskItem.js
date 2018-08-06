@@ -4,8 +4,14 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import map from 'lodash/map';
-import {SortableContainer, SortableElement, arrayMove, SortableHandle,} from 'react-sortable-hoc';
 
+import {
+    SortableContainer, SortableElement, SortableHandle,
+    sortableContainer,
+    sortableElement,
+    arrayMove,
+    DragLayer
+  } from './react-sortable-multiple-hoc'
 
 //Custom import..
 import './TaskList.css';
@@ -30,7 +36,7 @@ const DragHandle = SortableHandle(({}) => (
     </div>
 )); // This can be any component you want
 
-const TaskItem = SortableElement(props => {
+const TaskItem = sortableElement(props => {
    
     const {
         task,

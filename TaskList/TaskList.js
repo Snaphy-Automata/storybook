@@ -3,12 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
 import { List, WindowScroller } from 'react-virtualized';
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
 
+import {
+    SortableContainer, SortableElement, arrayMove,
+    sortableContainer,
+    sortableElement,
+    DragLayer
+  } from './react-sortable-multiple-hoc'
 //Custom Import
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
+
 
 const renderRow = (sectionId, allData) => {
     const tasks = allData.section.byId[sectionId].tasks;
@@ -30,6 +36,8 @@ const renderRow = (sectionId, allData) => {
 
     return rowRenderer;
 }
+
+const dragLayer = new DragLayer()
 
 class VirtualList extends Component {
     render() {
@@ -64,8 +72,43 @@ class VirtualList extends Component {
  * To access the ref of a component that has been wrapped with the SortableContainer HOC,
  * you *must* pass in {withRef: true} as the second param. Refs are opt-in.
  */
-const SortableList = SortableContainer(VirtualList, {withRef: true});
+const SortableList = sortableContainer(VirtualList, {withRef: true});
 
+
+/**  This is the Chapter Part/Section Title, it drags as a group of items  */
+const SortablePart = sortableElement(props => {
+    // console.log('SortablePart - props', props)
+    return (
+      <div
+        className="sortable-part1"
+        style={{
+          minWidth: '160px',
+          minHeight: '270px',
+          background: '#f2f2f2',
+          margin: '10px',
+          padding: '5px'
+        }}
+      >
+        <div>
+          <span
+            style={{ background: '#cc8', display: 'block', padding: '.35em' }}
+          >
+            {props.item.name}
+          </span>
+        </div>
+        <SortableListItems
+          {...props}
+          items={props.item.items}
+          dragLayer={dragLayer}
+          distance={3}
+          helperClass={'selected'}
+          isMultiple={true}
+          helperCollision={{ top: 0, bottom: 0 }}
+        />
+      </div>
+    )
+  })
+  
 
 
 class SortableComponent extends Component {
