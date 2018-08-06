@@ -7,9 +7,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
 import { List, WindowScroller } from 'react-virtualized';
+import {
+    SortableContainer,
+    SortableElement,
+    SortableHandle,
+    arrayMove,
+  } from 'react-sortable-hoc';
+  
 
 //Custom Import
-import './VirtualList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 

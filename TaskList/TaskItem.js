@@ -4,6 +4,13 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup  } from 'semantic-ui-react'
 import map from 'lodash/map';
+import {
+    SortableContainer,
+    SortableElement,
+    SortableHandle,
+    arrayMove,
+  } from 'react-sortable-hoc';
+  
 
 //Custom import..
 import './TaskList.css';
@@ -14,6 +21,16 @@ import Label from '../Label';
 import AssignedUserDialog from '../AssignedUserDialog';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
+
+/**
+ * Drag handle
+ */
+const DragHandle = SortableHandle(() => (
+    <div className="task-list-item-drag-icon-container">
+        <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+        <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+    </div>
+)); // This can be any component you want
 
 const TaskItem = (props) => {
     const {
@@ -64,10 +81,7 @@ const TaskItem = (props) => {
                         <div className={delayedClassName}></div>
                         <div className="task-list-item-side-bar-container">
                             <div className={'task-list-item-side-line'}>
-                                <div className="task-list-item-drag-icon-container">
-                                    <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-                                    <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-                                </div>
+                                <DragHandle />
                             </div>
                             <div className={'task-list-item-icon'}>
                                 {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} />}
