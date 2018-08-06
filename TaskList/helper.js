@@ -209,6 +209,17 @@ import moment from 'moment';
         }
         return durationInTextData;
     }
+
+    getMemberName(memberObj, memberId){
+        let memberName;
+        if(memberObj && memberId){
+            memberName = memberObj[memberId].firstName;
+            let lastName = memberObj[memberId].lastName;
+            memberName = `${memberName} ${lastName}`
+        }
+        return memberName;
+
+    }
     
  }
 
@@ -239,6 +250,7 @@ import moment from 'moment';
         colorCode,
     }
  }
+
 
 
 

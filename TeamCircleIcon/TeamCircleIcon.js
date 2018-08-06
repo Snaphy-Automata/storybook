@@ -10,7 +10,7 @@ import AssignedUserDialog from "../AssignedUserDialog";
 
 //FIXME: Implement tooltip.. 2nd Aug 2018 Robins
 
-const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip, isAssinedUserDialogOpened, onClose }) => {
+const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip, isAssinedUserDialogOpened, onClose, task }) => {
     //size = mini | tiny | small | large | big | huge | massive;
 
     let char
@@ -63,12 +63,12 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
 
                             {!char && icon && <Icon name={icon} />}
                         </div>}</div>}
-                        content={<AssignedUserDialog onClose={onClose}/>}
+                        content={<AssignedUserDialog onClose={onClose} task={task}/>}
                         position='bottom center'
                         on='click'
                         open={isAssinedUserDialogOpened}
                         onClose={onClose}
-                        style={{ width: "242px", height: "217px", padding: "0" }}
+                        style={{ width: "242px", padding: "0" }}
                         size='mini'
                     >
 

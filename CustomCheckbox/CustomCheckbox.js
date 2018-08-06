@@ -5,14 +5,20 @@ import {connect} from 'react-redux';
 
 import './CustomCheckbox.css'
 
-import {onSelectDateAction, onOpenChangeDateDialogAction} from '../TaskList/TaskListActions';
+import {onSelectDateAction, onOpenChangeDateDialogAction, onMemberSelectedAction} from '../TaskList/TaskListActions';
 
 console.log("Custom Checkbox getting called");
 
 
-const CustomCheckbox = ({size, isSelected, color, className, onItemClicked, onSelectDateAction, type, data, task}) => {
+const CustomCheckbox = ({size, isSelected, color, className, onItemClicked, onSelectDateAction, type, data, task, isDateDialogOpened, userId, onMemberSelectedAction}) => {
     const customCheckboxClicked = () => {
-        onSelectDateAction(type, data, task.id);
+        //onItemClicked(type, data, task.id);
+        if(type === "assigneduser"){
+            onMemberSelectedAction(userId, !isSelected)
+        } else{
+            onSelectDateAction(type, data, task.id, isDateDialogOpened);
+        }
+      
         //onOpenChangeDateDialogAction(false, task.id);
     }
     className = className ? `custom-checkbox-wrapper ${className}`: `custom-checkbox-wrapper`
@@ -29,6 +35,7 @@ const CustomCheckbox = ({size, isSelected, color, className, onItemClicked, onSe
 // Retrieve data from store as props
 function mapStateToProps(store) {
     return {
+       
     };
 }
 
@@ -37,7 +44,8 @@ function mapStateToProps(store) {
 const mapActionsToProps = {
     //map action here
     onSelectDateAction,
-    onOpenChangeDateDialogAction
+    onOpenChangeDateDialogAction,
+    onMemberSelectedAction
 };
 
 

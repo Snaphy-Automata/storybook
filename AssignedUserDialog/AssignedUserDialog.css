@@ -1,6 +1,5 @@
 .assigned-user-dialog-container{
     width : 242px;
-    height: 227px;
 }
 
 .assigned-user-dialog-heading-container{
@@ -23,7 +22,7 @@
 }
 
 .assigned-user-dialog-list-container{
-    height: 227px;
+    /* height: 227px; */
 }
 
 .assigned-user-dialog-item-container{

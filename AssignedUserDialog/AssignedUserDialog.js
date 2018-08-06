@@ -1,17 +1,56 @@
+/**
+ * Created By Nikita Mittal 4 Aug 2018
+ */
+
 import React from 'react';
 import {Icon} from 'semantic-ui-react';
+import {connect} from 'react-redux';
+import map from 'lodash/map';
 
 import './AssignedUserDialog.css';
 import TeamCircleIcon from '../TeamCircleIcon';
 import CustomCheckbox from '../CustomCheckbox';
+import {memberObj, MEMBERS} from '../../data/taskListData';
+import TaskHelper from '../TaskList/helper';
+
+import {getSelectedMemberListAction} from '../TaskList/TaskListActions';
+
+
 
 class AssignedUserDailog extends React.Component {
 
     componentDidMount(){
-
+        this.memberList = MEMBERS;
+        let selectedMemberDataList = [];
+        if(this.props.task.assignedTo && this.props.task.assignedTo.length){
+            this.props.task.assignedTo.forEach((memberId, index) => {
+                selectedMemberDataList.push({member: memberId, isSelected: true});
+            });
+            this.props.getSelectedMemberListAction(selectedMemberDataList);
+        }
     }
 
     render() {
+        const taskHelper = new TaskHelper(this.props.task);
+        const checkSelected = (member) =>{
+            let selectedMemberList_ = this.props.selectedMemberList;
+            let isSelected_ = false;
+            if(selectedMemberList_ && selectedMemberList_.length){
+               
+                selectedMemberList_.forEach((memberData, index) =>{
+                    if(memberData.member === member){
+                        if(memberData.isSelected){
+                            isSelected_ = true;
+                        } else{
+                            isSelected_ = false;
+                        }
+                       
+                    }
+                })
+            }
+            return isSelected_;
+        }
+        console.log("Member List", this.props.selectedMemberList);
 
         return(
             <div className="assigned-user-dialog-container">
@@ -22,27 +61,28 @@ class AssignedUserDailog extends React.Component {
                     </div>
                 </div>
                 <div className="assigned-user-dialog-list-container">
-                    <div className="assigned-user-dialog-item-container">
-                        <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" src=""></TeamCircleIcon>
-                        <div className="assined-user-dialog-name-container">Nikita Mittal</div>
-                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container"></CustomCheckbox>
+
+                    {this.memberList && this.memberList.length !== 0 && <div>
+                        {
+                            map(this.memberList, function(member, index){
+                                if(index<4){
+                                   
+                                    return (
+                                        <div key={index} className="assigned-user-dialog-item-container">
+                                        <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" title={taskHelper.getMemberName(memberObj, member)}></TeamCircleIcon>
+                                        <div className="assined-user-dialog-name-container">{taskHelper.getMemberName(memberObj, member)}</div>
+                                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container" isSelected={checkSelected(member)} userId={member} type="assigneduser"></CustomCheckbox></div>
+                                    )
+                                } else{
+                                    return;
+                                }
+                                
+                            })
+                        }
+                        
                     </div>
-                    <div className="assigned-user-dialog-item-container">
-                        <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" src=""></TeamCircleIcon>
-                        <div className="assined-user-dialog-name-container">Nikita Mittal</div>
-                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container"></CustomCheckbox>
-                    </div>
-                    <div className="assigned-user-dialog-item-container">
-                        <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" src=""></TeamCircleIcon>
-                        <div className="assined-user-dialog-name-container">Nikita Mittal</div>
-                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container"></CustomCheckbox>
-                    </div>
-                    <div className="assigned-user-dialog-item-container">
-                        <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" src=""></TeamCircleIcon>
-                        <div className="assined-user-dialog-name-container">Nikita Mittal</div>
-                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container"></CustomCheckbox>
-                    </div>
-                    <div className="assigned-user-dialog-see-more-container">See More</div>
+                    }
+                    {this.memberList && this.memberList.length > 4 && <div className="assigned-user-dialog-see-more-container">See More</div>}
                 </div>
             </div>
 
@@ -51,4 +91,14 @@ class AssignedUserDailog extends React.Component {
 
 }
 
-export default AssignedUserDailog
+function mapStateToProps(store){
+    return {
+       selectedMemberList : store.TaskListReducer.selectedMemberList,
+    }
+}
+
+const mapActionsToProps = {
+    getSelectedMemberListAction
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(AssignedUserDailog)
