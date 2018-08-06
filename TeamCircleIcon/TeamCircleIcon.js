@@ -6,11 +6,11 @@ import { Icon, Popup } from 'semantic-ui-react'
 //Custom Import
 
 import "./TeamCircleIcon.css";
-import AssignedUserDialog from   "../AssignedUserDialog";
+import AssignedUserDialog from "../AssignedUserDialog";
 
 //FIXME: Implement tooltip.. 2nd Aug 2018 Robins
 
-const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip }) => {
+const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip, isAssinedUserDialogOpened, onClose }) => {
     //size = mini | tiny | small | large | big | huge | massive;
 
     let char
@@ -19,40 +19,65 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
     className = className ? `team-circle-icon-wrapper ${className}` : `team-circle-icon-wrapper`;
     className = size ? `${className} ${size}` : className;
 
+    console.log("Icon Props", isAssinedUserDialogOpened);
+
     return (
         <div>
             {
-                tooltip && !onClick && <Popup
-                    trigger={<div onClick={onClick} className={className} style={style}>
-                        {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
-                        {char && !src && char}
+                tooltip &&
+                // <Popup
+                //             trigger={<div>{!isAssinedUserDialogOpened && <div onClick={onClick} className={className} style={style}>
+                //                 {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
+                //                 {char && !src && char}
 
-                        {!char && icon && <Icon name={icon} />}
-                    </div>}
-                    content={tooltip}
-                    position='bottom center'
-                    inverted
-                    style={{ fontSize: '10px', paddingRight: "20px", paddingLeft: "20px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word" }}
-                    size='mini'
-                >
+                //                 {!char && icon && <Icon name={icon} />}
+                //             </div>}</div>}
+                //             content={tooltip}
+                //             position='bottom center'
+                //             inverted
+                //             style={{ ontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity: "0.8" }}
+                //             size='mini'
+                //         >
 
-                </Popup>
-            }
-            {
-                tooltip && onClick && <Popup
-                trigger={<div onClick={onClick} className={className} style={style}>
-                    {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
-                    {char && !src && char}
+                //         </Popup>
+                <div>
+                    {
+                        !isAssinedUserDialogOpened && <Popup
+                            trigger={<div>{!isAssinedUserDialogOpened && <div onClick={onClick} className={className} style={style}>
+                                {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
+                                {char && !src && char}
 
-                    {!char && icon && <Icon name={icon} />}
-                </div>}
-                content={<AssignedUserDialog/>}
-                position='bottom center'
-                style={{ width:"242px", height:"217px", padding:"0" }}
-                size='mini'
-            >
+                                {!char && icon && <Icon name={icon} />}
+                            </div>}</div>}
+                            content={tooltip}
+                            position='bottom center'
+                            inverted
+                            style={{ ontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity: "0.8" }}
+                            size='mini'
+                        >
 
-            </Popup>
+                        </Popup>
+                    }
+                    <Popup
+                        trigger={<div>{isAssinedUserDialogOpened && <div onClick={onClick} className={className} style={style}>
+                            {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
+                            {char && !src && char}
+
+                            {!char && icon && <Icon name={icon} />}
+                        </div>}</div>}
+                        content={<AssignedUserDialog onClose={onClose}/>}
+                        position='bottom center'
+                        on='click'
+                        open={isAssinedUserDialogOpened}
+                        onClose={onClose}
+                        style={{ width: "242px", height: "217px", padding: "0" }}
+                        size='mini'
+                    >
+
+                    </Popup>
+
+                </div>
+
             }
             {
                 !tooltip && <div onClick={onClick} className={className} style={style}>

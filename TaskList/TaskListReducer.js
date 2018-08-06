@@ -2,12 +2,16 @@ import {
     ON_TASK_LIST_EXAPANDED,
     TASK_LIST,
     ON_SECTION_EXPANDED,
-    SECTION_TASK_LIST
+    SECTION_TASK_LIST,
+    ON_OPEN_CHANGE_DATE_DIALOG,
+    ON_OPEN_ASSIGNED_USER_DIALOG
 } from './TaskListActions';
 
 
 const initialState = {
     isOpened: false,
+    isDateDialogOpened : false,
+    isAssinedUserDialogOpened : false,
     sectionList: [
         {
             sectionId: "section1",
@@ -331,6 +335,25 @@ const TaskListReducer = (state = initialState, action) => {
                 sectionList: action.payload,
             }
 
+            break;
+        }
+        case ON_OPEN_CHANGE_DATE_DIALOG:{
+            state = {
+                ...state,
+                [action.payload.id]:{
+                    isDateDialogOpened : action.payload.data
+                }
+                
+            }
+            break;
+        }
+        case ON_OPEN_ASSIGNED_USER_DIALOG:{
+            state = {
+                ...state,
+                [action.payload.id]:{
+                    isAssinedUserDialogOpened : action.payload.data
+                }
+            }
             break;
         }
     }

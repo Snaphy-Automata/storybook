@@ -3,6 +3,8 @@ export const TASK_LIST              = "task_list";
 
 export const ON_SECTION_EXPANDED    = "on_section_expanded";
 export const SECTION_TASK_LIST      = "section_task_list";
+export const ON_OPEN_CHANGE_DATE_DIALOG = "on_open_change_date_dialog";
+export const ON_OPEN_ASSIGNED_USER_DIALOG = "on_open_assigned_user_dialog"
 
 
 export function sectionExpandedAction(sectionKey, isOpened){
@@ -45,4 +47,29 @@ export function populateTaskListAction(taskList){
         })
     }
 }
+
+export function onOpenChangeDateDialogAction(data, id){
+    return (dispatch) => {
+        dispatch({
+            type : ON_OPEN_CHANGE_DATE_DIALOG,
+            payload : {
+                id,
+                data
+            }
+        })
+    }
+}
+
+export function onOpenAssignedUserDialogAction(data, id){
+    return (dispatch) => {
+        dispatch({
+            type: ON_OPEN_ASSIGNED_USER_DIALOG,
+            payload : {
+                id,
+                data
+            }
+        })
+    }
+}
+
 

@@ -19,6 +19,7 @@
 
 .assigned-user-dialog-close-container{
     float: right;
+    cursor: pointer;
 }
 
 .assigned-user-dialog-list-container{
