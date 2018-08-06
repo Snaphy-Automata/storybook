@@ -18,7 +18,18 @@ import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectD
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
+/**
+ * Drag handle
+ */
+const DragHandle = ({}) => (
+    <div  className="task-list-item-drag-icon-container">
+        <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+        <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+    </div>
+); // This can be any component you want
+
 const TaskItem = (props) => {
+   
     const {
         task,
         memberObj,
@@ -29,8 +40,12 @@ const TaskItem = (props) => {
         onBlur,
         isNew,
         isActiveTaskSection,
+<<<<<<< HEAD
         isDateDialogOpened,
         isAssinedUserDialogOpened
+=======
+        index,
+>>>>>>> 2b4ae053a7b2d4881bae7ebc1487972f7214e1a8
     } = props;
 
 
@@ -65,10 +80,7 @@ const TaskItem = (props) => {
 
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
-    const openDialog = () => {
-        return true;
-    }
-
+  
     const openSelectDateDialog = () => {
         props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
     }
@@ -87,26 +99,15 @@ const TaskItem = (props) => {
         props.onOpenAssignedUserDialogAction(false, task.id)
     }
 
-    const onDateSelected = (type, data) => {
-        props.onSelectDateAction(type, data);
-    }
-
-    console.log("task Item getting called", props);
-
-
-
     return (
-        <div className="task-list-item-wrapper">
-            {!isNew &&
+        <div  className="task-list-item-wrapper">
+            {!isNew &&  
                 <div className="task-list-item-delayed-wrapper">
-                    <div className={taskItemContainerClassName} >
+                    <div  className={taskItemContainerClassName} >
                         <div className={delayedClassName}></div>
                         <div className="task-list-item-side-bar-container">
                             <div className={'task-list-item-side-line'}>
-                                <div className="task-list-item-drag-icon-container">
-                                    <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-                                    <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-                                </div>
+                                <DragHandle />
                             </div>
                             <div className={'task-list-item-icon'}>
                                 {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task}/>}
@@ -233,9 +234,8 @@ const TaskItem = (props) => {
                 </div>
             }
         </div>
-    )
-
-}
+    );
+};
 
 
 
