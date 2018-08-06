@@ -38,7 +38,7 @@ const TaskList = (props) => {
         const task = taskList[index];
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
-        const content = isScrolling ? '...' : <TaskItem  task={task} isActiveTaskSection  memberObj={memberObj} statusObj={statusObj} labelObj ={labelObj}/>;
+        const content = isScrolling ? '...' : '...';
         // Style is required since it specifies how the row is to be sized and positioned.
         // React Virtualized depends on this sizing/positioning for proper scrolling behavior.
         // By default, the List component provides following style properties:
@@ -51,7 +51,7 @@ const TaskList = (props) => {
         // Key is also required by React to more efficiently manage the array of rows.
         return (
             <div style={style} key={key}>
-                {content}
+                <TaskItem  task={task} isActiveTaskSection  memberObj={memberObj} statusObj={statusObj} labelObj ={labelObj}/>
             </div>
         )
     }
