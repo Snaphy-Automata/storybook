@@ -70,35 +70,31 @@ const SortableList = SortableContainer(VirtualList, {withRef: true});
 
 class SortableComponent extends Component {
     
-    onSortEnd = ({oldIndex, newIndex}) => {
-        console.log("On Sort End",oldIndex, newIndex);
-        if (oldIndex !== newIndex) {
-            const {items} = this.state;
-    
-            this.setState({
-            items: arrayMove(items, oldIndex, newIndex),
-            });
-    
-            // We need to inform React Virtualized that the items have changed heights
-            const instance = this.SortableList.getWrappedInstance();
-    
-            instance.List.recomputeRowHeights();
-            instance.forceUpdate();
-        }
-    };
-
-    
     render() {
         const {
             allData,
         } = this.props;
-
+        const that = this;
         return (
             <div>
                 {
                     map(allData.section.allIds, sectionId => {
                         const section = allData.section.byId[sectionId];
+                        //On End of Sort
+                        const onSortEnd = ({oldIndex, newIndex}) => {
+                            console.log("On Sort End",oldIndex, newIndex);
+                            if (oldIndex !== newIndex) {
+                                this.setState({
+                                    items: arrayMove(section.tasks, oldIndex, newIndex),
+                                });
                         
+                                // We need to inform React Virtualized that the items have changed heights
+                                const instance = that.SortableList.getWrappedInstance();
+                        
+                                instance.List.recomputeRowHeights();
+                                instance.forceUpdate();
+                            }
+                        };
                         return (
                             <div key={section.id} style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
                                 <TaskListHeading id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
@@ -114,10 +110,12 @@ class SortableComponent extends Component {
                                                 }}
                                                 allData={allData}
                                                 sectionId={sectionId}
-                                                onSortEnd={this.onSortEnd}
+                                                onSortEnd={onSortEnd}
                                                 height={height}
                                                 isScrolling={isScrolling}
                                                 scrollTop={scrollTop}
+                                                useDragHandle
+                                                useWindowAsScrollContainer
                                             />
                                         </div>
                                     )}
@@ -125,107 +123,13 @@ class SortableComponent extends Component {
                                 }
                             </div>
                         )
-                        // return (
-                        //     <div key={section.id} style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
-                        //         <TaskListHeading id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
-                        //         {
-                        //             section.tasks && 
-                        //             section.tasks.length!==0 && 
-                        //             <WindowScroller>
-                        //                 {({ height, isScrolling, registerChild, scrollTop }) => (
-                        //                     <div ref={registerChild}>
-                        //                         <List
-                        //                             width={800}
-                        //                             rowCount={section.tasks.length}
-                        //                             rowHeight={41}
-                        //                             rowRenderer={taskRowRenderer}
-                        //                             autoHeight
-                        //                             height={height}
-                        //                             isScrolling={isScrolling}
-                        //                             scrollTop={scrollTop}
-                        //                         />
-                        //                     </div>
-                        //                 )}
-                        //             </WindowScroller>
-                        //         }
-                        //     </div>
-                        // );
                     })
                 }
                 
             </div>
         );
     }
-  }
-
-const TaskList = (props => {
-
-    const {
-        allData,
-        sectionId,
-    } = props;
-
-    console.log(allData);
-
-    
-    
-
-    const isSectionOpened = true;
-
-   
-    return (
-        <div>
-            {
-                map(allData.section.allIds, sectionId => {
-                    const section = allData.section.byId[sectionId];
-                    const taskRowRenderer = renderRow(sectionId);
-                    //On End of Sort
-                    const onSortEnd = ({oldIndex, newIndex}) => {
-                        if (oldIndex !== newIndex) {
-                            const {items} = this.state;
-                    
-                            this.setState({
-                                items: arrayMove(items, oldIndex, newIndex),
-                            });
-                    
-                            // We need to inform React Virtualized that the items have changed heights
-                            const instance = this.SortableList.getWrappedInstance();
-                    
-                            instance.List.recomputeRowHeights();
-                            instance.forceUpdate();
-                        }
-                    };
-                    return (
-                        <div key={section.id} style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
-                            <TaskListHeading id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
-                            {
-                                section.tasks && 
-                                section.tasks.length!==0 && 
-                                <WindowScroller>
-                                    {({ height, isScrolling, registerChild, scrollTop }) => (
-                                        <div ref={registerChild}>
-                                            <List
-                                                width={800}
-                                                rowCount={section.tasks.length}
-                                                rowHeight={41}
-                                                rowRenderer={taskRowRenderer}
-                                                autoHeight
-                                                height={height}
-                                                isScrolling={isScrolling}
-                                                scrollTop={scrollTop}
-                                            />
-                                        </div>
-                                    )}
-                                </WindowScroller>
-                            }
-                        </div>
-                    );
-                })
-            }
-            
-        </div>
-    )
-});
+}
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
