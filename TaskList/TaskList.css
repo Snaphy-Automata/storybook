@@ -99,6 +99,7 @@
 .task-list-item-wrapper{
     border-bottom: 1px solid #eeeeee;
     height: 41px;
+    background: #fff;
 }
 
 .task-list-item-wrapper:hover{

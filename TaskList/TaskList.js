@@ -44,15 +44,15 @@ const renderRow = (allData) => {
         
         const section = displaySection(taskId, allData);
         return (
-            <div>
-            { 
-                section &&
-                <div>
-                    {section.title}    
-                </div>
-            }
-                <TaskItem style={style} key={index} index={index} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
-            </div>
+            // <div >
+            // { 
+            //     section &&
+            //     <div>
+            //         {section.title}    
+            //     </div>
+            // }
+                <TaskItem isScrolling={isScrolling} style={style} key={key} index={index} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            // </div>
           
         )
     }
@@ -60,85 +60,64 @@ const renderRow = (allData) => {
     return rowRenderer;
 }
 
-class VirtualList extends Component {
-    render() {
-        const {
-            allData,
-            height,
-            isScrolling,
-            scrollTop,
-        } = this.props;
-        const taskRowRenderer = renderRow(allData);
-        return (
-            <List
-                ref={(instance) => {
-                    this.List = instance;
-                }}
-                rowHeight={41}
-                rowRenderer={taskRowRenderer}
-                rowCount={allData.task.allIds.length}
-                width={800}
-                autoHeight
-                height={height}
-                isScrolling={isScrolling}
-                scrollTop={scrollTop}
-            />
-        );
-    }
-}
-
-/*
- * Important note:
- * To access the ref of a component that has been wrapped with the SortableContainer HOC,
- * you *must* pass in {withRef: true} as the second param. Refs are opt-in.
- */
-const SortableList = SortableContainer(VirtualList, {withRef: true});
-
-
-
-class SortableComponent extends Component {
-    
-    render() {
-        const {
-            allData,
-        } = this.props;
-        const that = this;
-        const onSortEnd = ({oldIndex, newIndex}) => {
-            console.log("On Sort End",oldIndex, newIndex);
-            if (oldIndex !== newIndex) {
-                this.setState({
-                    items: arrayMove(section.tasks, oldIndex, newIndex),
-                });
+const SortableList = SortableContainer((props=>{
+    const {
+        allData,
+        height,
+        isScrolling,
+        scrollTop,
+    } = props;
+    const taskRowRenderer = renderRow(allData);
+    return (
+        <List
+            rowHeight={41}
+            rowRenderer={taskRowRenderer}
+            rowCount={allData.task.allIds.length}
+            width={800}
+            autoHeight
+            height={height}
+            isScrolling={isScrolling}
+            scrollTop={scrollTop}
+        />
+    );
+}))
         
-                // We need to inform React Virtualized that the items have changed heights
-                const instance = that.SortableList.getWrappedInstance();
-                instance.List.recomputeRowHeights();
-                instance.forceUpdate();
-            }
-        };
-        return (
-            <div>       
-                <WindowScroller>
-                    {({ height, isScrolling, registerChild, scrollTop }) => (
-                        <div ref={registerChild}>
-                            <SortableList 
-                                ref={(instance) => {
-                                    this.SortableList = instance;
-                                }}
-                                allData={allData}
-                                onSortEnd={onSortEnd}
-                                height={height}
-                                isScrolling={isScrolling}
-                                scrollTop={scrollTop}
-                                useDragHandle
-                                useWindowAsScrollContainer
-                            />
-                        </div>  
-                    )}
-                </WindowScroller>
-            </div>
-        );
-    }
+
+
+const SortableComponent = (props) => {
+    const {
+        allData,
+    } = props;
+
+    const onSortEnd = ({oldIndex, newIndex}) => {
+        console.log("On Sort End",oldIndex, newIndex);
+        // if (oldIndex !== newIndex) {
+           
+        //     // We need to inform React Virtualized that the items have changed heights
+        //     const instance = that.SortableList.getWrappedInstance();
+        //     instance.List.recomputeRowHeights();
+        //     instance.forceUpdate();
+        // }
+    };
+    return ( 
+        <WindowScroller>
+            {({ height, isScrolling, registerChild, scrollTop }) => (
+                <div >
+                    <SortableList 
+                        allData={allData}
+                        onSortEnd={onSortEnd}
+                        height={height}
+                        isScrolling={isScrolling}
+                        scrollTop={scrollTop}
+                        useDragHandle
+                        useWindowAsScrollContainer
+                        helperClass="on-task-selected"
+                    />
+                </div>  
+            )}
+        </WindowScroller>
+    );
+
 }
 
 // Retrieve data from store as props

@@ -45,8 +45,8 @@ const TaskItem = SortableElement(props => {
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
-        index,
         style,
+        isScrolling
     } = props;
 
 
@@ -115,18 +115,22 @@ const TaskItem = SortableElement(props => {
                     <div  className={taskItemContainerClassName} >
                         <div className={delayedClassName}></div>
                         <div className="task-list-item-side-bar-container">
-                            <div className={'task-list-item-side-line'}>
+                            {!isScrolling && <div  className={'task-list-item-side-line'}>
                                 <DragHandle />
                             </div>
+                            }
+                            {!isScrolling &&
                             <div className={'task-list-item-icon'}>
                                 {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task}/>}
                                 {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task}/>}
-                            </div>
+                            </div>}
                         </div>
 
                         <div className="task-list-item-title">
                             <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>
                         </div>
+                        {
+                            !isScrolling && 
                         <div className="task-list-item-other-container">
                             <div className="task-list-item-status-duration-container">
                                 {isActiveTaskSection && statusData &&
@@ -218,7 +222,8 @@ const TaskItem = SortableElement(props => {
 
                                 </div>
                             }
-                        </div> {/*Other Container div end*/}
+                        </div>
+                        } {/*Other Container div end */}
                     </div>
                 </div>
             }
