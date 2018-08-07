@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import map from 'lodash/map';
+import {SortableContainer, SortableElement, arrayMove, SortableHandle,} from 'react-sortable-hoc';
+
 
 //Custom import..
 import './TaskList.css';
@@ -21,14 +23,14 @@ const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 /**
  * Drag handle
  */
-const DragHandle = ({}) => (
+const DragHandle = SortableHandle(({}) => (
     <div  className="task-list-item-drag-icon-container">
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
     </div>
-); // This can be any component you want
+)); // This can be any component you want
 
-const TaskItem = (props) => {
+const TaskItem = SortableElement(props => {
    
     const {
         task,
@@ -44,6 +46,7 @@ const TaskItem = (props) => {
         isAssinedUserDialogOpened,
         isDatePickerOpened,
         index,
+        style,
     } = props;
 
 
@@ -106,7 +109,7 @@ const TaskItem = (props) => {
     }
 
     return (
-        <div  className="task-list-item-wrapper">
+        <div style={style} className="task-list-item-wrapper">
             {!isNew &&  
                 <div className="task-list-item-delayed-wrapper">
                     <div  className={taskItemContainerClassName} >
@@ -241,7 +244,7 @@ const TaskItem = (props) => {
             }
         </div>
     );
-};
+});
 
 
 
