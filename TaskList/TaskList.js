@@ -44,15 +44,15 @@ const renderRow = (allData) => {
         
         const section = displaySection(taskId, allData);
         return (
-            // <div >
-            // { 
-            //     section &&
-            //     <div>
-            //         {section.title}    
-            //     </div>
-            // }
-                <TaskItem isScrolling={isScrolling} style={style} key={key} index={index} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
-            // </div>
+            <div style={style} index={index} key={key}>
+            { 
+                section &&
+                <div key={section.id} style={{ background: "#fff",  margin: "0 auto"}}>
+                    <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
+                </div>
+            }
+                <TaskItem  index={index} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            </div>
           
         )
     }
@@ -70,7 +70,16 @@ const SortableList = SortableContainer((props=>{
     const taskRowRenderer = renderRow(allData);
     return (
         <List
-            rowHeight={41}
+            rowHeight={({index})=> {
+                const tasks = allData.task.allIds;
+                const taskId  = tasks[index];
+                const section = displaySection(taskId, allData);
+                if(section){
+                    return 105;
+                }else{
+                    return 41;
+                }
+            }}
             rowRenderer={taskRowRenderer}
             rowCount={allData.task.allIds.length}
             width={800}
