@@ -10,8 +10,25 @@ import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 
-const renderRow = (sectionId, allData) => {
-    const tasks = allData.section.byId[sectionId].tasks;
+/**
+ * Will return section if section is to be displayed..
+ * @param {*} taskIndex 
+ */
+const displaySection = (taskId, allData) => {
+    const task = allData.task.byId[taskId];
+    const sectionId = task.sectionId;
+    const sectionTasks = allData.section.byId[sectionId].tasks;
+    const firstTask = sectionTasks[0];
+    
+    if(firstTask.id === task.id) {
+        return allData.section.byId[sectionId];
+    }else{
+        return false;
+    }
+}
+
+const renderRow = (allData) => {
+    const tasks = allData.task.allIds;
     const rowRenderer =  ({
         index,       // Index of row
         isScrolling, // The List is currently being scrolled
@@ -22,9 +39,21 @@ const renderRow = (sectionId, allData) => {
                      // This must be passed through to the rendered row element.
       })  => {
         
-        const task = tasks[index];
+        const taskId  = tasks[index];
+        const task    = allData.task.byId[taskId];
+        
+        const section = displaySection(taskId, allData);
         return (
-            <TaskItem style={style} key={index} index={index} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            <div>
+            { 
+                section &&
+                <div>
+                    {section.title}    
+                </div>
+            }
+                <TaskItem style={style} key={index} index={index} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            </div>
+          
         )
     }
 
@@ -35,12 +64,11 @@ class VirtualList extends Component {
     render() {
         const {
             allData,
-            sectionId,
             height,
             isScrolling,
             scrollTop,
         } = this.props;
-        const taskRowRenderer = renderRow(sectionId, allData);
+        const taskRowRenderer = renderRow(allData);
         return (
             <List
                 ref={(instance) => {
@@ -48,7 +76,7 @@ class VirtualList extends Component {
                 }}
                 rowHeight={41}
                 rowRenderer={taskRowRenderer}
-                rowCount={allData.section.byId[sectionId].tasks.length}
+                rowCount={allData.task.allIds.length}
                 width={800}
                 autoHeight
                 height={height}
@@ -75,59 +103,39 @@ class SortableComponent extends Component {
             allData,
         } = this.props;
         const that = this;
+        const onSortEnd = ({oldIndex, newIndex}) => {
+            console.log("On Sort End",oldIndex, newIndex);
+            if (oldIndex !== newIndex) {
+                this.setState({
+                    items: arrayMove(section.tasks, oldIndex, newIndex),
+                });
+        
+                // We need to inform React Virtualized that the items have changed heights
+                const instance = that.SortableList.getWrappedInstance();
+                instance.List.recomputeRowHeights();
+                instance.forceUpdate();
+            }
+        };
         return (
-            <div>
-                {
-                    map(allData.section.allIds, sectionId => {
-                        const section = allData.section.byId[sectionId];
-                        //On End of Sort
-                        const onSortEnd = ({oldIndex, newIndex}) => {
-                            console.log("On Sort End",oldIndex, newIndex);
-                            if (oldIndex !== newIndex) {
-                                this.setState({
-                                    items: arrayMove(section.tasks, oldIndex, newIndex),
-                                });
-                        
-                                // We need to inform React Virtualized that the items have changed heights
-                                const instance = that.SortableList.getWrappedInstance();
-                        
-                                instance.List.recomputeRowHeights();
-                                instance.forceUpdate();
-                            }
-                        };
-                        return (
-                            <WindowScroller>
-                                {({ height, isScrolling, registerChild, scrollTop }) => (
-                                    <div key={section.id} style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
-                                        <TaskListHeading id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
-                                        {
-                                            section.tasks && 
-                                            section.tasks.length!==0 && 
-                                            
-                                                <div ref={registerChild}>
-                                                    <SortableList 
-                                                        ref={(instance) => {
-                                                            this.SortableList = instance;
-                                                        }}
-                                                        allData={allData}
-                                                        sectionId={sectionId}
-                                                        onSortEnd={onSortEnd}
-                                                        height={height}
-                                                        isScrolling={isScrolling}
-                                                        scrollTop={scrollTop}
-                                                        useDragHandle
-                                                        useWindowAsScrollContainer
-                                                    />
-                                                </div>
-                                            
-                                        }
-                                    </div>
-                                )}
-                            </WindowScroller>
-                        )
-                    })
-                }
-                
+            <div>       
+                <WindowScroller>
+                    {({ height, isScrolling, registerChild, scrollTop }) => (
+                        <div ref={registerChild}>
+                            <SortableList 
+                                ref={(instance) => {
+                                    this.SortableList = instance;
+                                }}
+                                allData={allData}
+                                onSortEnd={onSortEnd}
+                                height={height}
+                                isScrolling={isScrolling}
+                                scrollTop={scrollTop}
+                                useDragHandle
+                                useWindowAsScrollContainer
+                            />
+                        </div>  
+                    )}
+                </WindowScroller>
             </div>
         );
     }
