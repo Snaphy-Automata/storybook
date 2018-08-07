@@ -96,32 +96,34 @@ class SortableComponent extends Component {
                             }
                         };
                         return (
-                            <div key={section.id} style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
-                                <TaskListHeading id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
-                                {
-                                    section.tasks && 
-                                    section.tasks.length!==0 && 
-                                    <WindowScroller>
-                                    {({ height, isScrolling, registerChild, scrollTop }) => (
-                                        <div ref={registerChild}>
-                                            <SortableList 
-                                                ref={(instance) => {
-                                                    this.SortableList = instance;
-                                                }}
-                                                allData={allData}
-                                                sectionId={sectionId}
-                                                onSortEnd={onSortEnd}
-                                                height={height}
-                                                isScrolling={isScrolling}
-                                                scrollTop={scrollTop}
-                                                useDragHandle
-                                                useWindowAsScrollContainer
-                                            />
-                                        </div>
-                                    )}
-                                    </WindowScroller>
-                                }
-                            </div>
+                            <WindowScroller>
+                                {({ height, isScrolling, registerChild, scrollTop }) => (
+                                    <div key={section.id} style={{ background: "#fff", maxWidth: "800px", margin: "0 auto"}}>
+                                        <TaskListHeading id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
+                                        {
+                                            section.tasks && 
+                                            section.tasks.length!==0 && 
+                                            
+                                                <div ref={registerChild}>
+                                                    <SortableList 
+                                                        ref={(instance) => {
+                                                            this.SortableList = instance;
+                                                        }}
+                                                        allData={allData}
+                                                        sectionId={sectionId}
+                                                        onSortEnd={onSortEnd}
+                                                        height={height}
+                                                        isScrolling={isScrolling}
+                                                        scrollTop={scrollTop}
+                                                        useDragHandle
+                                                        useWindowAsScrollContainer
+                                                    />
+                                                </div>
+                                            
+                                        }
+                                    </div>
+                                )}
+                            </WindowScroller>
                         )
                     })
                 }
