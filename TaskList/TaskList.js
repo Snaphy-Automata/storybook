@@ -22,8 +22,6 @@ import { setCursorValueAction } from './TaskListActions';
 const dragLayer = new DragLayer()
 
 
-
-
 const renderRow = (sectionId, allData) => {
     const tasks = allData.section.byId[sectionId].tasks;
     const rowRenderer =  ({
