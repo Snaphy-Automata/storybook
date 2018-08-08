@@ -1,14 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
 import { List, WindowScroller } from 'react-virtualized';
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+import {Input} from 'semantic-ui-react';
+import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
 //Custom Import
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
+import { setCursorValueAction } from './TaskListActions';
 
 /**
  * Will return section if section is to be displayed..
@@ -131,9 +133,13 @@ const SortableComponent = (props) => {
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
-    const taskListReducer = store.AllTaskReducer;
     return {
-        
+        sectionObj: store.ModelDataReducer.section,
+        userObj: store.ModelDataReducer.users,
+        labelObj: store.ModelDataReducer.labels,
+        statusObj: store.ModelDataReducer.statusObj,
+        cursor: store.ModelDataReducer.cursor
+
     };
 }
 
@@ -141,6 +147,7 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here
+    setCursorValueAction
 };
 
 

@@ -5,8 +5,8 @@
 
 
 .task-detail-header-conatiner{
-    line-height: 20px;
-    padding: 10px;
+    line-height: 35.5px;
+    height: 35.5px;
     width: 100%;
     border-style: solid;
     border-width: 0px 0px 1px 0px;
@@ -15,34 +15,33 @@
 
 .task-detail-share-container{
     display: inline-block;
-   width: 20%;
-   font-size: 12px;
+    width: 103px;
+   font-size: 11px;
    color: #707070;
    text-align: center;
 }
 
 .task-detail-add-attachment-container{
     display: inline-block;
-    width: 30%;
-    font-size: 12px;
+    width: 122px;
+    font-size: 11px;
     color: #707070;
     cursor: pointer;
-    text-align: center;
+    text-align: left;
 }
 
 .task-detail-add-subtask-button-conatiner{
     display: inline-block;
-    width : 30%;
-    font-size: 12px;
+    width : 122px;
+    font-size: 11px;
     color: #707070;
     cursor: pointer;
     text-align: center;
 }
 
 .task-detail-close-button-conatiner{
-    display: inline-block;
-    width: 20%;
-    text-align: right;
+    float: right;
+    margin-right: 15px;
     color: #707070;
     
 }
@@ -55,7 +54,7 @@
 /************************************ Task Item Detail Css ************************************/
 
 .task-detail-task-detail-container{
-    padding: 10px;
+    padding: 15px;
 }
 
 .task-detail-task-name-container{
@@ -71,29 +70,38 @@
     line-height: 20px;
 }
 
-.task-detail-completed-container{
-    width: 35%;
-    display: inline-block;
-    font-size: 12px;
+.task-detail-action-button{
+    border-radius: 5px !important;
 }
 
+.task-detail-completed-container{
+    width: 148px;
+    display: inline-block;
+    font-size: 11px;
+}
+
+
 .task-detail-status-container{
-    width: 30%;
     display:inline-block;
     text-align: left;
-    font-size: 12px;
+    margin-left: 15px;
+    font-size: 11px;
 }
 
 .task-detail-archive-container{
-    width: 35%;
-    display: inline-block;
-    text-align: right;
-    font-size: 12px;
+    float: right;
+    font-size: 11px;
 }
+
 
 .task-detail-assigned-to-container{
     padding-bottom: 5px;
     margin-top: 10px;
+}
+
+.task-detail-assigned-to-text{
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .task-detail-assigned-to-data-container{
@@ -295,18 +303,6 @@
 	position: absolute;
 	z-index: -1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

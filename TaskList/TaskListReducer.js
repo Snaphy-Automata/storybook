@@ -8,7 +8,10 @@ import {
     ON_SELECT_DATE,
     SELECTED_MEMBER_LIST,
     ON_MEMBER_SELECTED,
-    ON_DATE_PICKER_OPENED
+    ON_DATE_PICKER_OPENED,
+    ON_TASK_SELECTED,
+    TASK_DATA,
+    LIST_CURSOR_DATA
 } from './TaskListActions';
 
 
@@ -20,296 +23,9 @@ const initialState = {
     isTomorrowSelected : false,
     isNextWeekSelected : false,
     selectedMemberList : null,
-    sectionList: [
-        {
-            sectionId: "section1",
-            title: "Active Tasks",
-            items: [
-                {
-                    id: 1,
-                    title: "This is the first issue to be solved",
-                    icon: {
-                        title: "Nikita",
-                        toolTip: "Nikita",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "Completed",
-                        color: "#1ed0c1"
-                    },
-                    subTask: {
-                        total: 9,
-                        completed: 4
-                    },
-                    attachment: 3,
-                    labels: [
-                        { title: "Bug", color: "#ff9b00", onClick: "Bug" }
-                    ],
-                    dueDate: {
-                        date: "2018-07-10T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                },
-                {
-                    id: 2,
-                    title: "Disable the button after clicking and then enable the button after getting response",
-                    icon: {
-                        icon: "users",
-                        toolTip: "Nikita, Mitsu, Sakura",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "In Progress",
-                        color: "#3b86ff"
-                    },
-                    subTask: {
-                        total: 15,
-                        completed: 10
-                    },
-                    attachment: 6,
-                    dueDate: {
-                        date: "2018-07-23T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                },
-                {
-                    id: 3,
-                    title: "Not able to login",
-                    icon: {
-                        icon: "users",
-                        toolTip: "Nikita, Mitsu, Sakura",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "In Progress",
-                        color: "#3b86ff"
-                    },
-                    subTask: {
-                        total: 15,
-                        completed: 10
-                    },
-                    attachment: 6,
-                    dueDate: {
-                        date: "2018-07-23T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                },
-                {
-                    id: 4,
-                    title: "Logout not working properly",
-                    icon: {
-                        icon: "users",
-                        toolTip: "Nikita, Mitsu, Sakura",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "In Progress",
-                        color: "#3b86ff"
-                    },
-                    subTask: {
-                        total: 15,
-                        completed: 10
-                    },
-                    attachment: 6,
-                    dueDate: {
-                        date: "2018-07-23T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                }
-            ]
-
-        },
-        {
-            sectionId: "section2",
-            title: "All Tasks",
-            items: [
-                {
-                    id: 5,
-                    title: "Second issue to be solved",
-                    icon: {
-                        title: "Nikita",
-                        toolTip: "Nikita",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "Completed",
-                        color: "#1ed0c1"
-                    },
-                    subTask: {
-                        total: 9,
-                        completed: 4
-                    },
-                    attachment: 3,
-                    labels: [
-                        { title: "Bug", color: "#ff9b00", onClick: "Bug" }
-                    ],
-                    dueDate: {
-                        date: "2018-07-10T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                },
-                {
-                    id: 6,
-                    title: "Enable all buttons after getting response",
-                    icon: {
-                        icon: "users",
-                        toolTip: "Nikita, Mitsu, Sakura",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "In Progress",
-                        color: "#3b86ff"
-                    },
-                    subTask: {
-                        total: 15,
-                        completed: 10
-                    },
-                    attachment: 6,
-                    dueDate: {
-                        date: "2018-07-23T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                },
-                {
-                    id: 7,
-                    title: "Facebook Login not working",
-                    icon: {
-                        icon: "users",
-                        toolTip: "Nikita, Mitsu, Sakura",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "In Progress",
-                        color: "#3b86ff"
-                    },
-                    subTask: {
-                        total: 15,
-                        completed: 10
-                    },
-                    attachment: 6,
-                    dueDate: {
-                        date: "2018-07-23T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                },
-                {
-                    id: 8,
-                    title: "Not able to get the otp messages",
-                    icon: {
-                        icon: "users",
-                        toolTip: "Nikita, Mitsu, Sakura",
-                        onClick: "Items has been clicked"
-                    },
-                    status: {
-                        title: "In Progress",
-                        color: "#3b86ff"
-                    },
-                    subTask: {
-                        total: 15,
-                        completed: 10
-                    },
-                    attachment: 6,
-                    dueDate: {
-                        date: "2018-07-23T01:14:00Z",
-                        onClick: "Date has been clicked"
-                    }
-                }
-            ]
-        }
-    ],
-    taskList: [
-        {
-            id: 1,
-            title: "This is the first issue to be solved",
-            icon: {
-                title: "Nikita",
-                toolTip: "Nikita",
-                onClick: "Items has been clicked"
-            },
-            status: {
-                title: "Completed",
-                color: "#1ed0c1"
-            },
-            subTask: {
-                total: 9,
-                completed: 4
-            },
-            attachment: 3,
-            labels: [
-                { title: "Bug", color: "#ff9b00", onClick: "Bug" }
-            ],
-            dueDate: {
-                date: "2018-07-10T01:14:00Z",
-                onClick: "Date has been clicked"
-            }
-        },
-        {
-            id: 2,
-            title: "Disable the button after clicking and then enable the button after getting response",
-            icon: {
-                icon: "users",
-                toolTip: "Nikita, Mitsu, Sakura",
-                onClick: "Items has been clicked"
-            },
-            status: {
-                title: "In Progress",
-                color: "#3b86ff"
-            },
-            subTask: {
-                total: 15,
-                completed: 10
-            },
-            attachment: 6,
-            dueDate: {
-                date: "2018-07-23T01:14:00Z",
-                onClick: "Date has been clicked"
-            }
-        },
-        {
-            id: 3,
-            title: "Not able to login",
-            icon: {
-                icon: "users",
-                toolTip: "Nikita, Mitsu, Sakura",
-                onClick: "Items has been clicked"
-            },
-            status: {
-                title: "In Progress",
-                color: "#3b86ff"
-            },
-            subTask: {
-                total: 15,
-                completed: 10
-            },
-            attachment: 6,
-            dueDate: {
-                date: "2018-07-23T01:14:00Z",
-                onClick: "Date has been clicked"
-            }
-        },
-        {
-            id: 4,
-            title: "Logout not working properly",
-            icon: {
-                icon: "users",
-                toolTip: "Nikita, Mitsu, Sakura",
-                onClick: "Items has been clicked"
-            },
-            status: {
-                title: "In Progress",
-                color: "#3b86ff"
-            },
-            subTask: {
-                total: 15,
-                completed: 10
-            },
-            attachment: 6,
-            dueDate: {
-                date: "2018-07-23T01:14:00Z",
-                onClick: "Date has been clicked"
-            }
-        }
-    ]
+    isTaskSelected : false,
+    taskData : null,
+    cursor : 0,
 }
 
 const TaskListReducer = (state = initialState, action) => {
@@ -432,9 +148,34 @@ const TaskListReducer = (state = initialState, action) => {
                 ...state,
                 selectedMemberList : selectedMemberDataList
             }
-            console.log("selected Member list Reducer", state.selectedMemberList);
             break;
         }
+
+        case ON_TASK_SELECTED:{
+            state = {
+                ...state,
+                [action.payload.id]:{
+                    isTaskSelected : action.payload.data
+                }
+            }
+            break;
+        }
+
+        case TASK_DATA:{
+            state = {
+                ...state,
+                taskData : action.payload
+            }
+            break;
+        }
+
+        case LIST_CURSOR_DATA:{
+            state = {
+                ...state,
+                cursor : action.payload
+            }
+        }
+
     }
     return state;
 }
