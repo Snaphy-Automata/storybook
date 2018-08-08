@@ -7,9 +7,9 @@ import {Input} from 'semantic-ui-react';
 import {
     sortableContainer,
     sortableElement,
+    DragLayer,
     arrayMove,
-    DragLayer
-  } from 'snaphy-react-sortable-dnd'
+  } from './react-sortable-multiple-hoc'
   
 
 //Custom Import
@@ -21,25 +21,11 @@ import { setCursorValueAction } from './TaskListActions';
 
 const dragLayer = new DragLayer()
 
-/**
- * Will return section if section is to be displayed..
- * @param {*} taskIndex 
- */
-const displaySection = (taskId, allData) => {
-    const task = allData.task.byId[taskId];
-    const sectionId = task.sectionId;
-    const sectionTasks = allData.section.byId[sectionId].tasks;
-    const firstTask = sectionTasks[0];
-    
-    if(firstTask.id === task.id) {
-        return allData.section.byId[sectionId];
-    }else{
-        return false;
-    }
-}
 
-const renderRow = (allData) => {
-    const tasks = allData.task.allIds;
+
+
+const renderRow = (sectionId, allData) => {
+    const tasks = allData.section.byId[sectionId].tasks;
     const rowRenderer =  ({
         index,       // Index of row
         isScrolling, // The List is currently being scrolled
@@ -52,8 +38,7 @@ const renderRow = (allData) => {
         
         const taskId  = tasks[index];
         const task    = allData.task.byId[taskId];
-        
-        const section = displaySection(taskId, allData);
+        //const section = displaySection(taskId, allData);
         return (
             // <div style={style} index={index} key={key}>
             // { 
@@ -62,7 +47,7 @@ const renderRow = (allData) => {
             //         <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
             //     </div>
             // }
-                <TaskItem  style={style} index={index} key={key} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+                <TaskItem item={task}  style={style} index={index} key={key} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
             // </div>
           
         )
@@ -71,44 +56,121 @@ const renderRow = (allData) => {
     return rowRenderer;
 }
 
-const SortableList = SortableContainer((props=>{
+
+const SortableTask = sortableElement(props => {
+    const taskId = props.item;
+    console.log(props);
+    const allData = props.allData;
+    const task = props.allData.task.byId[taskId];
+    return (
+        <div onClick={props.onSelect} className={props.className}>
+            <TaskItem id={taskId}  item={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+        </div>
+    )
+  })
+
+/**
+ * Sortable Container
+ */
+const SortableTaskList = sortableContainer((props=>{
+    const {
+        sectionId,
+        allData,
+    } = props;
+    //const taskRowRenderer = renderRow(sectionId, allData);
+    const section         = allData.section.byId[sectionId];
+    const tasks           = section.tasks;
+    return (
+        <div>
+            {
+                map(tasks,((taskId, index) => {
+                    const task = allData.task.byId[taskId];
+                    return (
+                        <SortableTask key={index} index={index} item={taskId} allData={allData} />
+                    )
+                }))
+            }
+        </div>
+    );
+}));
+
+
+/**
+ * Will store the  section with list of tasks.. ..
+ */
+const SortableSectionElement = sortableElement((props => {
     const {
         allData,
-        height,
-        isScrolling,
-        scrollTop,
+        sectionId
     } = props;
-    const taskRowRenderer = renderRow(allData);
+    
+    const section = allData.section.byId[sectionId];
+    const tasks   = section.tasks;
     return (
-        <List
-            rowHeight={({index})=> {
-                const tasks = allData.task.allIds;
-                const taskId  = tasks[index];
-                const section = displaySection(taskId, allData);
-                if(section){
-                    return 105;
-                }else{
-                    return 41;
-                }
-            }}
-            rowRenderer={taskRowRenderer}
-            rowCount={allData.task.allIds.length}
-            width={800}
-            autoHeight
-            height={height}
-            isScrolling={isScrolling}
-            scrollTop={scrollTop}
-        />
-    );
-}))
+        <div style={{ background: "#fff",  margin: "0 auto"}}>
+            <TaskListHeading sectionId={sectionId} id={sectionId} heading={section.title} protected={section.isProtected} type="fixed"/> 
+                <SortableTaskList
+                    {...props}
+                    sectionId={sectionId}
+                    items={tasks}
+                    distance={3}
+                    dragLayer={dragLayer}
+                    helperClass={'selected'}
+                    isMultiple={true}
+                    allData={allData}
+                    useWindowAsScrollContainer
+                />
+        </div>
+    )
+}));
         
 
+
+/** Main Container on page */
+const SortableSectionList = sortableContainer(( props => {
+    const {
+        allData,
+        onSortItemsEnd
+    } = props;
+
+    console.log("Sort Items End", onSortItemsEnd);
+
+    //Return the SortableSectionElement
+    return (
+        <div>
+            {
+                allData && allData.section && allData.section.allIds &&
+                map(allData.section.allIds, (sectionId, index) => {
+                    const section = allData.section.byId[sectionId];
+                    return (
+                        <SortableSectionElement
+                            key={section.id}
+                            index={index}
+                            item={sectionId}
+                            id={index}
+                            sectionId={sectionId}
+                            allData={allData}
+                            onMultipleSortEnd={onSortItemsEnd}
+                            useWindowAsScrollContainer
+                        />
+                    )
+                })
+            }
+            
+        </div>
+    )
+}));
 
 const SortableComponent = (props) => {
     const {
         allData,
     } = props;
 
+
+    const onSortItemsEnd = ({ newListIndex, newIndex, items }) => {
+        console.log("Sort Items End ", newListIndex, newIndex, items);
+    }
+      
     const onSortEnd = ({oldIndex, newIndex}) => {
         console.log("On Sort End",oldIndex, newIndex);
         // if (oldIndex !== newIndex) {
@@ -120,25 +182,17 @@ const SortableComponent = (props) => {
         // }
     };
     return ( 
-        <WindowScroller>
-            {({ height, isScrolling, registerChild, scrollTop }) => (
-                <div >
-                    <SortableList 
-                        allData={allData}
-                        onSortEnd={onSortEnd}
-                        height={height}
-                        isScrolling={isScrolling}
-                        scrollTop={scrollTop}
-                        useDragHandle
-                        useWindowAsScrollContainer
-                        helperClass="on-task-selected"
-                    />
-                </div>  
-            )}
-        </WindowScroller>
+        <SortableSectionList 
+            items={allData.section.allIds}
+            allData={allData}
+            onSortEnd={onSortEnd}
+            onSortItemsEnd={onSortItemsEnd}
+            helperClass={'selected'}
+        />
     );
 
 }
+
 
 // Retrieve data from store as props
 function mapStateToProps(store) {

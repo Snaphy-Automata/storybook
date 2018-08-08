@@ -5,11 +5,9 @@ import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import map from 'lodash/map';
 import {
-    sortableContainer,
     sortableElement,
-    arrayMove,
-    DragLayer
-  } from 'snaphy-react-sortable-dnd'
+  
+  } from './react-sortable-multiple-hoc'
 
 
 //Custom import..
@@ -28,18 +26,17 @@ const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 /**
  * Drag handle
  */
-const DragHandle = SortableHandle(({}) => (
+const DragHandle = () => (
     <div  className="task-list-item-drag-icon-container">
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
     </div>
-)); // This can be any component you want
+); // This can be any component you want
 
-const TaskItem = SortableElement(props => {
+const TaskItem = (props) => {
    
     const {
         task,
-        taskData,
         memberObj,
         statusObj,
         labelObj,
@@ -58,11 +55,12 @@ const TaskItem = SortableElement(props => {
         cursor,
         taskLength,
         setCursorValueAction,
-        position
+        position,
+        className,
     } = props;
 
 
-    //console.log("task Item Getting called", props);
+    console.log("task Item Getting called", props);
 
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
@@ -124,17 +122,7 @@ const TaskItem = SortableElement(props => {
     }
 
     const getWrapperClassName = (cursor, position) => {
-        let className = "task-list-item-wrapper"
-        if(cursor === position){
-            className = `${className} active`
-        } 
-       // console.log("Class Name getting called", className, position, cursor);
-        // if(taskData){
-        //     if(task.id === taskData.id){
-        //         className = `${className} active`
-        //     }
-        // }
-       
+        let className = className? className + " task-list-item-wrapper": "task-list-item-wrapper";
         return className;
     }
 
@@ -161,7 +149,7 @@ const TaskItem = SortableElement(props => {
     }
 
     return (
-        <div style={style} className={getWrapperClassName(cursor, position)} tabIndex={position} >
+        <div  style={style} className={getWrapperClassName(cursor, position)} tabIndex={position} >
             {!isNew &&  
                 <div className="task-list-item-delayed-wrapper">
                     <div  className={taskItemContainerClassName} >
@@ -301,13 +289,13 @@ const TaskItem = SortableElement(props => {
             }
         </div>
     );
-});
+};
 
 
 
 function mapStateToProps(store, props){
     const taskListReducer = store.TaskListReducer;
-    const taskConfig = taskListReducer[props.task.id]
+    const taskConfig = taskListReducer[props.item]
     const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
     const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
     const isDatePickerOpened = taskConfig && taskConfig.isDatePickerOpened ? true : false;
@@ -323,8 +311,6 @@ function mapStateToProps(store, props){
         isAssinedUserDialogOpened,
         isDatePickerOpened,
         isTaskSelected,
-        taskData : store.TaskListReducer.taskData,
-        cursor: store.TaskListReducer.cursor || 0
     }
 }
 
