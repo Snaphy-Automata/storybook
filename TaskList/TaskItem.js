@@ -46,7 +46,6 @@ const TaskItem = SortableElement(props => {
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
-        style,
         isScrolling,
         isTaskSelected,
         index,
