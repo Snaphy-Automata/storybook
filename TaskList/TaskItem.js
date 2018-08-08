@@ -4,11 +4,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import map from 'lodash/map';
-import {
-    sortableElement,
-  
-  } from './react-sortable-multiple-hoc'
-
+import {SortableElement, SortableHandle} from 'react-sortable-hoc';
 
 //Custom import..
 import './TaskList.css';
@@ -26,14 +22,14 @@ const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 /**
  * Drag handle
  */
-const DragHandle = () => (
+const DragHandle = SortableHandle(() => (
     <div  className="task-list-item-drag-icon-container">
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
     </div>
-); // This can be any component you want
+)); // This can be any component you want
 
-const TaskItem = (props) => {
+const TaskItem = SortableElement((props) => {
    
     const {
         task,
@@ -52,10 +48,6 @@ const TaskItem = (props) => {
         isTaskSelected,
         index,
         style,
-        cursor,
-        taskLength,
-        setCursorValueAction,
-        position,
         className,
     } = props;
 
@@ -121,35 +113,14 @@ const TaskItem = (props) => {
         props.getSelectedtaskItemAction(task);
     }
 
-    const getWrapperClassName = (cursor, position) => {
-        let className = className? className + " task-list-item-wrapper": "task-list-item-wrapper";
-        return className;
+    const getWrapperClassName = () => {
+        let wrapperClassName = className? className + " task-list-item-wrapper": "task-list-item-wrapper";
+        return wrapperClassName;
     }
 
-    const onHandleKeyDown = function(e){
-       console.log("I am getting called", cursor, e.target.className.isVisible);
-      // arrow up/down button should select next/previous list element
-      //if([37,38,39,40].indexOf(e.keyCode) > -1){
-        //e.preventDefault();
-
-        if (e.keyCode === 38 && cursor > 0) {
-            setCursorValueAction(cursor-1);
-         // this.setState( prevState => ({
-         //   cursor: prevState.cursor - 1
-         // }))
-       } else if (e.keyCode === 40 && cursor < taskLength - 1) {
-          setCursorValueAction(cursor+1);
-         // this.setState( prevState => ({
-         //   cursor: prevState.cursor + 1
-         // }))
-       }
-        // Do whatever else you want with the keydown event (i.e. your navigation).
-      //}
-      
-    }
 
     return (
-        <div  style={style} className={getWrapperClassName(cursor, position)} tabIndex={position} >
+        <div  style={style} className={getWrapperClassName()} >
             {!isNew &&  
                 <div className="task-list-item-delayed-wrapper">
                     <div  className={taskItemContainerClassName} >
@@ -289,13 +260,13 @@ const TaskItem = (props) => {
             }
         </div>
     );
-};
+});
 
 
 
 function mapStateToProps(store, props){
     const taskListReducer = store.TaskListReducer;
-    const taskConfig = taskListReducer[props.item]
+    const taskConfig = taskListReducer[props.taskId]
     const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
     const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
     const isDatePickerOpened = taskConfig && taskConfig.isDatePickerOpened ? true : false;
