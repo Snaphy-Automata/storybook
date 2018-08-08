@@ -16,7 +16,7 @@ import Label from '../Label';
 import AssignedUserDialog from '../AssignedUserDialog';
 import ChangeDateDialog from '../ChangeDateDialog';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction } from './TaskListActions';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction, getSelectedtaskItemAction, setCursorValueAction} from './TaskListActions';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -34,6 +34,7 @@ const TaskItem = SortableElement(props => {
    
     const {
         task,
+        taskData,
         memberObj,
         statusObj,
         labelObj,
@@ -45,9 +46,17 @@ const TaskItem = SortableElement(props => {
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
+        isTaskSelected,
         index,
         style,
+        cursor,
+        taskLength,
+        setCursorValueAction,
+        position
     } = props;
+
+
+    //console.log("task Item Getting called", props);
 
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
@@ -73,10 +82,6 @@ const TaskItem = SortableElement(props => {
     
     const labelObjData = taskHelper.getLabels(labelObj);
     const labels = labelObjData.labelList;
-
-    // const taskConfig = props.taskListReducer[task.id];
-    // const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
-    // const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
 
 
     //FIXME: When selected add `selected` class.
@@ -108,8 +113,49 @@ const TaskItem = SortableElement(props => {
         props.onDatePickerOpenedAction(false, task.id)
     }
 
+    const onTaskClicked = () => {
+        props.getSelectedtaskItemAction(task);
+    }
+
+    const getWrapperClassName = (cursor, position) => {
+        let className = "task-list-item-wrapper"
+        if(cursor === position){
+            className = `${className} active`
+        } 
+       // console.log("Class Name getting called", className, position, cursor);
+        // if(taskData){
+        //     if(task.id === taskData.id){
+        //         className = `${className} active`
+        //     }
+        // }
+       
+        return className;
+    }
+
+    const onHandleKeyDown = function(e){
+       console.log("I am getting called", cursor, e.target.className.isVisible);
+      // arrow up/down button should select next/previous list element
+      //if([37,38,39,40].indexOf(e.keyCode) > -1){
+        //e.preventDefault();
+
+        if (e.keyCode === 38 && cursor > 0) {
+            setCursorValueAction(cursor-1);
+         // this.setState( prevState => ({
+         //   cursor: prevState.cursor - 1
+         // }))
+       } else if (e.keyCode === 40 && cursor < taskLength - 1) {
+          setCursorValueAction(cursor+1);
+         // this.setState( prevState => ({
+         //   cursor: prevState.cursor + 1
+         // }))
+       }
+        // Do whatever else you want with the keydown event (i.e. your navigation).
+      //}
+      
+    }
+
     return (
-        <div style={style} className="task-list-item-wrapper">
+        <div style={style} className={getWrapperClassName(cursor, position)} tabIndex={position} >
             {!isNew &&  
                 <div className="task-list-item-delayed-wrapper">
                     <div  className={taskItemContainerClassName} >
@@ -124,7 +170,7 @@ const TaskItem = SortableElement(props => {
                             </div>
                         </div>
 
-                        <div className="task-list-item-title">
+                        <div className="task-list-item-title" onClick={onTaskClicked}>
                             <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>
                         </div>
                         <div className="task-list-item-other-container">
@@ -257,13 +303,17 @@ function mapStateToProps(store, props){
     const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;
     const isTomorrowSelected = taskConfig && taskConfig.isTomorrowSelected ? true : false;
     const isNextWeekSelected = taskConfig && taskConfig.isNextWeekSelected ? true : false;
+    const isTaskSelected = taskConfig && taskConfig.isTaskSelected ? true : false;
     return {
         isTodaySelected,
         isTomorrowSelected,
         isNextWeekSelected,
         isDateDialogOpened,
         isAssinedUserDialogOpened,
-        isDatePickerOpened
+        isDatePickerOpened,
+        isTaskSelected,
+        taskData : store.TaskListReducer.taskData,
+        cursor: store.TaskListReducer.cursor || 0
     }
 }
 
@@ -274,7 +324,10 @@ const mapActionsToProps = {
     onOpenChangeDateDialogAction,
     onOpenAssignedUserDialogAction,
     onSelectDateAction,
-    onDatePickerOpenedAction
+    onDatePickerOpenedAction,
+    getSelectedtaskItemAction,
+    setCursorValueAction
+
 };
 
 const TaskItemForm = reduxForm({

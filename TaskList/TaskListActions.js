@@ -8,6 +8,9 @@ export const ON_SELECT_DATE                 = "on_select_date";
 export const SELECTED_MEMBER_LIST           = "selected_member_list";
 export const ON_MEMBER_SELECTED             = "on_member_selected";
 export const ON_DATE_PICKER_OPENED          = "on_date_picker_opened";
+export const ON_TASK_SELECTED               = "on_task_selected";
+export const TASK_DATA                      = "task_data";
+export const LIST_CURSOR_DATA               = "list_cursor_data";
 
 
 
@@ -122,6 +125,37 @@ export function onDatePickerOpenedAction(data, id){
                 id,
                 data
             }
+        })
+    }
+}
+
+
+export function onTaskSelectedAction(data, id){
+    return (dispatch) => {
+        dispatch({
+            type : ON_TASK_SELECTED,
+            payload : {
+                id,
+                data
+            }
+        })
+    }
+}
+
+export function getSelectedtaskItemAction(data){
+    return (dispatch) => {
+        dispatch({
+            type : TASK_DATA,
+            payload : data
+        })
+    }
+}
+
+export function setCursorValueAction(data){
+    return (dispatch) => {
+        dispatch({
+            type : LIST_CURSOR_DATA,
+            payload : data
         })
     }
 }

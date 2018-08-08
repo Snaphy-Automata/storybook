@@ -10,7 +10,7 @@ import map from 'lodash/map';
 import './AssignedUserDialog.css';
 import TeamCircleIcon from '../TeamCircleIcon';
 import CustomCheckbox from '../CustomCheckbox';
-import {memberObj, MEMBERS} from '../../data/taskListData';
+//import {memberObj, MEMBERS} from '../../data/taskListData';
 import TaskHelper from '../TaskList/helper';
 
 import {getSelectedMemberListAction} from '../TaskList/TaskListActions';
@@ -21,38 +21,38 @@ class AssignedUserDailog extends React.Component {
 
 
     componentDidMount(){
-        this.memberList = MEMBERS;
-        let selectedMemberDataList = [];
-        if(this.props.task.assignedTo && this.props.task.assignedTo.length){
-            this.props.task.assignedTo.forEach((memberId, index) => {
-                selectedMemberDataList.push({member: memberId, isSelected: true});
-            });
-            this.props.getSelectedMemberListAction(selectedMemberDataList);
-        }
+        // this.memberList = MEMBERS;
+        // let selectedMemberDataList = [];
+        // if(this.props.task.assignedTo && this.props.task.assignedTo.length){
+        //     this.props.task.assignedTo.forEach((memberId, index) => {
+        //         selectedMemberDataList.push({member: memberId, isSelected: true});
+        //     });
+        //     this.props.getSelectedMemberListAction(selectedMemberDataList);
+        // }
        
     }
 
     render() {
-        console.log("Member List", MEMBERS);
-        const taskHelper = new TaskHelper(this.props.task);
-        const checkSelected = (member) =>{
-            let selectedMemberList_ = this.props.selectedMemberList;
-            let isSelected_ = false;
-            if(selectedMemberList_ && selectedMemberList_.length){
+        //console.log("Member List", MEMBERS);
+        // const taskHelper = new TaskHelper(this.props.task);
+        // const checkSelected = (member) =>{
+        //     let selectedMemberList_ = this.props.selectedMemberList;
+        //     let isSelected_ = false;
+        //     if(selectedMemberList_ && selectedMemberList_.length){
                
-                selectedMemberList_.forEach((memberData, index) =>{
-                    if(memberData.member === member){
-                        if(memberData.isSelected){
-                            isSelected_ = true;
-                        } else{
-                            isSelected_ = false;
-                        }
+        //         selectedMemberList_.forEach((memberData, index) =>{
+        //             if(memberData.member === member){
+        //                 if(memberData.isSelected){
+        //                     isSelected_ = true;
+        //                 } else{
+        //                     isSelected_ = false;
+        //                 }
                        
-                    }
-                })
-            }
-            return isSelected_;
-        }
+        //             }
+        //         })
+        //     }
+        //     return isSelected_;
+        // }
 
         return(
             <div className="assigned-user-dialog-container">
@@ -64,7 +64,7 @@ class AssignedUserDailog extends React.Component {
                 </div>
                 <div className="assigned-user-dialog-list-container">
 
-                    {MEMBERS && MEMBERS.length !== 0 && <div>
+                    {/* {MEMBERS && MEMBERS.length !== 0 && <div>
                         {
                             map(MEMBERS, function(member, index){
                                 if(index<4){
@@ -86,7 +86,7 @@ class AssignedUserDailog extends React.Component {
                         
                     </div>
                     }
-                    {MEMBERS && MEMBERS.length > 4 && <div className="assigned-user-dialog-see-more-container">See More</div>}
+                    {MEMBERS && MEMBERS.length > 4 && <div className="assigned-user-dialog-see-more-container">See More</div>} */}
                 </div>
             </div>
 
