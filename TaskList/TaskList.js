@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
-import { List, WindowScroller } from 'react-virtualized';
-import {SortableContainer, arrayMove} from 'react-sortable-hoc';
+import { List, ArrowKeyStepper } from 'react-virtualized';
+import 'react-virtualized/styles.css'; // only needs to be imported once
+import {SortableContainer, arrayMove, SortableElement} from 'react-sortable-hoc';
 
 //Custom Import
 import './TaskList.css';
@@ -39,6 +40,7 @@ const renderRow = (allData) => {
             parent,      // Reference to the parent List (instance)
             style        // Style object to be applied to row (to position it);
         } = props;
+        console.log("props",props);
         const taskId  = tasks[index];
         const task    = allData.task.byId[taskId];
         const section = displaySection(taskId, allData);
@@ -46,18 +48,27 @@ const renderRow = (allData) => {
             <div style={style}  key={key}>
             { 
                 section &&
-                <div key={section.id} style={{ background: "#fff",  margin: "0 auto"}}>
+                <div style={{ background: "#fff"}}>
                     <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
                 </div>
             }
-                <TaskItem index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+                <SortableTask index={index} taskId={taskId} task={task} allData={allData} ></SortableTask>
             </div>
-          
         )
     }
-
     return rowRenderer;
 }
+
+
+const SortableTask = SortableElement((props)=>{
+    
+    const {style, className, index, taskId, task, allData} = props;
+    return (
+        <div style={style} className={className}>
+            <TaskItem index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+        </div>
+    )
+});
 
 
 
@@ -84,16 +95,31 @@ class VirtualList extends Component {
       const {allData} = this.props;
       const rowRenderer = renderRow(allData);
       return (
-        <List
-          ref={(instance) => {
-            this.List = instance;
-          }}
-          rowHeight={this.getRowHeight.bind(this)}
-          rowRenderer={rowRenderer}
-          rowCount={allData.task.allIds.length}
-          width={800}
-          height={600}
-        />
+       
+                    <ArrowKeyStepper rowCount={allData.task.allIds.length} columnCount={1} className="task-list-item-selected">
+                    {({ onSectionRendered, scrollToRow, scrollToColumn }) => (
+                     
+                            <List
+                            ref={(instance) => {
+                                this.List = instance;
+                            }}
+                            rowHeight={this.getRowHeight.bind(this)}
+                            rowRenderer={rowRenderer}
+                            rowCount={allData.task.allIds.length}
+                            //onSectionRendered={onSectionRendered}
+                            scrollToRow={scrollToRow}
+                            width={800}
+                            height={300}
+                          
+
+                            // isScrolling={isScrolling}
+                            // onChildScroll={onChildScroll}
+                            // scrollTop={scrollTop}
+                            />
+                     
+                    )}
+                    </ArrowKeyStepper>  
+        
       );
     }
   }
@@ -135,16 +161,19 @@ class TaskList extends Component {
         }  = this.props;
   
         return (
-            <SortableList 
-                ref={(instance) => {
-                    this.SortableList = instance;
-                }}
-                onSortEnd={this.onSortEnd}
-                allData={allData}
-                helperClass={'selected'}
-                useWindowAsScrollContainer
-                useDragHandle
-            />
+            <div style={{height:"300px", width:"800px", margin: "0 auto"}}>
+                <SortableList 
+                    ref={(instance) => {
+                        this.SortableList = instance;
+                    }}
+                    onSortEnd={this.onSortEnd}
+                    allData={allData}
+                    helperClass={'selected'}
+                    //useWindowAsScrollContainer
+                    useDragHandle
+                />
+            </div>
+            
         );
     }
 }

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import map from 'lodash/map';
-import {SortableElement, SortableHandle} from 'react-sortable-hoc';
+import { SortableHandle} from 'react-sortable-hoc';
 
 //Custom import..
 import './TaskList.css';
@@ -29,7 +29,7 @@ const DragHandle = SortableHandle(() => (
     </div>
 )); // This can be any component you want
 
-const TaskItem = SortableElement((props) => {
+const TaskItem = (props) => {
    
     const {
         task,
@@ -50,10 +50,6 @@ const TaskItem = SortableElement((props) => {
         style,
         className,
     } = props;
-
-
-    console.log("task Item Getting called", props);
-
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
 
@@ -260,7 +256,7 @@ const TaskItem = SortableElement((props) => {
             }
         </div>
     );
-});
+};
 
 
 

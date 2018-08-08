@@ -378,3 +378,13 @@
 .ReactVirtualized__Grid {
     outline: none;
 }
+
+.selected{
+    background: #eee;
+}
+
+.task-list-item-selected{
+    background: red !important;
+    width: 100%;
+    height: 41px;
+}
