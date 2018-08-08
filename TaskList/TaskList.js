@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
-import { List, ArrowKeyStepper } from 'react-virtualized';
+import { List, ArrowKeyStepper , WindowScroller, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import {SortableContainer, arrayMove, SortableElement} from 'react-sortable-hoc';
 
@@ -95,9 +95,12 @@ class VirtualList extends Component {
       const {allData} = this.props;
       const rowRenderer = renderRow(allData);
       return (
-       
-                    <ArrowKeyStepper rowCount={allData.task.allIds.length} columnCount={1} className="task-list-item-selected">
-                    {({ onSectionRendered, scrollToRow, scrollToColumn }) => (
+        // <AutoSizer>  
+        //     {({ height, width }) => (
+                // <WindowScroller>
+                // {({ height, isScrolling, onChildScroll, scrollTop, registerChild }) => (
+                    // <ArrowKeyStepper rowCount={allData.task.allIds.length} columnCount={1} className="task-list-item-selected">
+                    // {({ onSectionRendered, scrollToRow }) => (
                      
                             <List
                             ref={(instance) => {
@@ -107,18 +110,20 @@ class VirtualList extends Component {
                             rowRenderer={rowRenderer}
                             rowCount={allData.task.allIds.length}
                             //onSectionRendered={onSectionRendered}
-                            scrollToRow={scrollToRow}
+                            //scrollToRow={scrollToRow}
                             width={800}
                             height={300}
-                          
-
                             // isScrolling={isScrolling}
                             // onChildScroll={onChildScroll}
                             // scrollTop={scrollTop}
                             />
                      
-                    )}
-                    </ArrowKeyStepper>  
+                    // )}
+                    // </ArrowKeyStepper>
+                // )}
+                // </WindowScroller>
+        //     )}
+        // </AutoSizer>    
         
       );
     }
