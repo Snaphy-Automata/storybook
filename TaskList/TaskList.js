@@ -4,13 +4,22 @@ import { connect } from 'react-redux';
 import map from 'lodash/map';
 import { List, WindowScroller } from 'react-virtualized';
 import {Input} from 'semantic-ui-react';
-import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+import {
+    sortableContainer,
+    sortableElement,
+    arrayMove,
+    DragLayer
+  } from 'snaphy-react-sortable-dnd'
+  
 
 //Custom Import
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 import { setCursorValueAction } from './TaskListActions';
+
+
+const dragLayer = new DragLayer()
 
 /**
  * Will return section if section is to be displayed..
@@ -46,15 +55,15 @@ const renderRow = (allData) => {
         
         const section = displaySection(taskId, allData);
         return (
-            <div style={style} index={index} key={key}>
-            { 
-                section &&
-                <div key={section.id} style={{ background: "#fff",  margin: "0 auto"}}>
-                    <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
-                </div>
-            }
-                <TaskItem  index={index} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
-            </div>
+            // <div style={style} index={index} key={key}>
+            // { 
+            //     section &&
+            //     <div key={section.id} style={{ background: "#fff",  margin: "0 auto"}}>
+            //         <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
+            //     </div>
+            // }
+                <TaskItem  style={style} index={index} key={key} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            // </div>
           
         )
     }

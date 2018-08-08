@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import map from 'lodash/map';
-import {SortableContainer, SortableElement, arrayMove, SortableHandle,} from 'snaphy-react-sortable-dnd';
+import {
+    sortableContainer,
+    sortableElement,
+    arrayMove,
+    DragLayer
+  } from 'snaphy-react-sortable-dnd'
 
 
 //Custom import..
