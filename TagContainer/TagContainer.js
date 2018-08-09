@@ -48,8 +48,8 @@ const TagContainer = (props) => {
     const {
         isButtonClicked, 
         onAddButtonClickedAction, 
-        totalItemList, 
-        selectedItemList, 
+        totalItemList,  
+        selectedUserList,
         type, 
         addUserElementAction, 
         addLabelElementAction, 
@@ -96,7 +96,7 @@ const TagContainer = (props) => {
                 </div>
                 {type==="label" && <div className="tag-container-list-container">
                     {
-                        map(selectedItemList, function(selectedItem, index){
+                        map(selectedUserList, function(selectedItem, index){
                             return(
                                 <OverFlowLabel key={index} name={selectedItem.name} color = {selectedItem.color}></OverFlowLabel>
                             )
@@ -105,7 +105,7 @@ const TagContainer = (props) => {
                 </div>}
                 {type === "user" && <div className="tag-container-list-container">
                     {
-                        map(selectedItemList, function(selectedItemId, index){
+                        map(selectedUserList, function(selectedItemId, index){
                             const userObj = totalItemList.byId[selectedItemId];
                             let name = `${userObj.firstName}`
                             const lastName = `${userObj.lastName}` ? `${userObj.lastName}` : "";
@@ -129,20 +129,17 @@ const TagContainer = (props) => {
                             const selectItemClick = function(){
                                 if(type === "user"){
                                     
-                                    let selectedItemDataList = [...selectedItemList];
+                                    let selectedItemDataList = [...selectedUserList];
                                     let notFoundCount = 0;
                                     for(var i=0;i<selectedItemDataList.length;i++){
                                         if(selectedItemDataList[i] === itemId){
                                             
                                             selectedItemDataList.splice(i, 1);
-                                            console.log("Select Item List", selectedItemList, selectedItemDataList);
-                                            //console.log("Checking Selected Value", selectedItemDataList);
                                             break;
                                         }
                                         notFoundCount ++;
                                     }
-                                    if(notFoundCount === selectedItemList.length){
-                                        console.log(" I am getting called", selectedItemDataList, notFoundCount, selectedItemList.length);
+                                    if(notFoundCount === selectedUserList.length){
                                         selectedItemDataList.push(itemId);
                                     }
                                   
@@ -163,9 +160,9 @@ const TagContainer = (props) => {
                             const getSelectedValue = function(){
                                 let isSelected = false;
                                 if(type === "user"){
-                                    for(var i=0;i<selectedItemList.length;i++){
+                                    for(var i=0;i<selectedUserList.length;i++){
                                         console.log("Selecred User ", itemId);
-                                        if(selectedItemList[i] === itemId){
+                                        if(selectedUserList[i] === itemId){
                                             isSelected = true;
                                             break;
                                         }
@@ -205,7 +202,7 @@ const TagContainer = (props) => {
 // Retrieve data from store as props
 function mapStateToProps(store) {
     return {
-        selectedItemList : store.TaskListReducer.selectedUserList,
+        selectedUserList : store.TaskListReducer.selectedUserList,
         // isLabelDialogOpened : store.AllTaskReducer.isLabelDialogOpened,
         // initializeLabelDialogFormData : store.AllTaskReducer.initializeLabelDialogFormData
     }
