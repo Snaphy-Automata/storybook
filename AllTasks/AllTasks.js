@@ -1,27 +1,30 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 
 //Custom Import
-import {initializeDataAction} from '../ModelData/ModelDataActions';
+import { initializeDataAction } from '../ModelData/ModelDataActions';
 import ALL_DATA from '../../data/taskListData';
 import TaskList from '../TaskList';
+import TaskDetail from '../TaskDetail';
 
 
-class AllTasks extends React.Component{
+class AllTasks extends React.Component {
 
 
-    componentWillMount(){
-       
+    componentWillMount() {
+
         this.props.initializeDataAction(ALL_DATA);
-        
+
     }
 
-    render(){
+    render() {
         console.log(" I am getting called");
-        return(
-            <div>
-                <TaskList></TaskList>
+        return (
+            <div style={{ backgroundColor: "#f6f8f9", width: '1170px', height: '737px' }}>
+                <div style={{ width: '463px', float: 'right', backgroundColor: "#ffffff" }}>
+                    <TaskDetail></TaskDetail>
+                </div>
             </div>
         )
     }
@@ -29,7 +32,7 @@ class AllTasks extends React.Component{
 }
 
 
-function mapStateToProps(store){
+function mapStateToProps(store) {
     return {
         // users : store.ModelDataReducer.users,
         // labels : store.ModelDataReducer.labels,

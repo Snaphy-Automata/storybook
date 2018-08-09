@@ -9,6 +9,7 @@ import SelectedLabel from '../SelectLabel';
 import OverFlowLabel from '../OverFlowLabel';
 
 //Import Action..
+import {addSelectedUserToListAction} from '../TaskList/TaskListActions';
 //import {  addUserElementAction,addLabelElementAction, labelDialogOpenedAction, initializeLabelDialogFormAction, editLabelAction, addLabelAction} from '../../AllTaskActions';
 import LabelDialog from '../LabelDialog';
 
@@ -56,6 +57,8 @@ const TagContainer = (props) => {
         labelDialogOpenedAction, 
         initializeLabelDialogFormData
     } = props;
+
+   // console.log("tag Container total list", totalItemList);
     const getClassName = function () {
         let className;
         if (isButtonClicked) {
@@ -102,9 +105,13 @@ const TagContainer = (props) => {
                 </div>}
                 {type === "user" && <div className="tag-container-list-container">
                     {
-                        map(selectedItemList, function(selectedItem, index){
+                        map(selectedItemList, function(selectedItemId, index){
+                            const userObj = totalItemList.byId[selectedItemId];
+                            let name = `${userObj.firstName}`
+                            const lastName = `${userObj.lastName}` ? `${userObj.lastName}` : "";
+                            name = `${name} ${lastName}`
                             return(
-                                <OverFlowLabel key={index} name={selectedItem.name} src = "fdr"></OverFlowLabel>
+                                <OverFlowLabel key={index} name={name} src = "fdr"></OverFlowLabel>
                             )
                         })
                     }
@@ -117,23 +124,65 @@ const TagContainer = (props) => {
             {isButtonClicked && 
                 <div className="tag-conatiner-total-item-list-container">
                     {
-                        map(totalItemList, function (itemObj, index) {
+                        map(totalItemList.allIds, function (itemId, index) {
 
                             const selectItemClick = function(){
-                                itemObj = {
-                                    ...itemObj,
-                                    isSelected : !itemObj.isSelected
+                                if(type === "user"){
+                                    
+                                    let selectedItemDataList = [...selectedItemList];
+                                    let notFoundCount = 0;
+                                    for(var i=0;i<selectedItemDataList.length;i++){
+                                        if(selectedItemDataList[i] === itemId){
+                                            
+                                            selectedItemDataList.splice(i, 1);
+                                            console.log("Select Item List", selectedItemList, selectedItemDataList);
+                                            //console.log("Checking Selected Value", selectedItemDataList);
+                                            break;
+                                        }
+                                        notFoundCount ++;
+                                    }
+                                    if(notFoundCount === selectedItemList.length){
+                                        console.log(" I am getting called", selectedItemDataList, notFoundCount, selectedItemList.length);
+                                        selectedItemDataList.push(itemId);
+                                    }
+                                  
+                                    props.addSelectedUserToListAction(selectedItemDataList);
                                 }
-                                if(type === "label"){
-                                    addLabelElementAction(itemObj);
-                                } else if(type === "user"){
-                                    addUserElementAction(itemObj);
-                                }
+                                // itemObj = {
+                                //     ...itemObj,
+                                //     isSelected : !itemObj.isSelected
+                                // }
+                                // if(type === "label"){
+                                //     addLabelElementAction(itemObj);
+                                // } else if(type === "user"){
+                                //     addUserElementAction(itemObj);
+                                // }
 
                             }
+
+                            const getSelectedValue = function(){
+                                let isSelected = false;
+                                if(type === "user"){
+                                    for(var i=0;i<selectedItemList.length;i++){
+                                        console.log("Selecred User ", itemId);
+                                        if(selectedItemList[i] === itemId){
+                                            isSelected = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                return isSelected;
+                            }
+
+                            const itemObj = totalItemList.byId[itemId];
+                            let name = `${itemObj.firstName}`
+                            const lastName = `${itemObj.lastName}` ? `${itemObj.lastName}` : "";
+                            name = `${name} ${lastName}`
+
                             return (
                                 <div key={index} style={{ display: "inline-block" }}>
-                                    {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom:10}} name={itemObj.name} isSelected={itemObj.isSelected} color={itemObj.color} onClick={selectItemClick}/>}
+                                    {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom:10}} name={name} isSelected={getSelectedValue()} color={itemObj.color} onClick={selectItemClick}/>}
                                     {index === totalItemList.length - 1 && type === "label" && <Button size="tiny" onClick={onOpenLabelDialog} basic>
                                         <Icon name="tag" />
                                         Create/Update Label
@@ -156,6 +205,7 @@ const TagContainer = (props) => {
 // Retrieve data from store as props
 function mapStateToProps(store) {
     return {
+        selectedItemList : store.TaskListReducer.selectedUserList,
         // isLabelDialogOpened : store.AllTaskReducer.isLabelDialogOpened,
         // initializeLabelDialogFormData : store.AllTaskReducer.initializeLabelDialogFormData
     }
@@ -165,6 +215,7 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here
+    addSelectedUserToListAction
     // addLabelElementAction,
     // addUserElementAction,
     // labelDialogOpenedAction,

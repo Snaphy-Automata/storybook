@@ -15,6 +15,10 @@ import {
     ON_DURATION_STATE_CHANGED,
     DURATION_DATA,
     IS_COMPLTETED_CLICKED,
+    ON_STATUS_CLICKED,
+    STATUS_DATA,
+    ON_USER_ADD_BUTTON_CLICKED,
+    ADD_SELECTED_USER_TO_LIST
 } from './TaskListActions';
 
 
@@ -32,7 +36,11 @@ const initialState = {
     previousDateDialogId: null,
     isDurationClicked : false,
     durationData : null,
-    isMarkCompletedClicked : false
+    isMarkCompletedClicked : false,
+    isStatusClicked : false,
+    statusData : "Status",
+    isUserButtonClicked : false,
+    selectedUserList : []
 }
 
 const TaskListReducer = (state = initialState, action) => {
@@ -213,6 +221,39 @@ const TaskListReducer = (state = initialState, action) => {
             state = {
                 ...state,
                 isMarkCompletedClicked : action.payload
+            }
+            break;
+        }
+
+        case ON_STATUS_CLICKED:{
+            state = {
+                ...state,
+                isStatusClicked : action.payload
+            }
+            break;
+        }
+
+        case STATUS_DATA:{
+            state = {
+                ...state,
+                statusData : action.payload
+            }
+            break;
+        }
+
+        case  ON_USER_ADD_BUTTON_CLICKED:{
+            state = {
+                ...state,
+                isUserButtonClicked : action.payload
+            }
+            break;
+        }
+
+        case ADD_SELECTED_USER_TO_LIST:{
+            //console.log("Reducer getting called", state.selectedUserList, action.payload);
+            state = {
+                ...state,
+                selectedUserList : [...action.payload]
             }
             break;
         }

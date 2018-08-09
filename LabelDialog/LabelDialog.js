@@ -34,7 +34,7 @@ const LabelDialog = (props) => {
         labelDialogOpenedAction
     } = props;
 
-    console.log("Label Dialog Props", props);
+    //console.log("Label Dialog Props", props);
 
     const colorList = [
         "#3b86ff",

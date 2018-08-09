@@ -19,13 +19,13 @@ import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
 import DurationForm from '../DurationForm';
 
-import {onMarkCompleteClickedAction} from '../TaskList/TaskListActions';
+import {onMarkCompleteClickedAction, onStatusChangedAction, getStatusDataAction, onUserAddButtonClickedAction} from '../TaskList/TaskListActions';
 
 
 
 const TaskDetail = (props) => {
 
-    // console.log("Task detail Props", props);
+    console.log("Task detail Props", props);
     const { handleSubmit, pristine, submitting, invalid, error } = props;
 
     const options = [
@@ -39,15 +39,25 @@ const TaskDetail = (props) => {
     const uid = Math.random().toString(36).substring(7);
 
     const onDataChanged = (event, data) => {
-        props.getStatusData(data.value);
-        props.onStatusChanged();
-        props.onDropDownStateChanged()
+        props.getStatusDataAction(data.value);
+        props.onStatusChangedAction(!props.isStatusClicked);
+        //props.getStatusData(data.value);
+        //props.onStatusChanged();
+        //props.onDropDownStateChanged()
     }
 
     const statusText = props.statusData || "Status";
 
     const onMarkCompletedClicked = function(){
         props.onMarkCompleteClickedAction(!props.isMarkCompletedClicked);
+    }
+
+    const onStatusChanged = () =>{
+        props.onStatusChangedAction(!props.isStatusClicked);
+    }
+
+    const onUserAddButtonClicked = () => {
+        props.onUserAddButtonClickedAction(!props.isUserButtonClicked);
     }
 
     return (
@@ -112,11 +122,11 @@ const TaskDetail = (props) => {
                         </Button>}
                         </div>
                         <div className="task-detail-status-container">
-                            {!props.isStatusClicked && <Button size="tiny" basic icon labelPosition='right' onClick={props.onStatusChanged} className="task-detail-action-button">
+                            {!props.isStatusClicked && <Button size="tiny" basic icon labelPosition='right' onClick={onStatusChanged} style={{width:"127px"}} className="task-detail-action-button">
                                 <Icon name="angle down" />
                                 {statusText}
                             </Button>}
-                            {props.isStatusClicked && <Field options={options} name="status.title" type="text" placeholder="In Progress" open={props.isDropDownOpened} size="tiny" onDataChanged={onDataChanged} component={DropDownFieldUI} />}
+                            {props.isStatusClicked && <Field options={options} name="status.title" type="text" placeholder="In Progress" open={props.isStatusClicked} size="tiny" onDataChanged={onDataChanged} style={{width:"127px"}} component={DropDownFieldUI} />}
 
                         </div>
                         <div className="task-detail-archive-container">
@@ -131,11 +141,9 @@ const TaskDetail = (props) => {
                         <div className="task-detail-assigned-to-text">Assigned To</div>
                         <TagContainer
                             type="user"
-                            {...props}
-                            onAddButtonClickedAction={props.onUserAddButtonClicked}
+                            onAddButtonClickedAction={onUserAddButtonClicked}
                             isButtonClicked={props.isUserButtonClicked}
-                            totalItemList={props.totalUserItemList}
-                            selectedItemList={props.selectedUserItemList}>
+                            totalItemList={props.users}>
                         </TagContainer>
                     </div>
 
@@ -247,12 +255,22 @@ const TaskDetail = (props) => {
 
 function mapStateToProps(store){
     return {
-        isMarkCompletedClicked : store.TaskListReducer.isMarkCompletedClicked
+        isMarkCompletedClicked : store.TaskListReducer.isMarkCompletedClicked,
+        isStatusClicked : store.TaskListReducer.isStatusClicked,
+        statusData : store.TaskListReducer.statusData,
+        isDropDownOpened : store.TaskListReducer.isDropDownOpened,
+        isUserButtonClicked : store.TaskListReducer.isUserButtonClicked,
+        labels : store.ModelDataReducer.labels,
+        users : store.ModelDataReducer.users,
+        // selectedUserList : store.TaskListReducer.selectedUserList
     }
 }
 
 const mapActionsToProps = {
-    onMarkCompleteClickedAction
+    onMarkCompleteClickedAction,
+    onStatusChangedAction,
+    getStatusDataAction,
+    onUserAddButtonClickedAction
 }
 
 

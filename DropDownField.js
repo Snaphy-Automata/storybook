@@ -53,6 +53,7 @@ const DropDownField = (props) => {
                 placeholder={placeholder}
                 value={input.value}
                 fluid
+                style={style}
                 size={size}
                 open={open}
                 //defaultValue={defaultValue}

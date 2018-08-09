@@ -1,7 +1,7 @@
 .select-label-container{
     border-radius: 5px;
     border: solid;
-    border-color : #eee;
+    border-color: #eee;
     min-width: 80px;
     border-width: 0.7px;
     display: inline-block;
@@ -14,8 +14,8 @@
     background-color: #a6b9cc;
     border-radius: 0px 5px 5px 0;
     text-align: center;
-    padding: 5px;
-    font-size: 12px;
+    padding: 3px;
+    font-size: 10px;
     color: white;
 }
 
@@ -23,7 +23,10 @@
     min-width: 50px;
     display: inline-block;
     text-align: center;
-    padding: 5px 10px 5px 8px;
-    color: #4d4f5c
+    padding: 3px 10px 3px 8px;
+    font-size: 10px;
+    font-weight: normal;
+    color: #4d4f5c;
+    font-family: Lato;
 
 }

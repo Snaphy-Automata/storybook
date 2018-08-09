@@ -33,7 +33,7 @@ const IconLabel = ({ size, icon, title, src, name, isLabel, onClick, onRemove })
                 <div style={{ display: 'inline-block', float: "left", marginLeft: -2 }}>
                     {src && <TeamCircleIcon size={size} style={{ backgroundColor: "#dddddd" }} src="sdxed" onClick={() => { console.log("Item Has been clicked") }}></TeamCircleIcon>}
                 </div>
-                <div className="label-icon-name-container">{name}</div>
+                <div className="label-icon-src-name-container">{name}</div>
 
             </div>}
         </div>
