@@ -18,7 +18,9 @@ import {
     ON_STATUS_CLICKED,
     STATUS_DATA,
     ON_USER_ADD_BUTTON_CLICKED,
-    ADD_SELECTED_USER_TO_LIST
+    ADD_SELECTED_USER_TO_LIST,
+    ON_OPEN_DATE_PICKER,
+    SET_DATE_DATA
 } from './TaskListActions';
 
 
@@ -40,7 +42,9 @@ const initialState = {
     isStatusClicked : false,
     statusData : "Status",
     isUserButtonClicked : false,
-    selectedUserList : []
+    selectedUserList : [],
+    dateData : null,
+    isDatePickerOpened : false
 }
 
 const TaskListReducer = (state = initialState, action) => {
@@ -255,6 +259,29 @@ const TaskListReducer = (state = initialState, action) => {
                 ...state,
                 selectedUserList : [...action.payload]
             }
+            break;
+        }
+
+        case ON_OPEN_DATE_PICKER:{
+            state = {
+                ...state,
+                [action.payload.id]:{
+                    isDatePickerOpened : action.payload.data,
+                    dateData : action.payload.dateData
+                }
+            }
+            break;
+        }
+
+        case SET_DATE_DATA:{
+            state = {
+                ...state,
+                [action.payload.id]:{
+                    dateData : action.payload.data,
+                    isDatePickerOpened : action.payload.isDatePickerOpened
+                }
+            }
+            console.log("Date Data Reducer getting called", state);
             break;
         }
 

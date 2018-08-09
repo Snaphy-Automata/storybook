@@ -19,6 +19,8 @@ export const  ON_STATUS_CLICKED                   = "on_status_changed";
 export const  STATUS_DATA                         = "status_data";
 export const  ON_USER_ADD_BUTTON_CLICKED          = "on_user_add_button_clicked";
 export const  ADD_SELECTED_USER_TO_LIST           = "add_selected_user_to_list";
+export const  ON_OPEN_DATE_PICKER                 = "on_open_date_picker";
+export const  SET_DATE_DATA                       = "set_date_data";
 
 
 
@@ -240,6 +242,33 @@ export function addSelectedUserToListAction(selectedUserList){
         dispatch({
             type : ADD_SELECTED_USER_TO_LIST,
             payload : selectedUserList
+        })
+    }
+}
+
+
+export function onDatePickerStateChangedAction(id, data, dateData){
+    return (dispatch) => {
+        dispatch({
+            type : ON_OPEN_DATE_PICKER,
+            payload : {
+                id,
+                data,
+                dateData
+            }
+        })
+    }
+}
+
+export function setDateDataAction(id, data, isDatePickerOpened){
+    return (dispatch) => {
+        dispatch({
+            type : SET_DATE_DATA,
+            payload : {
+                id,
+                data,
+                isDatePickerOpened
+            }
         })
     }
 }

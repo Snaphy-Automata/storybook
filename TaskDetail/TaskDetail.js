@@ -150,13 +150,13 @@ const TaskDetail = (props) => {
                     <div className="task-detail-date-container">
                         <div className="task-detail-due-date-container">
                             <div className="task-detail-due-date-text">Due Date</div>
-                                <DatePickerForm title="Due Date" isDatePickerOpened={props.isDueDatePickerOpened} dateData={props.dueDatedata} onOpenDatePicker={props.onOpenDueDatePicker} onDayChangedAction={props.onDueDayChanged} onRemoveDate={props.onRemoveDueDate} style={{marginTop:"7px"}}/>
+                                <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} style={{marginTop:"7px"}}/>
                                 {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
 
                         </div>
                         <div className="task-detail-start-date-container">
                             <div className="task-detail-start-date-text">Start Date</div>
-                                <DatePickerForm title="Start Date" isDatePickerOpened={props.isStartDatePickerOpened} dateData={props.startDateData} onOpenDatePicker={props.onOpenStartDatePicker} onDayChangedAction={props.onStartDayChanged} onRemoveDate={props.onRemoveStartDate} style={{marginTop:"7px"}}/>
+                                <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} style={{marginTop:"7px"}}/>
                                 {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
 
                         </div>

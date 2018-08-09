@@ -12,9 +12,10 @@ const InputWithIcon = (props) => {
     return (
         <Input
             {...props}
-            size="tiny"
-            onBlur={onBlurEvent}
+            size="mini"
+            onBlur={props.onBlur}
             autoFocus
+            style={{width:"120px", height:"32px"}}
             icon='calendar minus outline'
             iconPosition='left'>
         </Input>
