@@ -156,16 +156,30 @@
     float: left;
 }
 
+.task-detail-due-date-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
 .task-detail-start-date-container{
     display: inline-block;
     font-family: Lato;
-    margin-left: 50px;
+    margin-left: 35px;
+}
+
+.task-detail-start-date-text{
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .task-detail-duration-container{
-    display: inline-block;
     font-family: Lato;
-    margin-left: 50px;
+    float: right;
+}
+
+.task-detail-duration-text{
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .task-detail-labels-container{

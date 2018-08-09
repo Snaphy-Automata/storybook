@@ -11,6 +11,10 @@ export const ON_DATE_PICKER_OPENED          = "on_date_picker_opened";
 export const ON_TASK_SELECTED               = "on_task_selected";
 export const TASK_DATA                      = "task_data";
 export const LIST_CURSOR_DATA               = "list_cursor_data";
+export const STORE_PREVIOUS_DATE_DIALOG_STATE  = "store_previous_date_dialog_state";
+export const ON_DURATION_STATE_CHANGED         = "on_duration_state_changed";
+export const DURATION_DATA                     = "duration_data";
+export const IS_COMPLTETED_CLICKED             = "is_completed_clicked";
 
 
 
@@ -155,6 +159,43 @@ export function setCursorValueAction(data){
     return (dispatch) => {
         dispatch({
             type : LIST_CURSOR_DATA,
+            payload : data
+        })
+    }
+}
+
+export function storeDateDialogState(taskId){
+    return (dispatch) => {
+        dispatch({
+            type : STORE_PREVIOUS_DATE_DIALOG_STATE,
+            payload : taskId
+        })
+    }
+}
+
+
+export function onDurationStateChangedAction(data){
+    return (dispatch) => {
+        dispatch({
+            type : ON_DURATION_STATE_CHANGED,
+            payload : data
+        })
+    }
+}
+
+export function getDurationDataAction(data){
+    return (dispatch) => {
+        dispatch({
+            type : DURATION_DATA,
+            payload : data
+        })
+    }
+}
+
+export function onMarkCompleteClickedAction(data){
+    return (dispatch) => {
+        dispatch({
+            type : IS_COMPLTETED_CLICKED,
             payload : data
         })
     }

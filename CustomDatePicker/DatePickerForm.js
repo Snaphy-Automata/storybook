@@ -6,7 +6,7 @@ import CustomDatePicker from './CustomDatePicker';
 const DatePickerForm = (props) =>{
 
     return (
-        <Field width={6} inline  required name="dateValue" {...props} component={CustomDatePicker}></Field>
+        <Field inline  required name="dateValue" {...props} component={CustomDatePicker} style={props.style}></Field>
     )
 
 }

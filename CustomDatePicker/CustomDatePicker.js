@@ -28,7 +28,7 @@ import IconLabel    from '../IconLabel';
 
 
 const DatePicker = (props) => {
-  let { format, meta: { touched, error }, width,  required, isDatePickerOpened, dateData, onOpenDatePicker, onDayChangedAction, title, onRemoveDate} = props;
+  let { format, meta: { touched, error }, width,  required, isDatePickerOpened, dateData, onOpenDatePicker, onDayChangedAction, title, onRemoveDate, style} = props;
   format = format || "DD/MM/YYYY";
 
   // const onOpenDataPicker = function(){
@@ -68,9 +68,8 @@ const onBlurEvent = function(){
     return value;
   }
   return (
-    <div>
-      <Form.Field width={width} >
-        { props.label && <label>{props.label}</label> }
+    <div style={style}>
+      {isDatePickerOpened && <Form.Field >
         {isDatePickerOpened && <DayPickerInput
         showOverlay 
         placeholder={format}
@@ -89,9 +88,9 @@ const onBlurEvent = function(){
         // }} 
         />}
         {touched && error && <span>{error}</span>}
-      </Form.Field>
-      {!isDatePickerOpened &&  dateData && <IconLabel size="tiny" icon="calendar minus outline" name={getDate()} isLabel onClick={onOpenDatePicker} onRemove={onRemoveDate}></IconLabel>}
-      {!isDatePickerOpened && !dateData && <IconLabel size="tiny" icon="calendar minus outline" name={getDate()} onClick={onOpenDatePicker}></IconLabel>}
+      </Form.Field>}
+      {!isDatePickerOpened &&  dateData && <IconLabel size="small" icon="calendar minus outline" name={getDate()} isLabel onClick={onOpenDatePicker} onRemove={onRemoveDate}></IconLabel>}
+      {!isDatePickerOpened && !dateData && <IconLabel size="small" icon="calendar minus outline" name={getDate()} onClick={onOpenDatePicker}></IconLabel>}
     </div>
    
   );

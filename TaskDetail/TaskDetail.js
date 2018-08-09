@@ -17,6 +17,9 @@ import DropDownFieldUI from '../DropDownField';
 import SnaphyForm from '../SnaphyForm'
 import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
+import DurationForm from '../DurationForm';
+
+import {onMarkCompleteClickedAction} from '../TaskList/TaskListActions';
 
 
 
@@ -43,9 +46,13 @@ const TaskDetail = (props) => {
 
     const statusText = props.statusData || "Status";
 
+    const onMarkCompletedClicked = function(){
+        props.onMarkCompleteClickedAction(!props.isMarkCompletedClicked);
+    }
+
     return (
         <div>
-            <SnaphyForm onSubmit={handleSubmit} error={error}>
+            <SnaphyForm error={error}>
 
                 {/* Header Section */}
                 <div className="task-detail-header-conatiner">
@@ -95,11 +102,11 @@ const TaskDetail = (props) => {
                     </div>
                     <div className="task-detail-task-action-button-conatiner">
                         <div className="task-detail-completed-container">
-                            {!props.isMarkCompletedClicked && <Button size="tiny" basic onClick={props.onMarkCompletedClicked} className="task-detail-action-button">
+                            {!props.isMarkCompletedClicked && <Button size="tiny" basic onClick={onMarkCompletedClicked} className="task-detail-action-button">
                                 <Icon name="check" />
                                 Mark Complete
                         </Button>}
-                            {props.isMarkCompletedClicked && <Button size="tiny" color="green" onClick={props.onMarkCompletedClicked} className="task-detail-action-button">
+                            {props.isMarkCompletedClicked && <Button size="tiny" color="green" onClick={onMarkCompletedClicked} className="task-detail-action-button">
                                 <Icon name="check" />
                                 Completed
                         </Button>}
@@ -134,25 +141,22 @@ const TaskDetail = (props) => {
 
                     <div className="task-detail-date-container">
                         <div className="task-detail-due-date-container">
-                            <div>Due Date</div>
-                            <div style={{ marginTop: "5px" }}>
-                                <DatePickerForm title="Due Date" isDatePickerOpened={props.isDueDatePickerOpened} dateData={props.dueDatedata} onOpenDatePicker={props.onOpenDueDatePicker} onDayChangedAction={props.onDueDayChanged} onRemoveDate={props.onRemoveDueDate} />
+                            <div className="task-detail-due-date-text">Due Date</div>
+                                <DatePickerForm title="Due Date" isDatePickerOpened={props.isDueDatePickerOpened} dateData={props.dueDatedata} onOpenDatePicker={props.onOpenDueDatePicker} onDayChangedAction={props.onDueDayChanged} onRemoveDate={props.onRemoveDueDate} style={{marginTop:"7px"}}/>
                                 {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
-                            </div>
 
                         </div>
                         <div className="task-detail-start-date-container">
-                            <div>Start Date</div>
-                            <div style={{ marginTop: "5px" }}>
-                                <DatePickerForm title="Start Date" isDatePickerOpened={props.isStartDatePickerOpened} dateData={props.startDateData} onOpenDatePicker={props.onOpenStartDatePicker} onDayChangedAction={props.onStartDayChanged} onRemoveDate={props.onRemoveStartDate} />
+                            <div className="task-detail-start-date-text">Start Date</div>
+                                <DatePickerForm title="Start Date" isDatePickerOpened={props.isStartDatePickerOpened} dateData={props.startDateData} onOpenDatePicker={props.onOpenStartDatePicker} onDayChangedAction={props.onStartDayChanged} onRemoveDate={props.onRemoveStartDate} style={{marginTop:"7px"}}/>
                                 {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
-                            </div>
 
                         </div>
                         <div className="task-detail-duration-container">
-                            <div>Duration</div>
-                            <div style={{ marginTop: "5px" }}>
-                                <IconLabel size="tiny" icon="clock outline" name="Duration" />
+                            <div className="task-detail-duration-text">Duration</div>
+                            <div style={{ marginTop: "7px" }}>
+                                <DurationForm></DurationForm>
+                                {/* <IconLabel size="small" icon="clock outline" name="Duration" /> */}
 
                             </div>
 
@@ -241,13 +245,23 @@ const TaskDetail = (props) => {
 
 }
 
+function mapStateToProps(store){
+    return {
+        isMarkCompletedClicked : store.TaskListReducer.isMarkCompletedClicked
+    }
+}
+
+const mapActionsToProps = {
+    onMarkCompleteClickedAction
+}
+
 
 const TaskDetailForm = reduxForm({
     form: "taskForm",
     enableReinitialize: true
 })(TaskDetail);
 
-export default TaskDetailForm;
+export default connect(mapStateToProps, mapActionsToProps)(TaskDetailForm);
 
 
 

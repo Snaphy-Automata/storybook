@@ -11,7 +11,10 @@ import {
     ON_DATE_PICKER_OPENED,
     ON_TASK_SELECTED,
     TASK_DATA,
-    LIST_CURSOR_DATA
+    LIST_CURSOR_DATA,
+    ON_DURATION_STATE_CHANGED,
+    DURATION_DATA,
+    IS_COMPLTETED_CLICKED,
 } from './TaskListActions';
 
 
@@ -26,6 +29,10 @@ const initialState = {
     isTaskSelected : false,
     taskData : null,
     cursor : 0,
+    previousDateDialogId: null,
+    isDurationClicked : false,
+    durationData : null,
+    isMarkCompletedClicked : false
 }
 
 const TaskListReducer = (state = initialState, action) => {
@@ -114,8 +121,17 @@ const TaskListReducer = (state = initialState, action) => {
         }
 
         case ON_DATE_PICKER_OPENED:{
+            if(action.payload.previousId){
+                state = {
+                    ...state,
+                    [action.payload.previousId]:{
+                        isDatePickerOpened : false
+                    }
+                }
+            }
             state = {
                 ...state,
+                previousDateDialogId : action.payload.id,
                 [action.payload.id]:{
                     isDatePickerOpened : action.payload.data
                 }
@@ -174,6 +190,31 @@ const TaskListReducer = (state = initialState, action) => {
                 ...state,
                 cursor : action.payload
             }
+            break;
+        }
+
+        case ON_DURATION_STATE_CHANGED:{
+            state = {
+                ...state,
+                isDurationClicked : action.payload
+            }
+            break;
+        }
+
+        case DURATION_DATA:{
+            state = {
+                ...state,
+                durationData : action.payload
+            }
+            break;
+        }
+
+        case IS_COMPLTETED_CLICKED:{
+            state = {
+                ...state,
+                isMarkCompletedClicked : action.payload
+            }
+            break;
         }
 
     }
