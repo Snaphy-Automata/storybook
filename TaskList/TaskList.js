@@ -94,6 +94,7 @@ class VirtualList extends Component {
 
 
     isRowLoaded ({ index }) {
+        const allData = this.props.allData;
         return !!allData.task.allIds[index];
     }
       
