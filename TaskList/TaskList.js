@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
-import { List, ArrowKeyStepper , WindowScroller, AutoSizer} from 'react-virtualized';
+import { List, InfiniteLoader} from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
+import Promise from 'bluebird';
 import {SortableContainer, arrayMove, SortableElement} from 'react-sortable-hoc';
 
 //Custom Import
@@ -11,26 +12,15 @@ import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 
-/**
- * Will display section based on the data..
- */
-const displaySection = (taskId, allData) => {
-    const task = allData.task.byId[taskId];
-    const sectionId = task.sectionId;
-    const section = allData.section.byId[sectionId];
-    const sectionFirstTaskId = section.tasks[0].id;
-    if(sectionFirstTaskId === taskId){
-        return section;
-    }else{
-        return false;
-    }
 
-};
+
+  
 
 
 
 const renderRow = (allData) => {
     const tasks = allData.task.allIds;
+    
     const rowRenderer =  (props)  => {
         const {
             index,       // Index of row
@@ -40,24 +30,36 @@ const renderRow = (allData) => {
             parent,      // Reference to the parent List (instance)
             style        // Style object to be applied to row (to position it);
         } = props;
-        console.log("props",props);
-        const taskId  = tasks[index];
-        const task    = allData.task.byId[taskId];
-        const section = displaySection(taskId, allData);
+        const taskOrSectionId  = tasks[index];
+        const taskOrSection    = allData.task.byId[taskOrSectionId];
+
+      
         return (
             <div style={style}  key={key}>
             { 
-                section &&
-                <div style={{ background: "#fff"}}>
-                    <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
-                </div>
+                taskOrSection && taskOrSection.type === "section" && 
+                <SortableHeading index={index} section={taskOrSection}></SortableHeading>
             }
-                <SortableTask index={index} taskId={taskId} task={task} allData={allData} ></SortableTask>
+            {
+                taskOrSection && taskOrSection.type === "task" && 
+                <SortableTask index={index} taskId={taskOrSectionId} task={taskOrSection} allData={allData} ></SortableTask>
+            }
             </div>
         )
     }
     return rowRenderer;
 }
+
+
+const SortableHeading = SortableElement((props)=>{
+    const {style, section} = props;
+    return (
+        <div style={{background: "#fff", ...style}}>
+            <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
+        </div>
+    )
+});
+
 
 
 const SortableTask = SortableElement((props)=>{
@@ -84,16 +86,39 @@ class VirtualList extends Component {
         const tasks     = allData.task.allIds;
         const taskId    = tasks[index];
         const task      = allData.task.byId[taskId];
-        if(displaySection(taskId, allData)){
-            return 105
+        if(task.type === "section"){
+            return 65
         }
-
         return 41;
     }
+
+
+    isRowLoaded ({ index }) {
+        return !!allData.task.allIds[index];
+    }
+      
+    loadMoreRows ({ startIndex, stopIndex }) {
+        const that = this;
+        //FIXME: 9th Aug Robins
+        // Change it with server call..
+        return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                console.log("More data loaded", startIndex, stopIndex);
+                that.isLoaded = true;
+                resolve();
+            }, 600)
+        });
+        // return fetch(`path/to/api?startIndex=${startIndex}&stopIndex=${stopIndex}`)
+        //     .then(response => {
+        //     // Store response data in list...
+        //     })
+    }
+
 
     render() {
       const {allData} = this.props;
       const rowRenderer = renderRow(allData);
+      const totalRows = allData.task.allIds.length;
       return (
         // <AutoSizer>  
         //     {({ height, width }) => (
@@ -101,22 +126,28 @@ class VirtualList extends Component {
                 // {({ height, isScrolling, onChildScroll, scrollTop, registerChild }) => (
                     // <ArrowKeyStepper rowCount={allData.task.allIds.length} columnCount={1} className="task-list-item-selected">
                     // {({ onSectionRendered, scrollToRow }) => (
-                     
-                            <List
-                            ref={(instance) => {
-                                this.List = instance;
-                            }}
-                            rowHeight={this.getRowHeight.bind(this)}
-                            rowRenderer={rowRenderer}
-                            rowCount={allData.task.allIds.length}
-                            //onSectionRendered={onSectionRendered}
-                            //scrollToRow={scrollToRow}
-                            width={800}
-                            height={300}
-                            // isScrolling={isScrolling}
-                            // onChildScroll={onChildScroll}
-                            // scrollTop={scrollTop}
-                            />
+                    <InfiniteLoader
+                    isRowLoaded={this.isRowLoaded.bind(this)}
+                    loadMoreRows={this.loadMoreRows.bind(this)}
+                    rowCount={totalRows}
+                    >
+                        {({ onRowsRendered, registerChild }) => (
+                            <div ref={registerChild}>
+                                <List
+                                ref={(instance) => {
+                                    this.List = instance;
+                                }}
+                                rowHeight={this.getRowHeight.bind(this)}
+                                rowRenderer={rowRenderer}
+                                rowCount={totalRows}
+                                onRowsRendered={onRowsRendered}
+                                width={800}
+                                height={300}
+                              
+                                />
+                            </div>
+                        )}
+                    </InfiniteLoader>   
                      
                     // )}
                     // </ArrowKeyStepper>
@@ -164,7 +195,7 @@ class TaskList extends Component {
         const {
           allData
         }  = this.props;
-  
+        console.log("All Data", allData);
         return (
             <div style={{height:"300px", width:"800px", margin: "0 auto"}}>
                 <SortableList 
