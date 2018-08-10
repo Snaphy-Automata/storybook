@@ -6,9 +6,9 @@ import IconLabel from '../IconLabel';
 const OverFlowLabel = ({name, color, src}) => {
     let colorValue = color ? color : "#fff"
     return (
-        <div style={{display:"inline-block"}}>
+        <div style={{display:"inline-block", marginBottom:"3px"}}>
             {color && <div className="overflow-label-container" style={{backgroundColor: colorValue}}>
-                <div>{name}</div>
+                <div className="overflow-label-name-container">{name}</div>
             </div> 
             }
             {src && <div style={{display:"inline-block", marginRight:5}}>

@@ -52,8 +52,6 @@ const TagContainer = (props) => {
         selectedUserList,
         selectedLabelList,
         type, 
-        addUserElementAction, 
-        addLabelElementAction, 
         isDialogOpened, 
         labelDialogOpenedAction, 
         initializeLabelDialogFormData

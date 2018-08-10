@@ -7,6 +7,11 @@
     
 }
 
+.overflow-label-name-container{
+    font-size: 11px;
+    font-weight: 500;
+}
+
 .overflow-label-container-with-border{
     display: inline-block;
     border-radius: 20px;
