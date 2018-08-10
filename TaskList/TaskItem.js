@@ -9,7 +9,7 @@ import { SortableHandle} from 'react-sortable-hoc';
 //Custom import..
 import './TaskList.css';
 import TeamCircleIcon from '../TeamCircleIcon'
-import InputField from '../InputField';
+import InputField from '../ReduxForm/InputField';
 import TaskHelper from './helper';
 import Label from '../Label';
 import AssignedUserDialog from '../AssignedUserDialog';

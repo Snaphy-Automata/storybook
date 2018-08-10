@@ -8,18 +8,17 @@ import map from 'lodash/map';
 import './TaskDetail.css';
 import SubTask from './SubTask';
 import TaskAttachment from './TaskAttachment'
-import InputElement from '../InputElement';
+import InputElement from '../ReduxForm/InputElement';
 import TagContainer from '../TagContainer';
 import DatePickerForm from '../CustomDatePicker/DatePickerForm';
 import ShareDialog from './ShareDialog';
-import IconLabel from '../IconLabel';
-import DropDownFieldUI from '../DropDownField';
-import SnaphyForm from '../SnaphyForm'
+import DropDownFieldUI from '../ReduxForm/DropDownField';
+import SnaphyForm from '../ReduxForm/SnaphyForm'
 import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
 import DurationForm from '../DurationForm';
 
-import {onMarkCompleteClickedAction, onStatusChangedAction, getStatusDataAction, onUserAddButtonClickedAction} from '../TaskList/TaskListActions';
+import {onMarkCompleteClickedAction, onStatusChangedAction, getStatusDataAction, onUserAddButtonClickedAction, onLabelAddButtonClickedAction} from '../TaskList/TaskListActions';
 
 
 
@@ -58,6 +57,10 @@ const TaskDetail = (props) => {
 
     const onUserAddButtonClicked = () => {
         props.onUserAddButtonClickedAction(!props.isUserButtonClicked);
+    }
+
+    const onLabelAddButtonClicked = () => {
+        props.onLabelAddButtonClickedAction(!props.isLabelButtonClicked);
     }
 
     return (
@@ -176,11 +179,9 @@ const TaskDetail = (props) => {
                         <div>Labels</div>
                         <TagContainer
                             type="label"
-                            {...props}
-                            onAddButtonClickedAction={props.onLabelAddButtonClicked}
+                            onAddButtonClickedAction={onLabelAddButtonClicked}
                             isButtonClicked={props.isLabelButtonClicked}
-                            totalItemList={props.totalLabelItemList}
-                            selectedItemList={props.selectedLabelItemList}
+                            totalItemList={props.labels}
                             isDialogOpened={props.isLabelDialogOpened}>
                         </TagContainer>
                     </div>
@@ -258,8 +259,8 @@ function mapStateToProps(store){
         isMarkCompletedClicked : store.TaskListReducer.isMarkCompletedClicked,
         isStatusClicked : store.TaskListReducer.isStatusClicked,
         statusData : store.TaskListReducer.statusData,
-        isDropDownOpened : store.TaskListReducer.isDropDownOpened,
         isUserButtonClicked : store.TaskListReducer.isUserButtonClicked,
+        isLabelButtonClicked : store.TaskListReducer.isLabelButtonClicked,
         labels : store.ModelDataReducer.labels,
         users : store.ModelDataReducer.users,
         // selectedUserList : store.TaskListReducer.selectedUserList
@@ -270,7 +271,8 @@ const mapActionsToProps = {
     onMarkCompleteClickedAction,
     onStatusChangedAction,
     getStatusDataAction,
-    onUserAddButtonClickedAction
+    onUserAddButtonClickedAction,
+    onLabelAddButtonClickedAction
 }
 
 

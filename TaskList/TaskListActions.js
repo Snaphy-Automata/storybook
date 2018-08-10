@@ -15,12 +15,14 @@ export const STORE_PREVIOUS_DATE_DIALOG_STATE     = "store_previous_date_dialog_
 export const ON_DURATION_STATE_CHANGED            = "on_duration_state_changed";
 export const DURATION_DATA                        = "duration_data";
 export const IS_COMPLTETED_CLICKED                = "is_completed_clicked";
-export const  ON_STATUS_CLICKED                   = "on_status_changed";
-export const  STATUS_DATA                         = "status_data";
-export const  ON_USER_ADD_BUTTON_CLICKED          = "on_user_add_button_clicked";
-export const  ADD_SELECTED_USER_TO_LIST           = "add_selected_user_to_list";
-export const  ON_OPEN_DATE_PICKER                 = "on_open_date_picker";
-export const  SET_DATE_DATA                       = "set_date_data";
+export const ON_STATUS_CLICKED                    = "on_status_changed";
+export const STATUS_DATA                          = "status_data";
+export const ON_USER_ADD_BUTTON_CLICKED           = "on_user_add_button_clicked";
+export const ADD_SELECTED_USER_TO_LIST            = "add_selected_user_to_list";
+export const ADD_SELECTED_LABEL_TO_LIST           = "add_selected_label_ti_list";
+export const ON_OPEN_DATE_PICKER                  = "on_open_date_picker";
+export const SET_DATE_DATA                        = "set_date_data";
+export const ON_LABEL_ADD_BUTTON_CLICKED          = "on_label_add_button_clicked";
 
 
 
@@ -246,6 +248,15 @@ export function addSelectedUserToListAction(selectedUserList){
     }
 }
 
+export function addSelectedLabelToListAction(selectedLabelList){
+    return (dispatch) => {
+        dispatch({
+            type : ADD_SELECTED_LABEL_TO_LIST,
+            payload : selectedLabelList
+        })
+    }
+}
+
 
 export function onDatePickerStateChangedAction(id, data, dateData){
     return (dispatch) => {
@@ -269,6 +280,15 @@ export function setDateDataAction(id, data, isDatePickerOpened){
                 data,
                 isDatePickerOpened
             }
+        })
+    }
+}
+
+export function onLabelAddButtonClickedAction(isButtonClicked){
+    return (dispatch) => {
+        dispatch({
+            type : ON_LABEL_ADD_BUTTON_CLICKED,
+            payload : isButtonClicked
         })
     }
 }

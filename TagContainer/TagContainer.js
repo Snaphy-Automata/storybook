@@ -9,7 +9,7 @@ import SelectedLabel from '../SelectLabel';
 import OverFlowLabel from '../OverFlowLabel';
 
 //Import Action..
-import {addSelectedUserToListAction} from '../TaskList/TaskListActions';
+import {addSelectedUserToListAction, addSelectedLabelToListAction} from '../TaskList/TaskListActions';
 //import {  addUserElementAction,addLabelElementAction, labelDialogOpenedAction, initializeLabelDialogFormAction, editLabelAction, addLabelAction} from '../../AllTaskActions';
 import LabelDialog from '../LabelDialog';
 
@@ -50,6 +50,7 @@ const TagContainer = (props) => {
         onAddButtonClickedAction, 
         totalItemList,  
         selectedUserList,
+        selectedLabelList,
         type, 
         addUserElementAction, 
         addLabelElementAction, 
@@ -58,7 +59,7 @@ const TagContainer = (props) => {
         initializeLabelDialogFormData
     } = props;
 
-   // console.log("tag Container total list", totalItemList);
+    //console.log("tag Container total list", totalItemList);
     const getClassName = function () {
         let className;
         if (isButtonClicked) {
@@ -96,9 +97,12 @@ const TagContainer = (props) => {
                 </div>
                 {type==="label" && <div className="tag-container-list-container">
                     {
-                        map(selectedUserList, function(selectedItem, index){
+                        map(selectedLabelList, function(selectedItem, index){
+                            const labelObj = totalItemList.byId[selectedItem];
+                            let title = `${labelObj.title}`
+                            let colorCode = `${labelObj.colorCode}`
                             return(
-                                <OverFlowLabel key={index} name={selectedItem.name} color = {selectedItem.color}></OverFlowLabel>
+                                <OverFlowLabel key={index} name={title} color = {colorCode}></OverFlowLabel>
                             )
                         })
                     }
@@ -127,32 +131,38 @@ const TagContainer = (props) => {
                         map(totalItemList.allIds, function (itemId, index) {
 
                             const selectItemClick = function(){
+                                let selectedItemDataList;
                                 if(type === "user"){
-                                    
-                                    let selectedItemDataList = [...selectedUserList];
-                                    let notFoundCount = 0;
-                                    for(var i=0;i<selectedItemDataList.length;i++){
-                                        if(selectedItemDataList[i] === itemId){
-                                            
-                                            selectedItemDataList.splice(i, 1);
-                                            break;
-                                        }
-                                        notFoundCount ++;
+                                     selectedItemDataList = [...selectedUserList];
+                                } else if(type === "label"){
+                                    selectedItemDataList = [...selectedLabelList];
+                                }
+                                let notFoundCount = 0;
+                                for(var i=0;i<selectedItemDataList.length;i++){
+                                    if(selectedItemDataList[i] === itemId){
+                                        
+                                        selectedItemDataList.splice(i, 1);
+                                        break;
                                     }
+                                    notFoundCount ++;
+                                }
+                                if(type === "user"){
                                     if(notFoundCount === selectedUserList.length){
                                         selectedItemDataList.push(itemId);
                                     }
-                                  
                                     props.addSelectedUserToListAction(selectedItemDataList);
+                                } else if(type === "label"){
+                                    if(notFoundCount === selectedLabelList.length){
+                                        selectedItemDataList.push(itemId);
+                                    }
+                                    props.addSelectedLabelToListAction(selectedItemDataList);
                                 }
-                                // itemObj = {
-                                //     ...itemObj,
-                                //     isSelected : !itemObj.isSelected
-                                // }
-                                // if(type === "label"){
-                                //     addLabelElementAction(itemObj);
-                                // } else if(type === "user"){
-                                //     addUserElementAction(itemObj);
+                               
+                                // if(type === "user"){
+                                  
+                                // } else if(type === "label"){
+                                //     console.log("Add Selected Label", selectedItemDataList);
+                                   
                                 // }
 
                             }
@@ -161,8 +171,16 @@ const TagContainer = (props) => {
                                 let isSelected = false;
                                 if(type === "user"){
                                     for(var i=0;i<selectedUserList.length;i++){
-                                        console.log("Selecred User ", itemId);
+                                        //console.log("Selecred User ", itemId);
                                         if(selectedUserList[i] === itemId){
+                                            isSelected = true;
+                                            break;
+                                        }
+                                    }
+                                } else if(type === "label"){
+                                    for(var i=0;i<selectedLabelList.length;i++){
+                                        console.log("Selecred User ", itemId);
+                                        if(selectedLabelList[i] === itemId){
                                             isSelected = true;
                                             break;
                                         }
@@ -172,14 +190,33 @@ const TagContainer = (props) => {
                                 return isSelected;
                             }
 
-                            const itemObj = totalItemList.byId[itemId];
-                            let name = `${itemObj.firstName}`
-                            const lastName = `${itemObj.lastName}` ? `${itemObj.lastName}` : "";
-                            name = `${name} ${lastName}`
+                            const getName = function(){
+                                const itemObj = totalItemList.byId[itemId];
+                                let name;
+                                if(type === "user"){
+                                    name = `${itemObj.firstName}`
+                                    const lastName = `${itemObj.lastName}` ? `${itemObj.lastName}` : "";
+                                    name = `${name} ${lastName}`
+                                } else if("label"){
+                                    name = `${itemObj.title}`
+                                }
+                                return name;
+                            }
+
+                            const getColor = function(){
+                                const itemObj = totalItemList.byId[itemId];
+                                let color;
+                                if(type === "label"){
+                                    color = `${itemObj.colorCode}`
+                                }
+                                return color;
+                            }
+
+                           
 
                             return (
                                 <div key={index} style={{ display: "inline-block" }}>
-                                    {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom:10}} name={name} isSelected={getSelectedValue()} color={itemObj.color} onClick={selectItemClick}/>}
+                                    {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom:10}} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick}/>}
                                     {index === totalItemList.length - 1 && type === "label" && <Button size="tiny" onClick={onOpenLabelDialog} basic>
                                         <Icon name="tag" />
                                         Create/Update Label
@@ -201,8 +238,10 @@ const TagContainer = (props) => {
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
+    //console.log("Map To state Props of tag container");
     return {
         selectedUserList : store.TaskListReducer.selectedUserList,
+        selectedLabelList : store.TaskListReducer.selectedLabelList,
         // isLabelDialogOpened : store.AllTaskReducer.isLabelDialogOpened,
         // initializeLabelDialogFormData : store.AllTaskReducer.initializeLabelDialogFormData
     }
@@ -212,7 +251,8 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here
-    addSelectedUserToListAction
+    addSelectedUserToListAction,
+    addSelectedLabelToListAction
     // addLabelElementAction,
     // addUserElementAction,
     // labelDialogOpenedAction,

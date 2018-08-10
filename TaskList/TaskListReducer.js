@@ -18,7 +18,9 @@ import {
     ON_STATUS_CLICKED,
     STATUS_DATA,
     ON_USER_ADD_BUTTON_CLICKED,
+    ON_LABEL_ADD_BUTTON_CLICKED,
     ADD_SELECTED_USER_TO_LIST,
+    ADD_SELECTED_LABEL_TO_LIST,
     ON_OPEN_DATE_PICKER,
     SET_DATE_DATA
 } from './TaskListActions';
@@ -42,7 +44,9 @@ const initialState = {
     isStatusClicked : false,
     statusData : "Status",
     isUserButtonClicked : false,
+    isLabelButtonClicked : false,
     selectedUserList : [],
+    selectedLabelList : [],
     dateData : null,
     isDatePickerOpened : false
 }
@@ -253,6 +257,13 @@ const TaskListReducer = (state = initialState, action) => {
             break;
         }
 
+        case ON_LABEL_ADD_BUTTON_CLICKED:{
+            state = {
+                ...state,
+                isLabelButtonClicked : action.payload
+            }
+        }
+
         case ADD_SELECTED_USER_TO_LIST:{
             //console.log("Reducer getting called", state.selectedUserList, action.payload);
             state = {
@@ -260,6 +271,13 @@ const TaskListReducer = (state = initialState, action) => {
                 selectedUserList : [...action.payload]
             }
             break;
+        }
+
+        case ADD_SELECTED_LABEL_TO_LIST:{
+            state = {
+                ...state,
+                selectedLabelList : [...action.payload]
+            }
         }
 
         case ON_OPEN_DATE_PICKER:{
@@ -281,7 +299,6 @@ const TaskListReducer = (state = initialState, action) => {
                     isDatePickerOpened : action.payload.isDatePickerOpened
                 }
             }
-            console.log("Date Data Reducer getting called", state);
             break;
         }
 

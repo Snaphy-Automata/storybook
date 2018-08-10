@@ -108,10 +108,6 @@ const DatePicker = (props) => {
           inputProps={{ ...props.input }}
           onDayChange={onDayChanged}
           onBlur={onBlurEvent}
-        // onDayChange={(date, modifiers) => {
-        //   console.log("date", date);
-        //   return props.input.onChange(date);
-        // }} 
         />}
         {touched && error && <span>{error}</span>}
       </Form.Field>}
