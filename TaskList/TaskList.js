@@ -133,7 +133,7 @@ class VirtualList extends Component {
                     rowCount={totalRows}
                     >
                         {({ onRowsRendered, registerChild }) => (
-                            <div ref={registerChild}>
+                            //<div ref={registerChild}>
                                 <List
                                 ref={(instance) => {
                                     this.List = instance;
@@ -146,7 +146,7 @@ class VirtualList extends Component {
                                 height={300}
                               
                                 />
-                            </div>
+                            //</div>
                         )}
                     </InfiniteLoader>   
                      
