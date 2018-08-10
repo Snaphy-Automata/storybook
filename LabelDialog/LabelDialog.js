@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import './LabelDialog.css';
 import { Field, reduxForm, reset} from 'redux-form';
 import SelectLabel from '../SelectLabel';
-import CheckboxGroupField from '../CheckboxGroup';
+import CheckboxGroupField from '../ReduxForm/CheckboxGroup/index';
 import InputFieldUI from '../ReduxForm/InputField';
 import SubmitButton from '../ReduxForm/SubmitButton';
 import SnaphyForm from '../ReduxForm/SnaphyForm';
