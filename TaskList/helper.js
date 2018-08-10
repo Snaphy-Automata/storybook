@@ -5,9 +5,6 @@
 import moment from 'moment';
 
 
-
-
-
  class TaskHelper {
     constructor(task, isCompletedColorCode, isActiveTaskSection){
         this.task                   = task;

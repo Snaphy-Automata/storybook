@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
-import { List, ArrowKeyStepper , WindowScroller, AutoSizer} from 'react-virtualized';
+import { List, InfiniteLoader} from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
+import Promise from 'bluebird';
 import {SortableContainer, arrayMove, SortableElement} from 'react-sortable-hoc';
 
 //Custom Import
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
+
+
+
+  
 
 
 
@@ -88,6 +93,28 @@ class VirtualList extends Component {
     }
 
 
+    isRowLoaded ({ index }) {
+        return !!allData.task.allIds[index];
+    }
+      
+    loadMoreRows ({ startIndex, stopIndex }) {
+        const that = this;
+        //FIXME: 9th Aug Robins
+        // Change it with server call..
+        return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                console.log("More data loaded", startIndex, stopIndex);
+                that.isLoaded = true;
+                resolve();
+            }, 600)
+        });
+        // return fetch(`path/to/api?startIndex=${startIndex}&stopIndex=${stopIndex}`)
+        //     .then(response => {
+        //     // Store response data in list...
+        //     })
+    }
+
+
     render() {
       const {allData} = this.props;
       const rowRenderer = renderRow(allData);
@@ -99,22 +126,28 @@ class VirtualList extends Component {
                 // {({ height, isScrolling, onChildScroll, scrollTop, registerChild }) => (
                     // <ArrowKeyStepper rowCount={allData.task.allIds.length} columnCount={1} className="task-list-item-selected">
                     // {({ onSectionRendered, scrollToRow }) => (
-                     
-                            <List
-                            ref={(instance) => {
-                                this.List = instance;
-                            }}
-                            rowHeight={this.getRowHeight.bind(this)}
-                            rowRenderer={rowRenderer}
-                            rowCount={totalRows}
-                            //onSectionRendered={onSectionRendered}
-                            //scrollToRow={scrollToRow}
-                            width={800}
-                            height={300}
-                            // isScrolling={isScrolling}
-                            // onChildScroll={onChildScroll}
-                            // scrollTop={scrollTop}
-                            />
+                    <InfiniteLoader
+                    isRowLoaded={this.isRowLoaded.bind(this)}
+                    loadMoreRows={this.loadMoreRows.bind(this)}
+                    rowCount={totalRows}
+                    >
+                        {({ onRowsRendered, registerChild }) => (
+                            <div ref={registerChild}>
+                                <List
+                                ref={(instance) => {
+                                    this.List = instance;
+                                }}
+                                rowHeight={this.getRowHeight.bind(this)}
+                                rowRenderer={rowRenderer}
+                                rowCount={totalRows}
+                                onRowsRendered={onRowsRendered}
+                                width={800}
+                                height={300}
+                              
+                                />
+                            </div>
+                        )}
+                    </InfiniteLoader>   
                      
                     // )}
                     // </ArrowKeyStepper>
