@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
-import map from 'lodash/map';
 import { SortableHandle} from 'react-sortable-hoc';
 
 //Custom import..
@@ -12,10 +11,9 @@ import TeamCircleIcon from '../TeamCircleIcon'
 import InputField from '../ReduxForm/InputField';
 import TaskHelper from './helper';
 import Label from '../Label';
-import AssignedUserDialog from '../AssignedUserDialog';
 import ChangeDateDialog from '../ChangeDateDialog';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction, getSelectedtaskItemAction, setCursorValueAction} from './TaskListActions';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction} from './TaskListActions';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 

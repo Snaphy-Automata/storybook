@@ -5,7 +5,7 @@ import { Icon, Input } from 'semantic-ui-react'
 import { SortableHandle} from 'react-sortable-hoc';
 
 import './TaskList.css';
-import { sectionExpandedAction } from './TaskListActions';
+import {  } from './TaskListActions';
 
 
 /**
@@ -26,8 +26,7 @@ const TaskListHeading = (props) => {
         type, 
         items,
         taskHeadingReducer,
-        sectionId, 
-        sectionExpandedAction, 
+        sectionId,  
         provided, 
         populateSectionTaskList, 
         sectionList,
@@ -138,7 +137,7 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here
-    sectionExpandedAction
+    
 };
 
 TaskListHeading.propTypes = {

@@ -58,7 +58,7 @@ import moment from 'moment';
                     if(index >0){
                         tooltip = `${tooltip} ${label.title}`
                     }
-                    if(!isLast && index >1){
+                    if(!isLast && index >0){
                         tooltip = `${tooltip}, `
                     }
                 }  
