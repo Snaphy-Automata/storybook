@@ -13,7 +13,17 @@ import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 
 
-
+const isTaskLast = (allData, index) => {
+    const nextTaskIndex = index + 1;
+    if(index === 0 && allData.task.allIds.length === 1){
+        return true
+    }else if(index+1 === allData.task.allIds.length){
+        return true
+    }else{
+        const nextTaskId = allData.task.allIds[nextTaskIndex];
+        return allData.task.byId[nextTaskId].type === "section";
+    }
+};
   
 
 
@@ -34,6 +44,7 @@ const renderRow = (allData) => {
         const taskOrSection    = allData.task.byId[taskOrSectionId];
         //Check whther this section is the first one..
         const isFirst = allData.task.allIds[0] === taskOrSectionId;
+        const isLastTask = isTaskLast(allData, index);
 
         console.log("I am getting called for dragging", props);
       
@@ -45,7 +56,7 @@ const renderRow = (allData) => {
             }
             {
                 taskOrSection && taskOrSection.type === "task" && 
-                <SortableTask index={index} taskId={taskOrSectionId} task={taskOrSection} allData={allData} ></SortableTask>
+                <SortableTask isLastTask={isLastTask} index={index} taskId={taskOrSectionId} task={taskOrSection} allData={allData} ></SortableTask>
             }
             </div>
         )
@@ -71,10 +82,11 @@ const SortableHeading = SortableElement((props)=>{
 
 const SortableTask = SortableElement((props)=>{
     
-    const {style, className, index, taskId, task, allData} = props;
+    const {style, isLastTask, className, index, taskId, task, allData} = props;
+    
     return (
         <div style={style} className={className}>
-            <TaskItem index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            <TaskItem isLastTask={isLastTask} index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
         </div>
     )
 });
