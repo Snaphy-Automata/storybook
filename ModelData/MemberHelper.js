@@ -8,10 +8,15 @@
  */
 export const normalizeUserData = (userList) => {
     const userObj = {};
+    const userIds = [];
     if (userList && userList.length) {
         userList.forEach(user => {
             userObj[user.id] = user;
+            userIds.push(user.id);
         });
     }
-    return userObj;
+    return {
+        userObj,
+        userIds
+    }
 }

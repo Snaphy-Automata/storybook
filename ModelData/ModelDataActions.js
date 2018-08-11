@@ -34,33 +34,41 @@ export const onLoginUserFetched = (user) => {
 }
 
 
-export const onMemberDataFetched = (userList) => {
+export const onMemberDataFetched = (projectId, userList) => {
     return (dispatch) => {
         dispatch({
             type : ON_MEMBER_DATA_FETCHED,
             payload : {
+                projectId,
                 userList
             }
         })
     }
 }
 
-export const onLabelDataFetched = (labelList) => {
+export const onLabelDataFetched = (projectId, labelList) => {
     return (dispatch) => {
         dispatch({
             type : ON_LABEL_DATA_FETCHED,
             payload : {
-                labelList
+                projectId,
+                labelList,
             }
         })
     }
 }
 
-// export const onStatusDataFetched  = (statusList) => {
-//     return (dispatch) => {
-//         type : 
-//     }
-// }
+export const onStatusDataFetched  = (projectId, statusList) => {
+    return (dispatch) => {
+        dispatch({
+            type : ON_STATUS_DATA_FETCHED,
+            payload : {
+                projectId,
+                statusList
+            }
+        })
+    }
+}
 
 
 
