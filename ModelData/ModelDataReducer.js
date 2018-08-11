@@ -4,7 +4,8 @@ import {
     ON_MEMBER_DATA_FETCHED,
     ON_LABEL_DATA_FETCHED,
     ON_STATUS_DATA_FETCHED,
-    ON_PROJECT_ACL_FETCHED
+    ON_PROJECT_ACL_FETCHED,
+    ON_PAGE_DATA_FETCHED
 } from './ModelDataActions';
 
 import {
@@ -27,6 +28,10 @@ import {
     normalizeProjectAcl
 } from './ProjectAclHelper';
 
+import {
+    normalizePageData
+} from './PageHelper';
+
 const initialState = {
     loginUserId: null,
     user: {
@@ -46,7 +51,8 @@ const initialState = {
         allIds:[]   
     },
     projectAcl:{
-        byId:{}
+        byId:{},
+        allIds:[]
     },
     panel:{
         byId:{}
@@ -180,8 +186,27 @@ const ModelDataReducer = (state = initialState, action) => {
                 },
                 project:{
                     byId:{
-                        ...state.project.Id,
+                        ...state.project.byId,
                         ...projectObj
+                    }
+                }
+            }
+            break;
+        }
+
+        case ON_PAGE_DATA_FETCHED:{
+            const pageObj = normalizePageData(action.payload.pageList);
+            state = {
+                ...state,
+                panel:{
+                    byId:{
+
+                    }
+                },
+                page:{
+                    byId:{
+                        ...state.page.byId,
+                        pageObj
                     }
                 }
             }
