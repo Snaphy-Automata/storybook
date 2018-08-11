@@ -19,3 +19,14 @@ export const normalizePageData = (pageList) => {
         pageIds
     }
 }
+
+
+export const normalizePanelData = (panelList) => {
+    const panelObj = {}
+    if(panelList && panelList.length){
+        panelList.forEach(panel => {
+            panelObj[panel.id] = panel.id;
+        })
+    }
+    return panelObj;
+}

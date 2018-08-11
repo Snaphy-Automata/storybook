@@ -8,22 +8,24 @@
 export const normalizeProjectAcl = (projectAclList) => {
     const projectAclObj = {};
     const projectObj = {};
+    const projectAclIds = [];
+    const projectIds = [];
     if(projectAclList && projectAclList.length){
         projectAclList.forEach(projectAcl => {
             projectAclObj[projectAcl.id] = projectAcl;
-            if(projectAclList && projectAclList.length){
-                projectAclList.forEach(projectAcl => {
-                   if(projectAcl.project && projectAcl.project.id){
-                       projectObj[projectAcl.project.id]  = {
-                           projectAclId : projectAcl.id
-                       }
-                   }
-                })
+            projectAclIds.push(projectAcl.id);
+            if(projectAcl.project && projectAcl.project.id){
+                projectIds.push(project.id);
+                projectObj[projectAcl.project.id]  = {
+                    projectAclId : projectAcl.id
+                }
             }
         })
     }
     return {
         projectAclObj,
-        projectObj
+        projectObj,
+        projectAclIds,
+        projectIds
     };
 }

@@ -5,7 +5,8 @@ import {
     ON_LABEL_DATA_FETCHED,
     ON_STATUS_DATA_FETCHED,
     ON_PROJECT_ACL_FETCHED,
-    ON_PAGE_DATA_FETCHED
+    ON_PAGE_DATA_FETCHED,
+    ON_PANEL_DATA_FETCHED
 } from './ModelDataActions';
 
 import {
@@ -29,7 +30,8 @@ import {
 } from './ProjectAclHelper';
 
 import {
-    normalizePageData
+    normalizePageData,
+    normalizePanelData
 } from './PageHelper';
 
 const initialState = {
@@ -175,20 +177,22 @@ const ModelDataReducer = (state = initialState, action) => {
         }
 
         case ON_PROJECT_ACL_FETCHED:{
-            const {projectAclObj, projectObj} = normalizeProjectAcl(action.payload.projectAclList);
+            const {projectAclObj, projectObj, projectAclIds, projectIds} = normalizeProjectAcl(action.payload.projectAclList);
             state = {
                 ...state,
                 projectAcl:{
                     byId:{
                         ...state.projectAcl.byId,
                         ...projectAclObj
-                    }
+                    },
+                    allIds: [...state.projectAcl.allIds, ...projectAclIds]
                 },
                 project:{
                     byId:{
                         ...state.project.byId,
                         ...projectObj
-                    }
+                    },
+                    allIds: [...state.project.allIds, ...projectIds]
                 }
             }
             break;
@@ -208,6 +212,20 @@ const ModelDataReducer = (state = initialState, action) => {
                     byId:{
                         ...state.page.byId,
                         ...pageObj
+                    }
+                }
+            }
+            break;
+        }
+
+        case ON_PANEL_DATA_FETCHED:{
+            const panelObj = normalizePanelData(action.payload.panelList);
+            state = {
+                ...state,
+                panel:{
+                    byId:{
+                        ...state.panel.byId,
+                        ...panelObj
                     }
                 }
             }
