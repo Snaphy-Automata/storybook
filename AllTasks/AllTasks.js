@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 
 
 //Custom Import
-import { initializeDataAction } from '../ModelData/ModelDataActions';
+import {  } from '../ModelData/ModelDataActions';
 import ALL_DATA from '../../data/taskListData';
-import TaskList from '../TaskList';
 import TaskDetail from '../TaskDetail';
 
 
@@ -14,7 +13,7 @@ class AllTasks extends React.Component {
 
     componentWillMount() {
 
-        this.props.initializeDataAction(ALL_DATA);
+        //this.props.initializeDataAction(ALL_DATA);
 
     }
 
