@@ -3,7 +3,8 @@ import {
     ON_LOGIN_USER_DATA_FETCHED,
     ON_MEMBER_DATA_FETCHED,
     ON_LABEL_DATA_FETCHED,
-    ON_STATUS_DATA_FETCHED
+    ON_STATUS_DATA_FETCHED,
+    ON_PROJECT_ACL_FETCHED
 } from './ModelDataActions';
 
 import {
@@ -21,6 +22,10 @@ import {
 import {
     normalizeStatusData
 } from './StatusHelper';
+
+import {
+    normalizeProjectAcl
+} from './ProjectAclHelper';
 
 const initialState = {
     loginUserId: null,
@@ -157,6 +162,26 @@ const ModelDataReducer = (state = initialState, action) => {
                     byId:{
                         ...state.status.byId,
                         ...statusObj
+                    }
+                }
+            }
+            break;
+        }
+
+        case ON_PROJECT_ACL_FETCHED:{
+            const {projectAclObj, projectObj} = normalizeProjectAcl(action.payload.projectAclList);
+            state = {
+                ...state,
+                projectAcl:{
+                    byId:{
+                        ...state.projectAcl.byId,
+                        ...projectAclObj
+                    }
+                },
+                project:{
+                    byId:{
+                        ...state.project.Id,
+                        ...projectObj
                     }
                 }
             }

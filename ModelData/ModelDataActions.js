@@ -8,6 +8,8 @@ export const ON_LOGIN_USER_DATA_FETCHED   = "on_login_user_data_fetched";
 export const ON_MEMBER_DATA_FETCHED       = "on_member_data_fetched";
 export const ON_LABEL_DATA_FETCHED        = "on_label_data_fetched";
 export const ON_STATUS_DATA_FETCHED       = "on_status_data_fetched";
+export const ON_PROJECT_ACL_FETCHED       = "on_project_acl_fetched";
+
 
 export const onTaskDataFetchedAction = (projectId, taskList) => {
     return (dispatch) => {
@@ -65,6 +67,18 @@ export const onStatusDataFetched  = (projectId, statusList) => {
             payload : {
                 projectId,
                 statusList
+            }
+        })
+    }
+}
+
+export const onProjectAclFetched = (projectAclList) => {
+    return (dispatch) => {
+        dispatch({
+            type : ON_PROJECT_ACL_FETCHED,
+            payload : {
+                projectId,
+                projectAclList
             }
         })
     }
