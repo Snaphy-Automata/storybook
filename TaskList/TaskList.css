@@ -1,4 +1,6 @@
 /* Created By Nikita Mittal */
+
+/* Task Heading */
 .task-list-heading-wrapper{
     display: inline-block;
     cursor: pointer;
@@ -92,6 +94,8 @@
 }
 
 /************************************ END OF HEADING CSS *****************************************/
+
+
 
 
 /* ---------------------------------TASK ITEM -------------------------------------------- */
