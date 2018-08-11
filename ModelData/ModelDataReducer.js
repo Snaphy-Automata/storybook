@@ -2,7 +2,8 @@ import {
     ON_TASK_DATA_FETCHED,
     ON_LOGIN_USER_DATA_FETCHED,
     ON_MEMBER_DATA_FETCHED,
-    ON_LABEL_DATA_FETCHED
+    ON_LABEL_DATA_FETCHED,
+    ON_STATUS_DATA_FETCHED
 } from './ModelDataActions';
 
 import {
@@ -16,6 +17,10 @@ import {
 import {
     normalizeLabelData
 } from './LabelHelper';
+
+import {
+    normalizeStatusData
+} from './StatusHelper';
 
 const initialState = {
     loginUserId: null,
@@ -89,9 +94,18 @@ const ModelDataReducer = (state = initialState, action) => {
             break;
         }
         case ON_MEMBER_DATA_FETCHED:{
-            const userObj = normalizeUserData(action.payload.userList);
+            const {userObj, userIds} = normalizeUserData(action.payload.userList);
             state = {
                 ...state,
+                project:{
+                    byId:{
+                        ...state.project.byId,
+                        [action.payload.projectId]:{
+                            ...state.project.byId[action.payload.projectId],
+                            members: [...state.project.byId[action.payload.projectId].members, ...userIds]
+                        }
+                    }
+                },
                 user:{
                     byId:{
                         ...state.user.byId,
@@ -103,14 +117,46 @@ const ModelDataReducer = (state = initialState, action) => {
             break;
         }
         case ON_LABEL_DATA_FETCHED:{
-            const labelObj = normalizeLabelData(action.payload.labelList);
+            const {labelObj, labelIds} = normalizeLabelData(action.payload.labelList);
             state = {
                 ...state,
+                project:{
+                    byId:{
+                        ...state.project.byId,
+                        [action.payload.projectId]:{
+                            ...state.project.byId[action.payload.projectId],
+                            labels: [...state.project.byId[action.payload.projectId].labels, ...labelIds]
+                        }
+
+                    }
+                },
                 label:{
                     byId:{
                         ...state.label.byId,
                         ...labelObj
 
+                    }
+                }
+            }
+            break;
+        }
+        case ON_STATUS_DATA_FETCHED:{
+            const {statusObj, statusIds} = normalizeStatusData(action.payload.statusList);
+            state = {
+                ...state,
+                project:{
+                    byId:{
+                        ...state.project.byId,
+                        [action.payload.projectId]:{
+                            ...state.project.byId[action.payload.projectId],
+                            status: [...state.project.byId[action.payload.projectId].status, ...statusIds]
+                        }
+                    }
+                },
+                status:{
+                    byId:{
+                        ...state.status.byId,
+                        ...statusObj
                     }
                 }
             }
