@@ -45,8 +45,6 @@ const renderRow = (allData) => {
         //Check whther this section is the first one..
         const isFirst = allData.task.allIds[0] === taskOrSectionId;
         const isLastTask = isTaskLast(allData, index);
-
-        console.log("I am getting called for dragging", props);
       
         return (
             <div style={style}  key={key}>

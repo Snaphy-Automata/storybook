@@ -6,7 +6,8 @@ import {
     ON_STATUS_DATA_FETCHED,
     ON_PROJECT_ACL_FETCHED,
     ON_PAGE_DATA_FETCHED,
-    ON_PANEL_DATA_FETCHED
+    ON_PANEL_DATA_FETCHED,
+    ON_USER_PROJECT_SETTING_DATA_FETCHED,
 } from './ModelDataActions';
 
 import {
@@ -34,6 +35,10 @@ import {
     normalizePanelData
 } from './PageHelper';
 
+import {
+    normalizeUserSettingData,
+} from './UserProjectSettingHelper';
+
 const initialState = {
     loginUserId: null,
     user: {
@@ -60,6 +65,9 @@ const initialState = {
         byId:{}
     },
     page:{
+        byId:{}
+    },
+    userProjectSetting:{
         byId:{}
     }
 }
@@ -231,7 +239,30 @@ const ModelDataReducer = (state = initialState, action) => {
             }
             break;
         }
-
+        case ON_USER_PROJECT_SETTING_DATA_FETCHED:{
+            const userProjectSetting = action.payload.userSetting;
+            const projectId          = action.payload.projectId;
+            const normaliseData      = normalizeUserSettingData(userProjectSetting);
+            state = {
+                ...state,
+                userProjectSetting: {
+                    byId:{
+                        ...state.userProjectSetting.byId,
+                        [userProjectSetting.id]: normaliseData,
+                    }
+                },
+                project:{
+                    byId:{
+                        ...state.project.byId,
+                        [projectId]:{
+                            ...state.project.byId[projectId],
+                            userProjectSettingId: userProjectSetting.id,
+                        }
+                    }
+                }
+            }
+            break;
+        }
     
 
     }
