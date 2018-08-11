@@ -74,10 +74,10 @@ const TaskListHeading = (props) => {
     }
 
     return (
-        <div>
-            {/* <div className="task-list-heading-drag-container">
+        <div className="task-list-heading-parent-wrapper">
+            <div className="task-list-heading-drag-container">
                 <DragHandle />
-            </div>  */}
+            </div> 
             <div className={headingClassName_}>
                 <div onClick={onStateChanged} className={"task-list-heading-wrapper task-not-selectable"}>
                     <div className="task-list-heading-icon"> <Icon name={getIcon()} ></Icon></div>
