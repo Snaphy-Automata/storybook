@@ -17,10 +17,12 @@ import {getSelectedMemberListAction} from '../TaskList/TaskListActions';
 
 
 
+
 class AssignedUserDailog extends React.Component {
 
 
     componentDidMount(){
+        
         // this.memberList = MEMBERS;
         // let selectedMemberDataList = [];
         // if(this.props.task.assignedTo && this.props.task.assignedTo.length){
@@ -33,6 +35,7 @@ class AssignedUserDailog extends React.Component {
     }
 
     render() {
+        console.log("Assigned User dialog getting called");
         //console.log("Member List", MEMBERS);
         // const taskHelper = new TaskHelper(this.props.task);
         // const checkSelected = (member) =>{

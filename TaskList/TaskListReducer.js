@@ -1,8 +1,4 @@
 import {
-    ON_TASK_LIST_EXAPANDED,
-    TASK_LIST,
-    ON_SECTION_EXPANDED,
-    SECTION_TASK_LIST,
     ON_OPEN_CHANGE_DATE_DIALOG,
     ON_OPEN_ASSIGNED_USER_DIALOG,
     ON_SELECT_DATE,
@@ -54,37 +50,6 @@ const initialState = {
 const TaskListReducer = (state = initialState, action) => {
     //console.log("Reducer called Init", action, state);
     switch (action.type) {
-        case ON_TASK_LIST_EXAPANDED: {
-            state = {
-                ...state,
-                isOpened: action.payload
-            }
-            break;
-        }
-        case TASK_LIST: {
-            state = {
-                ...state,
-                taskList: action.payload
-            }
-            break;
-        }
-        case ON_SECTION_EXPANDED: {
-            state = {
-                ...state,
-                [action.payload.sectionKey]: {
-                    isOpened: action.payload.isOpened
-                }
-            }
-            break;
-        }
-        case SECTION_TASK_LIST: {
-            state = {
-                ...state,
-                sectionList: action.payload,
-            }
-
-            break;
-        }
         case ON_OPEN_CHANGE_DATE_DIALOG:{
             state = {
                 ...state,

@@ -13,6 +13,7 @@ import {onSelectDateAction} from '../TaskList/TaskListActions';
 class ChangeDateDialog extends React.Component{
 
     componentDidMount(){
+        console.log("I am getting called", this.props.dateData);
         if(this.props.dateData){
             //console.log("I am getting called", this.props.dateData);
             if(this.props.dateData === "today"){
