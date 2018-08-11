@@ -1,36 +1,77 @@
-import {INIT_DATA} from './ModelDataActions';
+import {
+    ON_TASK_DATA_FETCHED,
+    ON_LOGIN_USER_DATA_FETCHED,
+} from './ModelDataActions';
 
+import {
+    nomalizeTaskData,
+} from './TaskHelper';
 
 const initialState = {
-    users : null,
-    labels : null,
-    status : null,
-    section : null,
-    task : null
+    loginUserId: null,
+    user: {
+        byId:{}
+    },
+    label: {
+        byId:{}
+    },
+    task: {
+        byId:{}
+    },
+    status: {
+        byId: {}   
+    },
+    project: {
+        byId: {},
+        allIds:[]   
+    },
+    projectAcl:{
+        byId:{}
+    },
+    panel:{
+        byId:{}
+    },
+    page:{
+        byId:{}
+    }
 }
+
 
 const ModelDataReducer = (state = initialState, action) => {
-    switch(action.type){
-        case INIT_DATA:{
-            let userObj = action.payload.user;
-            let labelObj = action.payload.label;
-            let statusObj = action.payload.status;
-            let sectionObj = action.payload.section;
-            let taskObj = action.payload.task;
-
+    switch (action.type) {
+        case ON_TASK_DATA_FETCHED:{
+            const taskObj = nomalizeTaskData(action.payload.taskList);
             state = {
                 ...state,
-                users : userObj,
-                labels : labelObj,
-                status : statusObj,
-                section : sectionObj,
-                task : taskObj
+                task:{
+                    byId:{
+                        ...state.task.byId,
+                        ...taskObj,  
+                    } 
+                }
             }
-            console.log("Redux getting called", state);
+            break;
         }
-        break;
+        case ON_LOGIN_USER_DATA_FETCHED:{
+            state = {
+                ...state,
+                loginUserId: action.payload.user.id,
+                user:{
+                    byId:{
+                        ...state.user.byId,
+                        [action.payload.user.id]: action.payload.user,
+                    }
+                }
+            }
+            break;
+        }
+
     }
+
     return state;
 }
+
+
+
 
 export default ModelDataReducer;

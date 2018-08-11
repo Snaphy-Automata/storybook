@@ -5,9 +5,6 @@ import {
     SELECTED_MEMBER_LIST,
     ON_MEMBER_SELECTED,
     ON_DATE_PICKER_OPENED,
-    ON_TASK_SELECTED,
-    TASK_DATA,
-    LIST_CURSOR_DATA,
     ON_DURATION_STATE_CHANGED,
     DURATION_DATA,
     IS_COMPLTETED_CLICKED,
@@ -18,21 +15,32 @@ import {
     ADD_SELECTED_USER_TO_LIST,
     ADD_SELECTED_LABEL_TO_LIST,
     ON_OPEN_DATE_PICKER,
-    SET_DATE_DATA
+    SET_DATE_DATA,
+    ON_DUE_DATE_UPDATED_ACTION,
 } from './TaskListActions';
 
 
 const initialState = {
     isOpened: false,
     isDateDialogOpened : false,
-    isAssinedUserDialogOpened : false,
+    assignedUserDialog:{
+        taskId: null
+    },
+    dateDialog: {
+        taskId : null
+    },
+    datePickerDialog :{
+        taskId : null
+    },
+    quickUpdateDialog :{
+        taskId : null,
+        date : null
+    },
     isTodaySelected : false,
     isTomorrowSelected : false,
     isNextWeekSelected : false,
     selectedMemberList : null,
     isTaskSelected : false,
-    taskData : null,
-    cursor : 0,
     previousDateDialogId: null,
     isDurationClicked : false,
     durationData : null,
@@ -53,9 +61,8 @@ const TaskListReducer = (state = initialState, action) => {
         case ON_OPEN_CHANGE_DATE_DIALOG:{
             state = {
                 ...state,
-                [action.payload.id]:{
-                    
-                    isDateDialogOpened : action.payload.data,
+                dateDialog:{
+                    taskId : action.payload.state ? action.payload.id: null
                 }
             }
             break;
@@ -63,12 +70,27 @@ const TaskListReducer = (state = initialState, action) => {
         case ON_OPEN_ASSIGNED_USER_DIALOG:{
             state = {
                 ...state,
-                [action.payload.id]:{
-                    isAssinedUserDialogOpened : action.payload.data
+                assignedUserDialog:{
+                    taskId: action.payload.state?action.payload.id: null
                 }
             }
             break;
         }
+        case ON_DUE_DATE_UPDATED_ACTION:{
+            state = {
+                ...state,
+                
+            }
+        }
+        // case ON_QUICK_UPDATE_DATE_DIALOG:{
+        //     state = {
+        //         ...state,
+        //         quickUpdateDialog:{
+        //             taskId: action.payload.taskId,
+        //             date: action.payload.date
+        //         }
+        //     }
+        // }
         case ON_SELECT_DATE:{
             let type = action.payload.dataType;
             let todayValue;
@@ -95,26 +117,15 @@ const TaskListReducer = (state = initialState, action) => {
                     isTomorrowSelected : tomorrowValue,
                     isNextWeekSelected : nextWeekValue
                 }
-               
-
             }
             break;
         }
 
         case ON_DATE_PICKER_OPENED:{
-            if(action.payload.previousId){
-                state = {
-                    ...state,
-                    [action.payload.previousId]:{
-                        isDatePickerOpened : false
-                    }
-                }
-            }
             state = {
                 ...state,
-                previousDateDialogId : action.payload.id,
-                [action.payload.id]:{
-                    isDatePickerOpened : action.payload.data
+                datePickerDialog:{
+                    taskId: action.payload.id 
                 }
             }
             break;
@@ -148,31 +159,7 @@ const TaskListReducer = (state = initialState, action) => {
             break;
         }
 
-        case ON_TASK_SELECTED:{
-            state = {
-                ...state,
-                [action.payload.id]:{
-                    isTaskSelected : action.payload.data
-                }
-            }
-            break;
-        }
 
-        case TASK_DATA:{
-            state = {
-                ...state,
-                taskData : action.payload
-            }
-            break;
-        }
-
-        case LIST_CURSOR_DATA:{
-            state = {
-                ...state,
-                cursor : action.payload
-            }
-            break;
-        }
 
         case ON_DURATION_STATE_CHANGED:{
             state = {

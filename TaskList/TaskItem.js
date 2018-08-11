@@ -30,7 +30,7 @@ const DragHandle = SortableHandle(() => (
 )); // This can be any component you want
 
 const TaskItem = (props) => {
-   
+    console.log("I am getting Called", props.taskId);
     const {
         task,
         memberObj,
@@ -98,6 +98,7 @@ const TaskItem = (props) => {
     }
 
     const onCloseAssignedUserDialog = () => {
+        console.log("Close Assigned getting called");
         props.onOpenAssignedUserDialogAction(false, task.id)
     }
 
@@ -105,9 +106,7 @@ const TaskItem = (props) => {
         props.onDatePickerOpenedAction(false, task.id)
     }
 
-    const onTaskClicked = () => {
-        props.getSelectedtaskItemAction(task);
-    }
+
 
     const getWrapperClassName = () => {
         let wrapperClassName = className? className + " task-list-item-wrapper": "task-list-item-wrapper";
@@ -133,7 +132,7 @@ const TaskItem = (props) => {
                             </div>}
                         </div>
 
-                        <div className="task-list-item-title" onClick={onTaskClicked}>
+                        <div className="task-list-item-title">
                             <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>
                         </div>
                         {
@@ -262,23 +261,36 @@ const TaskItem = (props) => {
 
 function mapStateToProps(store, props){
     const taskListReducer = store.TaskListReducer;
-    const taskConfig = taskListReducer[props.taskId]
-    const isDateDialogOpened = taskConfig && taskConfig.isDateDialogOpened ? true : false;
-    const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
-    const isDatePickerOpened = taskConfig && taskConfig.isDatePickerOpened ? true : false;
-    const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;
-    const isTomorrowSelected = taskConfig && taskConfig.isTomorrowSelected ? true : false;
-    const isNextWeekSelected = taskConfig && taskConfig.isNextWeekSelected ? true : false;
-    const isTaskSelected = taskConfig && taskConfig.isTaskSelected ? true : false;
+    const dateDialog = taskListReducer.dateDialog;
+    const assignedUserDialog = taskListReducer.assignedUserDialog;
+    const datePickerDialog = taskListReducer.datePickerDialog;
+    let isAssinedUserDialogOpened = false;
+    let isDateDialogOpened = false;
+    let isDatePickerOpened = false;
+    if(assignedUserDialog && assignedUserDialog.taskId === props.taskId){
+        isAssinedUserDialogOpened = true;
+    }
+    if(dateDialog && dateDialog.taskId === props.taskId){
+        isDateDialogOpened = true;
+    }
+    if(datePickerDialog && datePickerDialog.taskId === props.taskId){
+        isDatePickerOpened = true;
+    }
+
     return {
-        isTodaySelected,
-        isTomorrowSelected,
-        isNextWeekSelected,
+        //isTodaySelected,
+        //isTomorrowSelected,
+        //isNextWeekSelected,
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
-        isTaskSelected,
     }
+
+    //const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
+    // const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;
+    // const isTomorrowSelected = taskConfig && taskConfig.isTomorrowSelected ? true : false;
+    // const isNextWeekSelected = taskConfig && taskConfig.isNextWeekSelected ? true : false;
+   
 }
 
 

@@ -60,6 +60,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
                         on='click'
                         open={isAssinedUserDialogOpened}
                         onClose={onClose}
+                        hideOnScroll
                         style={{ width: "242px", padding: "0" }}
                         size='mini'
                     >
@@ -110,6 +111,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
                         on='click'
                         open={isDatePickerOpened}
                         onClose={onClose}
+                        hideOnScroll
                         style={{ width: "242px", padding: "0" }}
                         size='mini'
                     >

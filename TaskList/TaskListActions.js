@@ -5,10 +5,6 @@ export const ON_SELECT_DATE                       = "on_select_date";
 export const SELECTED_MEMBER_LIST                 = "selected_member_list";
 export const ON_MEMBER_SELECTED                   = "on_member_selected";
 export const ON_DATE_PICKER_OPENED                = "on_date_picker_opened";
-export const ON_TASK_SELECTED                     = "on_task_selected";
-export const TASK_DATA                            = "task_data";
-export const LIST_CURSOR_DATA                     = "list_cursor_data";
-export const STORE_PREVIOUS_DATE_DIALOG_STATE     = "store_previous_date_dialog_state";
 export const ON_DURATION_STATE_CHANGED            = "on_duration_state_changed";
 export const DURATION_DATA                        = "duration_data";
 export const IS_COMPLTETED_CLICKED                = "is_completed_clicked";
@@ -21,32 +17,58 @@ export const ON_OPEN_DATE_PICKER                  = "on_open_date_picker";
 export const SET_DATE_DATA                        = "set_date_data";
 export const ON_LABEL_ADD_BUTTON_CLICKED          = "on_label_add_button_clicked";
 
+export const ON_DUE_DATE_UPDATED_ACTION           = "on_due_date_updated_action";
 
-export function onOpenChangeDateDialogAction(data, id){
+export function onOpenChangeDateDialogAction(state, id){
     //console.log("Change date Dialog Action called", data, id)
     return (dispatch) => {
         dispatch({
             type : ON_OPEN_CHANGE_DATE_DIALOG,
             payload : {
                 id,
-                data
+                state
             }
         })
     }
 }
 
-export function onOpenAssignedUserDialogAction(data, id){
+/**
+ * Will get called on closing or opening of assigned user dialog.
+ * state: Boolean
+ * id: taskId
+ */
+export function onOpenAssignedUserDialogAction(state, id){
     return (dispatch) => {
+        console.log("Open Assigned getting called", state, id);
         dispatch({
             type: ON_OPEN_ASSIGNED_USER_DIALOG,
             payload : {
                 id,
-                data
+                state
             }
         })
     }
 }
 
+
+// /**
+//  * When a due date value is assigned through any dialog..
+//  * @param {*} taskId 
+//  * @param {*} dueDate 
+//  * @param {*} onDueDateUpdatedMutation 
+//  */
+// export const onDueDateUpdatedAction = (taskId, dueDate, onDueDateUpdatedMutation) => {
+//     return (dispatch) => {
+//         dispatch({
+//             type: ON_DUE_DATE_UPDATED_ACTION,
+//             taskId,
+//             dueDate,
+//             onDueDateUpdatedMutation,
+//         });
+//     }
+// }
+
+//Deprecated
 export function onSelectDateAction(dataType, data, id, isDateDialogOpened){
     //console.log("Action getting called", dataType, data);
     return (dispatch) => {
@@ -97,44 +119,6 @@ export function onDatePickerOpenedAction(data, id){
 }
 
 
-export function onTaskSelectedAction(data, id){
-    return (dispatch) => {
-        dispatch({
-            type : ON_TASK_SELECTED,
-            payload : {
-                id,
-                data
-            }
-        })
-    }
-}
-
-export function getSelectedtaskItemAction(data){
-    return (dispatch) => {
-        dispatch({
-            type : TASK_DATA,
-            payload : data
-        })
-    }
-}
-
-export function setCursorValueAction(data){
-    return (dispatch) => {
-        dispatch({
-            type : LIST_CURSOR_DATA,
-            payload : data
-        })
-    }
-}
-
-export function storeDateDialogState(taskId){
-    return (dispatch) => {
-        dispatch({
-            type : STORE_PREVIOUS_DATE_DIALOG_STATE,
-            payload : taskId
-        })
-    }
-}
 
 
 export function onDurationStateChangedAction(data){
