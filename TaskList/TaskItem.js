@@ -299,8 +299,6 @@ const mapActionsToProps = {
     onOpenAssignedUserDialogAction,
     onSelectDateAction,
     onDatePickerOpenedAction,
-    getSelectedtaskItemAction,
-    setCursorValueAction
 
 };
 

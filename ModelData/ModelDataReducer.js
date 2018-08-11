@@ -200,18 +200,21 @@ const ModelDataReducer = (state = initialState, action) => {
                 ...state,
                 panel:{
                     byId:{
-
+                        ...state.panel.byId,
+                        ...panelObj
                     }
                 },
                 page:{
                     byId:{
                         ...state.page.byId,
-                        pageObj
+                        ...pageObj
                     }
                 }
             }
             break;
         }
+
+    
 
     }
 
