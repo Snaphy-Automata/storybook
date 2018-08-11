@@ -10,6 +10,7 @@ export const ON_LABEL_DATA_FETCHED        = "on_label_data_fetched";
 export const ON_STATUS_DATA_FETCHED       = "on_status_data_fetched";
 export const ON_PROJECT_ACL_FETCHED       = "on_project_acl_fetched";
 export const ON_PAGE_DATA_FETCHED         = "on_page_data_fetched";
+export const ON_PANEL_DATA_FETCHED        = "on_panel_data_fetched";
 
 
 export const onTaskDataFetchedAction = (projectId, taskList) => {
@@ -84,13 +85,24 @@ export const onProjectAclFetched = (projectAclList) => {
     }
 }
 
-export const onPageDataFetched  = (panelId, pagelist) => {
+export const onPageDataFetched  = (panelId, pageList) => {
     return (dispatch) => {
         dispatch({
             type : ON_PAGE_DATA_FETCHED,
             payload : {
                 panelId,
                 pageList
+            }
+        })
+    }
+}
+
+export const onPanelDataFetched = (panelList) => {
+    return (dispatch) => {
+        dispatch({
+            type : ON_PANEL_DATA_FETCHED,
+            payload : {
+                panelList
             }
         })
     }
