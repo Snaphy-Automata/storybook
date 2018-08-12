@@ -1,0 +1,60 @@
+/*
+  Created By Robins
+  28th June 2018
+*/
+
+
+
+.applied-filter-box{
+  display: inline-block;
+  border: solid 0.7px #dddddd;
+  padding: 3px;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #4d4f5c;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.applied-filter-box:hover{
+  border: solid 0.7px #bbbbbb;
+  color: #3d3e49;
+}
+
+
+.applied-filter-box-btn{
+  padding-left: 10px;
+  /* padding-right: 5px; */
+  font-size: 0.8rem;
+  padding-right: 0;
+}
+
+
+
+
+
+
+/* -------------------------Small devices--------------------- */
+@media (max-width: 600px) {
+
+
+
+}
+
+
+/* Tablet */
+@media (min-width: 600px) and (max-width: 991px) {
+
+
+
+
+}
+
+
+
+/*CSS for big screens.*/
+@media(min-width: 1380px) {
+
+
+
+}

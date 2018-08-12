@@ -1,0 +1,66 @@
+
+.snaphy-card-container{
+  padding: 0.5rem;
+  min-height: 90px !important;
+  width: 362px !important;
+  margin-right: 0 !important;
+  margin-left: auto !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 3px 0 #99999929 !important;
+  background-color: #ffffff !important;
+  border: solid 1px #eeeeee !important;
+  padding-top: 0.66rem !important;
+}
+
+
+.snaphy-card-header{
+  font-weight: 300;
+  font-size: 20px;
+  text-align: left;
+  color: #4d4f5c;
+  width: 100%;
+}
+
+
+.snaphy-card-edit-button{
+  color: #3b86ff !important;
+  width: 55px;
+  height: 21px;
+  font-family: Lato !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 0px !important;
+}
+
+
+.snaphy-header-verticaly-middle{
+  display: table-cell;
+  vertical-align: middle;
+  line-height: 0;
+}
+
+
+.snaphy-header-vertically-close-btn-container{
+  width: 30px;
+  text-align: right;
+}
+
+
+.snaphy-header-btn-wrapper{
+  text-align: right;
+  width: 54px;
+  padding-right: 0.4rem;
+}
+
+
+.snaphy-card-close-icon{
+  float: right;
+  font-size: 13px;
+  color: #777;
+  cursor: pointer;
+}
+
+
+.snaphy-card-meta-wrapper{
+  padding-top: 0.43rem;
+}

@@ -1,0 +1,97 @@
+/* Created By Robins 
+    10th April 2018
+*/
+
+
+/* -------------------------------GLOBAL CSS---------------------------- */
+
+.team-text-to-title-box{
+    width: 20.7px;
+    height: 20.7px;
+    display: inline-block;
+    text-align: center;
+}
+
+.team-text-to-title-text{
+    vertical-align: middle;
+    /* display: inline-block; */
+    text-align: center;
+    font-family: Lato;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
+.team-text-to-title-container{
+    height: 20.7px;
+    background-color: #f3f3f3;
+    display: inline-block;
+    font-family: Lato;
+    text-align: left;
+    color: #4d4f5c;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-right:10px;
+    margin-top: 0.73rem;
+    margin-right: 0.73rem;
+}
+
+.team-text-to-title-full-name{
+    font-size: 12px;
+    text-transform: capitalize;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+
+/* ------------------------------END GLOBAL CSS-------------------------- */
+
+
+
+
+
+
+
+
+/* ---------------------------------SMALL DEVICES------------------------- */
+/* Small devices */
+@media (max-width: 600px) {
+
+
+
+}
+/* ----------------------------------END OF SMALL DEVICES------------------ */
+
+
+
+
+
+
+
+
+/* -------------------------------BIG SCREEN ------------------------------ */
+/*CSS for big screens.*/
+@media(min-width: 1380px) {
+
+
+
+
+}
+/* -----------------------------END OF BIG SCREEN--------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------TABLET----------------------------------- */
+@media (min-width: 600px) and (max-width: 991px) {
+
+
+
+
+}
+/* --------------------------------END OF TABLET----------------------------- */

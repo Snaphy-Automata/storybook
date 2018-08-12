@@ -1,0 +1,98 @@
+/*
+  Created By Robins
+  28th June 2018
+*/
+
+
+
+.saved-filter-box{
+  display: inline-block;
+  border: solid 0.7px #eeeeee;
+  color: #616474;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.saved-filter-box.active{
+  border: solid 0.7px #2d7dd2;
+}
+
+.saved-filter-box.active:hover{
+  border-color: #276cb6;
+}
+
+.saved-filter-box:hover{
+  border: solid 0.7px #bbbbbb;
+  color: #3d3e49;
+}
+
+.saved-filter-box-heading{
+  text-transform: capitalize;
+  display: inline-block;
+  /* padding: 6px; */
+  padding-bottom: 2px;
+  padding-top: 2px;
+  padding-left: 10px;
+  padding-right: 20px;
+}
+
+.saved-filter-box-btn{
+  display: inline-block;
+  font-size: 0.8rem;
+  padding-right: 0;
+  background-color: #eeeeee;
+  /* padding: 7px; */
+  padding-left: 6px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  padding-right: 6px;
+  /* color: #4d4f5c; */
+  color: #acacac;
+}
+
+
+.saved-filter-box-btn.active{
+  background-color: #2d7dd2;
+  color: #ffffff;
+}
+
+.saved-filter-box:hover .saved-filter-box-btn{
+  background-color: #bbbbbb;
+  color: #808080;
+}
+
+.saved-filter-box:hover .saved-filter-box-btn.active{
+  background-color: #276cb6;
+  color: #ffffff;
+}
+
+
+
+
+
+
+
+/* -------------------------Small devices--------------------- */
+@media (max-width: 600px) {
+
+
+
+}
+
+
+/* Tablet */
+@media (min-width: 600px) and (max-width: 991px) {
+
+
+
+
+}
+
+
+
+/*CSS for big screens.*/
+@media(min-width: 1380px) {
+
+
+
+}
