@@ -1,0 +1,76 @@
+/* Created By Robins 
+    10th April 2018
+*/
+
+
+/* -------------------------------GLOBAL CSS---------------------------- */
+
+.graph-line-title{
+    font-family: Lato;
+    font-size: 15px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 0.2;
+    letter-spacing: normal;
+    text-align: left;
+    color: #4d4f5c;
+}
+
+.graph-line-container{
+    padding-top: 1.7rem;
+}
+
+
+/* ------------------------------END GLOBAL CSS-------------------------- */
+
+
+
+
+
+
+
+
+/* ---------------------------------SMALL DEVICES------------------------- */
+/* Small devices */
+@media (max-width: 600px) {
+
+
+
+}
+/* ----------------------------------END OF SMALL DEVICES------------------ */
+
+
+
+
+
+
+
+
+/* -------------------------------BIG SCREEN ------------------------------ */
+/*CSS for big screens.*/
+@media(min-width: 1380px) {
+
+
+
+
+}
+/* -----------------------------END OF BIG SCREEN--------------------------- */
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------TABLET----------------------------------- */
+@media (min-width: 600px) and (max-width: 991px) {
+
+
+
+
+}
+/* --------------------------------END OF TABLET----------------------------- */
