@@ -47,6 +47,7 @@ const TaskItem = (props) => {
         index,
         style,
         className,
+        isLastTask,
     } = props;
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
@@ -111,9 +112,17 @@ const TaskItem = (props) => {
         return wrapperClassName;
     }
 
+    let lastTaskStyle = {}
+    if(isLastTask){
+        lastTaskStyle = {
+            borderBottomLeftRadius: "5px",
+            borderBottomRightRadius: "5px"
+        }
+    }
+
 
     return (
-        <div  style={style} className={getWrapperClassName()} >
+        <div  style={{...style, ...lastTaskStyle}} className={getWrapperClassName()} >
             {!isNew &&  
                 <div className="task-list-item-delayed-wrapper">
                     <div  className={taskItemContainerClassName} >

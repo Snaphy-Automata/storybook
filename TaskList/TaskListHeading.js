@@ -12,9 +12,9 @@ import {  } from './TaskListActions';
  * Drag handle
  */
 const DragHandle = SortableHandle(() => (
-    <div  className="task-list-item-drag-icon-container">
-        <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
-        <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
+    <div  className="task-list-heading-drag-icon-container">
+        <Icon  className="task-list-heading-drag-icon" name="ellipsis vertical"></Icon>
+        <Icon className="task-list-heading-drag-icon" name="ellipsis vertical"></Icon>
     </div>
 )); // This can be any component you want
 
@@ -33,7 +33,6 @@ const TaskListHeading = (props) => {
         subHeadingComponent, 
         headingClassName
     } = props;
-
     const taskHeadingConfig = taskHeadingReducer[sectionId];
     const isSectionOpened = taskHeadingConfig && taskHeadingConfig.isOpened ? true : false;
     const getIcon = function () {
@@ -75,14 +74,20 @@ const TaskListHeading = (props) => {
 
     return (
         <div className="task-list-heading-parent-wrapper">
-            <div className="task-list-heading-drag-container">
-                <DragHandle />
-            </div> 
+            <div className="task-list-heading-drag-angle-icon">
+                <div className="task-list-heading-drag-container">
+                    <DragHandle />
+                </div>
+                <div onClick={onStateChanged}  className="task-list-heading-arrow-container">
+                    <div className="task-list-heading-icon"> <Icon style={{margin:0}} name={getIcon()} ></Icon></div>
+                </div>
+            </div>
+             
             <div className={headingClassName_}>
-                <div onClick={onStateChanged} className={"task-list-heading-wrapper task-not-selectable"}>
-                    <div className="task-list-heading-icon"> <Icon name={getIcon()} ></Icon></div>
+                <div className={"task-list-heading-wrapper"}>
+                    
                     <div className="task-list-heading-title">
-                        {type === "fixed" && <div>{heading}</div>}
+                        {(!type || type === "fixed") && <div>{heading}</div>}
                         {type === "custom" && <Input transparent placeholder="Write Section Name" defaultValue="My Bugs"/>}
                     </div>
                 </div>

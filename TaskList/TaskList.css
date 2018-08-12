@@ -3,25 +3,37 @@
 /* Task Heading */
 .task-list-heading-parent-wrapper{
     height: 44.5px;
+    border-style: solid;
+    border-width: 0px 0px 0.5px 0px;
+    border-color: #eee;
 }
+
+.task-list-section-wrapper{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+
 
 .task-list-heading-wrapper{
     display: inline-block;
-    cursor: pointer;
+}
+
+.task-list-section-seperator{
+    height: 14.5px;
+    background: #f6f8f9;
 }
 
 
 .task-list-heading-container{
-    width: 100%;
+    margin-left: 56px;
     padding: 12px;
     padding-left: 0;
     color: #000000;
     font-size: 13px;
     font-weight: 600;
     /* padding: 15px; */
-    border-style:solid;
-    border-width: 0px 0px 0.5px 0px;
-    border-color: #eee;
+    height: inherit;
 }
 
 /* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
@@ -32,25 +44,37 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  }
-
-
-.task-list-heading-container:hover{
-    background: rgba(197, 175, 247, 0.2)
 }
+
 
 .task-list-heading-container:hover .task-list-heading-drag-icon{
     display: block;
 }
 
+.task-list-heading-drag-angle-icon{
+    height: 44.5px;
+    line-height: 44.5px;
+    width: 60px;
+    float: left;
+}
+
 .task-list-heading-drag-icon{
-    color: #707070;
+    color: #a6b9cc;
+    font-size: 11px;
     display: none;
     margin-left: 8px;
 }
 
-.task-list-heading-drag-container{
+.task-list-heading-arrow-container{
+    float: left;
     width: 21px;
+    margin-left: 3px;
+    margin-right: 9px;
+}
+
+
+.task-list-heading-drag-container{
+    width: 25px;
     float: left;
     text-align: center;
     height: inherit;
@@ -60,19 +84,35 @@
     cursor: -webkit-grab;
 }
 
+.task-list-heading-drag-icon-container{
+    /* margin: 0 !important; */
+    /* width: 10px !important; */
+    display: none;
+    line-height: 45.5px;
+}
+
+
+.task-list-heading-drag-icon{
+    margin: 0 !important;
+    width: 5px !important;
+}
+
+.task-list-heading-parent-wrapper:hover .task-list-heading-drag-icon-container{
+   display: block;
+}
+
 .task-list-heading-icon{
     display: inline-block;
-    /* width: 3% */
     font-size: 15px;
     cursor: pointer;
 }
 
 .task-list-heading-title{
     display: inline-block;
-    /* width : 60%; */
     font-size: larger;
     font-style: inherit;
-    padding-left: 10px;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .task-list-sub-heading-wrapper{
@@ -395,6 +435,14 @@
     outline: none;
 }
 
-.selected{
-    background: #eee;
+
+.selected_item{
+    background-color: transparent;
+    height: 44.5px;
+}
+
+
+.selected_item .task-list-section-seperator{
+    display: none;
+    visibility: hidden;
 }

@@ -13,7 +13,17 @@ import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 
 
-
+const isTaskLast = (allData, index) => {
+    const nextTaskIndex = index + 1;
+    if(index === 0 && allData.task.allIds.length === 1){
+        return true
+    }else if(index+1 === allData.task.allIds.length){
+        return true
+    }else{
+        const nextTaskId = allData.task.allIds[nextTaskIndex];
+        return allData.task.byId[nextTaskId].type === "section";
+    }
+};
   
 
 
@@ -32,17 +42,19 @@ const renderRow = (allData) => {
         } = props;
         const taskOrSectionId  = tasks[index];
         const taskOrSection    = allData.task.byId[taskOrSectionId];
-
+        //Check whther this section is the first one..
+        const isFirst = allData.task.allIds[0] === taskOrSectionId;
+        const isLastTask = isTaskLast(allData, index);
       
         return (
             <div style={style}  key={key}>
             { 
                 taskOrSection && taskOrSection.type === "section" && 
-                <SortableHeading index={index} section={taskOrSection}></SortableHeading>
+                <SortableHeading isFirst={isFirst}  index={index} section={taskOrSection}></SortableHeading>
             }
             {
                 taskOrSection && taskOrSection.type === "task" && 
-                <SortableTask index={index} taskId={taskOrSectionId} task={taskOrSection} allData={allData} ></SortableTask>
+                <SortableTask isLastTask={isLastTask} index={index} taskId={taskOrSectionId} task={taskOrSection} allData={allData} ></SortableTask>
             }
             </div>
         )
@@ -52,11 +64,15 @@ const renderRow = (allData) => {
 
 
 const SortableHeading = SortableElement((props)=>{
-    const {style, section} = props;
+    const {style, section, isFirst} = props;
     return (
-        <div style={{background: "#fff", ...style}}>
-            <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
+        <div style={{width:"100%"}}>
+            {!isFirst && <div className="task-list-section-seperator"></div>}
+            <div className="task-list-section-wrapper" style={{background: "#fff", ...style}}>
+                <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
+            </div>
         </div>
+        
     )
 });
 
@@ -64,10 +80,11 @@ const SortableHeading = SortableElement((props)=>{
 
 const SortableTask = SortableElement((props)=>{
     
-    const {style, className, index, taskId, task, allData} = props;
+    const {style, isLastTask, className, index, taskId, task, allData} = props;
+    
     return (
         <div style={style} className={className}>
-            <TaskItem index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            <TaskItem isLastTask={isLastTask} index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
         </div>
     )
 });
@@ -87,7 +104,13 @@ class VirtualList extends Component {
         const taskId    = tasks[index];
         const task      = allData.task.byId[taskId];
         if(task.type === "section"){
-            return 65
+            const firstSectionId = allData.task.allIds[0];
+            if(taskId === firstSectionId){
+                return 44.5;
+            }else{
+                return 59;
+            }
+            
         }
         return 41;
     }
@@ -143,7 +166,7 @@ class VirtualList extends Component {
                                 rowCount={totalRows}
                                 onRowsRendered={onRowsRendered}
                                 width={800}
-                                height={300}
+                                height={500}
                               
                                 />
                             //</div>
@@ -198,17 +221,20 @@ class TaskList extends Component {
         }  = this.props;
         console.log("All Data", allData);
         return (
-            <div style={{height:"300px", width:"800px", margin: "0 auto"}}>
-                <SortableList 
-                    ref={(instance) => {
-                        this.SortableList = instance;
-                    }}
-                    onSortEnd={this.onSortEnd}
-                    allData={allData}
-                    helperClass={'selected'}
-                    //useWindowAsScrollContainer
-                    useDragHandle
-                />
+            <div style={{backgroundColor:"#f6f8f9", width:"100%", height:"100%", paddingTop: "10px"}}>
+                <div style={{height:"500px", width:"800px", margin: "0 auto"}}>
+                    <SortableList 
+                        ref={(instance) => {
+                            this.SortableList = instance;
+                        }}
+                        onSortEnd={this.onSortEnd}
+                        allData={allData}
+                        helperClass={'selected_item'}
+                        //useWindowAsScrollContainer
+                        useDragHandle
+                    />
+                </div>
+                
             </div>
             
         );
