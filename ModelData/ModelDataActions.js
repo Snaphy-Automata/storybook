@@ -26,7 +26,7 @@ export const onTaskDataFetchedAction = (projectId, taskList) => {
 };
 
 
-export const onLoginUserFetched = (user) => {
+export const onLoginUserFetchedAction = (user) => {
     return (dispatch) => {
         dispatch({
             type: ON_LOGIN_USER_DATA_FETCHED,
@@ -38,7 +38,7 @@ export const onLoginUserFetched = (user) => {
 }
 
 
-export const onMemberDataFetched = (projectId, userList) => {
+export const onMemberDataFetchedAction = (projectId, userList) => {
     return (dispatch) => {
         dispatch({
             type : ON_MEMBER_DATA_FETCHED,
@@ -50,7 +50,7 @@ export const onMemberDataFetched = (projectId, userList) => {
     }
 }
 
-export const onLabelDataFetched = (projectId, labelList) => {
+export const onLabelDataFetchedAction = (projectId, labelList) => {
     return (dispatch) => {
         dispatch({
             type : ON_LABEL_DATA_FETCHED,
@@ -62,7 +62,7 @@ export const onLabelDataFetched = (projectId, labelList) => {
     }
 }
 
-export const onStatusDataFetched  = (projectId, statusList) => {
+export const onStatusDataFetchedAction  = (projectId, statusList) => {
     return (dispatch) => {
         dispatch({
             type : ON_STATUS_DATA_FETCHED,
@@ -74,7 +74,7 @@ export const onStatusDataFetched  = (projectId, statusList) => {
     }
 }
 
-export const onProjectAclFetched = (projectAclList) => {
+export const onProjectAclFetchedAction = (projectAclList) => {
     return (dispatch) => {
         dispatch({
             type : ON_PROJECT_ACL_FETCHED,
@@ -85,7 +85,7 @@ export const onProjectAclFetched = (projectAclList) => {
     }
 }
 
-export const onPageDataFetched  = (panelId, pageList) => {
+export const onPageDataFetchedAction  = (panelId, pageList) => {
     return (dispatch) => {
         dispatch({
             type : ON_PAGE_DATA_FETCHED,
@@ -97,7 +97,7 @@ export const onPageDataFetched  = (panelId, pageList) => {
     }
 }
 
-export const onPanelDataFetched = (panelList) => {
+export const onPanelDataFetchedAction = (panelList) => {
     return (dispatch) => {
         dispatch({
             type : ON_PANEL_DATA_FETCHED,
@@ -109,7 +109,7 @@ export const onPanelDataFetched = (panelList) => {
 }
 
 
-export const onUserProjectSettingFetched = (projectId, userSetting) => {
+export const onUserProjectSettingFetchedAction = (projectId, userSetting) => {
     return (dispatch) => {
         dispatch({
             type: ON_USER_PROJECT_SETTING_DATA_FETCHED,

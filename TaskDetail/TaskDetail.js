@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Icon, Button, Label, Form } from 'semantic-ui-react';
 import map from 'lodash/map';
+import capitalize from 'lodash/capitalize';
 
 import './TaskDetail.css';
 import SubTask from './SubTask';
@@ -34,6 +35,16 @@ const TaskDetail = (props) => {
         { key: "completed", text: "Completed", value: "Completed" }
     ]
 
+    const getOptions = () => {
+        let optionsList = [];
+        if(props.status && props.status.length){
+            props.status.forEach((status) => {
+                optionsList.push({key: status.id, text: capitalize(status.title), value: status.title});
+            })
+        }
+        return optionsList;
+    }
+
     let fileInput = null;
     const uid = Math.random().toString(36).substring(7);
 
@@ -45,7 +56,7 @@ const TaskDetail = (props) => {
         //props.onDropDownStateChanged()
     }
 
-    const statusText = props.statusData || "Status";
+    const statusText = capitalize(props.statusData) || "Status";
 
     const onMarkCompletedClicked = function(){
         props.onMarkCompleteClickedAction(!props.isMarkCompletedClicked);
@@ -62,6 +73,10 @@ const TaskDetail = (props) => {
     const onLabelAddButtonClicked = () => {
         props.onLabelAddButtonClickedAction(!props.isLabelButtonClicked);
     }
+
+    // const totalUserList = () => {
+    //     if(props.project.byId)
+    // }
 
     return (
         <div>
@@ -127,9 +142,9 @@ const TaskDetail = (props) => {
                         <div className="task-detail-status-container">
                             {!props.isStatusClicked && <Button size="tiny" basic icon labelPosition='right' onClick={onStatusChanged} style={{width:"127px"}} className="task-detail-action-button">
                                 <Icon name="angle down" />
-                                {statusText}
+                                { statusText}
                             </Button>}
-                            {props.isStatusClicked && <Field options={options} name="status.title" type="text" placeholder="In Progress" open={props.isStatusClicked} size="tiny" onDataChanged={onDataChanged} style={{width:"127px"}} component={DropDownFieldUI} />}
+                            {props.isStatusClicked && <Field options={getOptions()} name="status.title" type="text" placeholder="In Progress" open={props.isStatusClicked} size="tiny" onDataChanged={onDataChanged} style={{width:"127px"}} component={DropDownFieldUI} />}
 
                         </div>
                         <div className="task-detail-archive-container">
@@ -261,8 +276,8 @@ function mapStateToProps(store){
         statusData : store.TaskListReducer.statusData,
         isUserButtonClicked : store.TaskListReducer.isUserButtonClicked,
         isLabelButtonClicked : store.TaskListReducer.isLabelButtonClicked,
-        labels : store.ModelDataReducer.labels,
-        users : store.ModelDataReducer.users,
+        //labels : store.ModelDataReducer.labels,
+        //users : store.ModelDataReducer.users,
         // selectedUserList : store.TaskListReducer.selectedUserList
     }
 }

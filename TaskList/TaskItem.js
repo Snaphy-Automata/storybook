@@ -208,7 +208,7 @@ const TaskItem = (props) => {
                             {
                                 formattedDueDateObj.date &&
                                 <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
-                                    <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon>
+                                    {/* <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon> */}
                                     {!isDateDialogOpened && <Popup trigger={<div style={{display:"inline"}}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
                                         content="Change Due Date"
                                         position='bottom center'

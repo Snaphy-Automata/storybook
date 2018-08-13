@@ -126,35 +126,35 @@ const TagContainer = (props) => {
             {isButtonClicked && 
                 <div className="tag-conatiner-total-item-list-container">
                     {
-                        map(totalItemList.allIds, function (itemId, index) {
+                        map(totalItemList, function (itemObj, index) {
 
                             const selectItemClick = function(){
-                                let selectedItemDataList;
-                                if(type === "user"){
-                                     selectedItemDataList = [...selectedUserList];
-                                } else if(type === "label"){
-                                    selectedItemDataList = [...selectedLabelList];
-                                }
-                                let notFoundCount = 0;
-                                for(var i=0;i<selectedItemDataList.length;i++){
-                                    if(selectedItemDataList[i] === itemId){
+                                // let selectedItemDataList;
+                                // if(type === "user"){
+                                //      selectedItemDataList = [...selectedUserList];
+                                // } else if(type === "label"){
+                                //     selectedItemDataList = [...selectedLabelList];
+                                // }
+                                // let notFoundCount = 0;
+                                // for(var i=0;i<selectedItemDataList.length;i++){
+                                //     if(selectedItemDataList[i] === itemId){
                                         
-                                        selectedItemDataList.splice(i, 1);
-                                        break;
-                                    }
-                                    notFoundCount ++;
-                                }
-                                if(type === "user"){
-                                    if(notFoundCount === selectedUserList.length){
-                                        selectedItemDataList.push(itemId);
-                                    }
-                                    props.addSelectedUserToListAction(selectedItemDataList);
-                                } else if(type === "label"){
-                                    if(notFoundCount === selectedLabelList.length){
-                                        selectedItemDataList.push(itemId);
-                                    }
-                                    props.addSelectedLabelToListAction(selectedItemDataList);
-                                }
+                                //         selectedItemDataList.splice(i, 1);
+                                //         break;
+                                //     }
+                                //     notFoundCount ++;
+                                // }
+                                // if(type === "user"){
+                                //     if(notFoundCount === selectedUserList.length){
+                                //         selectedItemDataList.push(itemId);
+                                //     }
+                                //     props.addSelectedUserToListAction(selectedItemDataList);
+                                // } else if(type === "label"){
+                                //     if(notFoundCount === selectedLabelList.length){
+                                //         selectedItemDataList.push(itemId);
+                                //     }
+                                //     props.addSelectedLabelToListAction(selectedItemDataList);
+                                // }
                                
                                 // if(type === "user"){
                                   
@@ -166,30 +166,30 @@ const TagContainer = (props) => {
                             }
 
                             const getSelectedValue = function(){
-                                let isSelected = false;
-                                if(type === "user"){
-                                    for(var i=0;i<selectedUserList.length;i++){
-                                        //console.log("Selecred User ", itemId);
-                                        if(selectedUserList[i] === itemId){
-                                            isSelected = true;
-                                            break;
-                                        }
-                                    }
-                                } else if(type === "label"){
-                                    for(var i=0;i<selectedLabelList.length;i++){
-                                        console.log("Selecred User ", itemId);
-                                        if(selectedLabelList[i] === itemId){
-                                            isSelected = true;
-                                            break;
-                                        }
-                                    }
-                                }
+                                // let isSelected = false;
+                                // if(type === "user"){
+                                //     for(var i=0;i<selectedUserList.length;i++){
+                                //         //console.log("Selecred User ", itemId);
+                                //         if(selectedUserList[i] === itemId){
+                                //             isSelected = true;
+                                //             break;
+                                //         }
+                                //     }
+                                // } else if(type === "label"){
+                                //     for(var i=0;i<selectedLabelList.length;i++){
+                                //         console.log("Selecred User ", itemId);
+                                //         if(selectedLabelList[i] === itemId){
+                                //             isSelected = true;
+                                //             break;
+                                //         }
+                                //     }
+                                // }
 
-                                return isSelected;
+                                // return isSelected;
                             }
 
                             const getName = function(){
-                                const itemObj = totalItemList.byId[itemId];
+                                //const itemObj = totalItemList.byId[itemId];
                                 let name;
                                 if(type === "user"){
                                     name = `${itemObj.firstName}`
@@ -202,7 +202,7 @@ const TagContainer = (props) => {
                             }
 
                             const getColor = function(){
-                                const itemObj = totalItemList.byId[itemId];
+                                //const itemObj = totalItemList.byId[itemId];
                                 let color;
                                 if(type === "label"){
                                     color = `${itemObj.colorCode}`
