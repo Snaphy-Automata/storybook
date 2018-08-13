@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import map from 'lodash/map';
-import { List, InfiniteLoader} from 'react-virtualized';
+import { List, InfiniteLoader, AutoSizer, WindowScroller} from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import Promise from 'bluebird';
 import {SortableContainer, arrayMove, SortableElement} from 'react-sortable-hoc';
@@ -139,47 +139,52 @@ class VirtualList extends Component {
     }
 
 
+
+
     render() {
-      const {allData} = this.props;
+      const {allData, setReference} = this.props;
       const rowRenderer = renderRow(allData);
       const totalRows = allData.task.allIds.length;
       return (
-        // <AutoSizer>
-        //     {({ height, width }) => (
-                // <WindowScroller>
-                // {({ height, isScrolling, onChildScroll, scrollTop, registerChild }) => (
+        <AutoSizer  style={{height: "inherit", width: "inherit"}}>
+           {({ height, width }) => (
+                    // <WindowScroller>
+                    //   {({ height:windowHeight, isScrolling, onChildScroll, scrollTop, registerChild }) => (
                     // <ArrowKeyStepper rowCount={allData.task.allIds.length} columnCount={1} className="task-list-item-selected">
                     // {({ onSectionRendered, scrollToRow }) => (
-                    <InfiniteLoader
-                    isRowLoaded={this.isRowLoaded.bind(this)}
-                    loadMoreRows={this.loadMoreRows.bind(this)}
-                    rowCount={totalRows}
-                    >
-                        {({ onRowsRendered, registerChild }) => (
-                            //<div ref={registerChild}>
+                    // <InfiniteLoader
+                    // isRowLoaded={this.isRowLoaded.bind(this)}
+                    // loadMoreRows={this.loadMoreRows.bind(this)}
+                    // rowCount={totalRows}
+                    // >
+                    //     {({ onRowsRendered, registerChild }) => (
+                            // <div ref={registerChild}>
                                 <List
                                 ref={(instance) => {
                                     this.List = instance;
+                                    setReference(instance);
                                 }}
+
+                                //onRowsRendered={onRowsRendered}
                                 rowHeight={this.getRowHeight.bind(this)}
                                 rowRenderer={rowRenderer}
                                 rowCount={totalRows}
-                                onRowsRendered={onRowsRendered}
-                                width={800}
-                                height={500}
-
+                                height={height}
+                                width={width}
+                                style={{
+                                  height: "auto"
+                                }}
                                 />
                             //</div>
-                        )}
-                    </InfiniteLoader>
+                    //     )}
+                    // </InfiniteLoader>
 
-                    // )}
-                    // </ArrowKeyStepper>
+                     //)}
+                    //</ArrowKeyStepper>
                 // )}
                 // </WindowScroller>
-        //     )}
-        // </AutoSizer>
-
+          )}
+        </AutoSizer>
       );
     }
   }
@@ -217,26 +222,21 @@ class TaskList extends Component {
 
     render() {
         const {
-          allData
+          allData,
+          setReference,
+          getRef,
         }  = this.props;
-        console.log("All Data", allData);
         return (
-            <div style={{backgroundColor:"#f6f8f9", width:"100%", height:"100%", paddingTop: "10px"}}>
-                <div style={{height:"500px", width:"800px", margin: "0 auto"}}>
-                    <SortableList
-                        ref={(instance) => {
-                            this.SortableList = instance;
-                        }}
-                        onSortEnd={this.onSortEnd}
-                        allData={allData}
-                        helperClass={'selected_item'}
-                        //useWindowAsScrollContainer
-                        useDragHandle
-                    />
-                </div>
-
-            </div>
-
+          <SortableList
+              ref={(instance) => {
+                  this.SortableList = instance;
+              }}
+              setReference={setReference}
+              onSortEnd={this.onSortEnd}
+              allData={allData}
+              helperClass={'selected_item'}
+              useDragHandle
+          />
         );
     }
 }
