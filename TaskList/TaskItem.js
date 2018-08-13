@@ -69,15 +69,15 @@ const TaskItem = (props) => {
     }else{
         delayedClassName = `task-item-delayed-block`;
     }
-    
-    
+
+
     const labelObjData = taskHelper.getLabels(labelObj);
     const labels = labelObjData.labelList;
 
 
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
-  
+
     const openSelectDateDialog = () => {
         props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
     }
@@ -93,7 +93,7 @@ const TaskItem = (props) => {
 
     const onCloseDateDialog = () => {
         props.onOpenChangeDateDialogAction(false, task.id);
-        
+
     }
 
     const onCloseAssignedUserDialog = () => {
@@ -123,7 +123,7 @@ const TaskItem = (props) => {
 
     return (
         <div  style={{...style, ...lastTaskStyle}} className={getWrapperClassName()} >
-            {!isNew &&  
+            {!isNew &&
                 <div className="task-list-item-delayed-wrapper">
                     <div  className={taskItemContainerClassName} >
                         <div className={delayedClassName}></div>
@@ -143,7 +143,7 @@ const TaskItem = (props) => {
                             <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>
                         </div>
                         {
-                            !isScrolling && 
+                            !isScrolling &&
                         <div className="task-list-item-other-container">
                             <div className="task-list-item-status-duration-container">
                                 {isActiveTaskSection && statusData &&
@@ -297,7 +297,7 @@ function mapStateToProps(store, props){
     // const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;
     // const isTomorrowSelected = taskConfig && taskConfig.isTomorrowSelected ? true : false;
     // const isNextWeekSelected = taskConfig && taskConfig.isNextWeekSelected ? true : false;
-   
+
 }
 
 

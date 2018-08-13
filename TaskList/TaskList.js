@@ -24,13 +24,13 @@ const isTaskLast = (allData, index) => {
         return allData.task.byId[nextTaskId].type === "section";
     }
 };
-  
+
 
 
 
 const renderRow = (allData) => {
     const tasks = allData.task.allIds;
-    
+
     const rowRenderer =  (props)  => {
         const {
             index,       // Index of row
@@ -45,15 +45,15 @@ const renderRow = (allData) => {
         //Check whther this section is the first one..
         const isFirst = allData.task.allIds[0] === taskOrSectionId;
         const isLastTask = isTaskLast(allData, index);
-      
+
         return (
             <div style={style}  key={key}>
-            { 
-                taskOrSection && taskOrSection.type === "section" && 
+            {
+                taskOrSection && taskOrSection.type === "section" &&
                 <SortableHeading isFirst={isFirst}  index={index} section={taskOrSection}></SortableHeading>
             }
             {
-                taskOrSection && taskOrSection.type === "task" && 
+                taskOrSection && taskOrSection.type === "task" &&
                 <SortableTask isLastTask={isLastTask} index={index} taskId={taskOrSectionId} task={taskOrSection} allData={allData} ></SortableTask>
             }
             </div>
@@ -69,19 +69,19 @@ const SortableHeading = SortableElement((props)=>{
         <div style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
             <div className="task-list-section-wrapper" style={{background: "#fff", ...style}}>
-                <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/> 
+                <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
             </div>
         </div>
-        
+
     )
 });
 
 
 
 const SortableTask = SortableElement((props)=>{
-    
+
     const {style, isLastTask, className, index, taskId, task, allData} = props;
-    
+
     return (
         <div style={style} className={className}>
             <TaskItem isLastTask={isLastTask} index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
@@ -96,7 +96,7 @@ const SortableTask = SortableElement((props)=>{
 class VirtualList extends Component {
     /**
      * Will fetch the row height..
-     * @param {*} index 
+     * @param {*} index
      */
     getRowHeight({index}){
         const {allData} = this.props;
@@ -110,7 +110,7 @@ class VirtualList extends Component {
             }else{
                 return 59;
             }
-            
+
         }
         return 41;
     }
@@ -120,7 +120,7 @@ class VirtualList extends Component {
         const allData = this.props.allData;
         return !!allData.task.allIds[index];
     }
-      
+
     loadMoreRows ({ startIndex, stopIndex }) {
         const that = this;
         //FIXME: 9th Aug Robins
@@ -144,7 +144,7 @@ class VirtualList extends Component {
       const rowRenderer = renderRow(allData);
       const totalRows = allData.task.allIds.length;
       return (
-        // <AutoSizer>  
+        // <AutoSizer>
         //     {({ height, width }) => (
                 // <WindowScroller>
                 // {({ height, isScrolling, onChildScroll, scrollTop, registerChild }) => (
@@ -167,23 +167,23 @@ class VirtualList extends Component {
                                 onRowsRendered={onRowsRendered}
                                 width={800}
                                 height={500}
-                              
+
                                 />
                             //</div>
                         )}
-                    </InfiniteLoader>   
-                     
+                    </InfiniteLoader>
+
                     // )}
                     // </ArrowKeyStepper>
                 // )}
                 // </WindowScroller>
         //     )}
-        // </AutoSizer>    
-        
+        // </AutoSizer>
+
       );
     }
   }
-  
+
   /*
    * Important note:
    * To access the ref of a component that has been wrapped with the SortableContainer HOC,
@@ -197,19 +197,19 @@ class VirtualList extends Component {
  * https://github.com/clauderic/react-sortable-hoc/blob/master/examples/virtual-list.js
  */
 class TaskList extends Component {
-    
+
     onSortEnd({oldIndex, newIndex}){
         console.log("On Sort End ", oldIndex, newIndex);
         //   if (oldIndex !== newIndex) {
         //     const {items} = this.state;
-    
+
         //     this.setState({
         //       items: arrayMove(items, oldIndex, newIndex),
         //     });
-    
+
         //     // We need to inform React Virtualized that the items have changed heights
         //     const instance = this.SortableList.getWrappedInstance();
-    
+
         //     instance.List.recomputeRowHeights();
         //     instance.forceUpdate();
         //   }
@@ -223,7 +223,7 @@ class TaskList extends Component {
         return (
             <div style={{backgroundColor:"#f6f8f9", width:"100%", height:"100%", paddingTop: "10px"}}>
                 <div style={{height:"500px", width:"800px", margin: "0 auto"}}>
-                    <SortableList 
+                    <SortableList
                         ref={(instance) => {
                             this.SortableList = instance;
                         }}
@@ -234,9 +234,9 @@ class TaskList extends Component {
                         useDragHandle
                     />
                 </div>
-                
+
             </div>
-            
+
         );
     }
 }
@@ -257,7 +257,7 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here
-    
+
 };
 
 

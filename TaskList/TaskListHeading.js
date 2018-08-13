@@ -5,7 +5,6 @@ import { Icon, Input } from 'semantic-ui-react'
 import { SortableHandle} from 'react-sortable-hoc';
 
 import './TaskList.css';
-import {  } from './TaskListActions';
 
 
 /**
@@ -20,21 +19,18 @@ const DragHandle = SortableHandle(() => (
 
 const TaskListHeading = (props) => {
     const {
-        heading, 
-        onArchiveClicked, 
-        defaultText, 
-        type, 
+        heading,
+        onArchiveClicked,
+        defaultText,
+        type,
         items,
-        taskHeadingReducer,
-        sectionId,  
-        provided, 
-        populateSectionTaskList, 
+        sectionId,
+        populateSectionTaskList,
         sectionList,
-        subHeadingComponent, 
+        subHeadingComponent,
         headingClassName
     } = props;
-    const taskHeadingConfig = taskHeadingReducer[sectionId];
-    const isSectionOpened = taskHeadingConfig && taskHeadingConfig.isOpened ? true : false;
+    const isSectionOpened = false;
     const getIcon = function () {
         if (!isSectionOpened) {
             return `angle down`
@@ -53,7 +49,7 @@ const TaskListHeading = (props) => {
     }
 
     const onNewTaskAdded = () => {
-           
+
         let sectionDataList = sectionList;
         for(var i=0;i<sectionDataList.length;i++){
             if(sectionDataList[i].sectionId === sectionId){
@@ -63,7 +59,7 @@ const TaskListHeading = (props) => {
                         sectionDataList[i].items.push(newTaskObj);
                     }
                 }
-               
+
                 break;
             }
         }
@@ -82,30 +78,30 @@ const TaskListHeading = (props) => {
                     <div className="task-list-heading-icon"> <Icon style={{margin:0}} name={getIcon()} ></Icon></div>
                 </div>
             </div>
-             
+
             <div className={headingClassName_}>
                 <div className={"task-list-heading-wrapper"}>
-                    
+
                     <div className="task-list-heading-title">
                         {(!type || type === "fixed") && <div>{heading}</div>}
                         {type === "custom" && <Input transparent placeholder="Write Section Name" defaultValue="My Bugs"/>}
                     </div>
                 </div>
                 {
-                    !subHeadingComponent && 
+                    !subHeadingComponent &&
                     <div className="task-list-sub-heading-wrapper">
                         <div className="task-list-heading-archive-container on-subheading-hover" >
                             <div>
                                 <Icon style={{display:"inline"}} name="archive" onClick={onArchiveClicked}></Icon>
                                 <div style={{display: "inline", marginLeft: "5px"}} onClick={onArchiveClicked}>Archive</div>
                             </div>
-                            
+
                         </div>
                         <div className="task-list-heading-add-new-container on-subheading-hover" >
                             <div onClick={onNewTaskAdded}>
                                 <Icon style={{display: "inline"}} name="clipboard outline"></Icon>
                                 <div style={{display: "inline", marginLeft: "5px"}} >Add New Task</div>
-                            </div>    
+                            </div>
                         </div>
                     </div>
                 }
@@ -133,16 +129,13 @@ const TaskListHeading = (props) => {
 
 // Retrieve data from store as props
 function mapStateToProps(store) {
-    const taskHeadingReducer = store.TaskListReducer;
-    return {
-        taskHeadingReducer
-    };
+  return{};
 }
 
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here
-    
+
 };
 
 TaskListHeading.propTypes = {
