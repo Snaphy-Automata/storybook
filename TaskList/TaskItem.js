@@ -28,7 +28,7 @@ const DragHandle = SortableHandle(() => (
 )); // This can be any component you want
 
 const TaskItem = (props) => {
-    console.log("I am getting Called", props.taskId);
+
     const {
         task,
         memberObj,

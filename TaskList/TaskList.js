@@ -13,23 +13,23 @@ import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
 
 
-const isTaskLast = (allData, index) => {
+const isTaskLast = (activeTasks, index, findTaskById) => {
     const nextTaskIndex = index + 1;
-    if(index === 0 && allData.task.allIds.length === 1){
+    if(index === 0 && activeTasks.length === 1){
         return true
-    }else if(index+1 === allData.task.allIds.length){
+    }else if(index+1 === activeTasks.length){
         return true
     }else{
-        const nextTaskId = allData.task.allIds[nextTaskIndex];
-        return allData.task.byId[nextTaskId].type === "section";
+        const nextTaskId = activeTasks[nextTaskIndex];
+        const nextTask = findTaskById(nextTaskId);
+        return nextTask.type === "section";
     }
 };
 
 
 
 
-const renderRow = (allData) => {
-    const tasks = allData.task.allIds;
+const renderRow = (activeTasks, findTaskById) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -40,11 +40,11 @@ const renderRow = (allData) => {
             parent,      // Reference to the parent List (instance)
             style        // Style object to be applied to row (to position it);
         } = props;
-        const taskOrSectionId  = tasks[index];
-        const taskOrSection    = allData.task.byId[taskOrSectionId];
+        const taskOrSectionId  = activeTasks[index];
+        const taskOrSection    = findTaskById(taskOrSectionId);
         //Check whther this section is the first one..
-        const isFirst = allData.task.allIds[0] === taskOrSectionId;
-        const isLastTask = isTaskLast(allData, index);
+        const isFirst    = activeTasks[0] === taskOrSectionId;
+        const isLastTask = isTaskLast(activeTasks, index, findTaskById);
 
         return (
             <div style={style}  key={key}>
@@ -54,7 +54,7 @@ const renderRow = (allData) => {
             }
             {
                 taskOrSection && taskOrSection.type === "task" &&
-                <SortableTask isLastTask={isLastTask} index={index} taskId={taskOrSectionId} task={taskOrSection} allData={allData} ></SortableTask>
+                <SortableTask isLastTask={isLastTask} index={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} ></SortableTask>
             }
             </div>
         )
@@ -79,12 +79,14 @@ const SortableHeading = SortableElement((props)=>{
 
 
 const SortableTask = SortableElement((props)=>{
-
-    const {style, isLastTask, className, index, taskId, task, allData} = props;
-
+    const {style, isLastTask, className, index, taskId, task} = props;
+    let isActiveTaskSection = false;
+    if(task && task.type === "section" && task.protectedName === "active_tasks"){
+      isActiveTaskSection = true;
+    }
     return (
         <div style={style} className={className}>
-            <TaskItem isLastTask={isLastTask} index={index} taskId={taskId} task={task} isActiveTaskSection  memberObj={allData.user.byId} statusObj={allData.status.byId} labelObj ={allData.label.byId}/>
+            <TaskItem isLastTask={isLastTask} index={index} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} />
         </div>
     )
 });
@@ -99,18 +101,16 @@ class VirtualList extends Component {
      * @param {*} index
      */
     getRowHeight({index}){
-        const {allData} = this.props;
-        const tasks     = allData.task.allIds;
-        const taskId    = tasks[index];
-        const task      = allData.task.byId[taskId];
+      const {activeTasks, findTaskById} = this.props;
+        const taskId    = activeTasks[index];
+        const task      = findTaskById(taskId);
         if(task.type === "section"){
-            const firstSectionId = allData.task.allIds[0];
-            if(taskId === firstSectionId){
-                return 44.5;
-            }else{
-                return 59;
-            }
-
+          const firstSectionId = activeTasks[0];
+          if(taskId === firstSectionId){
+              return 44.5;
+          }else{
+              return 59;
+          }
         }
         return 41;
     }
@@ -142,9 +142,9 @@ class VirtualList extends Component {
 
 
     render() {
-      const {allData, setReference} = this.props;
-      const rowRenderer = renderRow(allData);
-      const totalRows = allData.task.allIds.length;
+      const {activeTasks, setReference, findTaskById} = this.props;
+      const rowRenderer = renderRow(activeTasks, findTaskById);
+      const totalRows = activeTasks.length;
       return (
         <AutoSizer  style={{height: "inherit", width: "inherit"}}>
            {({ height, width }) => (
@@ -164,8 +164,6 @@ class VirtualList extends Component {
                                     this.List = instance;
                                     setReference(instance);
                                 }}
-
-                                //onRowsRendered={onRowsRendered}
                                 rowHeight={this.getRowHeight.bind(this)}
                                 rowRenderer={rowRenderer}
                                 rowCount={totalRows}
@@ -222,10 +220,12 @@ class TaskList extends Component {
 
     render() {
         const {
-          allData,
+          activeTasks,
           setReference,
-          getRef,
+          findTaskById,
         }  = this.props;
+
+        //console.log("All Tasks", activeTasks, findTaskById);
         return (
           <SortableList
               ref={(instance) => {
@@ -233,9 +233,10 @@ class TaskList extends Component {
               }}
               setReference={setReference}
               onSortEnd={this.onSortEnd}
-              allData={allData}
+              activeTasks={activeTasks}
               helperClass={'selected_item'}
               useDragHandle
+              findTaskById={findTaskById}
           />
         );
     }
@@ -244,11 +245,6 @@ class TaskList extends Component {
 // Retrieve data from store as props
 function mapStateToProps(store) {
     return {
-        sectionObj: store.ModelDataReducer.section,
-        userObj: store.ModelDataReducer.users,
-        labelObj: store.ModelDataReducer.labels,
-        statusObj: store.ModelDataReducer.statusObj,
-        cursor: store.ModelDataReducer.cursor
 
     };
 }
