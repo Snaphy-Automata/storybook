@@ -26,14 +26,11 @@ import {onMarkCompleteClickedAction, onStatusChangedAction, getStatusDataAction,
 const TaskDetail = (props) => {
 
     //console.log("Task detail Props", props);
-    const { handleSubmit, pristine, submitting, invalid, error } = props;
+    const { handleSubmit, pristine, submitting, invalid, error, selectedTask, onTitleDataChanged } = props;
 
-    const options = [
-        { key: "inprogress", text: "In Progress", value: "In Progress" },
-        { key: "pending", text: "Pending", value: "Pending" },
+    //console.log("Task Detail Props", props);
 
-        { key: "completed", text: "Completed", value: "Completed" }
-    ]
+
 
     const getOptions = () => {
         let optionsList = [];
@@ -72,6 +69,39 @@ const TaskDetail = (props) => {
 
     const onLabelAddButtonClicked = () => {
         props.onLabelAddButtonClickedAction(!props.isLabelButtonClicked);
+    }
+
+
+    const getTaskTitle = () => {
+        let titleData = null;
+        if(selectedTask){
+            if(selectedTask.title){
+                titleData = selectedTask.title;
+            }
+        }
+        //console.log("Title Data", titleData);
+        return titleData;
+    }
+
+    const getTitleFieldName = () => {
+        let titleName;
+        if(selectedTask){
+            if(selectedTask.id){
+                if(selectedTask.title){
+                    titleName = `${selectedTask.id}.title`;
+                } else{
+                    titleName = `${selectedTask.id}.title_new`;
+                }
+             
+            } else{
+                titleName = "title";
+            }
+           
+        } else{
+            titleName = "title";
+        }
+        //console.log("Title Name", titleName);
+        return titleName;
     }
 
     // const totalUserList = () => {
@@ -125,16 +155,16 @@ const TaskDetail = (props) => {
                 {/* Task Detail Form */}
                 <div className="task-detail-task-detail-container">
                     <div className="task-detail-task-name-container">
-                        <Field name="title" type="text" placeholder="Write a task name" size="large" rows="1" label="TaskTitle" component={InputElement}></Field>
+                        <Field name={getTitleFieldName()} type="text" placeholder="Write a task name" size="large" rows="1" label="TaskTitle" component={InputElement} onDataChanged={onTitleDataChanged}></Field>
                         {/* <InputElement placeholder="Write a task name" size="large"></InputElement> */}
                     </div>
                     <div className="task-detail-task-action-button-conatiner">
                         <div className="task-detail-completed-container">
-                            {!props.isMarkCompletedClicked && <Button size="tiny" basic onClick={onMarkCompletedClicked} className="task-detail-action-button">
+                            {!props.isMarkCompletedClicked && <Button size="tiny" basic onClick={onMarkCompletedClicked} style={{width:"135px"}} className="task-detail-action-button">
                                 <Icon name="check" />
                                 Mark Complete
                         </Button>}
-                            {props.isMarkCompletedClicked && <Button size="tiny" color="green" onClick={onMarkCompletedClicked} className="task-detail-action-button">
+                            {props.isMarkCompletedClicked && <Button size="tiny" color="green" onClick={onMarkCompletedClicked} style={{width:"135px"}} className="task-detail-action-button">
                                 <Icon name="check" />
                                 Completed
                         </Button>}

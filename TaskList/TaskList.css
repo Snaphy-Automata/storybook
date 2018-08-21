@@ -81,6 +81,9 @@
     color: #a6b9cc;
     font-size: 11px;
     margin-left: 2px;
+}
+
+.task-list-heading-drag-cursor{
     cursor: -webkit-grab;
 }
 

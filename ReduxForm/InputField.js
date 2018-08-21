@@ -30,6 +30,9 @@ const InputField = (props) => {
         disabled,
         transparent,
         className,
+        onBlurEvent,
+        onFocusEvent,
+        onKeyPressEvent,
         meta: { touched, error, warning }
     } = props;
 
@@ -39,6 +42,27 @@ const InputField = (props) => {
     autoFocus = autoFocus || false
     disabled = disabled || false
     transparent = transparent || false
+
+    const onBlur = (e) => {
+        if(onBlurEvent){
+            onBlurEvent(e.target.value);
+        }
+    }
+
+    const onFocus = (e) => {
+        if(onFocusEvent){
+            onFocusEvent();
+        }
+    }
+
+
+    const onKeyPressed = (e) => {
+        if(onKeyPressEvent){
+            onKeyPressEvent(e.key, e.target.value);
+        }
+    }
+
+    
 
     return(
         <Form.Input
@@ -56,6 +80,9 @@ const InputField = (props) => {
             autoComplete={autocomplete}
             label={label}
             placeholder={placeholder}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            onKeyPress={onKeyPressed}
         >
         </Form.Input>
     );

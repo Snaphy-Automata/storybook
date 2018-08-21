@@ -233,7 +233,8 @@ import moment from 'moment';
 
  const getDueDateObj = (date, type, task, isCompletedColorCode, isActiveTaskSection) => {
     let colorCode; 
-    if(task.isCompleted){
+    //console.log("Get Due date Obj", task);
+    if( task && task.isCompleted){
         colorCode = isCompletedColorCode;
     }else{
         colorCode = dueDateColorCode[type];

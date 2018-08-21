@@ -22,14 +22,19 @@ const isTaskLast = (activeTasks, index, findTaskById) => {
     }else{
         const nextTaskId = activeTasks[nextTaskIndex];
         const nextTask = findTaskById(nextTaskId);
-        return nextTask.type === "section";
+        if(nextTask){
+            return nextTask.type === "section";
+        } else{
+            return true;
+        }
+       
     }
 };
 
 
 
 
-const renderRow = (activeTasks, findTaskById) => {
+const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -46,15 +51,22 @@ const renderRow = (activeTasks, findTaskById) => {
         const isFirst    = activeTasks[0] === taskOrSectionId;
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
 
+        // let sectionIndex;
+        // if(taskOrSection.type === "section"){
+        //     sectionIndex = index;
+        // }
+       
+        //console.log("SortableHeagind Index", index);
+
         return (
             <div style={style}  key={key}>
             {
                 taskOrSection && taskOrSection.type === "section" &&
-                <SortableHeading isFirst={isFirst}  index={index} section={taskOrSection}></SortableHeading>
+                <SortableHeading isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged}></SortableHeading>
             }
             {
                 taskOrSection && taskOrSection.type === "task" &&
-                <SortableTask isLastTask={isLastTask} index={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} ></SortableTask>
+                <SortableTask isLastTask={isLastTask} index={index} indexValue={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} onTaskSelected={onTaskSelected} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask}></SortableTask>
             }
             </div>
         )
@@ -64,12 +76,14 @@ const renderRow = (activeTasks, findTaskById) => {
 
 
 const SortableHeading = SortableElement((props)=>{
-    const {style, section, isFirst} = props;
+    //console.log("Sortable heading props", props);
+    const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged} = props;
+   
     return (
         <div style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
             <div className="task-list-section-wrapper" style={{background: "#fff", ...style}}>
-                <TaskListHeading sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed"/>
+                <TaskListHeading index={indexValue} sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed" onNewTaskAdded={onNewTaskAdded} protectedName={section.protectedName} onSectionStateChanged={onSectionStateChanged}/>
             </div>
         </div>
 
@@ -79,14 +93,17 @@ const SortableHeading = SortableElement((props)=>{
 
 
 const SortableTask = SortableElement((props)=>{
-    const {style, isLastTask, className, index, taskId, task} = props;
+    //console.log("Sortable task props", props);
+    const {style, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask} = props;
     let isActiveTaskSection = false;
     if(task && task.type === "section" && task.protectedName === "active_tasks"){
       isActiveTaskSection = true;
     }
+    //console.log("Section Index value", indexValue);
     return (
         <div style={style} className={className}>
-            <TaskItem isLastTask={isLastTask} index={index} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} />
+           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected}/>} 
+           {task && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask}></TaskItem>}
         </div>
     )
 });
@@ -104,14 +121,18 @@ class VirtualList extends Component {
       const {activeTasks, findTaskById} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
-        if(task.type === "section"){
-          const firstSectionId = activeTasks[0];
-          if(taskId === firstSectionId){
-              return 44.5;
-          }else{
-              return 59;
-          }
+        //console.log("get Row Height Task", task);
+        if(task){
+            if(task.type === "section"){
+                const firstSectionId = activeTasks[0];
+                if(taskId === firstSectionId){
+                    return 44.5;
+                }else{
+                    return 59;
+                }
+              }
         }
+        
         return 41;
     }
 
@@ -142,8 +163,8 @@ class VirtualList extends Component {
 
 
     render() {
-      const {activeTasks, setReference, findTaskById} = this.props;
-      const rowRenderer = renderRow(activeTasks, findTaskById);
+      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged} = this.props;
+      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged);
       const totalRows = activeTasks.length;
       return (
         <AutoSizer  style={{height: "inherit", width: "inherit"}}>
@@ -201,29 +222,51 @@ class VirtualList extends Component {
  */
 class TaskList extends Component {
 
-    onSortEnd({oldIndex, newIndex}){
-        console.log("On Sort End ", oldIndex, newIndex);
-        //   if (oldIndex !== newIndex) {
-        //     const {items} = this.state;
+    // onSortEnd({oldIndex, newIndex}){
+    //     console.log("On Sort End ", oldIndex, newIndex,);
+    //       if (oldIndex !== newIndex) {
+    //           this.onItemPositionChanged(oldIndex, newIndex);
+    //         // const {items} = this.state;
 
-        //     this.setState({
-        //       items: arrayMove(items, oldIndex, newIndex),
-        //     });
+    //         // this.setState({
+    //         //   items: arrayMove(items, oldIndex, newIndex),
+    //         // });
 
-        //     // We need to inform React Virtualized that the items have changed heights
-        //     const instance = this.SortableList.getWrappedInstance();
+    //         // We need to inform React Virtualized that the items have changed heights
+    //         const instance = this.SortableList.getWrappedInstance();
+    //         //console.log("Instance Data", instance);
 
-        //     instance.List.recomputeRowHeights();
-        //     instance.forceUpdate();
-        //   }
-    };
+    //         instance.List.recomputeRowHeights();
+    //         instance.forceUpdate();
+    //       }
+    // };
 
     render() {
         const {
           activeTasks,
           setReference,
           findTaskById,
+          onItemPositionChanged,
+          onNewTaskAdded,
+          onTaskSelected,
+          onTaskItemBlurEvent,
+          onTaskItemFocusEvent,
+          onEnterNextNewTask,
+          onSectionStateChanged
         }  = this.props;
+
+        const onSortEnd = (e) => {
+            console.log("On Sort End ", e.oldIndex, e.newIndex,);
+            if (e.oldIndex !== e.newIndex) {
+                //console.log("Hoc Method getting called");
+                onItemPositionChanged(e.oldIndex, e.newIndex);
+              // We need to inform React Virtualized that the items have changed heights
+              const instance = this.SortableList.getWrappedInstance();
+  
+              instance.List.recomputeRowHeights();
+              instance.forceUpdate();
+            }
+        }
 
         //console.log("All Tasks", activeTasks, findTaskById);
         return (
@@ -232,11 +275,18 @@ class TaskList extends Component {
                   this.SortableList = instance;
               }}
               setReference={setReference}
-              onSortEnd={this.onSortEnd}
+              onSortEnd={onSortEnd}
               activeTasks={activeTasks}
               helperClass={'selected_item'}
               useDragHandle
               findTaskById={findTaskById}
+              onItemPositionChanged={onItemPositionChanged}
+              onNewTaskAdded={onNewTaskAdded}
+              onTaskSelected={onTaskSelected}
+              onTaskItemBlurEvent={onTaskItemBlurEvent}
+              onTaskItemFocusEvent={onTaskItemFocusEvent}
+              onEnterNextNewTask={onEnterNextNewTask}
+              onSectionStateChanged={onSectionStateChanged}
           />
         );
     }

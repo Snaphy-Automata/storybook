@@ -7,7 +7,7 @@ import {Input, Form} from 'semantic-ui-react';
 import {inputFocusChagedAction} from './InputElementAction';
 //import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
 
-const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows}) => {
+const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows, defaultValue, onDataChanged}) => {
 
    
 
@@ -32,12 +32,12 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
     }
 
     const onChange = function(event, data){
-        console.log("On Change Title Data getting called", data.value);
+        onDataChanged(data.value);
         //taskTitleDataAction(data.value);
         return input.onChange(data.value);
     }
 
-  
+    //console.log("Input Element Props", defaultValue);
 
 
     return (
@@ -51,15 +51,18 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
                 autoHeight
                 onBlur = {onBlurEvent}
                 onKeyPress = {onKeyPress}
+                onChange={onChange}
             />}
             {!isFocused && <Form.TextArea
                 placeholder={placeholder}
                 size={size}
+                {...input}
                 autoHeight
                 rows= {rows}
-                {...input}
+                
                 style={{padding: ".67857143em 1em", height: "52px !important", border:'none'}}
                 onFocus = {onFocusChanged}
+                onChange={onChange}
             />}
         </div>
     )

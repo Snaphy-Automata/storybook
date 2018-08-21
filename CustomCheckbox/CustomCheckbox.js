@@ -7,7 +7,7 @@ import './CustomCheckbox.css'
 
 import {onSelectDateAction, onOpenChangeDateDialogAction, onMemberSelectedAction} from '../TaskList/TaskListActions';
 
-console.log("Custom Checkbox getting called");
+//console.log("Custom Checkbox getting called");
 
 
 const CustomCheckbox = ({size, isSelected, color, className, onItemClicked, onSelectDateAction, type, data, task, isDateDialogOpened, userId, onMemberSelectedAction}) => {

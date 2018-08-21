@@ -14,6 +14,7 @@ import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction} from './TaskListActions';
+import { selectLimit } from 'async';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -48,6 +49,13 @@ const TaskItem = (props) => {
         style,
         className,
         isLastTask,
+        onTaskSelected,
+        selectedTask,
+        taskId,
+        itemTitleData,
+        onTaskItemBlurEvent,
+        onTaskItemFocusEvent,
+        onEnterNextNewTask
     } = props;
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
@@ -109,6 +117,12 @@ const TaskItem = (props) => {
 
     const getWrapperClassName = () => {
         let wrapperClassName = className? className + " task-list-item-wrapper": "task-list-item-wrapper";
+        if(selectedTask){
+            if(selectedTask.id === taskId){
+                wrapperClassName = `${wrapperClassName} active`
+            }
+        }
+        
         return wrapperClassName;
     }
 
@@ -119,6 +133,60 @@ const TaskItem = (props) => {
             borderBottomRightRadius: "5px"
         }
     }
+
+    const onSelectItem = () => {
+        onTaskSelected(task);
+    }
+
+    const getTitleFieldName = () => {
+        let titleName;
+        //console.log("Selected Task", task);
+        if(task){
+            if(task.id){
+                titleName = `${task.id}.title_new`
+            } else{
+                titleName = "title_new";
+            }
+        } else{
+            titleName = "title_new";
+        }
+
+        //console.log("New Item Field Name", titleName);
+
+        return titleName;
+    }
+
+    const onTitleBlur = (value) => {
+        if(value && value!==""){
+            task.title = value;
+            let taskObj = {...task};
+            onTaskItemBlurEvent(taskId, taskObj);
+        }
+        
+    }
+
+    const onTitleFocus= () => {
+        //console.log("On Title Focus", task);
+        onTaskItemFocusEvent(task);
+
+    }
+
+    const onEnterData = (key, value) => {
+        if(key === "Enter"){
+            if(value && value!==""){
+                task.title = value;
+                let taskObj = {...task};
+                onTaskItemBlurEvent(taskId, taskObj);
+                onEnterNextNewTask(index, task.sectionId);
+            }
+
+
+            //console.log("Section Index", index);
+        }
+    }
+
+
+    //console.log("Task List props", props.task);
 
 
     return (
@@ -139,8 +207,10 @@ const TaskItem = (props) => {
                             </div>}
                         </div>
 
-                        <div className="task-list-item-title">
-                            <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>
+                        <div className="task-list-item-title" onClick={onSelectItem}>
+                            {!selectedTask && <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>}
+                            {selectedTask && selectedTask.id === task.id && <div className="task-list-item-title-item">{itemTitleData}</div>}
+                            {selectedTask && selectedTask.id !== task.id && <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>}
                         </div>
                         {
                             !isScrolling &&
@@ -241,7 +311,7 @@ const TaskItem = (props) => {
                 </div>
             }
             {
-                isNew &&
+                isNew && 
                 <div className="task-list-item-delayed-wrapper">
                     <div className={taskItemContainerClassName} >
                         <div className={delayedClassName}></div>
@@ -254,7 +324,7 @@ const TaskItem = (props) => {
 
                         <div className="task-list-item-new-task-title">
                             <div className="task-list-item-new-task-container">
-                                <Field name="title" placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} />
+                                <Field name={getTitleFieldName()} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} onBlurEvent={onTitleBlur} onFocusEvent={onTitleFocus} onKeyPressEvent={onEnterData}/>
                             </div>
                         </div>
                     </div>
@@ -274,6 +344,8 @@ function mapStateToProps(store, props){
     let isAssinedUserDialogOpened = false;
     let isDateDialogOpened = false;
     let isDatePickerOpened = false;
+    let selectedTask = null;
+    let itemTitleData = null;
     if(assignedUserDialog && assignedUserDialog.taskId === props.taskId){
         isAssinedUserDialogOpened = true;
     }
@@ -283,6 +355,27 @@ function mapStateToProps(store, props){
     if(datePickerDialog && datePickerDialog.taskId === props.taskId){
         isDatePickerOpened = true;
     }
+    const modelDataReducer = store.ModelDataReducer;
+    const titleData = modelDataReducer.titleData;
+    selectedTask = modelDataReducer.selectedTask;
+    if(selectedTask){
+        if(selectedTask.id !== props.taskId){
+            selectedTask = null;
+        }
+    }
+
+    //console.log("Item Title Data", titleData);
+
+    if(titleData){
+        if(props.taskId){
+            if(titleData.taskId && titleData.taskId !== props.taskId){
+                itemTitleData = null;
+            } else{
+                itemTitleData = titleData.title;
+            }
+        }
+      
+    }
 
     return {
         //isTodaySelected,
@@ -291,7 +384,10 @@ function mapStateToProps(store, props){
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
+        selectedTask,
+        itemTitleData
     }
+
 
     //const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
     // const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;

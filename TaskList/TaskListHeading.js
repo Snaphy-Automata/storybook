@@ -28,11 +28,18 @@ const TaskListHeading = (props) => {
         populateSectionTaskList,
         sectionList,
         subHeadingComponent,
-        headingClassName
+        headingClassName,
+        onNewTaskAdded,
+        index,
+        protectedName,
+        isCollapsed,
+        onSectionStateChanged
     } = props;
-    const isSectionOpened = false;
+
+    //console.log("Task List Heading props", props);
+
     const getIcon = function () {
-        if (!isSectionOpened) {
+        if (!isCollapsed) {
             return `angle down`
         } else {
             return `angle right`
@@ -42,37 +49,32 @@ const TaskListHeading = (props) => {
     headingClassName_ = `task-list-heading-container ${headingClassName_}`
 
     const onStateChanged = () => {
-        const isTabOpen = !isSectionOpened;
+        onSectionStateChanged(sectionId, index, isCollapsed);
+        //const isTabOpen = !isSectionOpened;
         //This method will get called from the parent..
        // onTabButtonClick? onTabButtonClick(isTabOpen): null;
-        sectionExpandedAction(sectionId, isTabOpen);
+        //sectionExpandedAction(sectionId, isTabOpen);
     }
 
-    const onNewTaskAdded = () => {
+    const onAddNewTaskClicked = () => {
+        onNewTaskAdded(sectionId, index);
+    }
 
-        let sectionDataList = sectionList;
-        for(var i=0;i<sectionDataList.length;i++){
-            if(sectionDataList[i].sectionId === sectionId){
-                if(sectionDataList[i].items.length){
-                    if(!sectionDataList[i].items[sectionDataList[i].items.length-1].isNew){
-                        let newTaskObj = { icon:'users', isNew: true, id: `${sectionDataList[i].title}${sectionDataList[i].items.length + 1}`}
-                        sectionDataList[i].items.push(newTaskObj);
-                    }
-                }
-
-                break;
-            }
+    const getDragContainerClassName = () => {
+        let className = "task-list-heading-drag-container";
+        if(protectedName!=="active_tasks"){
+            className = `${className} task-list-heading-drag-cursor`;
         }
 
-        populateSectionTaskList(sectionDataList);
-
+        return className;
     }
 
     return (
         <div className="task-list-heading-parent-wrapper">
             <div className="task-list-heading-drag-angle-icon">
-                <div className="task-list-heading-drag-container">
-                    <DragHandle />
+                <div className={getDragContainerClassName()}>
+                    {protectedName!== "active_tasks" &&  <DragHandle />}
+                   
                 </div>
                 <div onClick={onStateChanged}  className="task-list-heading-arrow-container">
                     <div className="task-list-heading-icon"> <Icon style={{margin:0}} name={getIcon()} ></Icon></div>
@@ -98,7 +100,7 @@ const TaskListHeading = (props) => {
 
                         </div>
                         <div className="task-list-heading-add-new-container on-subheading-hover" >
-                            <div onClick={onNewTaskAdded}>
+                            <div onClick={onAddNewTaskClicked}>
                                 <Icon style={{display: "inline"}} name="clipboard outline"></Icon>
                                 <div style={{display: "inline", marginLeft: "5px"}} >Add New Task</div>
                             </div>
@@ -109,13 +111,13 @@ const TaskListHeading = (props) => {
                     subHeadingComponent && subHeadingComponent
                 }
                 {
-                    !isSectionOpened && !items && !subHeadingComponent &&
+                    !isCollapsed && !items && !subHeadingComponent &&
                     <div style={{ padding: "10px 15px 10px 15px", fontWeight: 500, color: "#9e9e9e", fontSize: 16 }}>
                         {defaultText}
                     </div>
                 }
                 {
-                    !isSectionOpened && items && items.length === 0 &&  !subHeadingComponent &&
+                    !isCollapsed && items && items.length === 0 &&  !subHeadingComponent &&
                     <div style={{ padding: "10px 15px 10px 15px", fontWeight: 500, color: "#9e9e9e", fontSize: 16 }}>
                         {defaultText}
                     </div>
@@ -128,8 +130,16 @@ const TaskListHeading = (props) => {
 }
 
 // Retrieve data from store as props
-function mapStateToProps(store) {
-  return{};
+function mapStateToProps(store, props) {
+    const modelDataReducer = store.ModelDataReducer;
+    const sectionState = modelDataReducer.sectionState[props.sectionId];
+    let isCollapsed = false;
+    if(sectionState && sectionState.isCollapsed){
+        isCollapsed = true;
+    }
+  return{
+      isCollapsed
+  };
 }
 
 //Map Redux Actions to Props..
