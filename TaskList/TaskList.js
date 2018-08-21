@@ -34,7 +34,7 @@ const isTaskLast = (activeTasks, index, findTaskById) => {
 
 
 
-const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged) => {
+const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -66,7 +66,7 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
             }
             {
                 taskOrSection && taskOrSection.type === "task" &&
-                <SortableTask isLastTask={isLastTask} index={index} indexValue={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} onTaskSelected={onTaskSelected} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask}></SortableTask>
+                <SortableTask isLastTask={isLastTask} index={index} indexValue={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} onTaskSelected={onTaskSelected} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} onAddNewtaskClicked={onAddNewtaskClicked}></SortableTask>
             }
             </div>
         )
@@ -94,7 +94,7 @@ const SortableHeading = SortableElement((props)=>{
 
 const SortableTask = SortableElement((props)=>{
     //console.log("Sortable task props", props);
-    const {style, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask} = props;
+    const {style, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked} = props;
     let isActiveTaskSection = false;
     if(task && task.type === "section" && task.protectedName === "active_tasks"){
       isActiveTaskSection = true;
@@ -103,7 +103,8 @@ const SortableTask = SortableElement((props)=>{
     return (
         <div style={style} className={className}>
            {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected}/>} 
-           {task && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask}></TaskItem>}
+           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask}></TaskItem>}
+           {task && !task.title &&  !task.projectId && <TaskItem isCreate taskId={taskId} index={indexValue} task={task} onAddNewtaskClicked={onAddNewtaskClicked}/>}
         </div>
     )
 });
@@ -163,8 +164,8 @@ class VirtualList extends Component {
 
 
     render() {
-      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged} = this.props;
-      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged);
+      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked} = this.props;
+      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked);
       const totalRows = activeTasks.length;
       return (
         <AutoSizer  style={{height: "inherit", width: "inherit"}}>
@@ -252,7 +253,8 @@ class TaskList extends Component {
           onTaskItemBlurEvent,
           onTaskItemFocusEvent,
           onEnterNextNewTask,
-          onSectionStateChanged
+          onSectionStateChanged,
+          onAddNewtaskClicked
         }  = this.props;
 
         const onSortEnd = (e) => {
@@ -287,6 +289,7 @@ class TaskList extends Component {
               onTaskItemFocusEvent={onTaskItemFocusEvent}
               onEnterNextNewTask={onEnterNextNewTask}
               onSectionStateChanged={onSectionStateChanged}
+              onAddNewtaskClicked={onAddNewtaskClicked}
           />
         );
     }

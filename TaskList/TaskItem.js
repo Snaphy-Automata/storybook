@@ -55,7 +55,9 @@ const TaskItem = (props) => {
         itemTitleData,
         onTaskItemBlurEvent,
         onTaskItemFocusEvent,
-        onEnterNextNewTask
+        onEnterNextNewTask,
+        isCreate,
+        onAddNewtaskClicked
     } = props;
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
@@ -185,13 +187,18 @@ const TaskItem = (props) => {
         }
     }
 
+    const onWriteTask = () => {
+        let updatedTaskObj = {...task};
+        onAddNewtaskClicked(updatedTaskObj);
+    }
+
 
     //console.log("Task List props", props.task);
 
 
     return (
         <div  style={{...style, ...lastTaskStyle}} className={getWrapperClassName()} >
-            {!isNew &&
+            {!isNew && !isCreate && 
                 <div className="task-list-item-delayed-wrapper">
                     <div  className={taskItemContainerClassName} >
                         <div className={delayedClassName}></div>
@@ -326,6 +333,25 @@ const TaskItem = (props) => {
                             <div className="task-list-item-new-task-container">
                                 <Field name={getTitleFieldName()} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} onBlurEvent={onTitleBlur} onFocusEvent={onTitleFocus} onKeyPressEvent={onEnterData}/>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            {
+                isCreate &&
+                <div className="task-list-item-delayed-wrapper" style={{backgroundColor:"#fcfcfc"}} onClick={onWriteTask}>
+                    <div className={taskItemContainerClassName} >
+                    <div className={delayedClassName}></div>
+                        <div className="task-list-item-side-bar-container">
+                            <div className={'task-list-item-side-line'}>
+                            </div>
+                            <div className={'task-list-add-item-icon'}>
+                            <Icon size="small" name="add"></Icon>
+                            </div>
+                        </div>
+                        
+                        <div className="task-list-item-new-task-title" style={{color:"#9e9e9e", paddingLeft:"2px"}}>
+                                Add New Task
                         </div>
                     </div>
                 </div>
