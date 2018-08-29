@@ -19,13 +19,13 @@ import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
 import DurationForm from '../DurationForm';
 
-import { 
-    onMarkCompleteClickedAction, 
-    onStatusChangedAction, 
-    getStatusDataAction, 
-    onUserAddButtonClickedAction, 
-    onLabelAddButtonClickedAction, 
-     
+import {
+    onMarkCompleteClickedAction,
+    onStatusChangedAction,
+    getStatusDataAction,
+    onUserAddButtonClickedAction,
+    onLabelAddButtonClickedAction,
+
 } from '../TaskList/TaskListActions';
 import SelectLabel from '../SelectLabel';
 
@@ -34,24 +34,32 @@ import SelectLabel from '../SelectLabel';
 const TaskDetail = (props) => {
 
     //console.log("Task detail Props", props);
-    const { 
-        handleSubmit, 
-        pristine, 
-        submitting, 
-        invalid, 
-        error, 
-        selectedTask, 
-        onTitleDataChanged, 
-        saveStatus, 
+    const {
+        handleSubmit,
+        pristine,
+        submitting,
+        invalid,
+        error,
+        selectedTask,
+        onTitleDataChanged,
+        saveStatus,
         selectedTaskStatusData,
         onMarkCompletedClicked,
         onUpdateDueDate,
         onUpdateStartDate,
         onUpdateDuration,
         selectedMemberListObj,
+        selectedLabelListObj,
         onUpdateSelectedMemberList,
-        userObj
-     } = props;
+        onUpdateSelectedLabelList,
+        userObj,
+        findLabelById,
+        labelDialogState,
+        onLabelDialogStateChanged,
+        labelDialogFormDataInit,
+        onUpdateLabelDialogForm,
+        saveLabel
+    } = props;
 
     //console.log("Task Detail Props", props);
 
@@ -98,30 +106,30 @@ const TaskDetail = (props) => {
     // const statusText = capitalize || "Status";
 
     const onMarkCompletedButtonClicked = function () {
-        if(selectedTask){
-            if(selectedTask.isCompleted){
+        if (selectedTask) {
+            if (selectedTask.isCompleted) {
                 onMarkCompletedClicked(selectedTask.id, false);
-            } else{
+            } else {
                 onMarkCompletedClicked(selectedTask.id, true);
             }
         }
     }
 
     const onUpdateTaskDueDate = (day) => {
-        if(selectedTask){
+        if (selectedTask) {
             onUpdateDueDate(selectedTask.id, day);
-          
+
         }
     }
 
     const onUpdateTaskStartDate = (day) => {
-        if(selectedTask){
+        if (selectedTask) {
             onUpdateStartDate(selectedTask.id, day);
         }
     }
 
     const onUpdateTaskDuration = (duration) => {
-        if(selectedTask){
+        if (selectedTask) {
             onUpdateDuration(selectedTask.id, duration)
         }
     }
@@ -172,10 +180,15 @@ const TaskDetail = (props) => {
     }
 
     const updateTaskSelectedMemberList = (selectedMemberList) => {
-        if(selectedTask){
+        if (selectedTask) {
             onUpdateSelectedMemberList(selectedTask.id, selectedMemberList);
         }
-        
+    }
+
+    const updateTaskSelectedLabelList = (selectedLabelList) => {
+        if (selectedTask) {
+            onUpdateSelectedLabelList(selectedTask.id, selectedLabelList);
+        }
     }
 
     return (
@@ -238,7 +251,7 @@ const TaskDetail = (props) => {
                                 <Icon name="check" />
                                 Completed
                         </Button>}
-                        {!selectedTask && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
+                            {!selectedTask && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
                                 <Icon name="check" />
                                 Mark Complete
                             </Button>}
@@ -267,10 +280,10 @@ const TaskDetail = (props) => {
                             isButtonClicked={props.isUserButtonClicked}
                             totalItemList={props.users}
                             userObj={userObj}
-                            taskId = {selectedTask.id}
+                            taskId={selectedTask.id}
                             selectedMemberListObj={selectedMemberListObj}
                             updateTaskSelectedMemberList={updateTaskSelectedMemberList}
-                            >
+                        >
                         </TagContainer>}
                         {!selectedTask && <TagContainer
                             type="user"
@@ -284,15 +297,15 @@ const TaskDetail = (props) => {
                     <div className="task-detail-date-container">
                         <div className="task-detail-due-date-container">
                             <div className="task-detail-due-date-text">Due Date</div>
-                            { selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} />}
-                            {!selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }}/>}
+                            {selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} />}
+                            {!selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} />}
                             {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
 
                         </div>
                         <div className="task-detail-start-date-container">
                             <div className="task-detail-start-date-text">Start Date</div>
-                            {selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id}/>}
-                            {!selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate}  onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} />}
+                            {selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} />}
+                            {!selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} />}
                             {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
 
                         </div>
@@ -311,13 +324,37 @@ const TaskDetail = (props) => {
 
                     <div className="task-detail-labels-container">
                         <div>Labels</div>
-                        <TagContainer
-                            type="label"
-                            onAddButtonClickedAction={onLabelAddButtonClicked}
-                            isButtonClicked={props.isLabelButtonClicked}
-                            totalItemList={props.labels}
-                            isDialogOpened={props.isLabelDialogOpened}>
-                        </TagContainer>
+                        {selectedTask &&
+                            <TagContainer
+                                type="label"
+                                onAddButtonClickedAction={onLabelAddButtonClicked}
+                                isButtonClicked={props.isLabelButtonClicked}
+                                totalItemList={props.labels}
+                                taskId={selectedTask.id}
+                                selectedLabelListObj={selectedLabelListObj}
+                                updateTaskSelectedLabelList={updateTaskSelectedLabelList}
+                                findLabelById={findLabelById}
+                                isDialogOpened={props.isLabelDialogOpened}
+                                labelDialogState={labelDialogState}
+                                onLabelDialogStateChanged={onLabelDialogStateChanged}
+                                onUpdateLabelDialogForm={onUpdateLabelDialogForm}
+                                labelDialogFormDataInit={labelDialogFormDataInit}
+                                saveLabel={saveLabel}>
+                            </TagContainer>
+                        }
+                        {!selectedTask &&
+                            <TagContainer
+                                type="label"
+                                onAddButtonClickedAction={onLabelAddButtonClicked}
+                                isButtonClicked={props.isLabelButtonClicked}
+                                totalItemList={props.labels}
+                                selectedLabelListObj={selectedLabelListObj}
+                                isDialogOpened={props.isLabelDialogOpened}
+                                labelDialogState={labelDialogState}
+                                onLabelDialogStateChanged={onLabelDialogStateChanged}
+                                saveLabel={saveLabel}>
+                            </TagContainer>
+                        }
                     </div>
 
                     {props.subTaskList && props.subTaskList.length !== 0 && <div className="task-detail-sub-tasks-container">

@@ -56,7 +56,9 @@ const TaskItem = (props) => {
         onAddNewtaskClicked,
         isAddNewTaskVisible,
         statusObjData,
-        findMemberById
+        findMemberById,
+        findLabelById,
+        labelDialogFormDataInit
     } = props;
     // if(selectedTask){
     //     console.log("Selected Task", selectedTask, isActiveTaskSection);
@@ -98,8 +100,12 @@ const TaskItem = (props) => {
         delayedClassName = `task-item-delayed-block`;
     }
 
-
-    const labelObjData = taskHelper.getLabels(labelObj);
+    let labelObjData = null;
+    if(selectedTask && selectedTask.id === task.id){
+        labelObjData = taskHelper.getSelectedTaskLabels(selectedTask, findLabelById);
+    } else{
+        labelObjData = taskHelper.getLabels(findLabelById);
+    }
     const labels = labelObjData.labelList;
 
 
@@ -489,6 +495,7 @@ function mapStateToProps(store, props) {
         selectedTask,
         itemTitleData,
         isAddNewTaskVisible: store.ModelDataReducer.isAddNewTaskVisible,
+        labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
         statusObjData
     }
 

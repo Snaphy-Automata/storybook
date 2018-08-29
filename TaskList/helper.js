@@ -43,7 +43,7 @@ import moment from 'moment';
      *  tooltip: ""
      * }
      */
-    getLabels(labelObj){
+    getLabels(findLabelById){
         const labelList = [];
         let tooltip = "";
         if(this.task && this.task.labels && this.task.labels.length){
@@ -52,7 +52,7 @@ import moment from 'moment';
                 if(index + 1 === this.task.labels.length){
                     isLast = true;
                 }
-                const label = labelObj[labelId];
+                const label = findLabelById(labelId);
                 if(label){
                     labelList.push(label);
                     if(index >0){
@@ -70,6 +70,34 @@ import moment from 'moment';
         }
        
 
+    }
+
+
+    getSelectedTaskLabels(selectedTask, findLabelById){
+        const labelList = [];
+        let tooltip = "";
+        if(selectedTask && selectedTask.labels && selectedTask.labels.length){
+            selectedTask.labels.forEach((labelId, index) => {
+                let isLast = false;
+                if(index + 1 === selectedTask.labels.length){
+                    isLast = true;
+                }
+                const label = findLabelById(labelId);
+                if(label){
+                    labelList.push(label);
+                    if(index >0){
+                        tooltip = `${tooltip} ${label.title}`
+                    }
+                    if(!isLast && index >0){
+                        tooltip = `${tooltip}, `
+                    }
+                }  
+            });
+        }
+        return {
+            labelList : labelList,
+            tooltip : tooltip
+        }
     }
 
     /**

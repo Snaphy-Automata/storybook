@@ -67,7 +67,7 @@ const isSectionCollapsed = (collapsedSectionList, sectionId) => {
 
 
 
-const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById) => {
+const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -101,7 +101,22 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
             }
             {
                 taskOrSection && taskOrSection.type === "task" &&
-                <SortableTask isLastTask={isLastTask} index={index} indexValue={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} onTaskSelected={onTaskSelected} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} onAddNewtaskClicked={onAddNewtaskClicked} activeTasks={activeTasks} statusObj={statusObj} findMemberById={findMemberById}></SortableTask>
+                <SortableTask 
+                isLastTask={isLastTask} 
+                index={index} 
+                indexValue={index} 
+                taskId={taskOrSectionId} 
+                task={taskOrSection} 
+                activeTasks={activeTasks} 
+                onTaskSelected={onTaskSelected} 
+                onTaskItemBlurEvent={onTaskItemBlurEvent} 
+                onTaskItemFocusEvent={onTaskItemFocusEvent} 
+                onEnterNextNewTask={onEnterNextNewTask} 
+                onAddNewtaskClicked={onAddNewtaskClicked} 
+                activeTasks={activeTasks} 
+                statusObj={statusObj} 
+                findMemberById={findMemberById} 
+                findLabelById={findLabelById}></SortableTask>
             }
             </div>
         )
@@ -131,7 +146,7 @@ const SortableHeading = SortableElement((props)=>{
 
 const SortableTask = SortableElement((props)=>{
     //console.log("Sortable task props", props);
-    const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById} = props;
+    const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById, findLabelById} = props;
     //console.log("Sortable Task Props", props);
     let isActiveTaskSection = false;
     if(task && task.type === "section" && task.protectedName === "active_tasks"){
@@ -144,8 +159,8 @@ const SortableTask = SortableElement((props)=>{
     //console.log("Sortable Task data", task);
     return (
         <div style={style}>
-           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById}/>} 
-           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById}></TaskItem>}
+           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById}/>} 
+           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById}></TaskItem>}
            {/* {task && !task.title &&  !task.projectId && <TaskItem isCreate taskId={taskId} index={indexValue} task={task} onAddNewtaskClicked={onAddNewtaskClicked}/>} */}
         </div>
     )
@@ -227,9 +242,9 @@ class VirtualList extends Component {
 
 
     render() {
-      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById} = this.props;
+      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById} = this.props;
       //console.log("Virtual List props");
-      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById);
+      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById);
       const totalRows = activeTasks.length;
       return (
         <AutoSizer  style={{height: "inherit", width: "inherit"}}>
@@ -312,6 +327,7 @@ class TaskList extends Component {
           setReference,
           findTaskById,
           findMemberById,
+          findLabelById,
           onItemPositionChanged,
           onNewTaskAdded,
           onTaskSelected,
@@ -378,6 +394,7 @@ class TaskList extends Component {
               useDragHandle
               findTaskById={findTaskById}
               findMemberById={findMemberById}
+              findLabelById={findLabelById}
               onItemPositionChanged={onItemPositionChanged}
               onNewTaskAdded={onNewTaskAdded}
               onTaskSelected={onTaskSelected}

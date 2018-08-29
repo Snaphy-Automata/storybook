@@ -21,8 +21,6 @@ const LabelDialog = (props) => {
 
     const {
         totalItemList,
-        initializeLabelDialogFormAction,
-        initializeLabelDialogFormData,
         deleteLabelAction,
         pristine, 
         reset, 
@@ -31,7 +29,9 @@ const LabelDialog = (props) => {
         error,
         handleSubmit,
         isDialogOpened,
-        labelDialogOpenedAction
+        onLabelDialogStateChanged,
+        onUpdateLabelDialogForm,
+        formData
     } = props;
 
     //console.log("Label Dialog Props", props);
@@ -62,24 +62,24 @@ const LabelDialog = (props) => {
     });
 
     const deleteLabel = function(){
-        if(initializeLabelDialogFormData){
-            deleteLabelAction(initializeLabelDialogFormData);
-            initializeLabelDialogFormAction(null);
+        if(formData){
+            deleteLabelAction(formData);
+            onUpdateLabelDialogForm(null);
         }
      }
 
      const onReset = function(){
          console.log("I am getting called");
-         if(initializeLabelDialogFormData){
+         if(formData){
              reset();
-             initializeLabelDialogFormAction(initializeLabelDialogFormData);
+             onUpdateLabelDialogForm(formData);
          } else{
              reset();
          }
      }
 
      const onDialogClose = function(){
-        labelDialogOpenedAction(false)
+        onLabelDialogStateChanged(false)
      }
 
 
@@ -96,13 +96,13 @@ const LabelDialog = (props) => {
                     <div className="label-dialog-content-container">
                         <div className="label-dialog-create-label-conatiner">
                             <SnaphyForm  error={error} onSubmit={handleSubmit} errorHeading={'Something went wrong!'} className="">
-                                <Field required name="name" type="text" size="large" component={InputFieldUI} placeholder="Name your label"/>
+                                <Field required name="title" type="text" size="large" component={InputFieldUI} placeholder="Name your label"/>
                                     <div className="label-dialog-color-list-container">
-                                        <Field name="color"  options={optionsList}  component={CheckboxGroupField}></Field>
+                                        <Field name="colorCode"  options={optionsList}  component={CheckboxGroupField}></Field>
                                     </div>
                                 <div>
-                                    {!initializeLabelDialogFormData && <SubmitButton basic style={{float:'left'}} size="tiny" disabled = {invalid|| submitting || pristine} content="Create"></SubmitButton>}
-                                    {initializeLabelDialogFormData && <SubmitButton basic style={{float:'left'}} size="tiny" disabled = {invalid|| submitting || pristine} content="Update"></SubmitButton>}
+                                    {!formData && <SubmitButton basic style={{float:'left'}} size="tiny" disabled = {invalid|| submitting || pristine} content="Create"></SubmitButton>}
+                                    {formData && <SubmitButton basic style={{float:'left'}} size="tiny" disabled = {invalid|| submitting || pristine} content="Update"></SubmitButton>}
                                     <Button type="button" basic color="grey" size="tiny" content="Reset" onClick={onReset}/>
                                     <Button type="button" basic color="red" size="tiny" style={{float:"right", display:"inline-block"}} onClick={deleteLabel}>Delete</Button>
                                 </div>
@@ -114,12 +114,12 @@ const LabelDialog = (props) => {
 
                                         const onEditLabel = function(){
                                             console.log("ItemObj", itemObj);
-                                            initializeLabelDialogFormAction(itemObj);
+                                            onUpdateLabelDialogForm(itemObj);
                                         }
                                         return (
                                             <div key={index} style={{display:"inline-block"}}>
-                                                 {itemObj && itemObj.name && <div className="label-dialog-label-container">
-                                                   <SelectLabel type="edit" name={itemObj.name} color={itemObj.color} onClick={onEditLabel}/>
+                                                 {itemObj && itemObj.title && <div className="label-dialog-label-container">
+                                                   <SelectLabel type="edit" name={itemObj.title} color={itemObj.colorCode} onClick={onEditLabel} style={{height:"25px", lineHeight:"17px"}}/>
                                                 </div>}
                                             </div>
                                         )
