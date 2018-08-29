@@ -16,7 +16,7 @@ import {
     ADD_SELECTED_LABEL_TO_LIST,
     ON_OPEN_DATE_PICKER,
     SET_DATE_DATA,
-    ON_DUE_DATE_UPDATED_ACTION,
+    ON_DUE_DATE_UPDATED_ACTION
 } from './TaskListActions';
 
 
@@ -43,7 +43,10 @@ const initialState = {
     isTaskSelected : false,
     previousDateDialogId: null,
     isDurationClicked : false,
-    durationData : null,
+    durationData : {
+        taskId : null,
+        data: null
+    },
     isMarkCompletedClicked : false,
     isStatusClicked : false,
     statusData : "Status",
@@ -172,7 +175,10 @@ const TaskListReducer = (state = initialState, action) => {
         case DURATION_DATA:{
             state = {
                 ...state,
-                durationData : action.payload
+                durationData :{
+                    taskId: action.payload.taskId,
+                    data: action.payload.data
+                }
             }
             break;
         }
@@ -248,7 +254,8 @@ const TaskListReducer = (state = initialState, action) => {
                 ...state,
                 [action.payload.id]:{
                     dateData : action.payload.data,
-                    isDatePickerOpened : action.payload.isDatePickerOpened
+                    isDatePickerOpened : action.payload.isDatePickerOpened,
+                    taskId : action.payload.taskId
                 }
             }
             break;

@@ -460,3 +460,12 @@
     display: none;
     visibility: hidden;
 }
+
+.task-list-item-add-new-task-container{
+    height: inherit;
+}
+
+.selected_item .task-list-item-add-new-task-container{
+    display: none;
+    visibility: hidden;
+}

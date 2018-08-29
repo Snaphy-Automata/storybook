@@ -82,10 +82,12 @@ import moment from 'moment';
     getFormattedDueDate(){
         let type, date;
         if(this.task && this.task.endDate){
+           
             const dueDate = this.task.endDate;
             if (moment().format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+               // console.log("Task End date", this.task);
                 type = "today";
-                date: "today"
+                date = "today"
             } else if (moment().subtract(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
                 type = "yesterday"
                 date = "yesterday";
@@ -105,6 +107,36 @@ import moment from 'moment';
             }
         }
         return getDueDateObj(date, type, this.task, this.isCompletedColorCode, this.isActiveTaskSection);
+    }
+
+    getSelectedTaskFormattedDate(selectedTask){
+        let type, date;
+        if(selectedTask && selectedTask.endDate){
+           
+            const dueDate = selectedTask.endDate;
+            if (moment().format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+               // console.log("Task End date", selectedTask);
+                type = "today";
+                date = "today"
+            } else if (moment().subtract(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+                type = "yesterday"
+                date = "yesterday";
+            } else if (moment().add(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+                type = "tommorow"
+                date = "tomorrow";
+            } else {
+                let dueDateArray;
+                if(moment.utc().year() === moment.utc(dueDate).year()){
+                    dueDateArray = moment.utc(dueDate).format("DD MMM");
+                }else{
+                    dueDateArray = moment.utc(dueDate).format("DD MMM, YYYY");
+                }
+                   
+                date = dueDateArray;
+                type = this.isDelayed()? "delayed":"coming";
+            }
+        }
+        return getDueDateObj(date, type, selectedTask, this.isCompletedColorCode, this.isActiveTaskSection);
     }
 
 
@@ -137,6 +169,59 @@ import moment from 'moment';
         return titleData;
     }
 
+    getSelectedIcon(selectedTask, findMemberById){
+        const iconObj = {};
+        //assignedTo
+        if( selectedTask && selectedTask.assignedTo && findMemberById){
+            if(selectedTask.assignedTo.length > 1){
+                iconObj.icon = "users";
+                let tooltip = "";
+                selectedTask.assignedTo.forEach((assignedId, index)=>{
+                    let isLast = false;
+                    if(index+1 === selectedTask.assignedTo.length){
+                        isLast = true;
+                    }
+                    const member = findMemberById(assignedId);
+                    console.log("assigned to member", member)
+                    if(member && member.firstName){
+                        if(index === 0){
+                            tooltip = `${member.firstName}`;
+                        }else{
+                            tooltip = `${tooltip}, ${member.firstName}`;
+                        }
+                        
+                        if(member.lastName){
+                            tooltip = `${tooltip} ${member.lastName}`;
+                        }   
+
+                    }
+                });
+                iconObj.tooltip = tooltip;
+            }else{
+                const assignedId = selectedTask.assignedTo[0];
+                const member = findMemberById(assignedId);
+                //console.log("Members", selectedTask.assignedTo, assignedId, member);
+                if(member && member.firstName){
+                    iconObj.title = member.firstName;
+                    iconObj.tooltip = `${member.firstName}`;
+                    if(member.lastName){
+                        iconObj.tooltip = `${iconObj.tooltip} ${member.lastName}`;
+                    }   
+                }else{
+                    iconObj.icon = "user";
+                }
+                //FIXME: 2nd Aug change property name according to url..
+                if(member && member.url){
+                    iconObj.thumbnailUrl = member.url;
+                }
+            }
+        }else{
+            iconObj.icon = "user";
+            iconObj.tooltip = "Assign this task";
+        }   
+        return iconObj;
+    }
+
     /**
      * Will return icon obj.
      * {
@@ -147,10 +232,10 @@ import moment from 'moment';
      * }
      * @param {*} membersObj 
      */
-    getIcon(membersObj){
+    getIcon(findMemberById){
         const iconObj = {};
         //assignedTo
-        if( this.task && this.task.assignedTo && membersObj && this.task.assignedTo.length ){
+        if( this.task && this.task.assignedTo && findMemberById){
             if(this.task.assignedTo.length > 1){
                 iconObj.icon = "users";
                 let tooltip = "";
@@ -159,8 +244,9 @@ import moment from 'moment';
                     if(index+1 === this.task.assignedTo.length){
                         isLast = true;
                     }
-                    const member = membersObj[assignedId];
-                    if(member.firstName){
+                    const member = findMemberById(assignedId);
+                    console.log("assigned to member", member)
+                    if(member && member.firstName){
                         if(index === 0){
                             tooltip = `${member.firstName}`;
                         }else{
@@ -176,8 +262,9 @@ import moment from 'moment';
                 iconObj.tooltip = tooltip;
             }else{
                 const assignedId = this.task.assignedTo[0];
-                const member = membersObj[assignedId];
-                if(member.firstName){
+                const member = findMemberById(assignedId);
+                //console.log("Members", this.task.assignedTo, assignedId, member);
+                if(member && member.firstName){
                     iconObj.title = member.firstName;
                     iconObj.tooltip = `${member.firstName}`;
                     if(member.lastName){
@@ -187,7 +274,7 @@ import moment from 'moment';
                     iconObj.icon = "user";
                 }
                 //FIXME: 2nd Aug change property name according to url..
-                if(member.url){
+                if(member && member.url){
                     iconObj.thumbnailUrl = member.url;
                 }
             }

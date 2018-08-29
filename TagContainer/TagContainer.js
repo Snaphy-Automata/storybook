@@ -23,7 +23,8 @@ const handleSubmit = function(props, value){
         initializeLabelDialogFormData,
         editLabelAction,
         addLabelAction,
-        initializeLabelDialogFormAction
+        initializeLabelDialogFormAction,
+        
     } = props;
 
     if(initializeLabelDialogFormData){
@@ -49,12 +50,15 @@ const TagContainer = (props) => {
         isButtonClicked, 
         onAddButtonClickedAction, 
         totalItemList,  
-        selectedUserList,
         selectedLabelList,
         type, 
         isDialogOpened, 
         labelDialogOpenedAction, 
-        initializeLabelDialogFormData
+        initializeLabelDialogFormData,
+        taskId,
+        selectedMemberListObj,
+        updateTaskSelectedMemberList,
+        userObj
     } = props;
 
     //console.log("tag Container total list", totalItemList);
@@ -87,6 +91,11 @@ const TagContainer = (props) => {
         return handleSubmit(props, value);
     }
 
+    let selectedMemberList = [];
+    if(selectedMemberListObj && selectedMemberListObj.taskId === taskId){
+        selectedMemberList = selectedMemberListObj.selectedMemberList;
+    }
+
     return (
         <div>
             <div className={getClassName()}>
@@ -107,10 +116,10 @@ const TagContainer = (props) => {
                 </div>}
                 {type === "user" && <div className="tag-container-list-container">
                     {
-                        map(selectedUserList, function(selectedItemId, index){
-                            const userObj = totalItemList.byId[selectedItemId];
-                            let name = `${userObj.firstName}`
-                            const lastName = `${userObj.lastName}` ? `${userObj.lastName}` : "";
+                        map(selectedMemberList, function(selectedItemId, index){
+                            const userObjData = userObj.byId[selectedItemId];
+                            let name = `${userObjData.firstName}`
+                            const lastName = `${userObjData.lastName}` ? `${userObjData.lastName}` : "";
                             name = `${name} ${lastName}`
                             return(
                                 <OverFlowLabel key={index} name={name} src = "fdr"></OverFlowLabel>
@@ -129,6 +138,30 @@ const TagContainer = (props) => {
                         map(totalItemList, function (itemObj, index) {
 
                             const selectItemClick = function(){
+                                let itemId = itemObj.id;
+                                let selectedItemDataList;
+                                if(type === "user"){
+                                    selectedItemDataList = [...selectedMemberList];
+                                } else if(type === "label"){
+
+                                }
+
+                                for(var i=0;i<selectedItemDataList.length;i++){
+                                    if(selectedItemDataList[i] === itemId){
+                                        selectedItemDataList.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                                if(type === "user"){
+                                    if(selectedItemDataList.length === selectedMemberList.length){
+                                        selectedItemDataList.push(itemId);
+                                    }
+                                    //console.log("Selected Item List", selectedItemDataList);
+                                    updateTaskSelectedMemberList(selectedItemDataList);
+                                }
+                               
+
+
                                 // let selectedItemDataList;
                                 // if(type === "user"){
                                 //      selectedItemDataList = [...selectedUserList];
@@ -166,6 +199,17 @@ const TagContainer = (props) => {
                             }
 
                             const getSelectedValue = function(){
+                                let isSelected = false;
+                                const itemId = itemObj.id;
+                                if(type === "user"){
+                                    for(var i=0;i<selectedMemberList.length;i++){
+                                        if(selectedMemberList[i] === itemId){
+                                            isSelected=true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                return isSelected;
                                 // let isSelected = false;
                                 // if(type === "user"){
                                 //     for(var i=0;i<selectedUserList.length;i++){
@@ -198,6 +242,7 @@ const TagContainer = (props) => {
                                 } else if("label"){
                                     name = `${itemObj.title}`
                                 }
+                                //console.log("Name", name);
                                 return name;
                             }
 
@@ -214,6 +259,7 @@ const TagContainer = (props) => {
 
                             return (
                                 <div key={index} style={{ display: "inline-block" }}>
+                                    {index === 0 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom:10}} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick}/>}
                                     {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom:10}} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick}/>}
                                     {index === totalItemList.length - 1 && type === "label" && <Button size="tiny" onClick={onOpenLabelDialog} basic>
                                         <Icon name="tag" />

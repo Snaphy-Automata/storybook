@@ -29,7 +29,7 @@ import { onDatePickerStateChangedAction, setDateDataAction } from '../TaskList/T
 
 
 const DatePicker = (props) => {
-  let { format, meta: { touched, error }, width, required, isDatePickerOpened, dateData, onDatePickerStateChangedAction, setDateDataAction, title, style, dataType } = props;
+  let { format, meta: { touched, error }, width, required, isDatePickerOpened, dateData, onDatePickerStateChangedAction, setDateDataAction, title, style, dataType, onUpdateDate, taskId } = props;
   format = format || "DD/MM/YYYY";
 
   // const onOpenDataPicker = function(){
@@ -38,10 +38,13 @@ const DatePicker = (props) => {
 
   const onDayChanged = function (day) {
     if (day) {
+      //console.log("Day Format", day);
       if (dataType === "due") {
-        setDateDataAction("due", day, !isDatePickerOpened);
+        setDateDataAction("due", day, !isDatePickerOpened, taskId);
+        onUpdateDate(day);
       } else if (dataType === "start") {
-        setDateDataAction("start", day, !isDatePickerOpened);
+        setDateDataAction("start", day, !isDatePickerOpened, taskId);
+        onUpdateDate(day);
       }
     }
 
@@ -60,9 +63,11 @@ const DatePicker = (props) => {
   const onRemoveDate = function (e) {
 
     if (dataType === "due") {
-      setDateDataAction("due", null, isDatePickerOpened);
+      setDateDataAction("due", null, isDatePickerOpened, taskId);
+      onUpdateDate(null);
     } else if (dataType === "start") {
-      setDateDataAction("start", null, isDatePickerOpened);
+      setDateDataAction("start", null, isDatePickerOpened, taskId);
+      onUpdateDate(null);
     }
     if (!e) var e = window.event;
     e.cancelBubble = true;
@@ -128,7 +133,11 @@ DatePicker.propTypes = {
 function mapStateToProps(store, props) {
   const taskListReducerConfig = store.TaskListReducer[props.dataType];
   const isDatePickerOpened = taskListReducerConfig && taskListReducerConfig.isDatePickerOpened ? true : false;
-  const dateData = taskListReducerConfig && taskListReducerConfig.dateData ? taskListReducerConfig.dateData : null;
+  let dateData = null;
+  if( taskListReducerConfig && props.taskId === taskListReducerConfig.taskId){
+    dateData = taskListReducerConfig && taskListReducerConfig.dateData ? taskListReducerConfig.dateData : null;
+  }
+  
   //console.log("Calling map to props", taskListReducerConfig);
   return {
     isDatePickerOpened,

@@ -11,6 +11,8 @@ import {SortableContainer, arrayMove, SortableElement} from 'react-sortable-hoc'
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
+import { find } from 'graphql';
+import { is } from 'immutable';
 
 
 const isTaskLast = (activeTasks, index, findTaskById) => {
@@ -31,10 +33,41 @@ const isTaskLast = (activeTasks, index, findTaskById) => {
     }
 };
 
+const isSectionEmpty = (activeTasks, index, findTaskById) => {
+    const itemId = activeTasks[index];
+    const item = findTaskById(itemId);
+    if(item && item.type === "section"){
+        const nextItemIndex = index +1;
+        const nextItemId = activeTasks[nextItemIndex];
+        const nextItem = findTaskById(nextItemId);
+        //console.log("Is Section empty", item, nextItem);
+        if(nextItem){
+            if(nextItem.type === "section"){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+const isSectionCollapsed = (collapsedSectionList, sectionId) => {
+    //console.log("Collapsed Section List", collapsedSectionList);
+    if(collapsedSectionList && collapsedSectionList.length){
+        for(var i=0;i<collapsedSectionList.length;i++){
+            if(collapsedSectionList[i] === sectionId){
+                return true;
+            }
+        }
+
+    }
+    return false;
+}
 
 
 
-const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked) => {
+
+const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -43,13 +76,15 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
             isVisible,   // This row is visible within the List (eg it is not an overscanned row)
             key,         // Unique key within array of rendered rows
             parent,      // Reference to the parent List (instance)
-            style        // Style object to be applied to row (to position it);
+            style,       // Style object to be applied to row (to position it);
         } = props;
+        //console.log("Row Render Props");
         const taskOrSectionId  = activeTasks[index];
         const taskOrSection    = findTaskById(taskOrSectionId);
         //Check whther this section is the first one..
         const isFirst    = activeTasks[0] === taskOrSectionId;
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
+        const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
 
         // let sectionIndex;
         // if(taskOrSection.type === "section"){
@@ -62,11 +97,11 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
             <div style={style}  key={key}>
             {
                 taskOrSection && taskOrSection.type === "section" &&
-                <SortableHeading isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged}></SortableHeading>
+                <SortableHeading isEmptySection={isEmptySection} isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray}></SortableHeading>
             }
             {
                 taskOrSection && taskOrSection.type === "task" &&
-                <SortableTask isLastTask={isLastTask} index={index} indexValue={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} onTaskSelected={onTaskSelected} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} onAddNewtaskClicked={onAddNewtaskClicked}></SortableTask>
+                <SortableTask isLastTask={isLastTask} index={index} indexValue={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} onTaskSelected={onTaskSelected} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} onAddNewtaskClicked={onAddNewtaskClicked} activeTasks={activeTasks} statusObj={statusObj} findMemberById={findMemberById}></SortableTask>
             }
             </div>
         )
@@ -77,13 +112,15 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
 
 const SortableHeading = SortableElement((props)=>{
     //console.log("Sortable heading props", props);
-    const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged} = props;
+    const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray} = props;
+
+   // console.log("Heading props", style);
    
     return (
-        <div style={{width:"100%"}}>
+        <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
             <div className="task-list-section-wrapper" style={{background: "#fff", ...style}}>
-                <TaskListHeading index={indexValue} sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed" onNewTaskAdded={onNewTaskAdded} protectedName={section.protectedName} onSectionStateChanged={onSectionStateChanged}/>
+                <TaskListHeading isEmptySection={isEmptySection} index={indexValue} sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed" onNewTaskAdded={onNewTaskAdded} protectedName={section.protectedName} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray}/>
             </div>
         </div>
 
@@ -94,17 +131,22 @@ const SortableHeading = SortableElement((props)=>{
 
 const SortableTask = SortableElement((props)=>{
     //console.log("Sortable task props", props);
-    const {style, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked} = props;
+    const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById} = props;
+    //console.log("Sortable Task Props", props);
     let isActiveTaskSection = false;
     if(task && task.type === "section" && task.protectedName === "active_tasks"){
       isActiveTaskSection = true;
     }
-    //console.log("Section Index value", indexValue);
+    if(task && task.type === "task" && task.sectionId === activeTasks[0]){
+        isActiveTaskSection = true;
+    }
+
+    //console.log("Sortable Task data", task);
     return (
-        <div style={style} className={className}>
-           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected}/>} 
-           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask}></TaskItem>}
-           {task && !task.title &&  !task.projectId && <TaskItem isCreate taskId={taskId} index={indexValue} task={task} onAddNewtaskClicked={onAddNewtaskClicked}/>}
+        <div style={style}>
+           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById}/>} 
+           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById}></TaskItem>}
+           {/* {task && !task.title &&  !task.projectId && <TaskItem isCreate taskId={taskId} index={indexValue} task={task} onAddNewtaskClicked={onAddNewtaskClicked}/>} */}
         </div>
     )
 });
@@ -119,18 +161,39 @@ class VirtualList extends Component {
      * @param {*} index
      */
     getRowHeight({index}){
-      const {activeTasks, findTaskById} = this.props;
+        //console.log("I am getting called");
+      const {activeTasks, findTaskById, isAddNewTaskVisible, collapsedSectionList} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
+        const isLastTask = isTaskLast(activeTasks, index, findTaskById);
+        const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
+
         //console.log("get Row Height Task", task);
         if(task){
             if(task.type === "section"){
+                let isCollapsed = isSectionCollapsed(collapsedSectionList, task.id);
+                //console.log("Section Row Heights", isCollapsed);
                 const firstSectionId = activeTasks[0];
                 if(taskId === firstSectionId){
-                    return 44.5;
+                    if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
+                        return 85.5
+                    } else{
+                        return 44.5;
+                    }
+                    
                 }else{
-                    return 59;
+                    if(isEmptySection && isAddNewTaskVisible && isCollapsed){
+                        return 100;
+                    } else{
+                        return 59;
+                    }
+                 
                 }
+              } else if(task.type === "task"){
+                  //console.log("Item type", task, isLastTask, isAddNewTaskVisible, task.title);
+                  if(isLastTask && isAddNewTaskVisible && task.title){
+                      return 82;
+                  }
               }
         }
         
@@ -164,8 +227,9 @@ class VirtualList extends Component {
 
 
     render() {
-      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked} = this.props;
-      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked);
+      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById} = this.props;
+      //console.log("Virtual List props");
+      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById);
       const totalRows = activeTasks.length;
       return (
         <AutoSizer  style={{height: "inherit", width: "inherit"}}>
@@ -247,6 +311,7 @@ class TaskList extends Component {
           activeTasks,
           setReference,
           findTaskById,
+          findMemberById,
           onItemPositionChanged,
           onNewTaskAdded,
           onTaskSelected,
@@ -254,20 +319,49 @@ class TaskList extends Component {
           onTaskItemFocusEvent,
           onEnterNextNewTask,
           onSectionStateChanged,
-          onAddNewtaskClicked
+          onAddNewtaskClicked,
+          onAddNewTaskVisible,
+          isAddNewTaskVisible,
+          collapsedSectionList,
+          populateCollapsedSectionArray,
+          statusObj
         }  = this.props;
 
+        //console.log("Task List props", collapsedSectionList);
+
+        const onSortStart = (e) => {
+            onAddNewTaskVisible(false);
+            const instance = this.SortableList.getWrappedInstance();
+  
+            instance.List.recomputeRowHeights();
+            instance.forceUpdate();
+            //console.log("On Sort Start", e);
+        }
+
+
         const onSortEnd = (e) => {
-            console.log("On Sort End ", e.oldIndex, e.newIndex,);
+            console.log("On Sort End ", e.oldIndex, e.newIndex);
+            onAddNewTaskVisible(true);
+            //console.log("IsAddtaskVisible", isAddNewTaskVisible);
             if (e.oldIndex !== e.newIndex) {
                 //console.log("Hoc Method getting called");
                 onItemPositionChanged(e.oldIndex, e.newIndex);
+                
               // We need to inform React Virtualized that the items have changed heights
-              const instance = this.SortableList.getWrappedInstance();
-  
-              instance.List.recomputeRowHeights();
-              instance.forceUpdate();
+            
             }
+
+            const instance = this.SortableList.getWrappedInstance();
+  
+            instance.List.recomputeRowHeights();
+            instance.forceUpdate();
+        }
+
+        const onSectionCollapsed = () => {
+            const instance = this.SortableList.getWrappedInstance();
+  
+            instance.List.recomputeRowHeights();
+            instance.forceUpdate();
         }
 
         //console.log("All Tasks", activeTasks, findTaskById);
@@ -278,10 +372,12 @@ class TaskList extends Component {
               }}
               setReference={setReference}
               onSortEnd={onSortEnd}
+              onSortStart={onSortStart}
               activeTasks={activeTasks}
               helperClass={'selected_item'}
               useDragHandle
               findTaskById={findTaskById}
+              findMemberById={findMemberById}
               onItemPositionChanged={onItemPositionChanged}
               onNewTaskAdded={onNewTaskAdded}
               onTaskSelected={onTaskSelected}
@@ -290,6 +386,11 @@ class TaskList extends Component {
               onEnterNextNewTask={onEnterNextNewTask}
               onSectionStateChanged={onSectionStateChanged}
               onAddNewtaskClicked={onAddNewtaskClicked}
+              isAddNewTaskVisible={isAddNewTaskVisible}
+              collapsedSectionList={collapsedSectionList}
+              onSectionCollapsed={onSectionCollapsed}
+              populateCollapsedSectionArray={populateCollapsedSectionArray}
+              statusObj={statusObj}
           />
         );
     }
