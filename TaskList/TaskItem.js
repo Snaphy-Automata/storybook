@@ -248,7 +248,7 @@ const TaskItem = (props) => {
                         </div>
                         {
                             !isScrolling &&
-                            <div className="task-list-item-other-container">
+                            <div className="task-list-item-other-container" onClick={onSelectItem}>
                                 <div className="task-list-item-status-duration-container">
                                     {isActiveTaskSection && statusData && !selectedTask &&
                                         <div className="task-list-item-status" style={{ color: statusData.colorCode }}>{statusData.title}</div>

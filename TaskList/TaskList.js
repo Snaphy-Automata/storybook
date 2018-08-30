@@ -340,7 +340,8 @@ class TaskList extends Component {
           isAddNewTaskVisible,
           collapsedSectionList,
           populateCollapsedSectionArray,
-          statusObj
+          statusObj,
+          labelDialogFormDataInit
         }  = this.props;
 
         //console.log("Task List props", collapsedSectionList);

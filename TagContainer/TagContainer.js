@@ -62,7 +62,8 @@ const TagContainer = (props) => {
         onLabelDialogStateChanged,
         onUpdateLabelDialogForm,
         labelDialogFormDataInit,
-        saveLabel
+        saveLabel,
+        deleteLabel
     } = props;
 
     //console.log("Tag container props", props);
@@ -105,6 +106,7 @@ const TagContainer = (props) => {
     let selectedLabelList = [];
     if (selectedLabelListObj && selectedLabelListObj.taskId === taskId) {
         selectedLabelList = selectedLabelListObj.selectedLabelList;
+        //console.log("Tag Container", selectedLabelListObj.selectedLabelList);
     }
 
     return (
@@ -283,8 +285,9 @@ const TagContainer = (props) => {
 
                             return (
                                 <div key={index} style={{ display: "inline-block" }}>
-                                    {index === 0 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick} />}
-                                    {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick} />}
+                                     <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick}/>
+                                     {/* {index === 0 && index === totalItemList.length-1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick} />}
+                                    {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick} />} */}
                                     {totalItemList.length !== 0 && index === totalItemList.length - 1 && type === "label" && <Button size="tiny" onClick={onOpenLabelDialog} basic>
                                         <Icon name="tag" />
                                         Create/Update Label
@@ -307,7 +310,7 @@ const TagContainer = (props) => {
                         })
                     }
                 </div>}
-            {type === "label" && <LabelDialog isDialogOpened={labelDialogState} totalItemList={totalItemList} initialValues={labelDialogFormDataInit} formData={labelDialogFormDataInit} onSubmit={onSubmit} onLabelDialogStateChanged={onLabelDialogStateChanged} onUpdateLabelDialogForm={onUpdateLabelDialogForm} ></LabelDialog>}
+            {type === "label" && <LabelDialog isDialogOpened={labelDialogState} totalItemList={totalItemList} initialValues={labelDialogFormDataInit} formData={labelDialogFormDataInit} onSubmit={onSubmit} onLabelDialogStateChanged={onLabelDialogStateChanged} onUpdateLabelDialogForm={onUpdateLabelDialogForm} deleteLabel={deleteLabel}></LabelDialog>}
         </div>
     )
 }

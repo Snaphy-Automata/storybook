@@ -58,7 +58,8 @@ const TaskDetail = (props) => {
         onLabelDialogStateChanged,
         labelDialogFormDataInit,
         onUpdateLabelDialogForm,
-        saveLabel
+        saveLabel,
+        deleteLabel
     } = props;
 
     //console.log("Task Detail Props", props);
@@ -339,7 +340,8 @@ const TaskDetail = (props) => {
                                 onLabelDialogStateChanged={onLabelDialogStateChanged}
                                 onUpdateLabelDialogForm={onUpdateLabelDialogForm}
                                 labelDialogFormDataInit={labelDialogFormDataInit}
-                                saveLabel={saveLabel}>
+                                saveLabel={saveLabel}
+                                deleteLabel={deleteLabel}>
                             </TagContainer>
                         }
                         {!selectedTask &&
@@ -352,7 +354,8 @@ const TaskDetail = (props) => {
                                 isDialogOpened={props.isLabelDialogOpened}
                                 labelDialogState={labelDialogState}
                                 onLabelDialogStateChanged={onLabelDialogStateChanged}
-                                saveLabel={saveLabel}>
+                                saveLabel={saveLabel}
+                                deleteLabel={deleteLabel}>
                             </TagContainer>
                         }
                     </div>

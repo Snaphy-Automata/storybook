@@ -53,7 +53,7 @@ import moment from 'moment';
                     isLast = true;
                 }
                 const label = findLabelById(labelId);
-                if(label){
+                if(label && label.id){
                     labelList.push(label);
                     if(index >0){
                         tooltip = `${tooltip} ${label.title}`
