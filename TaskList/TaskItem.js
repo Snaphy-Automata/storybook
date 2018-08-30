@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import { SortableHandle } from 'react-sortable-hoc';
+import moment from 'moment';
 
 //Custom import..
 import './TaskList.css';
@@ -59,7 +60,8 @@ const TaskItem = (props) => {
         findMemberById,
         findLabelById,
         onQuickUpdateCurrentDateAction,
-        labelDialogFormDataInit
+        labelDialogFormDataInit,
+        onQuickUpdateDate
     } = props;
     // if(selectedTask){
     //     console.log("Selected Task", selectedTask, isActiveTaskSection);
@@ -222,12 +224,24 @@ const TaskItem = (props) => {
     }
 
     const onSelectDateAction = (taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected) => {
-        console.log("Data prepare to be updated", taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
-        onQuickUpdateCurrentDateAction(taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
+        //console.log("Data prepare to be updated", taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
+        //call task mutation to update the task item..
+        let date = null;
+        if(isTodaySelected){
+            date = moment().toDate();
+        } else if(isTomorrowSelected){
+            date = moment().add(1, 'days').toDate();
+        } else if(isNextWeekSelected){
+            date = moment().add(1, 'weeks').startOf('isoWeek').add(6, 'hour').toDate();
+        }
+        if(date){
+            onQuickUpdateDate(taskId, date, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
+        }
+        
     }
 
     const openSelectDateDialog = (e) => {
-        console.log("Formatted Date", formattedDueDateObj.date);
+       // console.log("Formatted Date", formattedDueDateObj.date);
         if(formattedDueDateObj.date === "today"){
             onQuickUpdateCurrentDateAction(task.id, true, false, false);
         } else if(formattedDueDateObj.date === "tomorrow"){
@@ -270,8 +284,8 @@ const TaskItem = (props) => {
                         </div>
                         {
                             !isScrolling &&
-                            <div className="task-list-item-other-container" onClick={onSelectItem}>
-                                <div className="task-list-item-status-duration-container">
+                            <div className="task-list-item-other-container">
+                                <div className="task-list-item-status-duration-container" onClick={onSelectItem}>
                                     {isActiveTaskSection && statusData && !selectedTask &&
                                         <div className="task-list-item-status" style={{ color: statusData.colorCode }}>{statusData.title}</div>
                                     }
@@ -291,7 +305,7 @@ const TaskItem = (props) => {
                                 </div>
 
 
-                                <div className="task-list-item-sub-task-attachment-container">
+                                <div className="task-list-item-sub-task-attachment-container" onClick={onSelectItem}>
                                     <div style={{ display: "inline-block", width: "60%" }}>
                                         {
                                             subTaskObj &&
@@ -316,7 +330,7 @@ const TaskItem = (props) => {
 
 
                                 </div>
-                                <div className="task-list-item-tags-container">
+                                <div className="task-list-item-tags-container" onClick={onSelectItem}>
                                     {
                                         labels &&
                                         labels.length > 0 &&
@@ -514,6 +528,7 @@ function mapStateToProps(store, props) {
         isTomorrowSelected = quickCurrentUpdateDate.isTomorrowSelected;
         isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
     }
+
 
 
 
