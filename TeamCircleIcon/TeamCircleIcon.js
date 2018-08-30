@@ -12,7 +12,7 @@ import AssignedUserDialog from "../AssignedUserDialog";
 
 //FIXME: Implement tooltip.. 2nd Aug 2018 Robins
 
-const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip, isAssinedUserDialogOpened, onClose, task, isDatePicker, isDatePickerOpened, onDatePickerOpenedAction, previousDateDialogId }) => {
+const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip, isAssinedUserDialogOpened, onClose, task, isDatePicker, isDatePickerOpened, onDatePickerOpenedAction, previousDateDialogId, onDatePicked }) => {
     //size = mini | tiny | small | large | big | huge | massive;
 
     let char
@@ -23,6 +23,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
 
     const onDayChanged = function(day){
         console.log("Date Picked", day, task);
+        onDatePicked(task.id, day);
         onDatePickerOpenedAction(previousDateDialogId, false, task.id)
     }
 

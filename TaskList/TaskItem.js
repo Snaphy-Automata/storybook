@@ -72,8 +72,14 @@ const TaskItem = (props) => {
 
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
+    let isDelayed;
+    if(selectedTask && selectedTask.id === task.id){
+        isDelayed = taskHelper.isSelectedTaskDelayed(selectedTask);
+    } else{
+        isDelayed = taskHelper.isDelayed();
+    }
 
-    const isDelayed = taskHelper.isDelayed();
+    //const isDelayed = taskHelper.isDelayed();
     let iconObj = null;
     if(selectedTask && selectedTask.id === task.id){
         iconObj = taskHelper.getSelectedIcon(selectedTask, findMemberById);
@@ -222,7 +228,14 @@ const TaskItem = (props) => {
     const onWriteTask = () => {
         onAddNewtaskClicked(index, task.sectionId);
     }
-
+    
+    /**
+     * Select date from date Dialog..
+     * @param {*} taskId 
+     * @param {*} isTodaySelected 
+     * @param {*} isTomorrowSelected 
+     * @param {*} isNextWeekSelected 
+     */
     const onSelectDateAction = (taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected) => {
         //console.log("Data prepare to be updated", taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
         //call task mutation to update the task item..
@@ -238,6 +251,16 @@ const TaskItem = (props) => {
             onQuickUpdateDate(taskId, date, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
         }
         
+    }
+
+
+    /**
+     * Date Picked from date picker..
+     */
+    const onDatePicked = (taskId, date) => {
+        if(taskId && date){
+            onQuickUpdateDate(taskId, date, false, false, false);
+        }
     }
 
     const openSelectDateDialog = (e) => {
@@ -346,7 +369,7 @@ const TaskItem = (props) => {
                                     !selectedTask && !formattedDueDateObj.date &&
                                     <div className="task-list-item-date-default-container">
                                         <div style={{ position: "relative", top: "2px" }}>
-                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
+                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" onDatePicked={onDatePicked} isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
                                         </div>
                                     </div>
                                 }
@@ -354,7 +377,7 @@ const TaskItem = (props) => {
                                     selectedTask && selectedTask.id === task.id && !selectedTaskDueDateObj.date &&
                                     <div className="task-list-item-date-default-container">
                                         <div style={{ position: "relative", top: "2px" }}>
-                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
+                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" onDatePicked={onDatePicked} isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
                                         </div>
                                     </div>
                                 }

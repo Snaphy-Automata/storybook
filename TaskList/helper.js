@@ -27,6 +27,18 @@ import moment from 'moment';
         return isDelayed;
     }
 
+    isSelectedTaskDelayed(selectedTask){
+        let isDelayed = false;
+        if(selectedTask && selectedTask.endDate){
+            const startOfDay = moment.utc().startOf('day').valueOf();
+            const dueDate = moment.utc(selectedTask.endDate).valueOf();
+            if( dueDate < startOfDay ){
+                isDelayed = true;
+            }
+        }
+        return isDelayed;
+    }
+
     getStatus(statusObj){
         let statusData;
         if(this.task){
@@ -161,7 +173,7 @@ import moment from 'moment';
                 }
                    
                 date = dueDateArray;
-                type = this.isDelayed()? "delayed":"coming";
+                type = this.isSelectedTaskDelayed(selectedTask)? "delayed":"coming";
             }
         }
         return getDueDateObj(date, type, selectedTask, this.isCompletedColorCode, this.isActiveTaskSection);
