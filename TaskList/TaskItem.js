@@ -112,8 +112,12 @@ const TaskItem = (props) => {
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
 
-    const openSelectDateDialog = () => {
+    const openSelectDateDialog = (e) => {
+
         props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
     }
 
     const openAssignedUserDialog = () => {
@@ -121,8 +125,11 @@ const TaskItem = (props) => {
         props.onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
     }
 
-    const openDatePickerDialog = () => {
+    const openDatePickerDialog = (e) => {
         props.onDatePickerOpenedAction(!isDatePickerOpened, task.id)
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
     }
 
     const onCloseDateDialog = () => {
