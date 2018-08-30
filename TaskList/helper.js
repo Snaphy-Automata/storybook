@@ -312,6 +312,7 @@ import moment from 'moment';
                     }   
                 }else{
                     iconObj.icon = "user";
+                    iconObj.tooltip="Assign this task";
                 }
                 //FIXME: 2nd Aug change property name according to url..
                 if(member && member.url){

@@ -35,10 +35,6 @@ const TaskDetail = (props) => {
 
     //console.log("Task detail Props", props);
     const {
-        handleSubmit,
-        pristine,
-        submitting,
-        invalid,
         error,
         selectedTask,
         onTitleDataChanged,

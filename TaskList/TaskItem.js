@@ -33,7 +33,7 @@ const TaskItem = (props) => {
 
     const {
         task,
-        memberObj,
+        memberIdList,
         statusObj,
         labelObj,
         isNew,
@@ -60,9 +60,10 @@ const TaskItem = (props) => {
         findMemberById,
         findLabelById,
         onQuickUpdateCurrentDateAction,
-        labelDialogFormDataInit,
         onQuickUpdateDate
     } = props;
+
+    //console.log("Member Obj", memberIdList);
     // if(selectedTask){
     //     console.log("Selected Task", selectedTask, isActiveTaskSection);
     // }
@@ -86,6 +87,8 @@ const TaskItem = (props) => {
     } else{
         iconObj = taskHelper.getIcon(findMemberById);
     }
+
+    //console.log("Tooltip Data", iconObj);
   
     const statusData = taskHelper.getStatus(statusObj.byId);
 
@@ -295,8 +298,8 @@ const TaskItem = (props) => {
                             }
                             {!isScrolling &&
                                 <div className={'task-list-item-icon'}>
-                                    {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} />}
-                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} />}
+                                    {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList}/>}
                                 </div>}
                         </div>
 

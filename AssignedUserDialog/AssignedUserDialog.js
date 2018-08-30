@@ -36,6 +36,12 @@ class AssignedUserDailog extends React.Component {
 
     render() {
         console.log("Assigned User dialog getting called");
+        const {
+            task,
+            onClose,
+            memberIdList,
+            findMemberById
+        } = this.props;
         //console.log("Member List", MEMBERS);
         // const taskHelper = new TaskHelper(this.props.task);
         // const checkSelected = (member) =>{
@@ -66,6 +72,41 @@ class AssignedUserDailog extends React.Component {
                     </div>
                 </div>
                 <div className="assigned-user-dialog-list-container">
+                {
+                    memberIdList && memberIdList.length!==0 && <div>
+                       {
+                           map(memberIdList, function(memberId, index){
+                               const memberObj = findMemberById(memberId);
+                               const getSelectedMember = () => {
+                                   let isSelected = false;
+                                   if(task.assignedTo && task.assignedTo.length){
+                                       for(var i=0;i<task.assignedTo.length;i++){
+                                           if(task.assignedTo[i] === memberId){
+                                               isSelected = true;
+                                           }
+                                       }
+                                   }
+                                   return isSelected;
+                               }
+                               //console.log("MemberObj data", memberObj);
+                               if(memberObj){
+                                   if(index < 4){
+                                    return (
+                                        <div key={index} className="assigned-user-dialog-item-container">
+                                        <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" title={`${memberObj.firstName}`}></TeamCircleIcon>
+                                        <div className="assined-user-dialog-name-container">{`${memberObj.firstName} ${memberObj.lastName}`}</div>
+                                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container" isSelected={getSelectedMember()} color="blue" type="assigneduser"></CustomCheckbox></div>
+                                    ) 
+                                   } else{
+                                       return 
+                                   }
+                               } else{
+                                   return 
+                               }
+                           })
+                       }
+                    </div>
+                }
 
                     {/* {MEMBERS && MEMBERS.length !== 0 && <div>
                         {

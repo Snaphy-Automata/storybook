@@ -67,7 +67,7 @@ const isSectionCollapsed = (collapsedSectionList, sectionId) => {
 
 
 
-const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate) => {
+const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -118,6 +118,7 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
                 findMemberById={findMemberById} 
                 findLabelById={findLabelById}
                 onQuickUpdateDate={onQuickUpdateDate}
+                memberIdList={memberIdList}
                 ></SortableTask>
             }
             </div>
@@ -148,7 +149,7 @@ const SortableHeading = SortableElement((props)=>{
 
 const SortableTask = SortableElement((props)=>{
     //console.log("Sortable task props", props);
-    const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById, findLabelById, onQuickUpdateDate} = props;
+    const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList} = props;
     //console.log("Sortable Task Props", props);
     let isActiveTaskSection = false;
     if(task && task.type === "section" && task.protectedName === "active_tasks"){
@@ -161,8 +162,8 @@ const SortableTask = SortableElement((props)=>{
     //console.log("Sortable Task data", task);
     return (
         <div style={style}>
-           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate}/>} 
-           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate}></TaskItem>}
+           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList}/>} 
+           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList}></TaskItem>}
            {/* {task && !task.title &&  !task.projectId && <TaskItem isCreate taskId={taskId} index={indexValue} task={task} onAddNewtaskClicked={onAddNewtaskClicked}/>} */}
         </div>
     )
@@ -244,9 +245,9 @@ class VirtualList extends Component {
 
 
     render() {
-      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate} = this.props;
+      const {activeTasks, setReference, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList} = this.props;
       //console.log("Virtual List props");
-      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate);
+      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList);
       const totalRows = activeTasks.length;
       return (
         <AutoSizer  style={{height: "inherit", width: "inherit"}}>
@@ -343,8 +344,8 @@ class TaskList extends Component {
           collapsedSectionList,
           populateCollapsedSectionArray,
           statusObj,
-          labelDialogFormDataInit,
-          onQuickUpdateDate
+          onQuickUpdateDate,
+          memberIdList
         }  = this.props;
 
         //console.log("Task List props", collapsedSectionList);
@@ -413,6 +414,7 @@ class TaskList extends Component {
               populateCollapsedSectionArray={populateCollapsedSectionArray}
               statusObj={statusObj}
               onQuickUpdateDate={onQuickUpdateDate}
+              memberIdList={memberIdList}
           />
         );
     }

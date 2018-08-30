@@ -12,7 +12,26 @@ import AssignedUserDialog from "../AssignedUserDialog";
 
 //FIXME: Implement tooltip.. 2nd Aug 2018 Robins
 
-const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, tooltip, isAssinedUserDialogOpened, onClose, task, isDatePicker, isDatePickerOpened, onDatePickerOpenedAction, previousDateDialogId, onDatePicked }) => {
+const TeamCircleIcon = ({ 
+    className, 
+    style, 
+    onClick, 
+    title, 
+    icon, 
+    size, 
+    src, 
+    tooltip, 
+    isAssinedUserDialogOpened, 
+    onClose, 
+    task, 
+    isDatePicker, 
+    isDatePickerOpened, 
+    onDatePickerOpenedAction, 
+    previousDateDialogId, 
+    onDatePicked,
+    findMemberById,
+    memberIdList 
+}) => {
     //size = mini | tiny | small | large | big | huge | massive;
 
     let char
@@ -25,7 +44,12 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
         console.log("Date Picked", day, task);
         onDatePicked(task.id, day);
         onDatePickerOpenedAction(previousDateDialogId, false, task.id)
+
     }
+    if(!isDatePicker){
+        //console.log("Tooltip Data", tooltip);
+    }
+   
 
     return (
         <div className={className}>
@@ -56,7 +80,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
 
                             {!char && icon && <Icon name={icon} />}
                         </div>}</div>}
-                        content={<AssignedUserDialog onClose={onClose} task={task} />}
+                        content={<AssignedUserDialog onClose={onClose} task={task} memberIdList={memberIdList} findMemberById={findMemberById} />}
                         position='bottom center'
                         on='click'
                         open={isAssinedUserDialogOpened}
@@ -72,7 +96,7 @@ const TeamCircleIcon = ({ className, style, onClick, title, icon, size, src, too
 
             }
             {
-                !isDatePicker && !tooltip && <div onClick={onClick} className={className} style={style}>
+                !isDatePicker && !tooltip && <div onClick={onClick} style={style}>
                     {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                     {char && !src && char}
                     {!char && icon && <Icon name={icon} />}
