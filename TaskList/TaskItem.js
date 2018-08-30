@@ -13,7 +13,7 @@ import TaskHelper from './helper';
 import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction } from './TaskListActions';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction,  onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
 import { selectLimit } from 'async';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
@@ -58,6 +58,7 @@ const TaskItem = (props) => {
         statusObjData,
         findMemberById,
         findLabelById,
+        onQuickUpdateCurrentDateAction,
         labelDialogFormDataInit
     } = props;
     // if(selectedTask){
@@ -112,13 +113,7 @@ const TaskItem = (props) => {
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
 
-    const openSelectDateDialog = (e) => {
-
-        props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
-        if (!e) var e = window.event;
-        e.cancelBubble = true;
-        if (e.stopPropagation) e.stopPropagation();
-    }
+  
 
     const openAssignedUserDialog = () => {
         //console.log("I am getting called");
@@ -224,6 +219,26 @@ const TaskItem = (props) => {
 
     const onWriteTask = () => {
         onAddNewtaskClicked(index, task.sectionId);
+    }
+
+    const onSelectDateAction = (taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected) => {
+        console.log("Data prepare to be updated", taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
+        onQuickUpdateCurrentDateAction(taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
+    }
+
+    const openSelectDateDialog = (e) => {
+        console.log("Formatted Date", formattedDueDateObj.date);
+        if(formattedDueDateObj.date === "today"){
+            onQuickUpdateCurrentDateAction(task.id, true, false, false);
+        } else if(formattedDueDateObj.date === "tomorrow"){
+            onQuickUpdateCurrentDateAction(task.id, false, true, false);
+        } else if(formattedDueDateObj.date === moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM")){
+            onQuickUpdateCurrentDateAction(task.id, false, false, true);
+        }
+        props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
     }
 
 
@@ -346,7 +361,7 @@ const TaskItem = (props) => {
                                                 {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
                                             </div>
                                         }
-                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={formattedDueDateObj.date} isDateDialogOpened={isDateDialogOpened} />}
+                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={formattedDueDateObj.date} isDateDialogOpened={isDateDialogOpened} onCloseDateDialog={onCloseDateDialog}/>}
                                             position='bottom center'
                                             on='click'
                                             open={isDateDialogOpened}
@@ -376,7 +391,7 @@ const TaskItem = (props) => {
                                                 {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: selectedTaskDueDateObj.colorCode }} onClick={openSelectDateDialog}>{selectedTaskDueDateObj.date}</div>}
                                             </div>
                                         }
-                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={selectedTaskDueDateObj.date} isDateDialogOpened={isDateDialogOpened} />}
+                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={selectedTaskDueDateObj.date} isDateDialogOpened={isDateDialogOpened}  onCloseDateDialog={onCloseDateDialog}/>}
                                             position='bottom center'
                                             on='click'
                                             open={isDateDialogOpened}
@@ -446,9 +461,13 @@ function mapStateToProps(store, props) {
     const dateDialog = taskListReducer.dateDialog;
     const assignedUserDialog = taskListReducer.assignedUserDialog;
     const datePickerDialog = taskListReducer.datePickerDialog;
+    const quickCurrentUpdateDate = taskListReducer.quickCurrentUpdateDate;
     let isAssinedUserDialogOpened = false;
     let isDateDialogOpened = false;
     let isDatePickerOpened = false;
+    let isTodaySelected = false;
+    let isTomorrowSelected = false;
+    let isNextWeekSelected = false;
     let selectedTask = null;
     let itemTitleData = null;
     let statusObjData = null;
@@ -490,12 +509,18 @@ function mapStateToProps(store, props) {
         statusObjData = selectedTaskStatusData.data;
     }
 
+    if(quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId){
+        isTodaySelected = quickCurrentUpdateDate.isTodaySelected;
+        isTomorrowSelected = quickCurrentUpdateDate.isTomorrowSelected;
+        isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
+    }
+
 
 
     return {
-        //isTodaySelected,
-        //isTomorrowSelected,
-        //isNextWeekSelected,
+        isTodaySelected,
+        isTomorrowSelected,
+        isNextWeekSelected,
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
@@ -520,8 +545,8 @@ const mapActionsToProps = {
     //map action here
     onOpenChangeDateDialogAction,
     onOpenAssignedUserDialogAction,
-    onSelectDateAction,
     onDatePickerOpenedAction,
+    onQuickUpdateCurrentDateAction
 
 };
 

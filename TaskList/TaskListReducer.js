@@ -16,7 +16,8 @@ import {
     ADD_SELECTED_LABEL_TO_LIST,
     ON_OPEN_DATE_PICKER,
     SET_DATE_DATA,
-    ON_DUE_DATE_UPDATED_ACTION
+    ON_DUE_DATE_UPDATED_ACTION,
+    ON_QUICK_CURRENT_UPDATE_DATE
 } from './TaskListActions';
 
 
@@ -35,6 +36,12 @@ const initialState = {
     quickUpdateDialog :{
         taskId : null,
         date : null
+    },
+    quickCurrentUpdateDate: {
+        taskId : null,
+        isTodaySelected : false,
+        isTomorrowSelected : false,
+        isNextWeekSelected : false
     },
     isTodaySelected : false,
     isTomorrowSelected : false,
@@ -258,6 +265,20 @@ const TaskListReducer = (state = initialState, action) => {
                     taskId : action.payload.taskId
                 }
             }
+            break;
+        }
+
+        case ON_QUICK_CURRENT_UPDATE_DATE:{
+            state = {
+                ...state,
+                quickCurrentUpdateDate:{
+                    taskId : action.payload.taskId,
+                    isTodaySelected : action.payload.isTodaySelected,
+                    isTomorrowSelected : action.payload.isTomorrowSelected,
+                    isNextWeekSelected : action.payload.isNextWeekSelected
+                }
+            }
+            //console.log("Change Date Reducer getting called", state.quickCurrentUpdateDate);
             break;
         }
 

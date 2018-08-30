@@ -6,47 +6,62 @@ import {connect} from 'react-redux';
 import './ChangeDateDialog.css'
 import CustomCheckbox from '../CustomCheckbox';
 
-import {onSelectDateAction} from '../TaskList/TaskListActions';
+//import {onSelectDateAction} from '../TaskList/TaskListActions';
 
 
 
 class ChangeDateDialog extends React.Component{
 
     componentDidMount(){
-        console.log("I am getting called", this.props.dateData);
-        if(this.props.dateData){
-            //console.log("I am getting called", this.props.dateData);
-            if(this.props.dateData === "today"){
-                this.props.onSelectDateAction("today", true, this.props.task.id, this.props.isDateDialogOpened);
-            } else if(this.props.dateDate === "tomorrow"){
-                this.props.onSelectDateAction("tomorrow", true, this.props.task.id, this.props.isDateDialogOpened);
-            } else if(this.props.dateDate === moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM")){
-                this.props.onSelectDateAction("next week", true, this.props.task.id, this.props.isDateDialogOpened);
-            }
-        }
+        //console.log("I am getting called", this.props.dateData);
+        // if(this.props.dateData){
+        //     console.log("I am getting called", this.props.dateData);
+        //     if(this.props.dateData === "today"){
+        //         this.props.onSelectDateAction(this.props.task.id, true, false, false);
+        //     } else if(this.props.dateDate === "tomorrow"){
+        //         console.log("Tomorrow getting called");
+        //         this.props.onSelectDateAction(this.props.task.id, false, true, false);
+        //     } else if(this.props.dateDate === moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM")){
+        //         this.props.onSelectDateAction(this.props.task.id, false, false, true);
+        //     }
+        // }
     }
 
     render(){
+       // console.log("Change Date Dialog Props", this.props);
         const nextWeek = moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM");
 
-        const onDateSelected = (type, data, id) => {
-            console.log(" I am getting called");
-            props.onSelectDateAction(type, data, id);
+        const onTodaySelected = () => {
+            //console.log("Today Selected getting called");
+            this.props.onSelectDateAction(this.props.task.id, true, false, false);
+            this.props.onCloseDateDialog();
+        }
+
+        const onTomorrowSelected = () => {
+            //console.log("Tomorrow Selected getting called");
+            this.props.onSelectDateAction(this.props.task.id, false, true, false);
+            this.props.onCloseDateDialog();
+        }
+
+        const onNextWeekSelected = () => {
+            //console.log("Next Week Selected getting called");
+            this.props.onSelectDateAction(this.props.task.id, false, false, true);
+            this.props.onCloseDateDialog();
         }
         return(
             <div className="change-date-dialog-container">
                 <div className="change-date-dialog-item-container">
                     <div className="change-date-dialog-item-text">Today</div>
                     {/* <CustomCheckbox className="change-date-dialog-item-checkbox" size="mini" color="blue" isSelected={props.isTodaySelected} onSelectDateAction ={props.onSelectDateAction} type="today" data={!props.isTodaySelected}   onItemClicked={onDateSelected("today", !props.isTodaySelected)}></CustomCheckbox> */}
-                    <CustomCheckbox className="change-date-dialog-item-checkbox" size="mini" color="blue" isSelected={this.props.isTodaySelected}  type="today" data={!this.props.isTodaySelected} task={this.props.task} onItemClicked={onDateSelected} isDateDialogOpened={this.props.isDateDialogOpened}></CustomCheckbox>
+                    <CustomCheckbox className="change-date-dialog-item-checkbox" size="mini" color="blue" isSelected={this.props.isTodaySelected}  type="today" data={!this.props.isTodaySelected} task={this.props.task} onItemClicked={onTodaySelected} isDateDialogOpened={this.props.isDateDialogOpened}></CustomCheckbox>
                 </div>
                 <div className="change-date-dialog-item-container">
                     <div className="change-date-dialog-item-text">Tomorrow</div>
-                    <CustomCheckbox className="change-date-dialog-item-checkbox" size="mini" color="blue" isSelected={this.props.isTomorrowSelected} type="tomorrow" data={!this.props.isTomorrowSelected} task={this.props.task} onItemClicked={onDateSelected} isDateDialogOpened={this.props.isDateDialogOpened}></CustomCheckbox>
+                    <CustomCheckbox className="change-date-dialog-item-checkbox" size="mini" color="blue" isSelected={this.props.isTomorrowSelected} type="tomorrow" data={!this.props.isTomorrowSelected} task={this.props.task} onItemClicked={onTomorrowSelected} isDateDialogOpened={this.props.isDateDialogOpened}></CustomCheckbox>
                 </div>
                 <div className="change-date-dialog-item-container" style={{border: 'none'}}>
                     <div className="change-date-dialog-item-text">Next Week ({nextWeek})</div>
-                    <CustomCheckbox className="change-date-dialog-item-checkbox" size="mini" color="blue" isSelected={this.props.isNextWeekSelected} type="next week" data={!this.props.isNextWeekSelected} task={this.props.task} onItemClicked={onDateSelected} isDateDialogOpened={this.props.isDateDialogOpened}></CustomCheckbox>
+                    <CustomCheckbox className="change-date-dialog-item-checkbox" size="mini" color="blue" isSelected={this.props.isNextWeekSelected} type="next week" data={!this.props.isNextWeekSelected} task={this.props.task} onItemClicked={onNextWeekSelected} isDateDialogOpened={this.props.isDateDialogOpened}></CustomCheckbox>
                 </div>
     
             </div>
@@ -61,7 +76,7 @@ function mapStateToProps(store){
 }
 
 const mapActionsToProps = {
-    onSelectDateAction
+    //onSelectDateAction
 }
 
 
