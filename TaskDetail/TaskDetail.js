@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, reset } from 'redux-form';
 import { Icon, Button, Label, Form } from 'semantic-ui-react';
 import map from 'lodash/map';
 import capitalize from 'lodash/capitalize';
@@ -35,6 +35,7 @@ const TaskDetail = (props) => {
 
     //console.log("Task detail Props", props);
     const {
+        handleSubmit,
         error,
         selectedTask,
         onTitleDataChanged,
@@ -55,10 +56,12 @@ const TaskDetail = (props) => {
         labelDialogFormDataInit,
         onUpdateLabelDialogForm,
         saveLabel,
-        deleteLabel
+        deleteLabel,
+        commentList,
+        findMemberById
     } = props;
 
-    //console.log("Task Detail Props", props);
+    console.log("Task Detail Props", commentList);
 
 
 
@@ -190,7 +193,7 @@ const TaskDetail = (props) => {
 
     return (
         <div>
-            <SnaphyForm error={error}>
+            <SnaphyForm error={error} onSubmit={handleSubmit}>
 
                 {/* Header Section */}
                 <div className="task-detail-header-conatiner">
@@ -398,13 +401,23 @@ const TaskDetail = (props) => {
 
                         </div>
                     </div>}
-                    {props.commentList && props.commentList.length !== 0 && <div>
+
+                    {commentList && commentList.length !== 0 && <div>
                         <div style={{ marginTop: 10 }}>Comments</div>
                         <div>
                             {
-                                map(props.commentList, function (comment, index) {
+                                map(commentList, function (comment, index) {
+                                    let memberObj = {};
+                                    if(comment.ownerId){
+                                        memberObj = findMemberById(comment.ownerId);
+                                    }
+                                    let name;
+                                    name = memberObj.firstName;
+                                    if(memberObj.lastName){
+                                        name = `${name} ${memberObj.lastName}`;
+                                    }
                                     return (
-                                        <TaskComment key={index} name="Nikita Mittal" time="1 min ago" comment={comment.comment} />
+                                        <TaskComment key={index} name={name} time="1 min ago" comment={comment.title} />
                                     )
                                 })
                             }
@@ -416,7 +429,7 @@ const TaskDetail = (props) => {
 
 
                 </div>
-                <TaskCommentForm {...props} />
+                <TaskCommentForm  invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
                 <ShareDialog onClose={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened}></ShareDialog>
             </SnaphyForm>
         </div>

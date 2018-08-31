@@ -30,7 +30,9 @@ const TeamCircleIcon = ({
     previousDateDialogId, 
     onDatePicked,
     findMemberById,
-    memberIdList 
+    memberIdList,
+    taskMemberList,
+    onQuickUpdateTaskMembers 
 }) => {
     //size = mini | tiny | small | large | big | huge | massive;
 
@@ -47,6 +49,7 @@ const TeamCircleIcon = ({
 
     }
     if(!isDatePicker){
+        
         //console.log("Tooltip Data", tooltip);
     }
    
@@ -80,15 +83,15 @@ const TeamCircleIcon = ({
 
                             {!char && icon && <Icon name={icon} />}
                         </div>}</div>}
-                        content={<AssignedUserDialog onClose={onClose} task={task} memberIdList={memberIdList} findMemberById={findMemberById} />}
+                        content={<AssignedUserDialog onClose={onClose} task={task} memberIdList={memberIdList} findMemberById={findMemberById} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>}
                         position='bottom center'
                         on='click'
+                        //open
                         open={isAssinedUserDialogOpened}
                         onClose={onClose}
                         hideOnScroll
                         style={{ width: "242px", padding: "0" }}
-                        size='mini'
-                    >
+                        size='mini'>
 
                     </Popup>
 
@@ -96,7 +99,7 @@ const TeamCircleIcon = ({
 
             }
             {
-                !isDatePicker && !tooltip && <div onClick={onClick} style={style}>
+                !isDatePicker && !tooltip && <div onClick={onClick} className={className} style={style}>
                     {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                     {char && !src && char}
                     {!char && icon && <Icon name={icon} />}

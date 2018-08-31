@@ -249,6 +249,7 @@ import moment from 'moment';
                     }   
                 }else{
                     iconObj.icon = "user";
+                    iconObj.tooltip="Assign this task";
                 }
                 //FIXME: 2nd Aug change property name according to url..
                 if(member && member.url){
@@ -259,6 +260,55 @@ import moment from 'moment';
             iconObj.icon = "user";
             iconObj.tooltip = "Assign this task";
         }   
+        return iconObj;
+    }
+
+    getTargetTaskIcon(taskMemberList, findMemberById){
+        const iconObj = {};
+        if(taskMemberList && findMemberById){
+            if(taskMemberList.length > 1){
+                //Multiple Member Present..
+                iconObj.icon = "users";
+                let tooltip = "";
+                taskMemberList.forEach((assignedId, index)=>{
+                    const member = findMemberById(assignedId);
+                    console.log("assigned to member", member)
+                    if(member && member.firstName){
+                        if(index === 0){
+                            tooltip = `${member.firstName}`;
+                        }else{
+                            tooltip = `${tooltip}, ${member.firstName}`;
+                        }
+                        
+                        if(member.lastName){
+                            tooltip = `${tooltip} ${member.lastName}`;
+                        }   
+
+                    }
+                });
+                iconObj.tooltip = tooltip;
+
+            } else if(taskMemberList.length === 1){
+                const memberId = taskMemberList[0];
+                const member = findMemberById(memberId);
+                if(member && member.firstName){
+                    iconObj.title = member.firstName;
+                    iconObj.tooltip = `${member.firstName}`;
+                    if(member.lastName){
+                        iconObj.tooltip = `${iconObj.tooltip} ${member.lastName}`;
+                    }   
+                }else{
+                    iconObj.icon = "user";
+                    iconObj.tooltip="Assign this task";
+                }
+            } else{
+                iconObj.icon = "user";
+                iconObj.tooltip="Assign this task";
+            }
+        } else{
+            iconObj.icon = "user";
+            iconObj.tooltip="Assign this task";
+        }
         return iconObj;
     }
 

@@ -65,8 +65,7 @@ const TagContainer = (props) => {
         saveLabel,
         deleteLabel
     } = props;
-
-    //console.log("Tag container props", props);
+    //console.log("Tag container props", selectedMemberListObj);
 
     //console.log("tag Container total list", totalItemList);
     const getClassName = function () {

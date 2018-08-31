@@ -15,7 +15,7 @@ import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction,  onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
-import { selectLimit } from 'async';
+import {getTaskMembersAction} from '../../baseComponents/GridView/components/ModelData/ModelDataActions';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -60,7 +60,11 @@ const TaskItem = (props) => {
         findMemberById,
         findLabelById,
         onQuickUpdateCurrentDateAction,
-        onQuickUpdateDate
+        onQuickUpdateDate,
+        onQuickUpdateTaskMembers,
+        taskMemberList,
+        getTaskMembersAction,
+        targetTaskId
     } = props;
 
     //console.log("Member Obj", memberIdList);
@@ -84,9 +88,17 @@ const TaskItem = (props) => {
     let iconObj = null;
     if(selectedTask && selectedTask.id === task.id){
         iconObj = taskHelper.getSelectedIcon(selectedTask, findMemberById);
-    } else{
+    } else if(!targetTaskId){
         iconObj = taskHelper.getIcon(findMemberById);
+    } else if(!selectedTask && targetTaskId && taskMemberList){
+        iconObj = taskHelper.getTargetTaskIcon(taskMemberList, findMemberById);
+
     }
+
+    if(targetTaskId){
+        console.log("Icon Obj", iconObj);
+    }
+    
 
     //console.log("Tooltip Data", iconObj);
   
@@ -128,6 +140,8 @@ const TaskItem = (props) => {
 
     const openAssignedUserDialog = () => {
         //console.log("I am getting called");
+        console.log("Before Assigned Dialog Open", task.id,  task.assignedTo);
+        getTaskMembersAction(task.id, task.assignedTo);
         props.onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
     }
 
@@ -145,6 +159,7 @@ const TaskItem = (props) => {
 
     const onCloseAssignedUserDialog = () => {
         console.log("Close Assigned getting called");
+        getTaskMembersAction(null, []);
         props.onOpenAssignedUserDialogAction(false, task.id)
     }
 
@@ -298,8 +313,9 @@ const TaskItem = (props) => {
                             }
                             {!isScrolling &&
                                 <div className={'task-list-item-icon'}>
-                                    {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
-                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList}/>}
+                                    {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
+                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>}
+                                    {/* {!selectedTask && taskMemberList && targetTaskId && taskMemberList.length > 1 && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>} */}
                                 </div>}
                         </div>
 
@@ -511,6 +527,8 @@ function mapStateToProps(store, props) {
     let selectedTask = null;
     let itemTitleData = null;
     let statusObjData = null;
+    let taskMemberList;
+    let targetTaskId;
     if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
         isAssinedUserDialogOpened = true;
     }
@@ -524,6 +542,7 @@ function mapStateToProps(store, props) {
     const titleData = modelDataReducer.titleData;
     const draggedTaskOrSection = modelDataReducer.draggedTaskOrSection;
     const selectedTaskStatusData = modelDataReducer.selectedTaskStatusData;
+    const taskMemberListObj = modelDataReducer.taskMemberListObj;
     selectedTask = modelDataReducer.selectedTask;
     if (selectedTask) {
         if (selectedTask.id !== props.taskId) {
@@ -555,6 +574,11 @@ function mapStateToProps(store, props) {
         isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
     }
 
+    if(taskMemberListObj && taskMemberListObj.taskId === props.taskId){
+        taskMemberList = taskMemberListObj.selectedTaskMemberList;
+        targetTaskId = props.taskId;
+    }
+
 
 
 
@@ -569,7 +593,9 @@ function mapStateToProps(store, props) {
         itemTitleData,
         isAddNewTaskVisible: store.ModelDataReducer.isAddNewTaskVisible,
         labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
-        statusObjData
+        statusObjData,
+        taskMemberList,
+        targetTaskId
     }
 
 
@@ -587,7 +613,8 @@ const mapActionsToProps = {
     onOpenChangeDateDialogAction,
     onOpenAssignedUserDialogAction,
     onDatePickerOpenedAction,
-    onQuickUpdateCurrentDateAction
+    onQuickUpdateCurrentDateAction,
+    getTaskMembersAction
 
 };
 
