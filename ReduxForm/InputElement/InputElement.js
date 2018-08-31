@@ -32,7 +32,10 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
     }
 
     const onChange = function(event, data){
-        onDataChanged(data.value);
+        if(onDataChanged){
+            onDataChanged(data.value);
+        }
+       
         //taskTitleDataAction(data.value);
         return input.onChange(data.value);
     }

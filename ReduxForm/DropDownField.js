@@ -39,11 +39,14 @@ const DropDownField = (props) => {
         disabled,
         defaultValue,
         onBlur,
+        onBlurEvent,
+        open,
         meta: { touched, error, warning }
     } = props;
     inline = inline || false;
 
     size = size || "large";
+    open = open || false;
     //console.log("Dropdown Props", props.onDataChanged);
 
     //if(!onDataChanged){

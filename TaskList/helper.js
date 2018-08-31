@@ -27,6 +27,18 @@ import moment from 'moment';
         return isDelayed;
     }
 
+    isSelectedTaskDelayed(selectedTask){
+        let isDelayed = false;
+        if(selectedTask && selectedTask.endDate){
+            const startOfDay = moment.utc().startOf('day').valueOf();
+            const dueDate = moment.utc(selectedTask.endDate).valueOf();
+            if( dueDate < startOfDay ){
+                isDelayed = true;
+            }
+        }
+        return isDelayed;
+    }
+
     getStatus(statusObj){
         let statusData;
         if(this.task){
@@ -43,7 +55,7 @@ import moment from 'moment';
      *  tooltip: ""
      * }
      */
-    getLabels(labelObj){
+    getLabels(findLabelById){
         const labelList = [];
         let tooltip = "";
         if(this.task && this.task.labels && this.task.labels.length){
@@ -52,8 +64,8 @@ import moment from 'moment';
                 if(index + 1 === this.task.labels.length){
                     isLast = true;
                 }
-                const label = labelObj[labelId];
-                if(label){
+                const label = findLabelById(labelId);
+                if(label && label.id){
                     labelList.push(label);
                     if(index >0){
                         tooltip = `${tooltip} ${label.title}`
@@ -72,6 +84,34 @@ import moment from 'moment';
 
     }
 
+
+    getSelectedTaskLabels(selectedTask, findLabelById){
+        const labelList = [];
+        let tooltip = "";
+        if(selectedTask && selectedTask.labels && selectedTask.labels.length){
+            selectedTask.labels.forEach((labelId, index) => {
+                let isLast = false;
+                if(index + 1 === selectedTask.labels.length){
+                    isLast = true;
+                }
+                const label = findLabelById(labelId);
+                if(label){
+                    labelList.push(label);
+                    if(index >0){
+                        tooltip = `${tooltip} ${label.title}`
+                    }
+                    if(!isLast && index >0){
+                        tooltip = `${tooltip}, `
+                    }
+                }  
+            });
+        }
+        return {
+            labelList : labelList,
+            tooltip : tooltip
+        }
+    }
+
     /**
      * Will return date with color code..
      * {
@@ -82,10 +122,12 @@ import moment from 'moment';
     getFormattedDueDate(){
         let type, date;
         if(this.task && this.task.endDate){
+           
             const dueDate = this.task.endDate;
             if (moment().format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+               // console.log("Task End date", this.task);
                 type = "today";
-                date: "today"
+                date = "today"
             } else if (moment().subtract(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
                 type = "yesterday"
                 date = "yesterday";
@@ -107,11 +149,49 @@ import moment from 'moment';
         return getDueDateObj(date, type, this.task, this.isCompletedColorCode, this.isActiveTaskSection);
     }
 
+    getSelectedTaskFormattedDate(selectedTask){
+        let type, date;
+        if(selectedTask && selectedTask.endDate){
+           
+            const dueDate = selectedTask.endDate;
+            if (moment().format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+               // console.log("Task End date", selectedTask);
+                type = "today";
+                date = "today"
+            } else if (moment().subtract(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+                type = "yesterday"
+                date = "yesterday";
+            } else if (moment().add(1, 'days').format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
+                type = "tommorow"
+                date = "tomorrow";
+            } else {
+                let dueDateArray;
+                if(moment.utc().year() === moment.utc(dueDate).year()){
+                    dueDateArray = moment.utc(dueDate).format("DD MMM");
+                }else{
+                    dueDateArray = moment.utc(dueDate).format("DD MMM, YYYY");
+                }
+                   
+                date = dueDateArray;
+                type = this.isSelectedTaskDelayed(selectedTask)? "delayed":"coming";
+            }
+        }
+        return getDueDateObj(date, type, selectedTask, this.isCompletedColorCode, this.isActiveTaskSection);
+    }
+
 
     getSubtaskStats(){
-        if(this.task && this.task.stats && this.task.stats.subtask){
-            return this.task.stats.subtask;
+        let subTaskObj;
+        if(this.task && this.task.totalSubTasks){
+            subTaskObj ={};
+            subTaskObj["total"] = this.task.totalSubTasks;
+            if(this.task.completedSubTasks){
+                subTaskObj["completed"] = this.task.completedSubTasks;
+            } else{
+                subTaskObj["completed"] = 0;
+            }
         }
+        return subTaskObj;
     }
 
 
@@ -137,6 +217,109 @@ import moment from 'moment';
         return titleData;
     }
 
+    getSelectedIcon(selectedTask, findMemberById){
+        const iconObj = {};
+        //assignedTo
+        if( selectedTask && selectedTask.assignedTo && findMemberById){
+            if(selectedTask.assignedTo.length > 1){
+                iconObj.icon = "users";
+                let tooltip = "";
+                selectedTask.assignedTo.forEach((assignedId, index)=>{
+                    let isLast = false;
+                    if(index+1 === selectedTask.assignedTo.length){
+                        isLast = true;
+                    }
+                    const member = findMemberById(assignedId);
+                    console.log("assigned to member", member)
+                    if(member && member.firstName){
+                        if(index === 0){
+                            tooltip = `${member.firstName}`;
+                        }else{
+                            tooltip = `${tooltip}, ${member.firstName}`;
+                        }
+                        
+                        if(member.lastName){
+                            tooltip = `${tooltip} ${member.lastName}`;
+                        }   
+
+                    }
+                });
+                iconObj.tooltip = tooltip;
+            }else{
+                const assignedId = selectedTask.assignedTo[0];
+                const member = findMemberById(assignedId);
+                //console.log("Members", selectedTask.assignedTo, assignedId, member);
+                if(member && member.firstName){
+                    iconObj.title = member.firstName;
+                    iconObj.tooltip = `${member.firstName}`;
+                    if(member.lastName){
+                        iconObj.tooltip = `${iconObj.tooltip} ${member.lastName}`;
+                    }   
+                }else{
+                    iconObj.icon = "user";
+                    iconObj.tooltip="Assign this task";
+                }
+                //FIXME: 2nd Aug change property name according to url..
+                if(member && member.url){
+                    iconObj.thumbnailUrl = member.url;
+                }
+            }
+        }else{
+            iconObj.icon = "user";
+            iconObj.tooltip = "Assign this task";
+        }   
+        return iconObj;
+    }
+
+    getTargetTaskIcon(taskMemberList, findMemberById){
+        const iconObj = {};
+        if(taskMemberList && findMemberById){
+            if(taskMemberList.length > 1){
+                //Multiple Member Present..
+                iconObj.icon = "users";
+                let tooltip = "";
+                taskMemberList.forEach((assignedId, index)=>{
+                    const member = findMemberById(assignedId);
+                    console.log("assigned to member", member)
+                    if(member && member.firstName){
+                        if(index === 0){
+                            tooltip = `${member.firstName}`;
+                        }else{
+                            tooltip = `${tooltip}, ${member.firstName}`;
+                        }
+                        
+                        if(member.lastName){
+                            tooltip = `${tooltip} ${member.lastName}`;
+                        }   
+
+                    }
+                });
+                iconObj.tooltip = tooltip;
+
+            } else if(taskMemberList.length === 1){
+                const memberId = taskMemberList[0];
+                const member = findMemberById(memberId);
+                if(member && member.firstName){
+                    iconObj.title = member.firstName;
+                    iconObj.tooltip = `${member.firstName}`;
+                    if(member.lastName){
+                        iconObj.tooltip = `${iconObj.tooltip} ${member.lastName}`;
+                    }   
+                }else{
+                    iconObj.icon = "user";
+                    iconObj.tooltip="Assign this task";
+                }
+            } else{
+                iconObj.icon = "user";
+                iconObj.tooltip="Assign this task";
+            }
+        } else{
+            iconObj.icon = "user";
+            iconObj.tooltip="Assign this task";
+        }
+        return iconObj;
+    }
+
     /**
      * Will return icon obj.
      * {
@@ -147,10 +330,10 @@ import moment from 'moment';
      * }
      * @param {*} membersObj 
      */
-    getIcon(membersObj){
+    getIcon(findMemberById){
         const iconObj = {};
         //assignedTo
-        if( this.task && this.task.assignedTo && membersObj && this.task.assignedTo.length ){
+        if( this.task && this.task.assignedTo && findMemberById){
             if(this.task.assignedTo.length > 1){
                 iconObj.icon = "users";
                 let tooltip = "";
@@ -159,8 +342,9 @@ import moment from 'moment';
                     if(index+1 === this.task.assignedTo.length){
                         isLast = true;
                     }
-                    const member = membersObj[assignedId];
-                    if(member.firstName){
+                    const member = findMemberById(assignedId);
+                    console.log("assigned to member", member)
+                    if(member && member.firstName){
                         if(index === 0){
                             tooltip = `${member.firstName}`;
                         }else{
@@ -176,8 +360,9 @@ import moment from 'moment';
                 iconObj.tooltip = tooltip;
             }else{
                 const assignedId = this.task.assignedTo[0];
-                const member = membersObj[assignedId];
-                if(member.firstName){
+                const member = findMemberById(assignedId);
+                //console.log("Members", this.task.assignedTo, assignedId, member);
+                if(member && member.firstName){
                     iconObj.title = member.firstName;
                     iconObj.tooltip = `${member.firstName}`;
                     if(member.lastName){
@@ -185,9 +370,10 @@ import moment from 'moment';
                     }   
                 }else{
                     iconObj.icon = "user";
+                    iconObj.tooltip="Assign this task";
                 }
                 //FIXME: 2nd Aug change property name according to url..
-                if(member.url){
+                if(member && member.url){
                     iconObj.thumbnailUrl = member.url;
                 }
             }

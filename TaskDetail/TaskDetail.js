@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, reset } from 'redux-form';
 import { Icon, Button, Label, Form } from 'semantic-ui-react';
 import map from 'lodash/map';
 import capitalize from 'lodash/capitalize';
+import moment from 'moment';
 
 import './TaskDetail.css';
 import SubTask from './SubTask';
@@ -19,24 +20,58 @@ import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
 import DurationForm from '../DurationForm';
 
-import {onMarkCompleteClickedAction, onStatusChangedAction, getStatusDataAction, onUserAddButtonClickedAction, onLabelAddButtonClickedAction} from '../TaskList/TaskListActions';
+import {
+    onMarkCompleteClickedAction,
+    onStatusChangedAction,
+    getStatusDataAction,
+    onUserAddButtonClickedAction,
+    onLabelAddButtonClickedAction,
+} from '../TaskList/TaskListActions';
+import SelectLabel from '../SelectLabel';
 
 
 
 const TaskDetail = (props) => {
 
     //console.log("Task detail Props", props);
-    const { handleSubmit, pristine, submitting, invalid, error, selectedTask, onTitleDataChanged } = props;
+    const {
+        handleSubmit,
+        error,
+        selectedTask,
+        onTitleDataChanged,
+        saveStatus,
+        selectedTaskStatusData,
+        onMarkCompletedClicked,
+        onUpdateDueDate,
+        onUpdateStartDate,
+        onUpdateDuration,
+        selectedMemberListObj,
+        selectedLabelListObj,
+        onUpdateSelectedMemberList,
+        onUpdateSelectedLabelList,
+        userObj,
+        findLabelById,
+        labelDialogState,
+        onLabelDialogStateChanged,
+        labelDialogFormDataInit,
+        onUpdateLabelDialogForm,
+        saveLabel,
+        deleteLabel,
+        commentList,
+        subTaskList,
+        findMemberById,
+        onAddSubTask
+    } = props;
 
-    //console.log("Task Detail Props", props);
+    console.log("Task Detail Props", subTaskList);
 
 
 
     const getOptions = () => {
         let optionsList = [];
-        if(props.status && props.status.length){
+        if (props.status && props.status.length) {
             props.status.forEach((status) => {
-                optionsList.push({key: status.id, text: capitalize(status.title), value: status.title});
+                optionsList.push({ key: status.id, text: capitalize(status.title), value: `${status.title}--${status.id}-,${status.colorCode}` });
             })
         }
         return optionsList;
@@ -46,20 +81,62 @@ const TaskDetail = (props) => {
     const uid = Math.random().toString(36).substring(7);
 
     const onDataChanged = (event, data) => {
-        props.getStatusDataAction(data.value);
+        //console.log("In Status Selected", data.value);
+        const statusText = data.value.replace(/--.+/g, "");
+        // props.getStatusDataAction(statusText);
         props.onStatusChangedAction(!props.isStatusClicked);
-        //props.getStatusData(data.value);
-        //props.onStatusChanged();
-        //props.onDropDownStateChanged()
+        //call mutation..
+        if (selectedTask && selectedTask.id) {
+            let statusIdAndColor = data.value.replace(/.+--/g, "");
+            let statusColorCode = statusIdAndColor.replace(/.+-,/g, "");
+            let statusId = statusIdAndColor.replace(/-,.+/g, "");
+            const statusObj = {
+                id: statusId,
+                title: statusText,
+                colorCode: statusColorCode
+            }
+            saveStatus(statusId, selectedTask, statusObj);
+        }
     }
 
-    const statusText = capitalize(props.statusData) || "Status";
-
-    const onMarkCompletedClicked = function(){
-        props.onMarkCompleteClickedAction(!props.isMarkCompletedClicked);
+    let statusText = "Status";
+    //console.log("Selected Status Obj", selectedTaskStatusData);
+    if (selectedTaskStatusData && selectedTask && selectedTaskStatusData.taskId && selectedTaskStatusData.taskId === selectedTask.id && selectedTaskStatusData.data && selectedTaskStatusData.data.title) {
+        statusText = capitalize(selectedTaskStatusData.data.title);
     }
 
-    const onStatusChanged = () =>{
+    // const statusText = capitalize || "Status";
+
+    const onMarkCompletedButtonClicked = function () {
+        if (selectedTask) {
+            if (selectedTask.isCompleted) {
+                onMarkCompletedClicked(selectedTask.id, false);
+            } else {
+                onMarkCompletedClicked(selectedTask.id, true);
+            }
+        }
+    }
+
+    const onUpdateTaskDueDate = (day) => {
+        if (selectedTask) {
+            onUpdateDueDate(selectedTask.id, day);
+
+        }
+    }
+
+    const onUpdateTaskStartDate = (day) => {
+        if (selectedTask) {
+            onUpdateStartDate(selectedTask.id, day);
+        }
+    }
+
+    const onUpdateTaskDuration = (duration) => {
+        if (selectedTask) {
+            onUpdateDuration(selectedTask.id, duration)
+        }
+    }
+
+    const onStatusChanged = () => {
         props.onStatusChangedAction(!props.isStatusClicked);
     }
 
@@ -74,8 +151,8 @@ const TaskDetail = (props) => {
 
     const getTaskTitle = () => {
         let titleData = null;
-        if(selectedTask){
-            if(selectedTask.title){
+        if (selectedTask) {
+            if (selectedTask.title) {
                 titleData = selectedTask.title;
             }
         }
@@ -85,28 +162,73 @@ const TaskDetail = (props) => {
 
     const getTitleFieldName = () => {
         let titleName;
-        if(selectedTask){
-            if(selectedTask.id){
-                if(selectedTask.title){
+        if (selectedTask) {
+            if (selectedTask.id) {
+                if (selectedTask.title) {
                     titleName = `${selectedTask.id}.title`;
-                } else{
+                } else {
                     titleName = `${selectedTask.id}.title_new`;
                 }
-             
-            } else{
+
+            } else {
                 titleName = "title";
             }
-           
-        } else{
+
+        } else {
             titleName = "title";
         }
         //console.log("Title Name", titleName);
         return titleName;
     }
 
-    // const totalUserList = () => {
-    //     if(props.project.byId)
-    // }
+    const updateTaskSelectedMemberList = (selectedMemberList) => {
+        if (selectedTask) {
+            onUpdateSelectedMemberList(selectedTask.id, selectedMemberList);
+        }
+    }
+
+    const updateTaskSelectedLabelList = (selectedLabelList) => {
+        if (selectedTask) {
+            onUpdateSelectedLabelList(selectedTask.id, selectedLabelList);
+        }
+    }
+
+
+    const onAddSubTasksToList = () => {
+        let subTaskDataList = [...subTaskList];
+        subTaskDataList.push({});
+        //console.log("Add SubTask getting called", subTaskDataList);
+        onAddSubTask(selectedTask.id, subTaskDataList, "empty", null);
+    }
+
+    const onSaveSubTask = (subTaskId, titleValue) => {
+       // console.log("On Save SUb task", subTaskId, titleValue);
+        let subTaskDataList = [...subTaskList];
+        let indexValue;
+        if(subTaskId){
+            for(var i=0;i<subTaskDataList.length;i++){
+                if(subTaskDataList[i].id === subTaskId){
+                    indexValue = i;
+                    
+                    if(i === subTaskDataList.length -1){
+                        subTaskDataList.push({});
+                    }
+                }
+            }
+            //Updating the existing task ..
+            //If last task then add new subtask
+        } else{
+            //  let subTaskObj = subTaskDataList[subTaskDataList.length-1];
+            //  subTaskObj.title = titleValue;
+            //  subTaskObj.isCompleted = false;
+            //  subTaskObj.taskId = selectedTask.id;
+            //  subTaskDataList.splice(subTaskDataList.length-1, 1, subTaskObj);
+            //  subTaskDataList.push({});
+            //Update the empty subtask with new value and add the new task..
+        }
+        //console.log("Updated Sub task List", subTaskDataList);
+        onAddSubTask(selectedTask.id, subTaskDataList, "filled", subTaskId, titleValue, indexValue);
+    }
 
     return (
         <div>
@@ -119,7 +241,7 @@ const TaskDetail = (props) => {
                         <div style={{ display: "inline", marginLeft: '5px', cursor: 'pointer' }} onClick={props.openShareDialog}>Share</div>
                     </div>
                     <div className="task-detail-add-attachment-container">
-                        <Label width="4" as="label" style={{ backgroundColor: "#ffffff", cursor: "pointer", fontSize:"11px" }} htmlFor={uid}>
+                        <Label width="4" as="label" style={{ backgroundColor: "#ffffff", cursor: "pointer", fontSize: "11px" }} htmlFor={uid}>
                             <Icon name="attach" />
                             Add Attachment
                         </Label>
@@ -142,7 +264,7 @@ const TaskDetail = (props) => {
                     </div>
 
 
-                    <div className="task-detail-add-subtask-button-conatiner" onClick={props.addSubTask}>
+                    <div className="task-detail-add-subtask-button-conatiner" onClick={onAddSubTasksToList}>
                         <Icon name="unordered list" style={{ display: "inline" }}></Icon>
                         <div style={{ display: "inline", marginLeft: '5px', cursor: 'pointer' }}>Add Subtasks</div>
                     </div>
@@ -160,21 +282,25 @@ const TaskDetail = (props) => {
                     </div>
                     <div className="task-detail-task-action-button-conatiner">
                         <div className="task-detail-completed-container">
-                            {!props.isMarkCompletedClicked && <Button size="tiny" basic onClick={onMarkCompletedClicked} style={{width:"135px"}} className="task-detail-action-button">
+                            {selectedTask && !selectedTask.isCompleted && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
                                 <Icon name="check" />
                                 Mark Complete
-                        </Button>}
-                            {props.isMarkCompletedClicked && <Button size="tiny" color="green" onClick={onMarkCompletedClicked} style={{width:"135px"}} className="task-detail-action-button">
+                            </Button>}
+                            {selectedTask && selectedTask.isCompleted && <Button size="tiny" color="green" onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
                                 <Icon name="check" />
                                 Completed
                         </Button>}
+                            {!selectedTask && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
+                                <Icon name="check" />
+                                Mark Complete
+                            </Button>}
                         </div>
                         <div className="task-detail-status-container">
-                            {!props.isStatusClicked && <Button size="tiny" basic icon labelPosition='right' onClick={onStatusChanged} style={{width:"127px"}} className="task-detail-action-button">
+                            {!props.isStatusClicked && <Button size="tiny" basic icon labelPosition='right' onClick={onStatusChanged} style={{ width: "127px" }} className="task-detail-action-button">
                                 <Icon name="angle down" />
-                                { statusText}
+                                {statusText}
                             </Button>}
-                            {props.isStatusClicked && <Field options={getOptions()} name="status.title" type="text" placeholder="In Progress" open={props.isStatusClicked} size="tiny" onDataChanged={onDataChanged} style={{width:"127px"}} component={DropDownFieldUI} />}
+                            {props.isStatusClicked && <Field options={getOptions()} name="status.title" type="text" placeholder="In Progress" open={props.isStatusClicked} size="tiny" onDataChanged={onDataChanged} style={{ width: "127px" }} component={DropDownFieldUI} />}
 
                         </div>
                         <div className="task-detail-archive-container">
@@ -187,31 +313,46 @@ const TaskDetail = (props) => {
                     </div>
                     <div className="task-detail-assigned-to-container">
                         <div className="task-detail-assigned-to-text">Assigned To</div>
-                        <TagContainer
+                        {selectedTask && <TagContainer
                             type="user"
                             onAddButtonClickedAction={onUserAddButtonClicked}
                             isButtonClicked={props.isUserButtonClicked}
-                            totalItemList={props.users}>
-                        </TagContainer>
+                            totalItemList={props.users}
+                            userObj={userObj}
+                            taskId={selectedTask.id}
+                            selectedMemberListObj={selectedMemberListObj}
+                            updateTaskSelectedMemberList={updateTaskSelectedMemberList}
+                        >
+                        </TagContainer>}
+                        {!selectedTask && <TagContainer
+                            type="user"
+                            onAddButtonClickedAction={onUserAddButtonClicked}
+                            isButtonClicked={props.isUserButtonClicked}
+                            totalItemList={props.users}
+                            selectedMemberListObj={selectedMemberListObj}>
+                        </TagContainer>}
                     </div>
 
                     <div className="task-detail-date-container">
                         <div className="task-detail-due-date-container">
                             <div className="task-detail-due-date-text">Due Date</div>
-                                <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} style={{marginTop:"7px"}}/>
-                                {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
+                            {selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} />}
+                            {!selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} />}
+                            {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
 
                         </div>
                         <div className="task-detail-start-date-container">
                             <div className="task-detail-start-date-text">Start Date</div>
-                                <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} style={{marginTop:"7px"}}/>
-                                {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
+                            {selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} />}
+                            {!selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} />}
+                            {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
 
                         </div>
                         <div className="task-detail-duration-container">
                             <div className="task-detail-duration-text">Duration</div>
                             <div style={{ marginTop: "7px" }}>
-                                <DurationForm></DurationForm>
+                                {selectedTask && <DurationForm taskId={selectedTask.id} onUpdateTaskDuration={onUpdateTaskDuration}></DurationForm>}
+                                {!selectedTask && <DurationForm onUpdateTaskDuration={onUpdateTaskDuration}></DurationForm>}
                                 {/* <IconLabel size="small" icon="clock outline" name="Duration" /> */}
 
                             </div>
@@ -222,13 +363,39 @@ const TaskDetail = (props) => {
 
                     <div className="task-detail-labels-container">
                         <div>Labels</div>
-                        <TagContainer
-                            type="label"
-                            onAddButtonClickedAction={onLabelAddButtonClicked}
-                            isButtonClicked={props.isLabelButtonClicked}
-                            totalItemList={props.labels}
-                            isDialogOpened={props.isLabelDialogOpened}>
-                        </TagContainer>
+                        {selectedTask &&
+                            <TagContainer
+                                type="label"
+                                onAddButtonClickedAction={onLabelAddButtonClicked}
+                                isButtonClicked={props.isLabelButtonClicked}
+                                totalItemList={props.labels}
+                                taskId={selectedTask.id}
+                                selectedLabelListObj={selectedLabelListObj}
+                                updateTaskSelectedLabelList={updateTaskSelectedLabelList}
+                                findLabelById={findLabelById}
+                                isDialogOpened={props.isLabelDialogOpened}
+                                labelDialogState={labelDialogState}
+                                onLabelDialogStateChanged={onLabelDialogStateChanged}
+                                onUpdateLabelDialogForm={onUpdateLabelDialogForm}
+                                labelDialogFormDataInit={labelDialogFormDataInit}
+                                saveLabel={saveLabel}
+                                deleteLabel={deleteLabel}>
+                            </TagContainer>
+                        }
+                        {!selectedTask &&
+                            <TagContainer
+                                type="label"
+                                onAddButtonClickedAction={onLabelAddButtonClicked}
+                                isButtonClicked={props.isLabelButtonClicked}
+                                totalItemList={props.labels}
+                                selectedLabelListObj={selectedLabelListObj}
+                                isDialogOpened={props.isLabelDialogOpened}
+                                labelDialogState={labelDialogState}
+                                onLabelDialogStateChanged={onLabelDialogStateChanged}
+                                saveLabel={saveLabel}
+                                deleteLabel={deleteLabel}>
+                            </TagContainer>
+                        }
                     </div>
 
                     {props.subTaskList && props.subTaskList.length !== 0 && <div className="task-detail-sub-tasks-container">
@@ -236,10 +403,12 @@ const TaskDetail = (props) => {
                         <div style={{ marginTop: 10 }}>
                             {
                                 map(props.subTaskList, function (subTask, index) {
+                                    //console.log("Looping through Sub task", subTask);
                                     return (
                                         <div key={index} style={{ marginBottom: 10 }}>
-                                            {subTask.isSelected && <SubTask title={subTask.title} isSelected="isSelected"></SubTask>}
-                                            {!subTask.isSelected && <SubTask title={subTask.title} isSelected=""></SubTask>}
+                                            {subTask.isCompleted && <SubTask subTaskId={subTask.id} title={subTask.title} isSelected="isSelected" onSaveSubTask={onSaveSubTask}></SubTask>}
+                                            {!subTask.isCompleted && subTask.id && <SubTask subTaskId={subTask.id} title={subTask.title} isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
+                                            {!subTask.id && <SubTask title="" isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
                                         </div>
 
                                     )
@@ -273,13 +442,27 @@ const TaskDetail = (props) => {
 
                         </div>
                     </div>}
-                    {props.commentList && props.commentList.length !== 0 && <div>
+
+                    {commentList && commentList.length !== 0 && <div>
                         <div style={{ marginTop: 10 }}>Comments</div>
                         <div>
                             {
-                                map(props.commentList, function (comment, index) {
+                                map(commentList, function (comment, index) {
+                                    let memberObj = {};
+                                    if(comment.ownerId){
+                                        memberObj = findMemberById(comment.ownerId);
+                                    }
+                                    let name;
+                                    name = memberObj.firstName;
+                                    if(memberObj.lastName){
+                                        name = `${name} ${memberObj.lastName}`;
+                                    }
+                                    let createdTime = "";
+                                    if(comment.createdTime){
+                                        createdTime = moment(comment.createdTime).fromNow();
+                                    }
                                     return (
-                                        <TaskComment key={index} name="Nikita Mittal" time="1 min ago" comment={comment.comment} />
+                                        <TaskComment key={index} name={name} time={createdTime} comment={comment.title} />
                                     )
                                 })
                             }
@@ -291,7 +474,7 @@ const TaskDetail = (props) => {
 
 
                 </div>
-                <TaskCommentForm {...props} />
+                <TaskCommentForm onSubmit={handleSubmit}  invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
                 <ShareDialog onClose={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened}></ShareDialog>
             </SnaphyForm>
         </div>
@@ -299,13 +482,13 @@ const TaskDetail = (props) => {
 
 }
 
-function mapStateToProps(store){
+function mapStateToProps(store) {
     return {
-        isMarkCompletedClicked : store.TaskListReducer.isMarkCompletedClicked,
-        isStatusClicked : store.TaskListReducer.isStatusClicked,
-        statusData : store.TaskListReducer.statusData,
-        isUserButtonClicked : store.TaskListReducer.isUserButtonClicked,
-        isLabelButtonClicked : store.TaskListReducer.isLabelButtonClicked,
+        isMarkCompletedClicked: store.TaskListReducer.isMarkCompletedClicked,
+        isStatusClicked: store.TaskListReducer.isStatusClicked,
+        statusData: store.TaskListReducer.statusData,
+        isUserButtonClicked: store.TaskListReducer.isUserButtonClicked,
+        isLabelButtonClicked: store.TaskListReducer.isLabelButtonClicked,
         //labels : store.ModelDataReducer.labels,
         //users : store.ModelDataReducer.users,
         // selectedUserList : store.TaskListReducer.selectedUserList
@@ -317,7 +500,7 @@ const mapActionsToProps = {
     onStatusChangedAction,
     getStatusDataAction,
     onUserAddButtonClickedAction,
-    onLabelAddButtonClickedAction
+    onLabelAddButtonClickedAction,
 }
 
 
@@ -328,127 +511,4 @@ const TaskDetailForm = reduxForm({
 
 export default connect(mapStateToProps, mapActionsToProps)(TaskDetailForm);
 
-
-
-// import React from 'react';
-// import PropTypes from 'prop-types';
-// import {connect} from 'react-redux';
-// import { Icon, Button } from 'semantic-ui-react'
-
-// import './TaskDetail.css';
-// import IconLabel from '../IconLabel';
-// import Description from '../Description';
-// import InputElement from '../InputElement';
-
-// const TaskDetail = (props) => {
-//     return (
-//         <div>
-//             <div className="task-detail-header-conatiner">
-//                 <div className="task-detail-share-container">
-//                     <Icon name="share alternate" style={{display:"inline"}}></Icon>
-//                     <div style={{display:"inline", marginLeft:'5px'}}>Share</div>
-//                 </div>
-//                 <div className="task-detail-attachment-container">
-//                     <Icon name="attach" style={{display:"inline"}}></Icon>
-//                     <div style={{display:"inline", marginLeft:'5px'}}>Add Attachment</div>
-//                 </div>
-//                 <div className="task-detail-add-subtask-button-conatiner">
-//                     <Icon name="unordered list" style={{display:"inline"}}></Icon>
-//                     <div style={{display:"inline", marginLeft:'5px'}}>Add Subtasks</div>
-//                 </div>
-//                 <div className="task-detail-close-button-conatiner">
-//                     <Icon name="close" style={{display:"inline"}}></Icon>
-//                 </div>
-
-//             </div>
-//             <div className="task-detail-task-detail-container">
-//                 <div className="task-detail-task-name-container">
-//                     <InputElement placeholder="Write a task name" size="large"></InputElement>
-//                 </div>
-//                 <div className="task-detail-task-action-button-conatiner">
-//                     <div className="task-detail-completed-container">
-//                         <Button size="tiny" basic>
-//                             <Icon name="check"/>
-//                             Mark Complete
-//                         </Button>
-//                     </div>
-//                     <div className="task-detail-status-container">
-//                         <Button size="tiny" basic icon labelPosition='right'>
-//                             <Icon name="angle down"/>
-//                             Status
-//                         </Button>
-//                     </div>
-//                     <div className="task-detail-archive-container">
-//                         <Button size="tiny" basic>
-//                             <Icon name="archive"/>
-//                             Archive
-//                         </Button>
-
-//                     </div>
-//                 </div>
-//                 <div className="task-detail-assigned-to-container">
-//                     <div>Assigned To</div>
-//                     <div className="task-detail-assigned-to-data-container">
-//                         <div className="task-detail-assigned-to-list-conatiner">
-
-//                         </div>
-//                         <div className="task-detail-add-assigned-button-container">
-//                             <Icon size="small" name="add" style={{margin:0}}></Icon>
-//                         </div>
-//                     </div>
-
-//                 </div>
-
-//                 <div className="task-detail-date-container">
-//                     <div className="task-detail-due-date-container">
-//                         <div>Due Date</div>
-//                         <div style={{marginTop:"5px"}}>
-//                             <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel>
-//                         </div>
-
-//                     </div>
-//                     <div className="task-detail-start-date-container">
-//                         <div>Start Date</div>
-//                         <div style={{marginTop:"5px"}}>
-//                             <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel>
-//                         </div>
-
-//                     </div>
-
-//                 </div>
-
-//                 <div className="task-detail-labels-container">
-//                     <div>Labels</div>
-//                     <div className="task-detail-labels-data-container">
-//                         <div className="task-detail-labels-list-conatiner">
-
-//                         </div>
-//                         <div className="task-detail-add-labels-button-container">
-//                             <Icon size="small" name="add" style={{margin:'0'}}></Icon>
-//                         </div>
-//                     </div>
-//                 </div>
-
-//                 <div className="task-detail-description-container">
-//                     <div>Description</div>
-//                     <Description placeholder="Write Description Here" style={{minHeight: '150px', marginTop:'15px'}}></Description>
-
-//                 </div>
-
-//                 <div className="task-detail-comment-container">
-//                     <div className="task-detail-comment-data-container">
-//                         <Description placeholder="Add Comment Here" style={{minHeight:'50px'}}></Description>
-//                     </div>
-//                     <div className="task-detail-comment-button-container">
-//                         <Button size="tiny" color="blue">Comment</Button>
-//                     </div>
-//                 </div>
-
-//             </div>
-//         </div>
-//     )
-
-// }
-
-// export default TaskDetail;
 

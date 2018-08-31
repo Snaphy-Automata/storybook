@@ -17,6 +17,7 @@ import {
     ON_OPEN_DATE_PICKER,
     SET_DATE_DATA,
     ON_DUE_DATE_UPDATED_ACTION,
+    ON_QUICK_CURRENT_UPDATE_DATE
 } from './TaskListActions';
 
 
@@ -36,6 +37,12 @@ const initialState = {
         taskId : null,
         date : null
     },
+    quickCurrentUpdateDate: {
+        taskId : null,
+        isTodaySelected : false,
+        isTomorrowSelected : false,
+        isNextWeekSelected : false
+    },
     isTodaySelected : false,
     isTomorrowSelected : false,
     isNextWeekSelected : false,
@@ -43,7 +50,10 @@ const initialState = {
     isTaskSelected : false,
     previousDateDialogId: null,
     isDurationClicked : false,
-    durationData : null,
+    durationData : {
+        taskId : null,
+        data: null
+    },
     isMarkCompletedClicked : false,
     isStatusClicked : false,
     statusData : "Status",
@@ -172,7 +182,10 @@ const TaskListReducer = (state = initialState, action) => {
         case DURATION_DATA:{
             state = {
                 ...state,
-                durationData : action.payload
+                durationData :{
+                    taskId: action.payload.taskId,
+                    data: action.payload.data
+                }
             }
             break;
         }
@@ -248,9 +261,24 @@ const TaskListReducer = (state = initialState, action) => {
                 ...state,
                 [action.payload.id]:{
                     dateData : action.payload.data,
-                    isDatePickerOpened : action.payload.isDatePickerOpened
+                    isDatePickerOpened : action.payload.isDatePickerOpened,
+                    taskId : action.payload.taskId
                 }
             }
+            break;
+        }
+
+        case ON_QUICK_CURRENT_UPDATE_DATE:{
+            state = {
+                ...state,
+                quickCurrentUpdateDate:{
+                    taskId : action.payload.taskId,
+                    isTodaySelected : action.payload.isTodaySelected,
+                    isTomorrowSelected : action.payload.isTomorrowSelected,
+                    isNextWeekSelected : action.payload.isNextWeekSelected
+                }
+            }
+            //console.log("Change Date Reducer getting called", state.quickCurrentUpdateDate);
             break;
         }
 

@@ -16,8 +16,8 @@ export const ADD_SELECTED_LABEL_TO_LIST           = "add_selected_label_ti_list"
 export const ON_OPEN_DATE_PICKER                  = "on_open_date_picker";
 export const SET_DATE_DATA                        = "set_date_data";
 export const ON_LABEL_ADD_BUTTON_CLICKED          = "on_label_add_button_clicked";
-
 export const ON_DUE_DATE_UPDATED_ACTION           = "on_due_date_updated_action";
+export const ON_QUICK_CURRENT_UPDATE_DATE         = "on_quick_current_update_date";
 
 export function onOpenChangeDateDialogAction(state, id){
     //console.log("Change date Dialog Action called", data, id)
@@ -130,11 +130,14 @@ export function onDurationStateChangedAction(data){
     }
 }
 
-export function getDurationDataAction(data){
+export function getDurationDataAction(data, taskId){
     return (dispatch) => {
         dispatch({
             type : DURATION_DATA,
-            payload : data
+            payload : {
+                data,
+                taskId
+            }
         })
     }
 }
@@ -210,14 +213,15 @@ export function onDatePickerStateChangedAction(id, data, dateData){
     }
 }
 
-export function setDateDataAction(id, data, isDatePickerOpened){
+export function setDateDataAction(id, data, isDatePickerOpened, taskId){
     return (dispatch) => {
         dispatch({
             type : SET_DATE_DATA,
             payload : {
                 id,
                 data,
-                isDatePickerOpened
+                isDatePickerOpened,
+                taskId
             }
         })
     }
@@ -231,5 +235,21 @@ export function onLabelAddButtonClickedAction(isButtonClicked){
         })
     }
 }
+
+export function onQuickUpdateCurrentDateAction(taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected){
+    return (dispatch) => {
+        dispatch({
+            type : ON_QUICK_CURRENT_UPDATE_DATE,
+            payload: {
+                taskId,
+                isTodaySelected,
+                isTomorrowSelected,
+                isNextWeekSelected
+            }
+        })
+    }
+}
+
+
 
 

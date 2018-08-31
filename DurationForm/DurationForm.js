@@ -10,9 +10,11 @@ const DurationForm = (props) =>{
 
     const {
         isDurationClicked,
-        durationData,
+        durationText,
         onDurationStateChangedAction,
-        getDurationDataAction
+        getDurationDataAction,
+        onUpdateTaskDuration,
+        taskId
     } = props;
 
     const onDurationClicked = () =>{
@@ -27,10 +29,12 @@ const DurationForm = (props) =>{
             console.log("Duration Event Listener", e.target.value, e.key);
             if(hourRegex.test(e.target.value) || minRegex.test(e.target.value)){
                 //console.log("data Mathches with hr and min");
-                getDurationDataAction(e.target.value);
+                getDurationDataAction(e.target.value, taskId);
+                onUpdateTaskDuration(e.target.value)
             } else if(hourRegex_.test(e.target.value)){
                 //console.log("Data Matched for hr");
-                getDurationDataAction(`${e.target.value}h`);
+                getDurationDataAction(`${e.target.value}h`, taskId);
+                onUpdateTaskDuration(`${e.target.value}h`);
             } 
           
             onDurationStateChangedAction(false);
@@ -47,18 +51,23 @@ const DurationForm = (props) =>{
 
     return (
         <div>
-            {isDurationClicked && <Input onKeyDown={onEnter} autoFocus defaultValue={durationData} size="mini" style={{width:"120px"}}></Input>}
-            {!isDurationClicked && !durationData && <IconLabel size="small" icon="clock outline" name="Duration" onClick={onDurationClicked}></IconLabel>}
-            {!isDurationClicked && durationData && <IconLabel size="small" icon="clock outline" name={durationData} isLabel onClick={onDurationClicked} onRemove={onRemoveDurationData}></IconLabel>}
+            {isDurationClicked && <Input onKeyDown={onEnter} autoFocus defaultValue={durationText} size="mini" style={{width:"120px"}}></Input>}
+            {!isDurationClicked && !durationText && <IconLabel size="small" icon="clock outline" name="Duration" onClick={onDurationClicked}></IconLabel>}
+            {!isDurationClicked && durationText && <IconLabel size="small" icon="clock outline" name={durationText} isLabel onClick={onDurationClicked} onRemove={onRemoveDurationData}></IconLabel>}
         </div>
     )
 }
 
 
-function mapStateToProps(store){
+function mapStateToProps(store, props){
+    const durationData = store.TaskListReducer.durationData;
+    let durationText = null;
+    if(props.taskId && durationData && props.taskId === durationData.taskId){
+        durationText = durationData.data;
+    }
     return {
         isDurationClicked : store.TaskListReducer.isDurationClicked,
-        durationData : store.TaskListReducer.durationData
+        durationText
     }
 }
 

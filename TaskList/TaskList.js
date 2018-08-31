@@ -12,6 +12,8 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading';
 import TaskItem from './TaskItem'
+import { find } from 'graphql';
+import { is } from 'immutable';
 
 let ListRef = null;
 
@@ -34,10 +36,41 @@ const isTaskLast = (activeTasks, index, findTaskById) => {
     }
 };
 
+const isSectionEmpty = (activeTasks, index, findTaskById) => {
+    const itemId = activeTasks[index];
+    const item = findTaskById(itemId);
+    if(item && item.type === "section"){
+        const nextItemIndex = index +1;
+        const nextItemId = activeTasks[nextItemIndex];
+        const nextItem = findTaskById(nextItemId);
+        //console.log("Is Section empty", item, nextItem);
+        if(nextItem){
+            if(nextItem.type === "section"){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
+const isSectionCollapsed = (collapsedSectionList, sectionId) => {
+    //console.log("Collapsed Section List", collapsedSectionList);
+    if(collapsedSectionList && collapsedSectionList.length){
+        for(var i=0;i<collapsedSectionList.length;i++){
+            if(collapsedSectionList[i] === sectionId){
+                return true;
+            }
+        }
+
+    }
+    return false;
+}
 
 
 
-const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked) => {
+
+const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -46,24 +79,45 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
             isVisible,   // This row is visible within the List (eg it is not an overscanned row)
             key,         // Unique key within array of rendered rows
             parent,      // Reference to the parent List (instance)
-            style        // Style object to be applied to row (to position it);
+            style,       // Style object to be applied to row (to position it);
         } = props;
+        //console.log("Row Render Props");
         const taskOrSectionId  = activeTasks[index];
         const taskOrSection    = findTaskById(taskOrSectionId);
         //Check whther this section is the first one..
         const isFirst    = activeTasks[0] === taskOrSectionId;
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
+        const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
 
 
         return (
             <div style={style}  key={key}>
             {
                 taskOrSection && taskOrSection.type === "section" &&
-                <SortableHeading isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged}></SortableHeading>
+                <SortableHeading isEmptySection={isEmptySection} isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray}></SortableHeading>
             }
             {
                 taskOrSection && taskOrSection.type === "task" &&
-                <SortableTask isLastTask={isLastTask} index={index} indexValue={index} taskId={taskOrSectionId} task={taskOrSection} activeTasks={activeTasks} onTaskSelected={onTaskSelected} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} onAddNewtaskClicked={onAddNewtaskClicked}></SortableTask>
+                <SortableTask
+                isLastTask={isLastTask}
+                index={index}
+                indexValue={index}
+                taskId={taskOrSectionId}
+                task={taskOrSection}
+                activeTasks={activeTasks}
+                onTaskSelected={onTaskSelected}
+                onTaskItemBlurEvent={onTaskItemBlurEvent}
+                onTaskItemFocusEvent={onTaskItemFocusEvent}
+                onEnterNextNewTask={onEnterNextNewTask}
+                onAddNewtaskClicked={onAddNewtaskClicked}
+                activeTasks={activeTasks}
+                statusObj={statusObj}
+                findMemberById={findMemberById}
+                findLabelById={findLabelById}
+                onQuickUpdateDate={onQuickUpdateDate}
+                memberIdList={memberIdList}
+                onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
+                ></SortableTask>
             }
             </div>
         )
@@ -74,13 +128,15 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
 
 const SortableHeading = SortableElement((props)=>{
     //console.log("Sortable heading props", props);
-    const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged} = props;
+    const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray} = props;
+
+   // console.log("Heading props", style);
 
     return (
-        <div style={{width:"100%"}}>
+        <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
             <div className="task-list-section-wrapper" style={{background: "#fff", ...style}}>
-                <TaskListHeading index={indexValue} sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed" onNewTaskAdded={onNewTaskAdded} protectedName={section.protectedName} onSectionStateChanged={onSectionStateChanged}/>
+                <TaskListHeading isEmptySection={isEmptySection} index={indexValue} sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed" onNewTaskAdded={onNewTaskAdded} protectedName={section.protectedName} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray}/>
             </div>
         </div>
 
@@ -91,17 +147,20 @@ const SortableHeading = SortableElement((props)=>{
 
 const SortableTask = SortableElement((props)=>{
     //console.log("Sortable task props", props);
-    const {style, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked} = props;
+    const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers} = props;
+    //console.log("Sortable Task Props", props);
     let isActiveTaskSection = false;
     if(task && task.type === "section" && task.protectedName === "active_tasks"){
       isActiveTaskSection = true;
     }
-    //console.log("Section Index value", indexValue);
+    if(task && task.type === "task" && task.sectionId === activeTasks[0]){
+        isActiveTaskSection = true;
+    }
+
     return (
-        <div style={style} className={className}>
-           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected}/>}
-           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask}></TaskItem>}
-           {task && !task.title &&  !task.projectId && <TaskItem isCreate taskId={taskId} index={indexValue} task={task} onAddNewtaskClicked={onAddNewtaskClicked}/>}
+        <div style={style}>
+           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task} isActiveTaskSection={isActiveTaskSection} onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}/>}
+           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}></TaskItem>}
         </div>
     )
 });
@@ -123,17 +182,37 @@ class VirtualList extends Component {
      * @param {*} index
      */
     getRowHeight({index}){
-      const {activeTasks, findTaskById} = this.props;
+        //console.log("I am getting called");
+      const {activeTasks, findTaskById, isAddNewTaskVisible, collapsedSectionList} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
+        const isLastTask = isTaskLast(activeTasks, index, findTaskById);
+        const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
         if(task){
             if(task.type === "section"){
+                let isCollapsed = isSectionCollapsed(collapsedSectionList, task.id);
+                //console.log("Section Row Heights", isCollapsed);
                 const firstSectionId = activeTasks[0];
                 if(taskId === firstSectionId){
-                    return 44.5;
+                    if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
+                        return 85.5
+                    } else{
+                        return 44.5;
+                    }
+
                 }else{
-                    return 59;
+                    if(isEmptySection && isAddNewTaskVisible && isCollapsed){
+                        return 100;
+                    } else{
+                        return 59;
+                    }
+
                 }
+              } else if(task.type === "task"){
+                  //console.log("Item type", task, isLastTask, isAddNewTaskVisible, task.title);
+                  if(isLastTask && isAddNewTaskVisible && task.title){
+                      return 82;
+                  }
               }
         }
 
@@ -141,50 +220,46 @@ class VirtualList extends Component {
     }
 
 
-    isRowLoaded ({ index }) {
-        const allData = this.props.allData;
-        return !!allData.task.allIds[index];
-    }
-
-    loadMoreRows ({ startIndex, stopIndex }) {
-        const that = this;
-        //FIXME: 9th Aug Robins
-        // Change it with server call..
-        return new Promise((resolve, reject)=>{
-            setTimeout(()=>{
-                console.log("More data loaded", startIndex, stopIndex);
-                that.isLoaded = true;
-                resolve();
-            }, 600)
-        });
-        // return fetch(`path/to/api?startIndex=${startIndex}&stopIndex=${stopIndex}`)
-        //     .then(response => {
-        //     // Store response data in list...
-        //     })
-    }
-
-
     render() {
-      const {activeTasks, findTaskById, height, width, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked} = this.props;
-      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked);
+      const {
+          activeTasks,
+          setReference,
+          findTaskById,
+          onNewTaskAdded,
+          onTaskSelected,
+          onTaskItemBlurEvent,
+          onTaskItemFocusEvent,
+          onEnterNextNewTask,
+          onSectionStateChanged,
+          onAddNewtaskClicked,
+          onSectionCollapsed,
+          populateCollapsedSectionArray,
+          statusObj,
+          findMemberById,
+          findLabelById,
+          onQuickUpdateDate,
+          memberIdList,
+          onQuickUpdateTaskMembers,
+          height,
+          width,
+        } = this.props;
+      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers);
       const totalRows = activeTasks.length;
       return (
-
-                <List
-                ref={(instance) => {
-                  ListRef = instance;
-                }}
-
-                rowHeight={this.getRowHeight.bind(this)}
-                rowRenderer={rowRenderer}
-                rowCount={totalRows}
-                height={height}
-                width={width}
-                style={{
-                  overflowX: false,
-                  overflowY: false,
-                }}
-                />
+        <List
+        ref={(instance) => {
+          ListRef = instance;
+        }}
+        rowHeight={this.getRowHeight.bind(this)}
+        rowRenderer={rowRenderer}
+        rowCount={totalRows}
+        height={height}
+        width={width}
+        style={{
+          overflowX: false,
+          overflowY: false,
+        }}
+        />
       );
     }
 }
@@ -230,11 +305,28 @@ class TaskList extends Component {
   }
 
 
+
+  onSortStart(e){
+    const {onAddNewTaskVisible} = this.props;
+    onAddNewTaskVisible(false);
+    const instance = this.SortableList.getWrappedInstance();
+    instance.List.recomputeRowHeights();
+    instance.forceUpdate();
+  }
+
+
+  onSectionCollapsed(){
+    const instance = this.SortableList.getWrappedInstance();
+    instance.List.recomputeRowHeights();
+    instance.forceUpdate();
+  }
+
   getElement(id){
     return ()=>{
       const elem = document.getElementById(id);
       //First child is responsible for scrolling...
       return elem.firstChild;
+
     }
   }
 
@@ -243,6 +335,8 @@ class TaskList extends Component {
     const {
       activeTasks,
       findTaskById,
+      findMemberById,
+      findLabelById,
       onItemPositionChanged,
       onNewTaskAdded,
       onTaskSelected,
@@ -251,6 +345,14 @@ class TaskList extends Component {
       onEnterNextNewTask,
       onSectionStateChanged,
       onAddNewtaskClicked,
+      onAddNewTaskVisible,
+      isAddNewTaskVisible,
+      collapsedSectionList,
+      populateCollapsedSectionArray,
+      statusObj,
+      onQuickUpdateDate,
+      memberIdList,
+      onQuickUpdateTaskMembers
     }  = this.props;
 
     const id = "snaphy-react-custom-scrollbar";
@@ -289,11 +391,22 @@ class TaskList extends Component {
                 height={height}
                 getContainer={this.getElement(id)}
                 width={width}
+                onSortStart={this.onSortStart.bind(this)}
+                findMemberById={findMemberById}
+                findLabelById={findLabelById}
+                isAddNewTaskVisible={isAddNewTaskVisible}
+                collapsedSectionList={collapsedSectionList}
+                onSectionCollapsed={this.onSectionCollapsed.bind(this)}
+                populateCollapsedSectionArray={populateCollapsedSectionArray}
+                statusObj={statusObj}
+                onQuickUpdateDate={onQuickUpdateDate}
+                memberIdList={memberIdList}
+                onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
               />
             )}
           </AutoSizer>
-            </div>
-          </div>
+        </div>
+      </div>
     </Scrollbars>
     );
   }

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
-import { SortableHandle} from 'react-sortable-hoc';
+import { SortableHandle } from 'react-sortable-hoc';
+import moment from 'moment';
 
 //Custom import..
 import './TaskList.css';
@@ -13,8 +14,8 @@ import TaskHelper from './helper';
 import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onSelectDateAction, onDatePickerOpenedAction} from './TaskListActions';
-import { selectLimit } from 'async';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction,  onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
+import {getTaskMembersAction} from '../../baseComponents/GridView/components/ModelData/ModelDataActions';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -22,7 +23,7 @@ const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
  * Drag handle
  */
 const DragHandle = SortableHandle(() => (
-    <div  className="task-list-item-drag-icon-container">
+    <div className="task-list-item-drag-icon-container">
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
         <Icon className="task-list-item-drag-icon" name="ellipsis vertical"></Icon>
     </div>
@@ -32,19 +33,15 @@ const TaskItem = (props) => {
 
     const {
         task,
-        memberObj,
+        memberIdList,
         statusObj,
         labelObj,
-        sectionId,
-        onKeyPress,
-        onBlur,
         isNew,
         isActiveTaskSection,
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
         isScrolling,
-        isTaskSelected,
         index,
         style,
         className,
@@ -57,48 +54,102 @@ const TaskItem = (props) => {
         onTaskItemFocusEvent,
         onEnterNextNewTask,
         isCreate,
-        onAddNewtaskClicked
+        onAddNewtaskClicked,
+        isAddNewTaskVisible,
+        statusObjData,
+        findMemberById,
+        findLabelById,
+        onQuickUpdateCurrentDateAction,
+        onQuickUpdateDate,
+        onQuickUpdateTaskMembers,
+        taskMemberList,
+        getTaskMembersAction,
+        targetTaskId
     } = props;
 
-    const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
+    //console.log("Member Obj", memberIdList);
+    // if(selectedTask){
+    //     console.log("Selected Task", selectedTask, isActiveTaskSection);
+    // }
 
-    const isDelayed = taskHelper.isDelayed();
-    const iconObj = taskHelper.getIcon(memberObj);
-    const statusData = taskHelper.getStatus(statusObj);
+    //console.log("Status Obj Data", statusObj.byId);
+
+
+
+    const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
+    let isDelayed;
+    if(selectedTask && selectedTask.id === task.id){
+        isDelayed = taskHelper.isSelectedTaskDelayed(selectedTask);
+    } else{
+        isDelayed = taskHelper.isDelayed();
+    }
+
+    //const isDelayed = taskHelper.isDelayed();
+    let iconObj = null;
+    if(selectedTask && selectedTask.id === task.id){
+        iconObj = taskHelper.getSelectedIcon(selectedTask, findMemberById);
+    } else if(!targetTaskId){
+        iconObj = taskHelper.getIcon(findMemberById);
+    } else if(!selectedTask && targetTaskId && taskMemberList){
+        iconObj = taskHelper.getTargetTaskIcon(taskMemberList, findMemberById);
+
+    }
+
+    if(targetTaskId){
+        console.log("Icon Obj", iconObj);
+    }
+    
+
+    //console.log("Tooltip Data", iconObj);
+  
+    const statusData = taskHelper.getStatus(statusObj.byId);
+
     const duration = taskHelper.getDurationInText();
     const subTaskObj = taskHelper.getSubtaskStats();
     const attachmentObj = taskHelper.getAttachmentStats();
     const formattedDueDateObj = taskHelper.getFormattedDueDate();
+    let selectedTaskDueDateObj = null;
+    if (selectedTask && selectedTask.id === task.id) {
+        selectedTaskDueDateObj = taskHelper.getSelectedTaskFormattedDate(selectedTask);
+    }
+    //console.log("Formatted Date Obj", formattedDueDateObj);
     let delayedClassName;
-    if(isActiveTaskSection){
-        if(task.isCompleted){
+    if (isActiveTaskSection) {
+        if (task.isCompleted) {
             delayedClassName = `task-item-delayed-block completed`;
-        }else{
+        } else {
             delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
         }
-    }else{
+    } else {
         delayedClassName = `task-item-delayed-block`;
     }
 
-
-    const labelObjData = taskHelper.getLabels(labelObj);
+    let labelObjData = null;
+    if(selectedTask && selectedTask.id === task.id){
+        labelObjData = taskHelper.getSelectedTaskLabels(selectedTask, findLabelById);
+    } else{
+        labelObjData = taskHelper.getLabels(findLabelById);
+    }
     const labels = labelObjData.labelList;
 
 
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
 
-    const openSelectDateDialog = () => {
-        props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
-    }
+  
 
     const openAssignedUserDialog = () => {
         //console.log("I am getting called");
+        console.log("Before Assigned Dialog Open", task.id,  task.assignedTo);
+        getTaskMembersAction(task.id, task.assignedTo);
         props.onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
     }
 
-    const openDatePickerDialog = () => {
+    const openDatePickerDialog = (e) => {
         props.onDatePickerOpenedAction(!isDatePickerOpened, task.id)
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
     }
 
     const onCloseDateDialog = () => {
@@ -108,6 +159,7 @@ const TaskItem = (props) => {
 
     const onCloseAssignedUserDialog = () => {
         console.log("Close Assigned getting called");
+        getTaskMembersAction(null, []);
         props.onOpenAssignedUserDialogAction(false, task.id)
     }
 
@@ -118,18 +170,18 @@ const TaskItem = (props) => {
 
 
     const getWrapperClassName = () => {
-        let wrapperClassName = className? className + " task-list-item-wrapper": "task-list-item-wrapper";
-        if(selectedTask){
-            if(selectedTask.id === taskId){
+        let wrapperClassName = className ? className + " task-list-item-wrapper" : "task-list-item-wrapper";
+        if (selectedTask) {
+            if (selectedTask.id === taskId) {
                 wrapperClassName = `${wrapperClassName} active`
             }
         }
-        
+
         return wrapperClassName;
     }
 
     let lastTaskStyle = {}
-    if(isLastTask){
+    if (isLastTask) {
         lastTaskStyle = {
             borderBottomLeftRadius: "5px",
             borderBottomRightRadius: "5px"
@@ -138,18 +190,19 @@ const TaskItem = (props) => {
 
     const onSelectItem = () => {
         onTaskSelected(task);
+
     }
 
     const getTitleFieldName = () => {
         let titleName;
         //console.log("Selected Task", task);
-        if(task){
-            if(task.id){
+        if (task) {
+            if (task.id) {
                 titleName = `${task.id}.title_new`
-            } else{
+            } else {
                 titleName = "title_new";
             }
-        } else{
+        } else {
             titleName = "title_new";
         }
 
@@ -159,26 +212,29 @@ const TaskItem = (props) => {
     }
 
     const onTitleBlur = (value) => {
-        if(value && value!==""){
+        if (value && value !== "") {
             task.title = value;
-            let taskObj = {...task};
-            onTaskItemBlurEvent(taskId, taskObj);
+            let taskObj = { ...task };
+            onTaskItemBlurEvent(taskId, taskObj, index, "add");
+        } else {
+            //Remove the empty data from alltaskIds..
+            onTaskItemBlurEvent(taskId, null, index, "remove");
         }
-        
+
     }
 
-    const onTitleFocus= () => {
+    const onTitleFocus = () => {
         //console.log("On Title Focus", task);
         onTaskItemFocusEvent(task);
 
     }
 
     const onEnterData = (key, value) => {
-        if(key === "Enter"){
-            if(value && value!==""){
+        if (key === "Enter") {
+            if (value && value !== "") {
                 task.title = value;
-                let taskObj = {...task};
-                onTaskItemBlurEvent(taskId, taskObj);
+                let taskObj = { ...task };
+                onTaskItemBlurEvent(taskId, taskObj, index, "add");
                 onEnterNextNewTask(index, task.sectionId);
             }
 
@@ -188,8 +244,56 @@ const TaskItem = (props) => {
     }
 
     const onWriteTask = () => {
-        let updatedTaskObj = {...task};
-        onAddNewtaskClicked(updatedTaskObj);
+        onAddNewtaskClicked(index, task.sectionId);
+    }
+    
+    /**
+     * Select date from date Dialog..
+     * @param {*} taskId 
+     * @param {*} isTodaySelected 
+     * @param {*} isTomorrowSelected 
+     * @param {*} isNextWeekSelected 
+     */
+    const onSelectDateAction = (taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected) => {
+        //console.log("Data prepare to be updated", taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
+        //call task mutation to update the task item..
+        let date = null;
+        if(isTodaySelected){
+            date = moment().toDate();
+        } else if(isTomorrowSelected){
+            date = moment().add(1, 'days').toDate();
+        } else if(isNextWeekSelected){
+            date = moment().add(1, 'weeks').startOf('isoWeek').add(6, 'hour').toDate();
+        }
+        if(date){
+            onQuickUpdateDate(taskId, date, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
+        }
+        
+    }
+
+
+    /**
+     * Date Picked from date picker..
+     */
+    const onDatePicked = (taskId, date) => {
+        if(taskId && date){
+            onQuickUpdateDate(taskId, date, false, false, false);
+        }
+    }
+
+    const openSelectDateDialog = (e) => {
+       // console.log("Formatted Date", formattedDueDateObj.date);
+        if(formattedDueDateObj.date === "today"){
+            onQuickUpdateCurrentDateAction(task.id, true, false, false);
+        } else if(formattedDueDateObj.date === "tomorrow"){
+            onQuickUpdateCurrentDateAction(task.id, false, true, false);
+        } else if(formattedDueDateObj.date === moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM")){
+            onQuickUpdateCurrentDateAction(task.id, false, false, true);
+        }
+        props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
     }
 
 
@@ -197,21 +301,22 @@ const TaskItem = (props) => {
 
 
     return (
-        <div  style={{...style, ...lastTaskStyle}} className={getWrapperClassName()} >
-            {!isNew && !isCreate && 
+        <div style={{ ...style, ...lastTaskStyle }} className={getWrapperClassName()} >
+            {!isNew && !isCreate &&
                 <div className="task-list-item-delayed-wrapper">
-                    <div  className={taskItemContainerClassName} >
+                    <div className={taskItemContainerClassName} >
                         <div className={delayedClassName}></div>
                         <div className="task-list-item-side-bar-container">
-                            {!isScrolling && <div  className={'task-list-item-side-line'}>
+                            {!isScrolling && <div className={'task-list-item-side-line'}>
                                 <DragHandle />
                             </div>
                             }
                             {!isScrolling &&
-                            <div className={'task-list-item-icon'}>
-                                {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task}/>}
-                                {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task}/>}
-                            </div>}
+                                <div className={'task-list-item-icon'}>
+                                    {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
+                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>}
+                                    {/* {!selectedTask && taskMemberList && targetTaskId && taskMemberList.length > 1 && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>} */}
+                                </div>}
                         </div>
 
                         <div className="task-list-item-title" onClick={onSelectItem}>
@@ -221,104 +326,168 @@ const TaskItem = (props) => {
                         </div>
                         {
                             !isScrolling &&
-                        <div className="task-list-item-other-container">
-                            <div className="task-list-item-status-duration-container">
-                                {isActiveTaskSection && statusData &&
-                                    <div className="task-list-item-status" style={{ color: statusData.colorCode }}>{statusData.title}</div>
-
-                                }
-                                {!isActiveTaskSection && duration !== undefined &&
-                                    // Add duration class..
-                                    <div className="task-list-item-status">
-                                        <Icon name="clock outline" style={{ display: "inline", margin: '0' }}></Icon>
-                                        <span className="task-list-item-status-duration">{duration}</span>
-                                    </div>
-                                }
-                            </div>
-
-
-                            <div className="task-list-item-sub-task-attachment-container">
-                                <div style={{ display: "inline-block", width: "60%" }}>
-                                    {
-                                        subTaskObj &&
-                                        <div>
-                                            <Icon name="unordered list" style={{ display: "inline", margin: '0' }}></Icon>
-                                            <div className="task-list-item-sub-task-stats">{subTaskObj.completed}/{subTaskObj.total}</div>
+                            <div className="task-list-item-other-container">
+                                <div className="task-list-item-status-duration-container" onClick={onSelectItem}>
+                                    {isActiveTaskSection && statusData && !selectedTask &&
+                                        <div className="task-list-item-status" style={{ color: statusData.colorCode }}>{statusData.title}</div>
+                                    }
+                                    {isActiveTaskSection && selectedTask && !statusObjData && statusData &&
+                                        <div className="task-list-item-status" style={{ color: statusData.colorCode }}>{statusData.title}</div>
+                                    }
+                                    {isActiveTaskSection && selectedTask && statusObjData &&
+                                        <div className="task-list-item-status" style={{ color: statusObjData.colorCode }}>{statusObjData.title}</div>
+                                    }
+                                    {!isActiveTaskSection && duration !== undefined &&
+                                        // Add duration class..
+                                        <div className="task-list-item-status">
+                                            <Icon name="clock outline" style={{ display: "inline", margin: '0' }}></Icon>
+                                            <span className="task-list-item-status-duration">{duration}</span>
                                         </div>
                                     }
-
-                                </div>
-
-                                <div style={{ display: "inline-block", width: "40%", textAlign: 'left' }}>
-                                    {
-                                        attachmentObj &&
-                                        <div>
-                                            <Icon name="attach" style={{ display: "inline" }}></Icon>
-                                            <div className="task-list-item-attachment-stats">{attachmentObj.total}</div>
-                                        </div>
-                                    }
-
                                 </div>
 
 
-                            </div>
-                            <div className="task-list-item-tags-container">
-                                {
-                                    labels &&
-                                    labels.length > 0 &&
-                                    <div className="task-list-item-tag-item">
-                                        <Label title={labels[0].title} color={labels[0].colorCode} tooltip={labels[0].title} style={{ float: 'left' }} />
-                                        {labels.length > 1 &&
-                                            <Label title="..." style={{ float: 'right' }} tooltip={labelObjData.tooltip} />}
-                                    </div>
-
-                                }
-                            </div>
-                            {
-                                !formattedDueDateObj.date &&
-                                <div className="task-list-item-date-default-container">
-                                    <div style={{ position: "relative", top: "2px" }}>
-                                        <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
-                                    </div>
-                                </div>
-                            }
-                            {
-                                formattedDueDateObj.date &&
-                                <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
-                                    {/* <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon> */}
-                                    {!isDateDialogOpened && <Popup trigger={<div style={{display:"inline"}}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
-                                        content="Change Due Date"
-                                        position='bottom center'
-                                        inverted
-                                        style={{ fontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity:"0.8" }}
-                                        size='mini'>
-
-                                    </Popup>}
-                                    <Popup trigger={
-                                        <div style={{display:"inline"}}>
-                                            {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
-                                        </div>
+                                <div className="task-list-item-sub-task-attachment-container" onClick={onSelectItem}>
+                                    <div style={{ display: "inline-block", width: "60%" }}>
+                                        {
+                                            subTaskObj &&
+                                            <div>
+                                                <Icon name="unordered list" style={{ display: "inline", margin: '0' }}></Icon>
+                                                <div className="task-list-item-sub-task-stats">{subTaskObj.completed}/{subTaskObj.total}</div>
+                                            </div>
                                         }
-                                        content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData ={formattedDueDateObj.date} isDateDialogOpened={isDateDialogOpened}/>}
-                                        position='bottom center'
-                                        on='click'
-                                        open={isDateDialogOpened}
-                                        onClose = {onCloseDateDialog}
-                                        style={{ padding: "0", width: "157px", height: "120px" }}
-                                        size='mini'>
 
-                                    </Popup>
+                                    </div>
+
+                                    <div style={{ display: "inline-block", width: "40%", textAlign: 'left' }}>
+                                        {
+                                            attachmentObj &&
+                                            <div>
+                                                <Icon name="attach" style={{ display: "inline" }}></Icon>
+                                                <div className="task-list-item-attachment-stats">{attachmentObj.total}</div>
+                                            </div>
+                                        }
+
+                                    </div>
 
 
                                 </div>
-                            }
-                        </div>
+                                <div className="task-list-item-tags-container" onClick={onSelectItem}>
+                                    {
+                                        labels &&
+                                        labels.length > 0 &&
+                                        <div className="task-list-item-tag-item">
+                                            <Label title={labels[0].title} color={labels[0].colorCode} tooltip={labels[0].title} style={{ float: 'left' }} />
+                                            {labels.length > 1 &&
+                                                <Label title="..." style={{ float: 'right' }} tooltip={labelObjData.tooltip} />}
+                                        </div>
+
+                                    }
+                                </div>
+                                {
+                                    !selectedTask && !formattedDueDateObj.date &&
+                                    <div className="task-list-item-date-default-container">
+                                        <div style={{ position: "relative", top: "2px" }}>
+                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" onDatePicked={onDatePicked} isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
+                                        </div>
+                                    </div>
+                                }
+                                {
+                                    selectedTask && selectedTask.id === task.id && !selectedTaskDueDateObj.date &&
+                                    <div className="task-list-item-date-default-container">
+                                        <div style={{ position: "relative", top: "2px" }}>
+                                            <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" onDatePicked={onDatePicked} isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
+                                        </div>
+                                    </div>
+                                }
+                                {
+                                    !selectedTask && formattedDueDateObj.date &&
+                                    <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
+                                        {/* <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon> */}
+                                        {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
+                                            content="Change Due Date"
+                                            position='bottom center'
+                                            inverted
+                                            style={{ fontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity: "0.8" }}
+                                            size='mini'>
+
+                                        </Popup>}
+                                        <Popup trigger={
+                                            <div style={{ display: "inline" }}>
+                                                {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
+                                            </div>
+                                        }
+                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={formattedDueDateObj.date} isDateDialogOpened={isDateDialogOpened} onCloseDateDialog={onCloseDateDialog}/>}
+                                            position='bottom center'
+                                            on='click'
+                                            open={isDateDialogOpened}
+                                            onClose={onCloseDateDialog}
+                                            style={{ padding: "0", width: "157px", height: "120px" }}
+                                            size='mini'>
+
+                                        </Popup>
+
+
+                                    </div>
+                                }
+                                {
+                                    selectedTask && selectedTask.id === task.id && selectedTaskDueDateObj.date && 
+                                    <div className="task-list-item-date-container" style={{ color: selectedTaskDueDateObj.colorCode }}>
+                                        {/* <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon> */}
+                                        {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: selectedTaskDueDateObj.colorCode }} onClick={openSelectDateDialog}>{selectedTaskDueDateObj.date}</div>}</div>}
+                                            content="Change Due Date"
+                                            position='bottom center'
+                                            inverted
+                                            style={{ fontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity: "0.8" }}
+                                            size='mini'>
+
+                                        </Popup>}
+                                        <Popup trigger={
+                                            <div style={{ display: "inline" }}>
+                                                {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: selectedTaskDueDateObj.colorCode }} onClick={openSelectDateDialog}>{selectedTaskDueDateObj.date}</div>}
+                                            </div>
+                                        }
+                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={selectedTaskDueDateObj.date} isDateDialogOpened={isDateDialogOpened}  onCloseDateDialog={onCloseDateDialog}/>}
+                                            position='bottom center'
+                                            on='click'
+                                            open={isDateDialogOpened}
+                                            onClose={onCloseDateDialog}
+                                            style={{ padding: "0", width: "157px", height: "120px" }}
+                                            size='mini'>
+
+                                        </Popup>
+
+
+                                    </div>
+                                }
+
+                            </div>
                         } {/*Other Container div end */}
+                    </div>
+                </div>
+
+            }
+            {
+                isLastTask && isAddNewTaskVisible && !isNew &&
+                <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onClick={onWriteTask}>
+                    <div className={taskItemContainerClassName} >
+                        <div className={delayedClassName}></div>
+                        <div className="task-list-item-side-bar-container">
+                            <div className={'task-list-item-side-line'}>
+                            </div>
+                            <div className={'task-list-add-item-icon'}>
+                                <Icon size="small" name="add"></Icon>
+                            </div>
+                        </div>
+
+                        <div className="task-list-item-new-task-title" style={{ color: "#9e9e9e", paddingLeft: "2px" }}>
+                            Add New Task
+                        </div>
                     </div>
                 </div>
             }
             {
-                isNew && 
+                isNew &&
                 <div className="task-list-item-delayed-wrapper">
                     <div className={taskItemContainerClassName} >
                         <div className={delayedClassName}></div>
@@ -331,27 +500,8 @@ const TaskItem = (props) => {
 
                         <div className="task-list-item-new-task-title">
                             <div className="task-list-item-new-task-container">
-                                <Field name={getTitleFieldName()} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} onBlurEvent={onTitleBlur} onFocusEvent={onTitleFocus} onKeyPressEvent={onEnterData}/>
+                                <Field name={getTitleFieldName()} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} onBlurEvent={onTitleBlur} onFocusEvent={onTitleFocus} onKeyPressEvent={onEnterData} />
                             </div>
-                        </div>
-                    </div>
-                </div>
-            }
-            {
-                isCreate &&
-                <div className="task-list-item-delayed-wrapper" style={{backgroundColor:"#fcfcfc"}} onClick={onWriteTask}>
-                    <div className={taskItemContainerClassName} >
-                    <div className={delayedClassName}></div>
-                        <div className="task-list-item-side-bar-container">
-                            <div className={'task-list-item-side-line'}>
-                            </div>
-                            <div className={'task-list-add-item-icon'}>
-                            <Icon size="small" name="add"></Icon>
-                            </div>
-                        </div>
-                        
-                        <div className="task-list-item-new-task-title" style={{color:"#9e9e9e", paddingLeft:"2px"}}>
-                                Add New Task
                         </div>
                     </div>
                 </div>
@@ -362,56 +512,90 @@ const TaskItem = (props) => {
 
 
 
-function mapStateToProps(store, props){
+function mapStateToProps(store, props) {
     const taskListReducer = store.TaskListReducer;
     const dateDialog = taskListReducer.dateDialog;
     const assignedUserDialog = taskListReducer.assignedUserDialog;
     const datePickerDialog = taskListReducer.datePickerDialog;
+    const quickCurrentUpdateDate = taskListReducer.quickCurrentUpdateDate;
     let isAssinedUserDialogOpened = false;
     let isDateDialogOpened = false;
     let isDatePickerOpened = false;
+    let isTodaySelected = false;
+    let isTomorrowSelected = false;
+    let isNextWeekSelected = false;
     let selectedTask = null;
     let itemTitleData = null;
-    if(assignedUserDialog && assignedUserDialog.taskId === props.taskId){
+    let statusObjData = null;
+    let taskMemberList;
+    let targetTaskId;
+    if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
         isAssinedUserDialogOpened = true;
     }
-    if(dateDialog && dateDialog.taskId === props.taskId){
+    if (dateDialog && dateDialog.taskId === props.taskId) {
         isDateDialogOpened = true;
     }
-    if(datePickerDialog && datePickerDialog.taskId === props.taskId){
+    if (datePickerDialog && datePickerDialog.taskId === props.taskId) {
         isDatePickerOpened = true;
     }
     const modelDataReducer = store.ModelDataReducer;
     const titleData = modelDataReducer.titleData;
+    const draggedTaskOrSection = modelDataReducer.draggedTaskOrSection;
+    const selectedTaskStatusData = modelDataReducer.selectedTaskStatusData;
+    const taskMemberListObj = modelDataReducer.taskMemberListObj;
     selectedTask = modelDataReducer.selectedTask;
-    if(selectedTask){
-        if(selectedTask.id !== props.taskId){
+    if (selectedTask) {
+        if (selectedTask.id !== props.taskId) {
             selectedTask = null;
         }
     }
 
-    //console.log("Item Title Data", titleData);
-
-    if(titleData){
-        if(props.taskId){
-            if(titleData.taskId && titleData.taskId !== props.taskId){
+    if (titleData) {
+        if (props.taskId) {
+            if (titleData.taskId && titleData.taskId !== props.taskId) {
                 itemTitleData = null;
-            } else{
+            } else {
                 itemTitleData = titleData.title;
             }
         }
-      
+
     }
 
+    if (draggedTaskOrSection && draggedTaskOrSection.taskId === props.taskId) {
+        isAddTaskVisisble = draggedTaskOrSection.isAddTaskVisisble;
+    }
+    if (selectedTaskStatusData && selectedTaskStatusData.taskId === props.taskId && selectedTaskStatusData.data) {
+        statusObjData = selectedTaskStatusData.data;
+    }
+
+    if(quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId){
+        isTodaySelected = quickCurrentUpdateDate.isTodaySelected;
+        isTomorrowSelected = quickCurrentUpdateDate.isTomorrowSelected;
+        isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
+    }
+
+    if(taskMemberListObj && taskMemberListObj.taskId === props.taskId){
+        taskMemberList = taskMemberListObj.selectedTaskMemberList;
+        targetTaskId = props.taskId;
+    }
+
+
+
+
     return {
-        //isTodaySelected,
-        //isTomorrowSelected,
-        //isNextWeekSelected,
+        isTodaySelected,
+        isTomorrowSelected,
+        isNextWeekSelected,
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
         selectedTask,
-        itemTitleData
+        itemTitleData,
+        isAddNewTaskVisible: store.ModelDataReducer.isAddNewTaskVisible,
+        labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
+        statusObjData,
+        taskMemberList,
+        targetTaskId
     }
 
 
@@ -428,8 +612,9 @@ const mapActionsToProps = {
     //map action here
     onOpenChangeDateDialogAction,
     onOpenAssignedUserDialogAction,
-    onSelectDateAction,
     onDatePickerOpenedAction,
+    onQuickUpdateCurrentDateAction,
+    getTaskMembersAction
 
 };
 
