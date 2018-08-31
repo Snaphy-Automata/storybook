@@ -5,6 +5,7 @@ import { Field, reduxForm, reset } from 'redux-form';
 import { Icon, Button, Label, Form } from 'semantic-ui-react';
 import map from 'lodash/map';
 import capitalize from 'lodash/capitalize';
+import moment from 'moment';
 
 import './TaskDetail.css';
 import SubTask from './SubTask';
@@ -416,8 +417,12 @@ const TaskDetail = (props) => {
                                     if(memberObj.lastName){
                                         name = `${name} ${memberObj.lastName}`;
                                     }
+                                    let createdTime = "";
+                                    if(comment.createdTime){
+                                        createdTime = moment(comment.createdTime).fromNow();
+                                    }
                                     return (
-                                        <TaskComment key={index} name={name} time="1 min ago" comment={comment.title} />
+                                        <TaskComment key={index} name={name} time={createdTime} comment={comment.title} />
                                     )
                                 })
                             }
