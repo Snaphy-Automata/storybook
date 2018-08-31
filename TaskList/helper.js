@@ -181,9 +181,17 @@ import moment from 'moment';
 
 
     getSubtaskStats(){
-        if(this.task && this.task.stats && this.task.stats.subtask){
-            return this.task.stats.subtask;
+        let subTaskObj;
+        if(this.task && this.task.totalSubTasks){
+            subTaskObj ={};
+            subTaskObj["total"] = this.task.totalSubTasks;
+            if(this.task.completedSubTasks){
+                subTaskObj["completed"] = this.task.completedSubTasks;
+            } else{
+                subTaskObj["completed"] = 0;
+            }
         }
+        return subTaskObj;
     }
 
 

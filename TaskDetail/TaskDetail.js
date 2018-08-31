@@ -26,7 +26,6 @@ import {
     getStatusDataAction,
     onUserAddButtonClickedAction,
     onLabelAddButtonClickedAction,
-
 } from '../TaskList/TaskListActions';
 import SelectLabel from '../SelectLabel';
 
@@ -59,10 +58,12 @@ const TaskDetail = (props) => {
         saveLabel,
         deleteLabel,
         commentList,
-        findMemberById
+        subTaskList,
+        findMemberById,
+        onAddSubTask
     } = props;
 
-    console.log("Task Detail Props", commentList);
+    console.log("Task Detail Props", subTaskList);
 
 
 
@@ -192,9 +193,46 @@ const TaskDetail = (props) => {
         }
     }
 
+
+    const onAddSubTasksToList = () => {
+        let subTaskDataList = [...subTaskList];
+        subTaskDataList.push({});
+        //console.log("Add SubTask getting called", subTaskDataList);
+        onAddSubTask(selectedTask.id, subTaskDataList, "empty", null);
+    }
+
+    const onSaveSubTask = (subTaskId, titleValue) => {
+       // console.log("On Save SUb task", subTaskId, titleValue);
+        let subTaskDataList = [...subTaskList];
+        let indexValue;
+        if(subTaskId){
+            for(var i=0;i<subTaskDataList.length;i++){
+                if(subTaskDataList[i].id === subTaskId){
+                    indexValue = i;
+                    
+                    if(i === subTaskDataList.length -1){
+                        subTaskDataList.push({});
+                    }
+                }
+            }
+            //Updating the existing task ..
+            //If last task then add new subtask
+        } else{
+            //  let subTaskObj = subTaskDataList[subTaskDataList.length-1];
+            //  subTaskObj.title = titleValue;
+            //  subTaskObj.isCompleted = false;
+            //  subTaskObj.taskId = selectedTask.id;
+            //  subTaskDataList.splice(subTaskDataList.length-1, 1, subTaskObj);
+            //  subTaskDataList.push({});
+            //Update the empty subtask with new value and add the new task..
+        }
+        //console.log("Updated Sub task List", subTaskDataList);
+        onAddSubTask(selectedTask.id, subTaskDataList, "filled", subTaskId, titleValue, indexValue);
+    }
+
     return (
         <div>
-            <SnaphyForm error={error} onSubmit={handleSubmit}>
+            <SnaphyForm error={error}>
 
                 {/* Header Section */}
                 <div className="task-detail-header-conatiner">
@@ -226,7 +264,7 @@ const TaskDetail = (props) => {
                     </div>
 
 
-                    <div className="task-detail-add-subtask-button-conatiner" onClick={props.addSubTask}>
+                    <div className="task-detail-add-subtask-button-conatiner" onClick={onAddSubTasksToList}>
                         <Icon name="unordered list" style={{ display: "inline" }}></Icon>
                         <div style={{ display: "inline", marginLeft: '5px', cursor: 'pointer' }}>Add Subtasks</div>
                     </div>
@@ -365,10 +403,12 @@ const TaskDetail = (props) => {
                         <div style={{ marginTop: 10 }}>
                             {
                                 map(props.subTaskList, function (subTask, index) {
+                                    //console.log("Looping through Sub task", subTask);
                                     return (
                                         <div key={index} style={{ marginBottom: 10 }}>
-                                            {subTask.isSelected && <SubTask title={subTask.title} isSelected="isSelected"></SubTask>}
-                                            {!subTask.isSelected && <SubTask title={subTask.title} isSelected=""></SubTask>}
+                                            {subTask.isCompleted && <SubTask subTaskId={subTask.id} title={subTask.title} isSelected="isSelected" onSaveSubTask={onSaveSubTask}></SubTask>}
+                                            {!subTask.isCompleted && subTask.id && <SubTask subTaskId={subTask.id} title={subTask.title} isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
+                                            {!subTask.id && <SubTask title="" isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
                                         </div>
 
                                     )
@@ -434,7 +474,7 @@ const TaskDetail = (props) => {
 
 
                 </div>
-                <TaskCommentForm  invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
+                <TaskCommentForm onSubmit={handleSubmit}  invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
                 <ShareDialog onClose={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened}></ShareDialog>
             </SnaphyForm>
         </div>
