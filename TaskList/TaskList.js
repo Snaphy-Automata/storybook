@@ -309,14 +309,14 @@ class TaskList extends Component {
     const {onAddNewTaskVisible} = this.props;
     onAddNewTaskVisible(false);
     const instance = this.SortableList.getWrappedInstance();
-    instance.List.recomputeRowHeights();
+    ListRef.recomputeRowHeights();
     instance.forceUpdate();
   }
 
 
   onSectionCollapsed(){
     const instance = this.SortableList.getWrappedInstance();
-    instance.List.recomputeRowHeights();
+    ListRef.recomputeRowHeights();
     instance.forceUpdate();
   }
 
