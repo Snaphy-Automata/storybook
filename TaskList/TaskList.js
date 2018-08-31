@@ -292,7 +292,6 @@ class TaskList extends Component {
       onItemPositionChanged,
     }  = this.props;
 
-    console.log("On Sort End ", e.oldIndex, e.newIndex,);
     if (e.oldIndex !== e.newIndex) {
       //console.log("Hoc Method getting called");
       onItemPositionChanged(e.oldIndex, e.newIndex);
