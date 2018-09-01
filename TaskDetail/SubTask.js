@@ -11,6 +11,7 @@ const SubTask = ({title, isSelected, subTaskId, onSaveSubTask}) => {
         //e.preventDefault();
         if(e.key === "Enter"){
             if(e.target.value !== ""){
+                console.log("Save SubTask getting called", e.target.value);
                 onSaveSubTask(subTaskId, e.target.value);
                 //Save the sub Task and add new task..
             }

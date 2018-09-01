@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Icon, Button } from 'semantic-ui-react';
 import map from 'lodash/map';
 import { SubmissionError, reset } from 'redux-form';
-import {generate} from 'shortid';
+import { generate } from 'shortid';
 
 //Custom Import
 import SelectedLabel from '../SelectLabel';
@@ -67,7 +67,7 @@ const TagContainer = (props) => {
     } = props;
     //console.log("Tag container props", selectedMemberListObj);
 
-    //console.log("tag Container total list", totalItemList);
+    console.log("tag Container total list", totalItemList);
     const getClassName = function () {
         let className;
         if (isButtonClicked) {
@@ -146,168 +146,118 @@ const TagContainer = (props) => {
             </div>
             {isButtonClicked &&
                 <div className="tag-conatiner-total-item-list-container">
-                    {
-                        map(totalItemList, function (itemObj, index) {
+                    {totalItemList.length !== 0 && <div>
+                        {
+                            map(totalItemList, function (itemObj, index) {
+                                //console.log("Total Item list getting called", totalItemList);
 
-                            const selectItemClick = function () {
-                                let itemId = itemObj.id;
-                                let selectedItemDataList;
-                                if (type === "user") {
-                                    selectedItemDataList = [...selectedMemberList];
-                                } else if (type === "label") {
-                                    selectedItemDataList = [...selectedLabelList];
+                                const selectItemClick = function () {
+                                    let itemId = itemObj.id;
+                                    let selectedItemDataList;
+                                    if (type === "user") {
+                                        selectedItemDataList = [...selectedMemberList];
+                                    } else if (type === "label") {
+                                        selectedItemDataList = [...selectedLabelList];
 
-                                }
-
-                                for (var i = 0; i < selectedItemDataList.length; i++) {
-                                    if (selectedItemDataList[i] === itemId) {
-                                        selectedItemDataList.splice(i, 1);
-                                        break;
                                     }
-                                }
-                                if (type === "user") {
-                                    if (selectedItemDataList.length === selectedMemberList.length) {
-                                        selectedItemDataList.push(itemId);
-                                    }
-                                    //console.log("Selected Item List", selectedItemDataList);
-                                    updateTaskSelectedMemberList(selectedItemDataList);
-                                } else if (type === "label") {
-                                    if (selectedItemDataList.length === selectedLabelList.length) {
-                                        selectedItemDataList.push(itemId);
-                                    }
-                                    updateTaskSelectedLabelList(selectedItemDataList);
-                                }
 
-
-
-                                // let selectedItemDataList;
-                                // if(type === "user"){
-                                //      selectedItemDataList = [...selectedUserList];
-                                // } else if(type === "label"){
-                                //     selectedItemDataList = [...selectedLabelList];
-                                // }
-                                // let notFoundCount = 0;
-                                // for(var i=0;i<selectedItemDataList.length;i++){
-                                //     if(selectedItemDataList[i] === itemId){
-
-                                //         selectedItemDataList.splice(i, 1);
-                                //         break;
-                                //     }
-                                //     notFoundCount ++;
-                                // }
-                                // if(type === "user"){
-                                //     if(notFoundCount === selectedUserList.length){
-                                //         selectedItemDataList.push(itemId);
-                                //     }
-                                //     props.addSelectedUserToListAction(selectedItemDataList);
-                                // } else if(type === "label"){
-                                //     if(notFoundCount === selectedLabelList.length){
-                                //         selectedItemDataList.push(itemId);
-                                //     }
-                                //     props.addSelectedLabelToListAction(selectedItemDataList);
-                                // }
-
-                                // if(type === "user"){
-
-                                // } else if(type === "label"){
-                                //     console.log("Add Selected Label", selectedItemDataList);
-
-                                // }
-
-                            }
-
-                            const getSelectedValue = function () {
-                                let isSelected = false;
-                                const itemId = itemObj.id;
-                                if (type === "user") {
-                                    for (var i = 0; i < selectedMemberList.length; i++) {
-                                        if (selectedMemberList[i] === itemId) {
-                                            isSelected = true;
+                                    for (var i = 0; i < selectedItemDataList.length; i++) {
+                                        if (selectedItemDataList[i] === itemId) {
+                                            selectedItemDataList.splice(i, 1);
                                             break;
                                         }
                                     }
-                                } else if (type === "label") {
-                                    for (var i = 0; i < selectedLabelList.length; i++) {
-                                        if (selectedLabelList[i] === itemId) {
-                                            isSelected = true;
-                                            break;
+                                    if (type === "user") {
+                                        if (selectedItemDataList.length === selectedMemberList.length) {
+                                            selectedItemDataList.push(itemId);
+                                        }
+                                        //console.log("Selected Item List", selectedItemDataList);
+                                        updateTaskSelectedMemberList(selectedItemDataList);
+                                    } else if (type === "label") {
+                                        if (selectedItemDataList.length === selectedLabelList.length) {
+                                            selectedItemDataList.push(itemId);
+                                        }
+                                        updateTaskSelectedLabelList(selectedItemDataList);
+                                    }
+
+                                }
+
+                                const getSelectedValue = function () {
+                                    let isSelected = false;
+                                    const itemId = itemObj.id;
+                                    if (type === "user") {
+                                        for (var i = 0; i < selectedMemberList.length; i++) {
+                                            if (selectedMemberList[i] === itemId) {
+                                                isSelected = true;
+                                                break;
+                                            }
+                                        }
+                                    } else if (type === "label") {
+                                        for (var i = 0; i < selectedLabelList.length; i++) {
+                                            if (selectedLabelList[i] === itemId) {
+                                                isSelected = true;
+                                                break;
+                                            }
                                         }
                                     }
+                                    return isSelected;
                                 }
-                                return isSelected;
-                                // let isSelected = false;
-                                // if(type === "user"){
-                                //     for(var i=0;i<selectedUserList.length;i++){
-                                //         //console.log("Selecred User ", itemId);
-                                //         if(selectedUserList[i] === itemId){
-                                //             isSelected = true;
-                                //             break;
-                                //         }
-                                //     }
-                                // } else if(type === "label"){
-                                //     for(var i=0;i<selectedLabelList.length;i++){
-                                //         console.log("Selecred User ", itemId);
-                                //         if(selectedLabelList[i] === itemId){
-                                //             isSelected = true;
-                                //             break;
-                                //         }
-                                //     }
-                                // }
 
-                                // return isSelected;
-                            }
-
-                            const getName = function () {
-                                //const itemObj = totalItemList.byId[itemId];
-                                let name;
-                                if (type === "user") {
-                                    name = `${itemObj.firstName}`
-                                    const lastName = `${itemObj.lastName}` ? `${itemObj.lastName}` : "";
-                                    name = `${name} ${lastName}`
-                                } else if ("label") {
-                                    name = `${itemObj.title}`
+                                const getName = function () {
+                                    //const itemObj = totalItemList.byId[itemId];
+                                    let name;
+                                    if (type === "user") {
+                                        name = `${itemObj.firstName}`
+                                        const lastName = `${itemObj.lastName}` ? `${itemObj.lastName}` : "";
+                                        name = `${name} ${lastName}`
+                                    } else if ("label") {
+                                        name = `${itemObj.title}`
+                                    }
+                                    //console.log("Name", name);
+                                    return name;
                                 }
-                                //console.log("Name", name);
-                                return name;
-                            }
 
-                            const getColor = function () {
-                                //const itemObj = totalItemList.byId[itemId];
-                                let color;
-                                if (type === "label") {
-                                    color = `${itemObj.colorCode}`
+                                const getColor = function () {
+                                    //const itemObj = totalItemList.byId[itemId];
+                                    let color;
+                                    if (type === "label") {
+                                        color = `${itemObj.colorCode}`
+                                    }
+                                    return color;
                                 }
-                                return color;
-                            }
 
 
 
-                            return (
-                                <div key={index} style={{ display: "inline-block" }}>
-                                     <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick}/>
-                                     {/* {index === 0 && index === totalItemList.length-1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick} />}
-                                    {index !== totalItemList.length - 1 && <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick} />} */}
-                                    {totalItemList.length !== 0 && index === totalItemList.length - 1 && type === "label" && <Button size="tiny" onClick={onOpenLabelDialog} basic>
-                                        <Icon name="tag" />
-                                        Create/Update Label
-                                    </Button>}
-                                    {totalItemList.length === 0 && <Button size="tiny" onClick={onOpenLabelDialog} basic>
-                                        <Icon name="tag" />
-                                        Create/Update Label
-                                    </Button>}
-                                    {totalItemList.length !== 0 && index === totalItemList.length - 1 && type === "user" && <Button size="tiny" basic>
-                                        <Icon name="user" />
-                                        Invite Team
-                                    </Button>}
-                                    {totalItemList.length === 0 && <Button size="tiny" basic>
-                                        <Icon name="user" />
-                                        Invite Team
-                                    </Button>}
+                                return (
+                                    <div key={index} style={{ display: "inline-block" }}>
+                                        <SelectedLabel key={index} style={{ marginRight: 10, marginBottom: 10 }} name={getName()} isSelected={getSelectedValue()} color={getColor()} onClick={selectItemClick} />
+                                        {totalItemList.length !== 0 && index === totalItemList.length - 1 && type === "label" && <Button size="tiny" onClick={onOpenLabelDialog} basic>
+                                            <Icon name="tag" />
+                                            Create/Update Label
+                                            </Button>}
+                                        {totalItemList.length === 0 && <Button size="tiny" onClick={onOpenLabelDialog} basic>
+                                            <Icon name="tag" />
+                                            Create/Update Label
+                                            </Button>}
+                                        {totalItemList.length !== 0 && index === totalItemList.length - 1 && type === "user" && <Button size="tiny" basic>
+                                            <Icon name="user" />
+                                            Invite Team
+                                            </Button>}
+                                        {totalItemList.length === 0 && <Button size="tiny" basic>
+                                            <Icon name="user" />
+                                            Invite Team
+                                            </Button>}
 
-                                </div>
-                            )
-                        })
-                    }
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>}
+                    {totalItemList.length === 0 && type === "label" && <Button size="tiny" onClick={onOpenLabelDialog} basic>
+                        <Icon name="tag" />
+                        Create/Update Label
+                </Button>}
+
                 </div>}
             {type === "label" && <LabelDialog isDialogOpened={labelDialogState} totalItemList={totalItemList} initialValues={labelDialogFormDataInit} formData={labelDialogFormDataInit} onSubmit={onSubmit} onLabelDialogStateChanged={onLabelDialogStateChanged} onUpdateLabelDialogForm={onUpdateLabelDialogForm} deleteLabel={deleteLabel}></LabelDialog>}
         </div>

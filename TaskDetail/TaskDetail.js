@@ -63,7 +63,7 @@ const TaskDetail = (props) => {
         onAddSubTask
     } = props;
 
-    console.log("Task Detail Props", subTaskList);
+    //console.log("Task Detail Props", subTaskList);
 
 
 
@@ -107,7 +107,8 @@ const TaskDetail = (props) => {
 
     // const statusText = capitalize || "Status";
 
-    const onMarkCompletedButtonClicked = function () {
+    const onMarkCompletedButtonClicked = () => {
+        //console.log("Mark is completed getting called");
         if (selectedTask) {
             if (selectedTask.isCompleted) {
                 onMarkCompletedClicked(selectedTask.id, false);
@@ -232,7 +233,7 @@ const TaskDetail = (props) => {
 
     return (
         <div>
-            <SnaphyForm error={error}>
+            {/* <SnaphyForm error={error} onSubmit={handleSubmit}  > */}
 
                 {/* Header Section */}
                 <div className="task-detail-header-conatiner">
@@ -276,10 +277,12 @@ const TaskDetail = (props) => {
 
                 {/* Task Detail Form */}
                 <div className="task-detail-task-detail-container">
+                    <SnaphyForm>
                     <div className="task-detail-task-name-container">
                         <Field name={getTitleFieldName()} type="text" placeholder="Write a task name" size="large" rows="1" label="TaskTitle" component={InputElement} onDataChanged={onTitleDataChanged}></Field>
                         {/* <InputElement placeholder="Write a task name" size="large"></InputElement> */}
                     </div>
+                    </SnaphyForm>
                     <div className="task-detail-task-action-button-conatiner">
                         <div className="task-detail-completed-container">
                             {selectedTask && !selectedTask.isCompleted && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
@@ -474,9 +477,12 @@ const TaskDetail = (props) => {
 
 
                 </div>
-                <TaskCommentForm onSubmit={handleSubmit}  invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
+                <SnaphyForm error={error} onSubmit={handleSubmit}>
+                    <TaskCommentForm invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
+                </SnaphyForm>
+               
                 <ShareDialog onClose={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened}></ShareDialog>
-            </SnaphyForm>
+            {/* </SnaphyForm> */}
         </div>
     )
 
