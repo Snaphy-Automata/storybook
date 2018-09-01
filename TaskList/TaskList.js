@@ -357,15 +357,19 @@ class TaskList extends Component {
     const id = "snaphy-react-custom-scrollbar";
 
     return (
-      <Scrollbars id={id} style={{ width: "100%", height: "100%" }}
+      <Scrollbars
+          renderThumbVertical={props => <div {...props} className="react-thumb-vertical"/>}
+          id={id}
+          style={{ width: "100%", height: "100%" }}
           universal
           // This will activate auto hide
           autoHide
           onScroll={this.handleScroll.bind(this)}
           // Hide delay in ms
           autoHideTimeout={1000}
+          thumbMinSize={50}
           // Duration for hide animation in ms.
-          autoHideDuration={200}>
+          autoHideDuration={300}>
         <div className="task-list-block-scrollbar-container">
           <div  className="task-list-block-scrollbar-block">
             <AutoSizer  style={{ width: "inherit", height: "inherit" }}>
