@@ -17,7 +17,7 @@ const TaskCommentForm = (props) => {
                     <Field name="comment" type="text" placeholder="Add Comment Here" size="large" rows="1" label="TaskComment" component={InputElement}></Field>
                 </div>
                 <div className="task-detail-comment-button-container">
-                    <SubmitButton size="tiny" disabled={invalid || submitting || pristine} content="Comment" ></SubmitButton>
+                    <SubmitButton type="submit" size="tiny" disabled={invalid || submitting || pristine} content="Comment" ></SubmitButton>
                     {/* <Button size="tiny" color="blue" onClick={props.addCommentData}>Comment</Button> */}
                 </div>
             </div>
