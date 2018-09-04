@@ -42,16 +42,23 @@ class GanttChart extends Component {
         onTaskInitAction(tasks);
     }
 
+    onSectionStateChanged(sectionId, index, isCollapsed){
+      console.log("on Section changed.", sectionId, index, isCollapsed);
+      const {onToggleBtnClick} = this.props;
+      onToggleBtnClick(isCollapsed);
+    }
+
     render(){
         const {
             isTaskLoaded,
             onTaskResized,
             onItemMoved,
+            sectionId,
         } = this.props;
         if(isTaskLoaded){
           return (
             <CustomScroller id="gantt-chart-custom-scrollbar">
-                <TaskListHeading iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
+                <TaskListHeading sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
                 <GanttTimeline scrollRef={getElement("gantt-chart-custom-scrollbar")} onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
             </CustomScroller>
           )
@@ -87,6 +94,8 @@ GanttChart.propTypes = {
     tasks: PropTypes.array.isRequired,
     onTaskResized: PropTypes.func.isRequired,
     onItemMoved: PropTypes.func.isRequired,
+    onToggleBtnClick: PropTypes.func,
+    sectionId: PropTypes.string.isRequired,
 };
 
 

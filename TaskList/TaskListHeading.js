@@ -90,9 +90,8 @@ const TaskListHeading = (props) => {
                 <div className={iconClassNameStr}>
                     <div className={getDragContainerClassName()}>
                         {protectedName !== "active_tasks" && <DragHandle />}
-
                     </div>
-                    <div onClick={onStateChanged} className="">
+                    <div onClick={onStateChanged}>
                         <div className="task-list-heading-icon"> <Icon style={{ margin: 0 }} name={getIcon()} ></Icon></div>
                     </div>
                 </div>
@@ -162,8 +161,6 @@ const TaskListHeading = (props) => {
         </div>
 
     )
-
-
 }
 
 // Retrieve data from store as props

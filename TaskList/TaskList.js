@@ -88,9 +88,16 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
         const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
 
+        let customStyle = {};
+
+        if(taskOrSection.type === "section"){
+          customStyle = {
+
+          }
+        }
 
         return (
-            <div style={style}  key={key}>
+            <div style={{...style, ...customStyle }}  key={key}>
             {
                 taskOrSection && taskOrSection.type === "section" &&
                 <SortableHeading isEmptySection={isEmptySection} isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray}></SortableHeading>
