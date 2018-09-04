@@ -80,7 +80,7 @@ export const enhanceTask = (task) => {
         task = enhanceTask(task);
         newData = enhanceTask(newData);
         newTaskList.push(task);
-        newTaskList.push(newData);
+        //newTaskList.push(newData);
     }
     return {items: newTaskList, groups: groups};
 };

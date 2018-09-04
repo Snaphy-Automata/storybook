@@ -69,7 +69,7 @@
 .react-calendar-timeline .rct-vertical-lines .rct-vl {
     position: absolute;
     border-left: 1px solid #eee;
-    z-index: 30;
+    /*z-index: 30;*/
 }
 
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-even, .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd{
@@ -266,7 +266,7 @@
 
 
 .gantt-chart-group-item-type{
-    z-index: 99999 !important;
+    /*z-index: 99999 !important; */
 }
 
 /* .gantt-chart-item-completed-box{

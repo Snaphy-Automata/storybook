@@ -64,19 +64,20 @@ const state = {
 
 const GanttChart = (props) => {
   const { defaultTimeStart, defaultTimeEnd } = state
-  const { 
+  const {
     groups,
-    items, 
-    onItemResizeAction, 
-    onItemMoveAction, 
-    onHorizontalScrollAction, 
-    sidebarHeadingTitle, 
+    items,
+    onItemResizeAction,
+    onItemMoveAction,
+    onHorizontalScrollAction,
+    sidebarHeadingTitle,
     selectedItemId,
     onItemSelectAction,
     onTaskFocusAction,
     //Method called from outside from gantt-chart
     onItemMoved,
     onTaskResized,
+    scrollRef,
   } = props;
 
   /**
@@ -89,9 +90,9 @@ const GanttChart = (props) => {
 
   /**
    * Will get called when a item is moved inside gantt.
-   * @param {*} itemId 
-   * @param {*} dragTime 
-   * @param {*} newGroupOrder 
+   * @param {*} itemId
+   * @param {*} dragTime
+   * @param {*} newGroupOrder
    */
   const onItemMoveFunc = (itemId, dragTime, newGroupOrder) => {
     onItemMoveAction(itemId, dragTime, newGroupOrder);
@@ -100,10 +101,10 @@ const GanttChart = (props) => {
 
   setTimeout(()=>{
     const task = groups[groups.length -1];
-    console.log("Focusing Task");
+    //console.log("Focusing Task");
     onTaskFocusAction(task.id);
   }, 5000);
-  
+
 
   return (
     <Timeline
@@ -143,7 +144,7 @@ const GanttChart = (props) => {
       onItemSelect={onItemSelectAction}
       showCursorLine={false}
     />
-  ) 
+  )
 };
 
 
@@ -178,5 +179,5 @@ GanttChart.propTypes = {
 };
 
 
-  
+
 export default connect(mapStateToProps, mapActionsToProps)(GanttChart);

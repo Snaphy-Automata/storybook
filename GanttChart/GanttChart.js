@@ -3,16 +3,30 @@
  * 25th July 2018
  */
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import {connect}            from 'react-redux';
+import PropTypes            from 'prop-types';
 
 //Custom Import
 import {
-    onTaskInitAction,
-  } from "./GanttChartActions";
+  onTaskInitAction,
+}                           from "./GanttChartActions";
 import GanttChartSubHeading from './GanttChartSubHeading';
-import GanttTimeline from './GanttTimeline';
-import TaskListHeading from '../TaskList/TaskListHeading';
+import GanttTimeline        from './GanttTimeline';
+import TaskListHeading      from '../TaskList/TaskListHeading';
+import CustomScroller       from '../CustomScrollbar';
+
+/**
+ * Get element
+ */
+const getElement = (id) => {
+  return ()=>{
+    const elem = document.getElementById(id);
+    console.log(elem.firstChild);
+    //First child is responsible for scrolling...
+    return elem.firstChild;
+
+  }
+}
 
 class GanttChart extends Component {
 
@@ -35,17 +49,17 @@ class GanttChart extends Component {
             onItemMoved,
         } = this.props;
         if(isTaskLoaded){
-            return (
-                <div>
-                    <TaskListHeading iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
-                    <GanttTimeline onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
-                </div>
-            )
+          return (
+            <CustomScroller id="gantt-chart-custom-scrollbar">
+                <TaskListHeading iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
+                <GanttTimeline scrollRef={getElement("gantt-chart-custom-scrollbar")} onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
+            </CustomScroller>
+          )
         }else{
-            //Load loading component..
-            return (
-                <div>Loading Gantt Chart</div>
-            )
+          //Load loading component..
+          return (
+              <div>Loading Gantt Chart</div>
+          )
         }
     }
 }

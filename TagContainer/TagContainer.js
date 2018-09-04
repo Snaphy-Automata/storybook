@@ -35,7 +35,6 @@ const handleSubmit = function (props, value) {
             ...value,
             isSelected: false
         }
-        console.log("Add Label value", value);
         value.id = generate();
         saveLabel(value);
         //onUpdateLabelDialogForm(null);
@@ -65,9 +64,7 @@ const TagContainer = (props) => {
         saveLabel,
         deleteLabel
     } = props;
-    //console.log("Tag container props", selectedMemberListObj);
 
-    console.log("tag Container total list", totalItemList);
     const getClassName = function () {
         let className;
         if (isButtonClicked) {
