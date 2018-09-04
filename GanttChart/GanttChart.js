@@ -37,7 +37,7 @@ class GanttChart extends Component {
         if(isTaskLoaded){
             return (
                 <div>
-                    <TaskListHeading headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
+                    <TaskListHeading iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
                     <GanttTimeline onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
                 </div>
             )
@@ -59,8 +59,8 @@ function mapStateToProps(store) {
         isTaskLoaded: store.GanttChartReducer.isTaskLoaded,
     };
 }
-  
-  
+
+
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here

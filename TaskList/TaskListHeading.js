@@ -36,10 +36,20 @@ const TaskListHeading = (props) => {
         onAddNewtaskClicked,
         isAddNewTaskVisible,
         onSectionCollapsed,
-        populateCollapsedSectionArray
+        populateCollapsedSectionArray,
+        className,
+        iconClassName,
     } = props;
 
-    //console.log("Task List Heading props", props);
+    let containerClassName = `task-list-heading-parent-wrapper`;
+    if(className){
+      containerClassName = `${containerClassName} ${className}`;
+    }
+
+    let iconClassNameStr = `task-list-heading-drag-angle-icon`;
+    if(iconClassName){
+      iconClassNameStr = `${iconClassNameStr} ${iconClassName}`;
+    }
 
     const getIcon = function () {
         if (!isCollapsed) {
@@ -76,13 +86,13 @@ const TaskListHeading = (props) => {
 
     return (
         <div>
-            <div className="task-list-heading-parent-wrapper">
-                <div className="task-list-heading-drag-angle-icon">
+            <div className={containerClassName}>
+                <div className={iconClassNameStr}>
                     <div className={getDragContainerClassName()}>
                         {protectedName !== "active_tasks" && <DragHandle />}
 
                     </div>
-                    <div onClick={onStateChanged} className="task-list-heading-arrow-container">
+                    <div onClick={onStateChanged} className="">
                         <div className="task-list-heading-icon"> <Icon style={{ margin: 0 }} name={getIcon()} ></Icon></div>
                     </div>
                 </div>
@@ -131,7 +141,7 @@ const TaskListHeading = (props) => {
                 </div>
             </div>
             {
-                isEmptySection && !isCollapsed && isAddNewTaskVisible && 
+                isEmptySection && !isCollapsed && isAddNewTaskVisible &&
                 <div className="task-list-item-delayed-wrapper" style={{backgroundColor:"#fcfcfc"}} onClick={onWriteTask}>
                     <div className="task-list-item-container" >
                     <div className="task-item-delayed-block"></div>
@@ -142,7 +152,7 @@ const TaskListHeading = (props) => {
                             <Icon size="small" name="add"></Icon>
                             </div>
                         </div>
-                        
+
                         <div className="task-list-item-new-task-title" style={{color:"#9e9e9e", paddingLeft:"2px"}}>
                                 Add New Task
                         </div>
@@ -164,7 +174,7 @@ function mapStateToProps(store, props) {
     if (sectionState && sectionState.isCollapsed) {
         isCollapsed = true;
     }
-    
+
     return {
         isCollapsed,
         isAddNewTaskVisible : store.ModelDataReducer.isAddNewTaskVisible
@@ -180,7 +190,7 @@ const mapActionsToProps = {
 TaskListHeading.propTypes = {
     heading: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired, //custom || fixed
-    sectionId: PropTypes.string.isRequired,
+    sectionId: PropTypes.string,
     onTabButtonClick: PropTypes.func, //Func will listen to tab button click.
 }
 

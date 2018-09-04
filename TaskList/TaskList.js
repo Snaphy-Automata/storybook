@@ -6,14 +6,13 @@ import { List, AutoSizer} from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import Promise from 'bluebird';
 import {SortableContainer, arrayMove, SortableElement} from 'react-sortable-hoc';
-import { Scrollbars } from 'react-custom-scrollbars';
+
 
 //Custom Import
 import './TaskList.css';
-import TaskListHeading from './TaskListHeading';
+import TaskListHeading from './TaskListHeading'
 import TaskItem from './TaskItem'
-import { find } from 'graphql';
-import { is } from 'immutable';
+import CustomScrollbar from '../CustomScrollbar'
 
 let ListRef = null;
 
@@ -357,19 +356,7 @@ class TaskList extends Component {
     const id = "snaphy-react-custom-scrollbar";
 
     return (
-      <Scrollbars
-          renderThumbVertical={props => <div {...props} className="react-thumb-vertical"/>}
-          id={id}
-          style={{ width: "100%", height: "100%" }}
-          universal
-          // This will activate auto hide
-          autoHide
-          onScroll={this.handleScroll.bind(this)}
-          // Hide delay in ms
-          autoHideTimeout={1000}
-          thumbMinSize={50}
-          // Duration for hide animation in ms.
-          autoHideDuration={300}>
+      <CustomScrollbar id={id} onScroll={this.handleScroll.bind(this)}>
         <div className="task-list-block-scrollbar-container">
           <div  className="task-list-block-scrollbar-block">
             <AutoSizer  style={{ width: "inherit", height: "inherit" }}>
@@ -410,7 +397,7 @@ class TaskList extends Component {
           </AutoSizer>
         </div>
       </div>
-    </Scrollbars>
+    </CustomScrollbar>
     );
   }
 }
