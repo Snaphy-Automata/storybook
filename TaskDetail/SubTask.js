@@ -5,22 +5,25 @@ import { Icon, Button, Input } from 'semantic-ui-react'
 
 import CustomCheckbox from '../CustomCheckbox'
 
-const SubTask = ({title, isSelected, subTaskId, onSaveSubTask}) => {
+const SubTask = ({title, isSelected, subTaskId, onSaveSubTask, onSubTaskStateChanged, indexValue}) => {
     const onKeyPressEvent = (e) => {
-      // console.log(" I magetting called");
-        //e.preventDefault();
         if(e.key === "Enter"){
             if(e.target.value !== ""){
-                console.log("Save SubTask getting called", e.target.value);
+                //console.log("Save SubTask getting called", e.target.value);
                 onSaveSubTask(subTaskId, e.target.value);
                 //Save the sub Task and add new task..
             }
         }
     }
+
+    const onSubTaskClicked = () => {
+        console.log("On Sub Task Clicked getting called", subTaskId, isSelected);
+        onSubTaskStateChanged(subTaskId, !isSelected, indexValue);
+    }
     return(
         <div className="task-detail-subtask-container">
             <div className="task-detail-subtask-checkbox-container">
-                <CustomCheckbox size='mini' isSelected={isSelected}></CustomCheckbox>
+                <CustomCheckbox size='mini' isSelected={isSelected} onItemClicked={onSubTaskClicked}></CustomCheckbox>
             </div>
             <div className="task-detail-subtask-data-container">
                 {title === "" && <Input fluid autoFocus transparent defaultValue={title} onKeyPress={onKeyPressEvent}></Input>}

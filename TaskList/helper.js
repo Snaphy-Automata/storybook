@@ -194,6 +194,20 @@ import moment from 'moment';
         return subTaskObj;
     }
 
+    getSelectedSubTaskStats(selectedTask){
+        let subTaskObj;
+        if(selectedTask && selectedTask.totalSubTasks){
+            subTaskObj ={};
+            subTaskObj["total"] = selectedTask.totalSubTasks;
+            if(selectedTask.completedSubTasks){
+                subTaskObj["completed"] = selectedTask.completedSubTasks;
+            } else{
+                subTaskObj["completed"] = 0;
+            }
+        }
+        return subTaskObj;
+    }
+
 
     getAttachmentStats(){
         if(this.task && this.task.stats && this.task.stats.attachment){

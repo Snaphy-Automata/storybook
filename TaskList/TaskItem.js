@@ -14,8 +14,8 @@ import TaskHelper from './helper';
 import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction,  onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
-import {getTaskMembersAction} from '../../baseComponents/GridView/components/ModelData/ModelDataActions';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
+import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/ModelDataActions';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -78,34 +78,40 @@ const TaskItem = (props) => {
 
     const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
     let isDelayed;
-    if(selectedTask && selectedTask.id === task.id){
+    if (selectedTask && selectedTask.id === task.id) {
         isDelayed = taskHelper.isSelectedTaskDelayed(selectedTask);
-    } else{
+    } else {
         isDelayed = taskHelper.isDelayed();
     }
 
     //const isDelayed = taskHelper.isDelayed();
     let iconObj = null;
-    if(selectedTask && selectedTask.id === task.id){
+    if (selectedTask && selectedTask.id === task.id) {
         iconObj = taskHelper.getSelectedIcon(selectedTask, findMemberById);
-    } else if(!targetTaskId){
+    } else if (!targetTaskId) {
         iconObj = taskHelper.getIcon(findMemberById);
-    } else if(!selectedTask && targetTaskId && taskMemberList){
+    } else if (!selectedTask && targetTaskId && taskMemberList) {
         iconObj = taskHelper.getTargetTaskIcon(taskMemberList, findMemberById);
 
     }
 
-    if(targetTaskId){
+    if (targetTaskId) {
         console.log("Icon Obj", iconObj);
     }
-    
+
 
     //console.log("Tooltip Data", iconObj);
-  
+
     const statusData = taskHelper.getStatus(statusObj.byId);
 
     const duration = taskHelper.getDurationInText();
-    const subTaskObj = taskHelper.getSubtaskStats();
+    //Sub task Obj...
+    let subTaskObj = null;
+    if(selectedTask && selectedTask.id === task.id){
+        subTaskObj = taskHelper.getSelectedSubTaskStats(selectedTask);
+    } else{
+        subTaskObj = taskHelper.getSubtaskStats();
+    }
     const attachmentObj = taskHelper.getAttachmentStats();
     const formattedDueDateObj = taskHelper.getFormattedDueDate();
     let selectedTaskDueDateObj = null;
@@ -125,9 +131,9 @@ const TaskItem = (props) => {
     }
 
     let labelObjData = null;
-    if(selectedTask && selectedTask.id === task.id){
+    if (selectedTask && selectedTask.id === task.id) {
         labelObjData = taskHelper.getSelectedTaskLabels(selectedTask, findLabelById);
-    } else{
+    } else {
         labelObjData = taskHelper.getLabels(findLabelById);
     }
     const labels = labelObjData.labelList;
@@ -136,11 +142,11 @@ const TaskItem = (props) => {
     //FIXME: When selected add `selected` class.
     const taskItemContainerClassName = `task-list-item-container`;
 
-  
+
 
     const openAssignedUserDialog = () => {
         //console.log("I am getting called");
-        console.log("Before Assigned Dialog Open", task.id,  task.assignedTo);
+        console.log("Before Assigned Dialog Open", task.id, task.assignedTo);
         getTaskMembersAction(task.id, task.assignedTo);
         props.onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
     }
@@ -246,7 +252,7 @@ const TaskItem = (props) => {
     const onWriteTask = () => {
         onAddNewtaskClicked(index, task.sectionId);
     }
-    
+
     /**
      * Select date from date Dialog..
      * @param {*} taskId 
@@ -258,17 +264,17 @@ const TaskItem = (props) => {
         //console.log("Data prepare to be updated", taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
         //call task mutation to update the task item..
         let date = null;
-        if(isTodaySelected){
+        if (isTodaySelected) {
             date = moment().toDate();
-        } else if(isTomorrowSelected){
+        } else if (isTomorrowSelected) {
             date = moment().add(1, 'days').toDate();
-        } else if(isNextWeekSelected){
+        } else if (isNextWeekSelected) {
             date = moment().add(1, 'weeks').startOf('isoWeek').add(6, 'hour').toDate();
         }
-        if(date){
+        if (date) {
             onQuickUpdateDate(taskId, date, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
         }
-        
+
     }
 
 
@@ -276,18 +282,18 @@ const TaskItem = (props) => {
      * Date Picked from date picker..
      */
     const onDatePicked = (taskId, date) => {
-        if(taskId && date){
+        if (taskId && date) {
             onQuickUpdateDate(taskId, date, false, false, false);
         }
     }
 
     const openSelectDateDialog = (e) => {
-       // console.log("Formatted Date", formattedDueDateObj.date);
-        if(formattedDueDateObj.date === "today"){
+        // console.log("Formatted Date", formattedDueDateObj.date);
+        if (formattedDueDateObj.date === "today") {
             onQuickUpdateCurrentDateAction(task.id, true, false, false);
-        } else if(formattedDueDateObj.date === "tomorrow"){
+        } else if (formattedDueDateObj.date === "tomorrow") {
             onQuickUpdateCurrentDateAction(task.id, false, true, false);
-        } else if(formattedDueDateObj.date === moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM")){
+        } else if (formattedDueDateObj.date === moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM")) {
             onQuickUpdateCurrentDateAction(task.id, false, false, true);
         }
         props.onOpenChangeDateDialogAction(!isDateDialogOpened, task.id);
@@ -314,7 +320,7 @@ const TaskItem = (props) => {
                             {!isScrolling &&
                                 <div className={'task-list-item-icon'}>
                                     {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
-                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>}
+                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
                                     {/* {!selectedTask && taskMemberList && targetTaskId && taskMemberList.length > 1 && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} onClick={openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={onCloseAssignedUserDialog} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>} */}
                                 </div>}
                         </div>
@@ -348,16 +354,31 @@ const TaskItem = (props) => {
 
 
                                 <div className="task-list-item-sub-task-attachment-container" onClick={onSelectItem}>
-                                    <div style={{ display: "inline-block", width: "60%" }}>
-                                        {
-                                            subTaskObj &&
-                                            <div>
-                                                <Icon name="unordered list" style={{ display: "inline", margin: '0' }}></Icon>
-                                                <div className="task-list-item-sub-task-stats">{subTaskObj.completed}/{subTaskObj.total}</div>
-                                            </div>
-                                        }
+                                    {
+                                        !selectedTask && <div style={{ display: "inline-block", width: "60%" }}>
+                                            {
+                                                subTaskObj &&
+                                                <div>
+                                                    <Icon name="unordered list" style={{ display: "inline", margin: '0' }}></Icon>
+                                                    <div className="task-list-item-sub-task-stats">{subTaskObj.completed}/{subTaskObj.total}</div>
+                                                </div>
+                                            }
 
-                                    </div>
+                                        </div>
+                                    }
+                                    {
+                                        selectedTask && <div style={{ display: "inline-block", width: "60%" }}>
+                                            {
+                                                subTaskObj &&
+                                                <div>
+                                                    <Icon name="unordered list" style={{ display: "inline", margin: '0' }}></Icon>
+                                                    <div className="task-list-item-sub-task-stats">{subTaskObj.completed}/{subTaskObj.total}</div>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    }
+
 
                                     <div style={{ display: "inline-block", width: "40%", textAlign: 'left' }}>
                                         {
@@ -417,7 +438,7 @@ const TaskItem = (props) => {
                                                 {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
                                             </div>
                                         }
-                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={formattedDueDateObj.date} isDateDialogOpened={isDateDialogOpened} onCloseDateDialog={onCloseDateDialog}/>}
+                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={formattedDueDateObj.date} isDateDialogOpened={isDateDialogOpened} onCloseDateDialog={onCloseDateDialog} />}
                                             position='bottom center'
                                             on='click'
                                             open={isDateDialogOpened}
@@ -431,7 +452,7 @@ const TaskItem = (props) => {
                                     </div>
                                 }
                                 {
-                                    selectedTask && selectedTask.id === task.id && selectedTaskDueDateObj.date && 
+                                    selectedTask && selectedTask.id === task.id && selectedTaskDueDateObj.date &&
                                     <div className="task-list-item-date-container" style={{ color: selectedTaskDueDateObj.colorCode }}>
                                         {/* <Icon name="calendar minus outline" style={{ display: "inline" }}></Icon> */}
                                         {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: selectedTaskDueDateObj.colorCode }} onClick={openSelectDateDialog}>{selectedTaskDueDateObj.date}</div>}</div>}
@@ -447,7 +468,7 @@ const TaskItem = (props) => {
                                                 {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: selectedTaskDueDateObj.colorCode }} onClick={openSelectDateDialog}>{selectedTaskDueDateObj.date}</div>}
                                             </div>
                                         }
-                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={selectedTaskDueDateObj.date} isDateDialogOpened={isDateDialogOpened}  onCloseDateDialog={onCloseDateDialog}/>}
+                                            content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={selectedTaskDueDateObj.date} isDateDialogOpened={isDateDialogOpened} onCloseDateDialog={onCloseDateDialog} />}
                                             position='bottom center'
                                             on='click'
                                             open={isDateDialogOpened}
@@ -568,13 +589,13 @@ function mapStateToProps(store, props) {
         statusObjData = selectedTaskStatusData.data;
     }
 
-    if(quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId){
+    if (quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId) {
         isTodaySelected = quickCurrentUpdateDate.isTodaySelected;
         isTomorrowSelected = quickCurrentUpdateDate.isTomorrowSelected;
         isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
     }
 
-    if(taskMemberListObj && taskMemberListObj.taskId === props.taskId){
+    if (taskMemberListObj && taskMemberListObj.taskId === props.taskId) {
         taskMemberList = taskMemberListObj.selectedTaskMemberList;
         targetTaskId = props.taskId;
     }

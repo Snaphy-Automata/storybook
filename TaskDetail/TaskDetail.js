@@ -60,7 +60,8 @@ const TaskDetail = (props) => {
         commentList,
         subTaskList,
         findMemberById,
-        onAddSubTask
+        onAddSubTask,
+        onSaveSubTaskState
     } = props;
 
     //console.log("Task Detail Props", subTaskList);
@@ -218,17 +219,14 @@ const TaskDetail = (props) => {
             }
             //Updating the existing task ..
             //If last task then add new subtask
-        } else{
-            //  let subTaskObj = subTaskDataList[subTaskDataList.length-1];
-            //  subTaskObj.title = titleValue;
-            //  subTaskObj.isCompleted = false;
-            //  subTaskObj.taskId = selectedTask.id;
-            //  subTaskDataList.splice(subTaskDataList.length-1, 1, subTaskObj);
-            //  subTaskDataList.push({});
-            //Update the empty subtask with new value and add the new task..
         }
-        //console.log("Updated Sub task List", subTaskDataList);
         onAddSubTask(selectedTask.id, subTaskDataList, "filled", subTaskId, titleValue, indexValue);
+    }
+
+    const onSubTaskStateChanged = (subTaskId, isCompleted, indexValue) => {
+        if(selectedTask && selectedTask.id){
+            onSaveSubTaskState(selectedTask.id, subTaskId, isCompleted, indexValue);
+        }
     }
 
     return (
@@ -409,9 +407,9 @@ const TaskDetail = (props) => {
                                     //console.log("Looping through Sub task", subTask);
                                     return (
                                         <div key={index} style={{ marginBottom: 10 }}>
-                                            {subTask.isCompleted && <SubTask subTaskId={subTask.id} title={subTask.title} isSelected="isSelected" onSaveSubTask={onSaveSubTask}></SubTask>}
-                                            {!subTask.isCompleted && subTask.id && <SubTask subTaskId={subTask.id} title={subTask.title} isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
-                                            {!subTask.id && <SubTask title="" isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
+                                            {subTask.isCompleted && <SubTask indexValue={index} onSubTaskStateChanged={onSubTaskStateChanged} subTaskId={subTask.id} title={subTask.title} isSelected="isSelected" onSaveSubTask={onSaveSubTask}></SubTask>}
+                                            {!subTask.isCompleted && subTask.id && <SubTask indexValue={index} onSubTaskStateChanged={onSubTaskStateChanged} subTaskId={subTask.id} title={subTask.title} isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
+                                            {!subTask.id && <SubTask indexValue={index} onSubTaskStateChanged={onSubTaskStateChanged} title="" isSelected="" onSaveSubTask={onSaveSubTask}></SubTask>}
                                         </div>
 
                                     )
