@@ -101,7 +101,7 @@ const GanttChart = (props) => {
   setTimeout(()=>{
     const task = groups[groups.length -1];
     console.log("Focusing Task");
-    //onTaskFocusAction(task.id);
+    onTaskFocusAction(task.id);
   }, 5000);
 
   return (

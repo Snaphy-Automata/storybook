@@ -31,16 +31,15 @@ const getElement = (id) => {
 class GanttChart extends Component {
 
     constructor(props){
-        super(props);
-        const {
-          tasks,
-          onTaskInitAction,
-        } = this.props;
-        onTaskInitAction(tasks);
+      super(props);
+      const {
+        tasks,
+        onTaskInitAction,
+      } = this.props;
+      onTaskInitAction(tasks);
     }
 
     componentDidMount(){
-
 
     }
 
