@@ -65,6 +65,7 @@ const TagContainer = (props) => {
         deleteLabel
     } = props;
 
+    //console.log("tag Container total list", totalItemList);
     const getClassName = function () {
         let className;
         if (isButtonClicked) {
