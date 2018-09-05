@@ -117,6 +117,7 @@ const GanttChart = (props) => {
           stackItems={false}
           showCursorLine
           canMove={true}
+          canMoveGroup={false}
           canResize={"both"}
           defaultTimeStart={defaultTimeStart}
           defaultTimeEnd={defaultTimeEnd}
@@ -144,6 +145,10 @@ const GanttChart = (props) => {
           onTimeChange={onHorizontalScrollAction}
           onItemSelect={onItemSelectAction}
           showCursorLine={false}
+          // horizontalLineClassNamesForGroup={(group) => {
+          //   console.log(group);
+          //   return group.root ? ["row-root"] : []
+          // }}
         />
   )
 };
