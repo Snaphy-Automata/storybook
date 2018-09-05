@@ -1,0 +1,32 @@
+/**
+  Created by Robins
+  3rd Sept 2018
+**/
+
+.dropdown-with-icon-filter-dropdown{
+  display: inline-block;
+  z-index: 99;
+}
+
+.dropdown-with-icon-filter-dropdown .dropdown.icon{
+  padding-left: 4px;
+}
+
+.dropdown-with-icon-filter{
+  font-size: 11px;
+  font-weight: bold;
+  color: #4d4f5c;
+  display: inline-block;
+}
+
+.dropdown-with-icon-icon-filter{
+  font-size: 10px !important;
+  color: #4d4f5c;
+  display: inline-block;
+}
+
+.dropdown-with-icon-filter .default{
+  color: #4d4f5c !important;
+}
+
+

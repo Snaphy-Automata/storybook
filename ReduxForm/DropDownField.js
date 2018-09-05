@@ -43,12 +43,9 @@ const DropDownField = (props) => {
         open,
         meta: { touched, error, warning }
     } = props;
-    inline = inline || false;
-
-    size = size || "large";
-    open = open || false;
-    //console.log("Dropdown Props", props.onDataChanged);
-
+    const inlineVal = inline || false;
+    const sizeVal   = size || "large";
+    const openVal   = open || false;
     //if(!onDataChanged){
         return(
             <Form.Input size={size} label={label}>
@@ -56,14 +53,14 @@ const DropDownField = (props) => {
                 placeholder={placeholder}
                 value={input.value}
                 fluid
+                inline={inlineVal}
                 style={style}
-                size={size}
-                open={open}
+                size={sizeVal}
+                open={openVal}
                 //defaultValue={defaultValue}
                 selection
                 options={options}
                 onBlur={(event, data) => {
-                    console.log("Blure am getting called");
                     if(onBlurEvent){
                         onBlurEvent(event, data);
                     }

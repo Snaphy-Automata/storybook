@@ -3,18 +3,18 @@
  * 11th July 2018
  */
 //Exports Constants..
-export const ON_GANTT_ITEM_RESIZE        = "ON_ITEM_RESIZE";
-export const ON_GANTT_ITEM_MOVED         = "ON_ITEM_MOVED";
-export const ON_HORIZONTAL_SCROLL        = "ON_HORIZONTAL_SCROLL";
-export const ON_ITEM_MOUSE_ENTER_ACTION  = "ON_ITEM_ENTER_ACTION";
-export const ON_ITEM_MOUSE_LEAVE_ACTION  = "ON_ITEM_LEAVE_ACTION";
-export const ON_ITEM_SELECTED            = "ON_ITEM_SELECTED_ACTION";
-export const ON_TASK_LOAD_ACTION         = "ON_TASK_LOAD_ACTION";
-export const INITIALIZE_GANTT_WITH_DATA  = "INITIALIZE_GANTT_WITH_DATA";
-export const ON_GANTT_NEW_TASK_ADDED     = "ON_GANTT_NEW_TASK_ADDED";
-export const ON_GANTT_CHART_TASK_FOCUSED = "ON_GANTT_CHART_TASK_FOCUSED";
-export const ON_GANTT_CHART_TASK_UPDATED = "ON_GANTT_CHART_TASK_UPDATED";
-export const ON_TASK_FOCUSED             = "ON_TASK_FOCUSED";
+export const ON_GANTT_ITEM_RESIZE                = "ON_ITEM_RESIZE";
+export const ON_GANTT_ITEM_MOVED                 = "ON_ITEM_MOVED";
+export const ON_HORIZONTAL_SCROLL                = "ON_HORIZONTAL_SCROLL";
+export const ON_ITEM_MOUSE_ENTER_ACTION          = "ON_ITEM_ENTER_ACTION";
+export const ON_ITEM_MOUSE_LEAVE_ACTION          = "ON_ITEM_LEAVE_ACTION";
+export const ON_ITEM_SELECTED                    = "ON_ITEM_SELECTED_ACTION";
+export const ON_TASK_LOAD_ACTION                 = "ON_TASK_LOAD_ACTION";
+export const INITIALIZE_GANTT_WITH_DATA          = "INITIALIZE_GANTT_WITH_DATA";
+export const ON_GANTT_NEW_TASK_ADDED             = "ON_GANTT_NEW_TASK_ADDED";
+export const ON_GANTT_CHART_TASK_FOCUSED         = "ON_GANTT_CHART_TASK_FOCUSED";
+export const ON_GANTT_CHART_TASK_UPDATED         = "ON_GANTT_CHART_TASK_UPDATED";
+export const ON_TASK_FOCUSED                     = "ON_TASK_FOCUSED";
 
 //Will trigger when canvas is horizontally scrolled for date change
 //Also change the group item
@@ -24,7 +24,7 @@ export function onHorizontalScrollAction(visibleTimeStart, visibleTimeEnd, updat
     dispatch({
       type: ON_HORIZONTAL_SCROLL,
       payload: {
-        visibleTimeStart, 
+        visibleTimeStart,
         visibleTimeEnd,
         updateScrollCanvas,
       }
@@ -33,7 +33,7 @@ export function onHorizontalScrollAction(visibleTimeStart, visibleTimeEnd, updat
 }
 
 
-//Action for Updating the filter data..   
+//Action for Updating the filter data..
 export function onItemResizeAction(itemId, time, edge) {
   return (dispatch) => {
     dispatch({
@@ -68,7 +68,7 @@ export function onItemMouseEnterAction(itemId){
       type: ON_ITEM_MOUSE_ENTER_ACTION,
       payload:{
         itemId,
-      }  
+      }
     });
   }
 }
@@ -80,7 +80,7 @@ export function onItemMouseLeaveAction(itemId){
       type: ON_ITEM_MOUSE_LEAVE_ACTION,
       payload:{
         itemId,
-      }  
+      }
     });
   }
 }
@@ -101,7 +101,7 @@ export function onItemSelectAction(itemId){
 /**
  * WIll initialize task with new list..
  * Needs to be supplied from outside when a complete list changes..
- * @param {*} taskList 
+ * @param {*} taskList
  */
 export function onTaskInitAction(taskList){
   return (dispatch) => {
@@ -139,7 +139,7 @@ export function onNewTaskAdded(task, oldPosition, newPosition, highlight = true)
 /**
  * Will get called when a new task is focused.
  * Will scroll to the group and will horizontal scroll  task timeline
- * @param {*} taskId 
+ * @param {*} taskId
  */
 export function onTaskFocused(taskId){
   return (dispatch) => {
@@ -155,7 +155,7 @@ export function onTaskFocused(taskId){
 
 
 /**
- * Will get called when a new task get updated. 
+ * Will get called when a new task get updated.
  */
 export function onTaskUpdated(task, highlight = true){
   return (dispatch)=>{

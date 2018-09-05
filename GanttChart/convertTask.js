@@ -22,7 +22,7 @@ const STATUS_OBJ = {
  * WIll find the position for an group item.
  * Which needs to be selected.
  * https://github.com/namespace-ee/react-calendar-timeline/issues/177#issuecomment-344236188
- * @param {*} obj 
+ * @param {*} obj
  */
 export function findPos(obj) {
     var curtop = 0;
@@ -37,12 +37,12 @@ export function findPos(obj) {
 
 /**
  * Will enhance taskObj data.
- * @param {*} taskObj 
+ * @param {*} taskObj
  */
 export const enhanceTask = (task) => {
     const startDate = task.startDate;
     const endDate   = task.endDate;
-    const status    = task.status; 
+    const status    = task.status;
     let className = (moment(startDate).day() === 6 || moment(startDate).day() === 0) ? 'item-weekend gantt-chart-group-item' : 'gantt-chart-group-item';
     const statusClass = getStatusClass(task);
     task.className = `${className} ${statusClass}`;
@@ -54,11 +54,11 @@ export const enhanceTask = (task) => {
 
     task.itemProps =  {
         'data-tip': task.title,
-        id: `item-${task.id}` 
+        id: `item-${task.id}`
     }
     return task;
 };
-  
+
 
 
 /**
@@ -71,7 +71,7 @@ export const enhanceTask = (task) => {
         let task = getDates(taskList[i]);
         let newData = {...task};
         newData.id = uniqueId(`${newData.id}_`);
-        newData.isCompletedType  = true;
+        //newData.isCompletedType  = true;
         newData.endDate = moment().endOf('day');
         const group = {...task};
         groups.push(task);
@@ -80,7 +80,7 @@ export const enhanceTask = (task) => {
         task = enhanceTask(task);
         newData = enhanceTask(newData);
         newTaskList.push(task);
-        newTaskList.push(newData);
+        //newTaskList.push(newData);
     }
     return {items: newTaskList, groups: groups};
 };
@@ -90,7 +90,7 @@ export const enhanceTask = (task) => {
 
 /**
  * Return the status class for the object..
- * @param {*} taskObj 
+ * @param {*} taskObj
  */
  export const getStatusClass = (taskObj) => {
     taskObj.isDelayed = false;

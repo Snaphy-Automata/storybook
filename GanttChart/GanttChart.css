@@ -57,7 +57,7 @@
     border-bottom: 1px solid #eeeeee !important;
     border-right: 1px solid #ddd;
     padding-left: 7px !important;
-    
+
 }
 
 
@@ -69,7 +69,7 @@
 .react-calendar-timeline .rct-vertical-lines .rct-vl {
     position: absolute;
     border-left: 1px solid #eee;
-    z-index: 30;
+    /*z-index: 30;*/
 }
 
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-even, .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd{
@@ -266,7 +266,7 @@
 
 
 .gantt-chart-group-item-type{
-    z-index: 99999 !important;
+    /*z-index: 99999 !important; */
 }
 
 /* .gantt-chart-item-completed-box{
@@ -300,7 +300,7 @@
     border: 1px solid #e9b15a33 !important; */
 }
 
-/* 
+/*
 
 .gantt-chart-group-item.pending{
     background-color: #ffc162;
@@ -413,15 +413,29 @@
     padding-left: 65px;
 }
 
+.task-list-heading-drag-angle-icon{
+  height: 39.5px;
+  line-height: 39.5px;
+}
+
 
 .gantt-chart-top-heading-title{
     padding-left: 7px !important;
+    line-height: 16px;
 }
 
 .gantt-chart-top-heading-title:hover{
     background: transparent !important;
 }
 
- 
+.gantt-chart-top-heading-arrow{
+  height: 39.5px;
+  line-height: 39.5px;
+}
+
+.gantt-chart-top-header-container{
+  height:39.5px;
+}
+
 
 

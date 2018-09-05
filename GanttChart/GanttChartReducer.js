@@ -9,8 +9,8 @@ import moment from 'moment'
 import month from './month.json';
 import {convertTask, enhanceTask, findPos} from "./convertTask";
 import {
-  ON_GANTT_ITEM_MOVED, 
-  ON_GANTT_ITEM_RESIZE, 
+  ON_GANTT_ITEM_MOVED,
+  ON_GANTT_ITEM_RESIZE,
   ON_HORIZONTAL_SCROLL,
   ON_ITEM_MOUSE_ENTER_ACTION,
   ON_ITEM_MOUSE_LEAVE_ACTION,
@@ -91,16 +91,16 @@ const GanttChartReducer = (state = initialState, action) => {
           ...state.data,
           items: newItem,
         }
-      }     
+      }
       break;
     } //end case..
     case ON_HORIZONTAL_SCROLL:{
-      const { 
-        visibleTimeStart, 
+      const {
+        visibleTimeStart,
         visibleTimeEnd,
         updateScrollCanvas
       } = action.payload;
-      const currentYear = moment().year(); 
+      const currentYear = moment().year();
       //FInd the value of month from unix miliseconds..
       const monthInt = moment(visibleTimeStart).month(); //0-11
       const visibleYear = moment(visibleTimeStart).year();
@@ -169,7 +169,7 @@ const GanttChartReducer = (state = initialState, action) => {
       //WIll get called when a new task has been added
       //With old position index and new position index.
       /**
-        * 
+        *
         payload:{
           task,
           oldPosition,
@@ -178,7 +178,7 @@ const GanttChartReducer = (state = initialState, action) => {
         }
       **/
       //TODO: 28th July 2018
-      //Add items to list   
+      //Add items to list
 
       break;
     }
@@ -202,7 +202,7 @@ const GanttChartReducer = (state = initialState, action) => {
       if(window !== undefined){
         //Display it to the bottom of the canvas..
         const canvasHeight = 162;
-        window.scroll(0,findPos(document.getElementById(taskId)) - canvasHeight);
+        //window.scroll(0,findPos(document.getElementById(taskId)) - canvasHeight);
       }
 
       break;
@@ -215,8 +215,8 @@ const GanttChartReducer = (state = initialState, action) => {
 
 /**
  * Will fetch the Target Item from List..
- * @param {*} oldItemList 
- * @param {*} newItemArr 
+ * @param {*} oldItemList
+ * @param {*} newItemArr
  */
 const fetchTargetItem = (oldItemList, newItemArr, itemId)=>{
   let targetItem, index = -1;

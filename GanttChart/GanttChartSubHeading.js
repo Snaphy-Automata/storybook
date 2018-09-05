@@ -1,8 +1,6 @@
 /**
  * Created by Robins 29th July 2018
- * 
  */
-
 import React, {Component} from "react";
 import PropTypes from 'prop-types';
 
@@ -10,7 +8,6 @@ import CircularLabel from "../CircularLabel";
 
 
 const GanttChartSubHeading = ({}) => {
-
     return (
         <div className="gantt-chart-top-subheading-container">
             <CircularLabel colorCode="#ffc162" iconStyle={{
@@ -35,7 +32,7 @@ const GanttChartSubHeading = ({}) => {
 
 
 GanttChartSubHeading.propTypes = {
-   
+
 };
 
 
