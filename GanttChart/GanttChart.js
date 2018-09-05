@@ -32,14 +32,16 @@ class GanttChart extends Component {
 
     constructor(props){
         super(props);
+        const {
+          tasks,
+          onTaskInitAction,
+        } = this.props;
+        onTaskInitAction(tasks);
     }
 
     componentDidMount(){
-        const {
-            tasks,
-            onTaskInitAction,
-        } = this.props;
-        onTaskInitAction(tasks);
+
+
     }
 
     onSectionStateChanged(sectionId, index, isCollapsed){

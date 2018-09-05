@@ -77,7 +77,6 @@ const GanttChart = (props) => {
     //Method called from outside from gantt-chart
     onItemMoved,
     onTaskResized,
-    scrollRef,
   } = props;
 
   /**
@@ -101,14 +100,14 @@ const GanttChart = (props) => {
 
   setTimeout(()=>{
     const task = groups[groups.length -1];
-    //console.log("Focusing Task");
-    onTaskFocusAction(task.id);
+    console.log("Focusing Task");
+    //onTaskFocusAction(task.id);
   }, 5000);
 
-
   return (
-
-          <Timeline
+        <div>
+          {groups && items && sidebarHeadingTitle &&
+            <Timeline
           groups={groups}
           items={items}
           keys={keys}
@@ -150,6 +149,9 @@ const GanttChart = (props) => {
           //   return group.root ? ["row-root"] : []
           // }}
         />
+          }
+        </div>
+
   )
 };
 
