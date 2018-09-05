@@ -45,7 +45,7 @@ class GanttChart extends Component {
     onSectionStateChanged(sectionId, index, isCollapsed){
       console.log("on Section changed.", sectionId, index, isCollapsed);
       const {onToggleBtnClick} = this.props;
-      onToggleBtnClick(isCollapsed);
+      onToggleBtnClick(!isCollapsed);
     }
 
     render(){
@@ -54,12 +54,15 @@ class GanttChart extends Component {
             onTaskResized,
             onItemMoved,
             sectionId,
+            isGanttCollapsed,
         } = this.props;
         if(isTaskLoaded){
           return (
             <CustomScroller id="gantt-chart-custom-scrollbar">
-                <TaskListHeading sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
-                <GanttTimeline scrollRef={getElement("gantt-chart-custom-scrollbar")} onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
+                <TaskListHeading protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
+                { !isGanttCollapsed &&
+                  <GanttTimeline  sectionId={sectionId} scrollRef={getElement("gantt-chart-custom-scrollbar")} onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
+                }
             </CustomScroller>
           )
         }else{

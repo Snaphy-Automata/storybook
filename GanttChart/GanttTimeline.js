@@ -107,56 +107,58 @@ const GanttChart = (props) => {
 
 
   return (
-    <Timeline
-      groups={groups}
-      items={items}
-      keys={keys}
-      itemsSorted
-      itemTouchSendsClick={false}
-      stackItems={false}
-      showCursorLine
-      canMove={true}
-      canResize={"both"}
-      defaultTimeStart={defaultTimeStart}
-      defaultTimeEnd={defaultTimeEnd}
-      lineHeight={25}
-      selected={selectedItemId}
-      sidebarWidth={170}
-      sidebarContent={<div>{sidebarHeadingTitle}</div>}
-      dragSnap={60*60*1000*24} //dragging unit set to be 24 hours 1 day
-      headerLabelGroupHeight={0} //remvoe top header
-      headerLabelHeight={23}
-      itemHeightRatio={1}
-      minZoom={60*60*1000*24} //Smallest time that can be zoomed. 1 day
-      maxZoom={365.24 * 86400 * 1000} //longest time that can be zoomed 1 year.
-      timeSteps={{
-        day: 1,
-        month: 1,
-        year: 1
-      }}
-      canChangeGroup={false} //items cannot be moved outside a group.
-      itemRenderer={ItemRenderer}
-      useResizeHandle={true}
-      onItemResize={onItemResize}
-      onItemMove={onItemMoveFunc}
-      groupRenderer={GroupRenderer}
-      onTimeChange={onHorizontalScrollAction}
-      onItemSelect={onItemSelectAction}
-      showCursorLine={false}
-    />
+
+          <Timeline
+          groups={groups}
+          items={items}
+          keys={keys}
+          itemsSorted
+          itemTouchSendsClick={false}
+          stackItems={false}
+          showCursorLine
+          canMove={true}
+          canResize={"both"}
+          defaultTimeStart={defaultTimeStart}
+          defaultTimeEnd={defaultTimeEnd}
+          lineHeight={25}
+          selected={selectedItemId}
+          sidebarWidth={170}
+          sidebarContent={<div>{sidebarHeadingTitle}</div>}
+          dragSnap={60*60*1000*24} //dragging unit set to be 24 hours 1 day
+          headerLabelGroupHeight={0} //remvoe top header
+          headerLabelHeight={23}
+          itemHeightRatio={1}
+          minZoom={60*60*1000*24} //Smallest time that can be zoomed. 1 day
+          maxZoom={365.24 * 86400 * 1000} //longest time that can be zoomed 1 year.
+          timeSteps={{
+            day: 1,
+            month: 1,
+            year: 1
+          }}
+          canChangeGroup={false} //items cannot be moved outside a group.
+          itemRenderer={ItemRenderer}
+          useResizeHandle={true}
+          onItemResize={onItemResize}
+          onItemMove={onItemMoveFunc}
+          groupRenderer={GroupRenderer}
+          onTimeChange={onHorizontalScrollAction}
+          onItemSelect={onItemSelectAction}
+          showCursorLine={false}
+        />
   )
 };
 
 
 
 // Retrieve data from store as props
-function mapStateToProps(store) {
+function mapStateToProps(store, props) {
 
   return {
     sidebarHeadingTitle: store.GanttChartReducer.sidebarHeadingTitle,
     selectedItemId: store.GanttChartReducer.selectedItemId,
     items: store.GanttChartReducer.data.items,
     groups: store.GanttChartReducer.data.groups,
+
   };
 }
 
