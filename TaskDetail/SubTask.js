@@ -5,7 +5,7 @@ import { Icon, Button, Input } from 'semantic-ui-react'
 
 import CustomCheckbox from '../CustomCheckbox'
 
-const SubTask = ({title, isSelected, subTaskId, onSaveSubTask, onSubTaskStateChanged, indexValue}) => {
+const SubTask = ({title, isSelected, subTaskId, onSaveSubTask, onSubTaskStateChanged, indexValue, onRemoveSubTask}) => {
     const onKeyPressEvent = (e) => {
         if(e.key === "Enter"){
             if(e.target.value !== ""){
@@ -17,8 +17,12 @@ const SubTask = ({title, isSelected, subTaskId, onSaveSubTask, onSubTaskStateCha
     }
 
     const onSubTaskClicked = () => {
-        console.log("On Sub Task Clicked getting called", subTaskId, isSelected);
+       // console.log("On Sub Task Clicked getting called", subTaskId, isSelected);
         onSubTaskStateChanged(subTaskId, !isSelected, indexValue);
+    }
+
+    const onRemoveSubTaskClicked = () => {
+        onRemoveSubTask(subTaskId, isSelected, indexValue);
     }
     return(
         <div className="task-detail-subtask-container">
@@ -29,7 +33,7 @@ const SubTask = ({title, isSelected, subTaskId, onSaveSubTask, onSubTaskStateCha
                 {title === "" && <Input fluid autoFocus transparent defaultValue={title} onKeyPress={onKeyPressEvent}></Input>}
                 {title !== "" && <Input fluid transparent defaultValue={title} onKeyPress={onKeyPressEvent}></Input>}
             </div>
-            <div className="task-detail-subtask-delete-container">
+            <div className="task-detail-subtask-delete-container" onClick={onRemoveSubTaskClicked}>
                 <Icon name="trash" style={{color: "#707070"}}></Icon>
             </div>
         </div>
