@@ -62,7 +62,8 @@ const TaskDetail = (props) => {
         findMemberById,
         onAddSubTask,
         onSaveSubTaskState,
-        onDeleteSubTask
+        onDeleteSubTask,
+        deleteComment
     } = props;
 
     //console.log("Task Detail Props", subTaskList);
@@ -233,6 +234,12 @@ const TaskDetail = (props) => {
     const onRemoveSubTask = (subTaskId, isCompleted, indexValue) => {
         if(selectedTask && selectedTask.id){
             onDeleteSubTask(selectedTask.id, subTaskId, isCompleted, indexValue);
+        }
+    }
+
+    const onDeleteComment = (commentId, indexValue) => {
+        if(selectedTask && selectedTask.id){
+            deleteComment(selectedTask.id, commentId, indexValue);
         }
     }
 
@@ -470,7 +477,7 @@ const TaskDetail = (props) => {
                                         createdTime = moment(comment.createdTime).fromNow();
                                     }
                                     return (
-                                        <TaskComment key={index} name={name} time={createdTime} comment={comment.title} />
+                                        <TaskComment indexValue={index} key={index} name={name} time={createdTime} comment={comment.title} onDeleteComment={onDeleteComment} commentId={comment.id}/>
                                     )
                                 })
                             }
