@@ -67,7 +67,7 @@ const TagContainer = (props) => {
     } = props;
     //console.log("Tag container props", selectedMemberListObj);
 
-    console.log("tag Container total list", totalItemList);
+    //console.log("tag Container total list", totalItemList);
     const getClassName = function () {
         let className;
         if (isButtonClicked) {
