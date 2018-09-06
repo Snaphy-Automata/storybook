@@ -1,8 +1,8 @@
 import React, { Component, PureComponent } from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux';
-import Timeline from 'react-calendar-timeline/lib'
-import 'react-calendar-timeline/lib/Timeline.css'
+import Timeline from '../../react-calendar-timeline/src';
+import'react-calendar-timeline/lib/Timeline.css';
 import PropTypes from 'prop-types';
 
 
@@ -108,6 +108,8 @@ class GanttChart extends PureComponent{
       //Method called from outside from gantt-chart
       onItemMoved,
       onTaskResized,
+      setListReference,
+      height
     } = this.props;
 
 
@@ -119,6 +121,7 @@ class GanttChart extends PureComponent{
 
     return (
       <Timeline
+        setListReference={setListReference}
         groups={groups}
         items={items}
         keys={keys}
@@ -155,6 +158,7 @@ class GanttChart extends PureComponent{
         //onTimeChange={onHorizontalScrollAction}
         onItemSelect={onItemSelectAction}
         showCursorLine={false}
+        screenHeight={98}
         // horizontalLineClassNamesForGroup={(group) => {
         //   console.log(group);
         //   return group.root ? ["row-root"] : []
@@ -167,7 +171,6 @@ class GanttChart extends PureComponent{
 
 // Retrieve data from store as props
 function mapStateToProps(store, props) {
-
   return {
     sidebarHeadingTitle: store.GanttChartReducer.sidebarHeadingTitle,
     selectedItemId: store.GanttChartReducer.selectedItemId,

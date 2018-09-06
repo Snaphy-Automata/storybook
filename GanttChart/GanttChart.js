@@ -5,6 +5,7 @@
 import React, { Component } from 'react';
 import {connect}            from 'react-redux';
 import PropTypes            from 'prop-types';
+import { AutoSizer }              from 'react-virtualized';
 
 //Custom Import
 import {
@@ -28,6 +29,8 @@ const getElement = (id) => {
   }
 }
 
+let ListRef = null;
+
 class GanttChart extends Component {
 
     constructor(props){
@@ -49,6 +52,21 @@ class GanttChart extends Component {
       onToggleBtnClick(!isCollapsed);
     }
 
+
+    handleScroll({ target }) {
+      const { scrollTop, scrollLeft } = target;
+      if (ListRef) {
+        const { Grid: grid } = ListRef;
+        grid.handleScrollEvent({ scrollTop, scrollLeft });
+      }
+    }
+
+
+    setListReference(ref){
+      ListRef = ref;
+    }
+
+
     render(){
         const {
             isTaskLoaded,
@@ -59,11 +77,17 @@ class GanttChart extends Component {
         } = this.props;
         if(isTaskLoaded){
           return (
-            <CustomScroller id="gantt-chart-custom-scrollbar">
-                <TaskListHeading protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
-                { !isGanttCollapsed &&
-                  <GanttTimeline  sectionId={sectionId}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
-                }
+            <CustomScroller onScroll={this.handleScroll} id="gantt-chart-custom-scrollbar">
+              {/* <AutoSizer  style={{ width: "inherit", height: "inherit" }}>
+                {({ height, width }) => (
+                  <div style={{ width: width, height }}> */}
+                    <TaskListHeading protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
+                    { !isGanttCollapsed &&
+                      <GanttTimeline setListReference={this.setListReference}  sectionId={sectionId}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
+                    }
+                  {/* </div>
+              )}
+              </AutoSizer> */}
             </CustomScroller>
           )
         }else{

@@ -427,12 +427,12 @@
 }
 
 .gantt-chart-top-heading-arrow{
-  height: 39.5px;
-  line-height: 42.5px;
+  height: 39.5px !important;
+  line-height: 42.5px !important;
 }
 
 .gantt-chart-top-header-container{
-  height:39.5px;
+  height:39.5px !important;
 }
 
 

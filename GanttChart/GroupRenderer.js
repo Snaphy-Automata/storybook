@@ -18,6 +18,7 @@ const GroupRenderer = ({group}) => {
         'length': 24,
     });
 
+
     const icon = getAssignedToIcon(group);
 
     //https://github.com/namespace-ee/react-calendar-timeline#grouprenderer
