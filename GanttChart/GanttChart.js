@@ -62,7 +62,7 @@ class GanttChart extends Component {
             <CustomScroller id="gantt-chart-custom-scrollbar">
                 <TaskListHeading protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
                 { !isGanttCollapsed &&
-                  <GanttTimeline  sectionId={sectionId} scrollRef={getElement("gantt-chart-custom-scrollbar")} onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
+                  <GanttTimeline  sectionId={sectionId}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
                 }
             </CustomScroller>
           )
