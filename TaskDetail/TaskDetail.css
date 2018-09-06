@@ -187,14 +187,29 @@
     margin-top: 10px;
 }
 
+.task-detail-labels-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
 .task-detail-sub-tasks-container{
     width: 100%;
     margin-top:15px;
 }
 
+.task-detail-sub-tasks-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
 .task-detail-attachment-container{
     width: 100%;
     margin-top:15px;
+}
+
+.task-detail-attachment-text{
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .task-detail-labels-data-container{
@@ -231,6 +246,12 @@
     margin-top: 15px;
 }
 
+.task-detail-description-text{
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
 .task-detail-comment-container{
     width: 100%;
     margin-top: 15px;
@@ -238,6 +259,12 @@
     border-style: solid;
     border-width: 1px 0px 0px 0px;
     border-color: #eeeeee; 
+}
+
+.task-detail-comment-text{
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 .task-detail-comment-data-container{

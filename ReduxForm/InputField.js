@@ -44,7 +44,9 @@ const InputField = (props) => {
     transparent = transparent || false
 
     const onBlur = (e) => {
+        e.preventDefault();
         if(onBlurEvent){
+         
             onBlurEvent(e.target.value);
         }
     }

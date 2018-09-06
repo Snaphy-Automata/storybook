@@ -1,0 +1,23 @@
+.material{
+    height: 50px;
+}
+
+.material:hover{
+    height: 100px;
+}
+
+.field.input-ui-change{
+    border-style: solid;
+    border-color: #eeeeee
+}
+
+.field.input-ui-change:hover{
+    border-style: solid;
+    border-color: #707070;
+}
+
+.description-field-markdown-container{
+    min-height: 120px;
+    width: 433px;
+    margin-bottom: 20px;
+}

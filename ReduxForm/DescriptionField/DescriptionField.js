@@ -1,14 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Input, Form} from 'semantic-ui-react';
+import ReactMarkdown from 'react-markdown'
+import Markdown from 'react-markdown'
+// const ReactMarkdown = require('react-markdown')
+
 
 
 //Import Actions..
-import {inputFocusChagedAction} from './InputElementAction';
+import {inputFocusChagedAction} from '../InputElement/InputElementAction';
 import SubmitButton from '../SubmitButton';
+import './DescriptionField.css';
 //import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
 
-const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows, defaultValue, onDataChanged, invalid, submitting, pristine}) => {
+const DescriptionField = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows, defaultValue, onDataChanged, invalid, submitting, pristine, value, descriptionData}) => {
 
    
 
@@ -22,15 +27,20 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
 
     const onBlurEvent = function(e){
         e.preventDefault();
-        inputFocusChagedAction(false, label);
+        console.log("Blur Description getting called", e);
+       inputFocusChagedAction(false, label);
         //call autosave function..
     }
 
     const onKeyPress = function(e){
         if(e.key === 'Enter'){
-            inputFocusChagedAction(false, label);
+            //inputFocusChagedAction(false, label);
             //call autosave function..
         }
+    }
+
+    const onMarkdownContainerClicked = function(){
+        inputFocusChagedAction(true, label);
     }
 
     const onChange = function(event, data){
@@ -43,6 +53,7 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
     }
 
     //console.log("Input Element Props", defaultValue);
+    //console.log("Description Field props", descriptionData);
 
 
     return (
@@ -59,9 +70,9 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
                 onKeyPress = {onKeyPress}
                 onChange={onChange}
             />
-            {/* <SubmitButton type="submit" size="tiny" disabled={invalid || submitting || pristine} content="Save" ></SubmitButton> */}
+            <SubmitButton type="submit" size="tiny" disabled={invalid || submitting || pristine} content="Save" ></SubmitButton>
             </div>}
-            {!isFocused && <Form.TextArea
+            {!isFocused && !descriptionData && <Form.TextArea
                 placeholder={placeholder}
                 size={size}
                 {...input}
@@ -72,6 +83,7 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
                 onFocus = {onFocusChanged}
                 onChange={onChange}
             />}
+            {!isFocused && descriptionData && <div className="description-field-markdown-container" onClick={onMarkdownContainerClicked}><Markdown source={descriptionData} /></div>}
         </div>
     )
 }
@@ -95,4 +107,4 @@ const mapActionsToProps = {
 
 
 
-export default connect(mapStateToProps, mapActionsToProps)(InputElement);
+export default connect(mapStateToProps, mapActionsToProps)(DescriptionField);

@@ -19,6 +19,7 @@ import SnaphyForm from '../ReduxForm/SnaphyForm'
 import TaskComment from '../TaskComment'
 import TaskCommentForm from '../TaskCommentForm'
 import DurationForm from '../DurationForm';
+import DescriptionField from '../ReduxForm/DescriptionField';
 
 import {
     onMarkCompleteClickedAction,
@@ -63,8 +64,10 @@ const TaskDetail = (props) => {
         onAddSubTask,
         onSaveSubTaskState,
         onDeleteSubTask,
-        deleteComment
+        deleteComment,
+        onUpdateDescription
     } = props;
+    
 
     //console.log("Task Detail Props", subTaskList);
 
@@ -243,6 +246,12 @@ const TaskDetail = (props) => {
         }
     }
 
+    const onUpdateTaskDescription = (descriptionData) => {
+        if(selectedTask && selectedTask.id){
+            onUpdateDescription(selectedTask.id, descriptionData);
+        }
+    }
+
     return (
         <div>
             {/* <SnaphyForm error={error} onSubmit={handleSubmit}  > */}
@@ -377,7 +386,7 @@ const TaskDetail = (props) => {
                     </div>
 
                     <div className="task-detail-labels-container">
-                        <div>Labels</div>
+                        <div className="task-detail-labels-text">Labels</div>
                         {selectedTask &&
                             <TagContainer
                                 type="label"
@@ -414,7 +423,7 @@ const TaskDetail = (props) => {
                     </div>
 
                     {props.subTaskList && props.subTaskList.length !== 0 && <div className="task-detail-sub-tasks-container">
-                        <div>Subtasks</div>
+                        <div className="task-detail-sub-tasks-text">Subtasks</div>
                         <div style={{ marginTop: 10 }}>
                             {
                                 map(props.subTaskList, function (subTask, index) {
@@ -432,17 +441,22 @@ const TaskDetail = (props) => {
                         </div>
 
                     </div>}
+                    <SnaphyForm error={error} onSubmit={handleSubmit}>
+                        <div className="task-detail-description-container">
+                            <div className="task-detail-description-text">Description</div>
+                            {/* <Field name={getTitleFieldName()} type="text" placeholder="Write a task name" size="large" rows="1" label="TaskTitle" component={InputElement} onDataChanged={onTitleDataChanged}></Field> */}
+                            {selectedTask && selectedTask.description &&  <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} descriptionData={selectedTask.description}></Field>}
+                            {selectedTask && !selectedTask.description && <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}></Field>}
+                            {!selectedTask && <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}></Field>}
+                           
+                            {/* <Field name="title" type="text" placeholder="Write a task name" size="large" comonent={InputField}></Field> */}
+                            {/* <Description placeholder="Write Description Here" style={{ minHeight: '150px', marginTop: '15px' }}></Description> */}
 
-                    <div className="task-detail-description-container">
-                        <div style={{ marginBottom: 5 }}>Description</div>
-                        <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={InputElement}></Field>
-                        {/* <Field name="title" type="text" placeholder="Write a task name" size="large" comonent={InputField}></Field> */}
-                        {/* <Description placeholder="Write Description Here" style={{ minHeight: '150px', marginTop: '15px' }}></Description> */}
-
-                    </div>
+                        </div>
+                    </SnaphyForm>
 
                     {props.attachmentList && props.attachmentList.length !== 0 && <div className="task-detail-attachment-container">
-                        <div>Attachment</div>
+                        <div className="task-detail-attachment-text">Attachment</div>
                         <div style={{ marginTop: 10 }}>
                             {
                                 map(props.attachmentList, function (attachment, index) {
@@ -459,7 +473,7 @@ const TaskDetail = (props) => {
                     </div>}
 
                     {commentList && commentList.length !== 0 && <div>
-                        <div style={{ marginTop: 10 }}>Comments</div>
+                        <div className="task-detail-comment-text">Comments</div>
                         <div>
                             {
                                 map(commentList, function (comment, index) {
