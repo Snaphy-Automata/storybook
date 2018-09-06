@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Input, Form} from 'semantic-ui-react';
+import {Input, Form, Popup} from 'semantic-ui-react';
 import ReactMarkdown from 'react-markdown'
 import Markdown from 'react-markdown'
 // const ReactMarkdown = require('react-markdown')
@@ -11,6 +11,7 @@ import Markdown from 'react-markdown'
 import {inputFocusChagedAction} from '../InputElement/InputElementAction';
 import SubmitButton from '../SubmitButton';
 import './DescriptionField.css';
+import FormattingHelp from '../../FormattingHelp';
 //import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
 
 const DescriptionField = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows, defaultValue, onDataChanged, invalid, submitting, pristine, value, descriptionData}) => {
@@ -28,7 +29,7 @@ const DescriptionField = ({placeholder, size, inputElementReducer, inputFocusCha
     const onBlurEvent = function(e){
         e.preventDefault();
         console.log("Blur Description getting called", e);
-       inputFocusChagedAction(false, label);
+       //inputFocusChagedAction(false, label);
         //call autosave function..
     }
 
@@ -70,7 +71,23 @@ const DescriptionField = ({placeholder, size, inputElementReducer, inputFocusCha
                 onKeyPress = {onKeyPress}
                 onChange={onChange}
             />
-            <SubmitButton type="submit" size="tiny" disabled={invalid || submitting || pristine} content="Save" ></SubmitButton>
+            <Popup
+            trigger={ <div className="description-field-formatting-help-text">Formatting Help</div>}
+            content={<FormattingHelp/>}
+            on='click'
+            basic
+            style={{height: "400px",
+                overflow: "auto"}}
+            position="left center"
+            />
+
+            
+            
+            <div style={{float: 'right'}}>
+            <SubmitButton  type="submit" size="tiny" disabled={invalid || submitting || pristine} content="Save" ></SubmitButton>
+            </div>
+           
+           
             </div>}
             {!isFocused && !descriptionData && <Form.TextArea
                 placeholder={placeholder}

@@ -1,0 +1,32 @@
+.formatting-help-container{
+    width: 306px;
+    /* height: 400px; */
+    /* height: 400px;
+    width: 200px;
+    padding: 10px; */
+    /* overflow: scroll */
+}
+
+.formatting-help-all-data-container{
+    /* overflow: auto; */
+}
+
+.formatting-help-text{
+    display:inline-block;
+}
+
+.formatting-help-close-container{
+    float: right;
+}
+
+
+.formatting-help-heading-text{
+    margin-top: 5px;
+}
+
+.formatting-help-data-container{
+    color:#eb5a46;
+    margin-top: 5px;
+}
+
+

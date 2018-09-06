@@ -21,3 +21,10 @@
     width: 433px;
     margin-bottom: 20px;
 }
+
+.description-field-formatting-help-text{
+    display: inline-block;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #707070;
+}
