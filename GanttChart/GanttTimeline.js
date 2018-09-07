@@ -157,7 +157,7 @@ class GanttChart extends PureComponent{
         onItemResize={this.onItemResize}
         onItemMove={this.onItemMoveFunc}
         groupRenderer={GroupRenderer}
-        //onTimeChange={onHorizontalScrollAction}
+        onTimeChange={onHorizontalScrollAction}
         onItemSelect={onItemSelectAction}
         showCursorLine={false}
         screenHeight={98}

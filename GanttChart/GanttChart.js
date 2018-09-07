@@ -69,7 +69,6 @@ class GanttChart extends Component {
     }
 
     setRowListRef(ref){
-      console.log("Row Refrence is setting", ref);
       RowListRef = ref;
     }
 
