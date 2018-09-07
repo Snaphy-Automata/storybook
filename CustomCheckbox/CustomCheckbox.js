@@ -26,7 +26,7 @@ const CustomCheckbox = ({size, isSelected, color, className, onItemClicked, onSe
     className = size ? `${className} ${size}`: className
 
     return (
-        <div className={className} onClick={onItemClicked}>
+        <div className={className} onMouseDown={onItemClicked}>
             <Icon name="check" style={{margin:0}}></Icon>
         </div>
     )
