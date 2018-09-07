@@ -8,13 +8,21 @@ import CustomCheckbox from '../CustomCheckbox'
 const SubTask = ({title, isSelected, subTaskId, onSaveSubTask, onSubTaskStateChanged, indexValue, onRemoveSubTask}) => {
     const onKeyPressEvent = (e) => {
         if(e.key === "Enter"){
-            if(e.target.value !== ""){
+            if(e.target.value !== "" && title!== e.target.value){
                 //console.log("Save SubTask getting called", e.target.value);
-                onSaveSubTask(subTaskId, e.target.value);
+                onSaveSubTask(subTaskId, e.target.value, "enter");
                 //Save the sub Task and add new task..
             }
         }
     }
+
+    const onBlurEvent = (e) => {
+        if(e.target.value !== "" && title !== e.target.value){
+            onSaveSubTask(subTaskId, e.target.value, "blur");
+        }
+    }
+
+    //console.log("Title", title);
 
     const onSubTaskClicked = () => {
        // console.log("On Sub Task Clicked getting called", subTaskId, isSelected);
@@ -30,8 +38,9 @@ const SubTask = ({title, isSelected, subTaskId, onSaveSubTask, onSubTaskStateCha
                 <CustomCheckbox size='mini' isSelected={isSelected} onItemClicked={onSubTaskClicked}></CustomCheckbox>
             </div>
             <div className="task-detail-subtask-data-container">
-                {title === "" && <Input fluid autoFocus transparent defaultValue={title} onKeyPress={onKeyPressEvent}></Input>}
-                {title !== "" && <Input fluid transparent defaultValue={title} onKeyPress={onKeyPressEvent}></Input>}
+            {/* <Input fluid autoFocus transparent defaultValue={title} onKeyPress={onKeyPressEvent} onBlur={onBlurEvent}></Input> */}
+                {title === "" && <Input fluid autoFocus transparent defaultValue={title} onKeyPress={onKeyPressEvent} onBlur={onBlurEvent}></Input>}
+                {title !== "" && <Input fluid transparent defaultValue={title} onKeyPress={onKeyPressEvent} onBlur={onBlurEvent}></Input>}
             </div>
             <div className="task-detail-subtask-delete-container" onClick={onRemoveSubTaskClicked}>
                 <Icon name="trash" style={{color: "#707070"}}></Icon>

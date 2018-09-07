@@ -203,16 +203,23 @@ const TaskDetail = (props) => {
 
     const onAddSubTasksToList = () => {
         let subTaskDataList = [...subTaskList];
-        subTaskDataList.push({});
+        if(subTaskDataList.length){
+            if(subTaskDataList[subTaskDataList.length-1].id){
+                subTaskDataList.push({});
+            }
+        } else{
+            subTaskDataList.push({});
+        }
+        
         //console.log("Add SubTask getting called", subTaskDataList);
-        onAddSubTask(selectedTask.id, subTaskDataList, "empty", null);
+        onAddSubTask(selectedTask.id, subTaskDataList, "empty", null, null);
     }
 
-    const onSaveSubTask = (subTaskId, titleValue) => {
-       // console.log("On Save SUb task", subTaskId, titleValue);
+    const onSaveSubTask = (subTaskId, titleValue, eventType) => {
+        console.log("On Save SUb task", subTaskId, titleValue, eventType);
         let subTaskDataList = [...subTaskList];
         let indexValue;
-        if(subTaskId){
+        if(subTaskId && eventType === "enter"){
             for(var i=0;i<subTaskDataList.length;i++){
                 if(subTaskDataList[i].id === subTaskId){
                     indexValue = i;
@@ -225,7 +232,7 @@ const TaskDetail = (props) => {
             //Updating the existing task ..
             //If last task then add new subtask
         }
-        onAddSubTask(selectedTask.id, subTaskDataList, "filled", subTaskId, titleValue, indexValue);
+        onAddSubTask(selectedTask.id, subTaskDataList, "filled", subTaskId, titleValue, indexValue, eventType);
     }
 
     const onSubTaskStateChanged = (subTaskId, isCompleted, indexValue) => {
