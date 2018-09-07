@@ -29,7 +29,8 @@ const getElement = (id) => {
   }
 }
 
-let ListRef = null;
+let ListRef    = null;
+let RowListRef = null;
 
 class GanttChart extends Component {
 
@@ -59,8 +60,18 @@ class GanttChart extends Component {
         const { Grid: grid } = ListRef;
         grid.handleScrollEvent({ scrollTop, scrollLeft });
       }
+
+      if (RowListRef) {
+        const { Grid: grid } = RowListRef;
+        grid.handleScrollEvent({ scrollTop, scrollLeft });
+      }
+
     }
 
+    setRowListRef(ref){
+      console.log("Row Refrence is setting", ref);
+      RowListRef = ref;
+    }
 
     setListReference(ref){
       ListRef = ref;
@@ -83,7 +94,7 @@ class GanttChart extends Component {
                   <div style={{ width: width, height }}> */}
                     <TaskListHeading protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
                     { !isGanttCollapsed &&
-                      <GanttTimeline setListReference={this.setListReference}  sectionId={sectionId}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
+                      <GanttTimeline setRowListRef={this.setRowListRef} setListReference={this.setListReference}  sectionId={sectionId}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
                     }
                   {/* </div>
               )}

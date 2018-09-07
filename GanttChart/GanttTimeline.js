@@ -109,6 +109,7 @@ class GanttChart extends PureComponent{
       onItemMoved,
       onTaskResized,
       setListReference,
+      setRowListRef,
       height
     } = this.props;
 
@@ -122,6 +123,7 @@ class GanttChart extends PureComponent{
     return (
       <Timeline
         setListReference={setListReference}
+        setRowListRef={setRowListRef}
         groups={groups}
         items={items}
         keys={keys}
