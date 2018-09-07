@@ -600,6 +600,18 @@ function mapStateToProps(store, props) {
         targetTaskId = props.taskId;
     }
 
+    
+
+    const allTaskObj = store.ModelDataReducer.task;
+    let isActiveTaskSection = false;
+    if(props.task){
+        const taskObj = allTaskObj.byId[props.task.id];
+        if(taskObj.sectionId === props.activeSectionId){
+            isActiveTaskSection = true;
+        }
+
+    }
+
 
 
 
@@ -616,7 +628,8 @@ function mapStateToProps(store, props) {
         labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
         statusObjData,
         taskMemberList,
-        targetTaskId
+        targetTaskId,
+        isActiveTaskSection
     }
 
 
