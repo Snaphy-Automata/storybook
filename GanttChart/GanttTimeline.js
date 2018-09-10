@@ -15,7 +15,8 @@ import {
   onTaskFocusAction,
 } from "./GanttChartActions";
 import GroupRenderer from "./GroupRenderer";
-import ItemRenderer from "./ItemRenderer";
+import ItemRenderer  from "./ItemRenderer";
+import ItembyHocByProjectId   from "./ItemByIdHoc"
 
 //Custom style
 import "./GanttChart.css";
@@ -29,8 +30,8 @@ var keys = {
   //itemTitleKey: 'title',
   //itemDivTitleKey: 'title',
   itemGroupKey: 'groupId',
-  itemTimeStartKey: 'startDate',
-  itemTimeEndKey: 'endDate'
+  itemTimeStartKey: 'startDateMs',
+  itemTimeEndKey: 'endDateMs'
 }
 
 const defaultHeaderLabelFormats = {
@@ -70,7 +71,11 @@ class GanttChart extends PureComponent{
       onItemMoveAction,
       onItemMoved,
       onTaskResized,
+      projectId,
     } = props;
+
+    this.ItemByIdHoc = ItembyHocByProjectId(projectId)
+
     /**
      * On Task Resize Task is saved and moved to new position..
      */
@@ -89,14 +94,14 @@ class GanttChart extends PureComponent{
       onItemMoveAction(itemId, dragTime, newGroupOrder);
       onItemMoved? onItemMoved(itemId, dragTime, newGroupOrder): null;
     }
-
   }
 
+
+
   render(){
-    console.log("Relaoding");
     const { defaultTimeStart, defaultTimeEnd } = state
     const {
-      groups,
+      //groups,
       items,
       onItemResizeAction,
       onItemMoveAction,
@@ -110,7 +115,7 @@ class GanttChart extends PureComponent{
       onTaskResized,
       setListReference,
       setRowListRef,
-      height
+      //height
     } = this.props;
 
 
@@ -124,7 +129,7 @@ class GanttChart extends PureComponent{
       <Timeline
         setListReference={setListReference}
         setRowListRef={setRowListRef}
-        groups={groups}
+        groups={items}
         items={items}
         keys={keys}
         itemsSorted
@@ -161,6 +166,7 @@ class GanttChart extends PureComponent{
         onItemSelect={onItemSelectAction}
         showCursorLine={false}
         screenHeight={98}
+        getItemHoc={this.ItemByIdHoc}
         // horizontalLineClassNamesForGroup={(group) => {
         //   console.log(group);
         //   return group.root ? ["row-root"] : []
@@ -176,8 +182,8 @@ function mapStateToProps(store, props) {
   return {
     sidebarHeadingTitle: store.GanttChartReducer.sidebarHeadingTitle,
     selectedItemId: store.GanttChartReducer.selectedItemId,
-    items: store.GanttChartReducer.data.items,
-    groups: store.GanttChartReducer.data.groups,
+    // items: store.GanttChartReducer.data.items,
+    // groups: store.GanttChartReducer.data.groups,
   };
 }
 
@@ -185,11 +191,11 @@ function mapStateToProps(store, props) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
   //map action here
-  onItemResizeAction,
-  onItemMoveAction,
-  onHorizontalScrollAction,
-  onItemSelectAction,
-  onTaskFocusAction,
+  // onItemResizeAction,
+  // onItemMoveAction,
+  // onHorizontalScrollAction,
+  // onItemSelectAction,
+  // onTaskFocusAction,
 };
 
 
@@ -197,6 +203,10 @@ const mapActionsToProps = {
 GanttChart.propTypes = {
   onTaskResized: PropTypes.func.isRequired,
   onItemMoved: PropTypes.func.isRequired,
+  setRowListRef: PropTypes.func.isRequired,
+  setListReference: PropTypes.func.isRequired,
+  items: PropTypes.array.isRequired,
+  projectId: PropTypes.string.isRequired,
 };
 
 

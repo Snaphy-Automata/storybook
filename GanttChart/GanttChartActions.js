@@ -107,13 +107,14 @@ export function onItemSelectAction(itemId){
  */
 export function onTaskInitAction(taskList){
   return (dispatch) => {
-    const {groups, items} = convertTask(taskList);
+    const {groups, items, byId} = convertTask(taskList);
     setTimeout(()=>{
       dispatch({
         type: INITIALIZE_GANTT_WITH_DATA,
         payload:{
           groups,
           items,
+          byId,
         }
       });
     });

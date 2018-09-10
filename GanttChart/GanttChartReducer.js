@@ -161,6 +161,7 @@ const GanttChartReducer = (state = initialState, action) => {
         data:{
           groups: action.payload.groups,
           items: action.payload.items,
+          byId: action.payload.byId
         }
       }
       break;
