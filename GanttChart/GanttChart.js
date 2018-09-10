@@ -74,6 +74,8 @@ class GanttChart extends Component {
             sectionId,
             items,
             isGanttCollapsed,
+            onResize,
+            onMove,
         } = this.props;
         if(items && items.length){
           return (
@@ -83,7 +85,7 @@ class GanttChart extends Component {
                   <div style={{ width: width, height }}> */}
                     <TaskListHeading protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
                     { !isGanttCollapsed &&
-                      <GanttTimeline projectId={projectId} setRowListRef={this.setRowListRef} items={items} setListReference={this.setListReference}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
+                      <GanttTimeline onMove={onMove} onResize={onResize} projectId={projectId} setRowListRef={this.setRowListRef} items={items} setListReference={this.setListReference}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
                     }
                   {/* </div>
               )}
@@ -125,6 +127,8 @@ GanttChart.propTypes = {
     onToggleBtnClick: PropTypes.func,
     sectionId: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
+    onResize: PropTypes.func.isRequired,
+    onMove: PropTypes.func.isRequired,
 };
 
 

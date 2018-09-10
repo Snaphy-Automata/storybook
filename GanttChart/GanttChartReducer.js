@@ -37,10 +37,6 @@ const initialState = {
   sidebarHeadingTitle: sidebarTitle(),
   selectedItemId: undefined,
   assignedTo:[],
-  data: {
-    taskList:[],
-  },
-  isTaskLoaded: false,
 };
 
 const GanttChartReducer = (state = initialState, action) => {

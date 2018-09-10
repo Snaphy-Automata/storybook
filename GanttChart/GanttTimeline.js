@@ -8,8 +8,6 @@ import PropTypes from 'prop-types';
 
 //Custom Import
 import {
-  onItemResizeAction,
-  onItemMoveAction,
   onHorizontalScrollAction,
   onItemSelectAction,
   onTaskFocusAction,
@@ -72,6 +70,8 @@ class GanttChart extends PureComponent{
       onItemMoved,
       onTaskResized,
       projectId,
+      onMove,
+      onResize,
     } = props;
 
     this.ItemByIdHoc = ItembyHocByProjectId(projectId)
@@ -80,9 +80,10 @@ class GanttChart extends PureComponent{
      * On Task Resize Task is saved and moved to new position..
      */
     this.onItemResize = (itemId, time, edge) => {
-      onItemResizeAction(itemId, time, edge);
+      onResize(itemId, time, edge);
       onTaskResized? onTaskResized(itemId, time, edge): null;
     }
+
 
     /**
      * Will get called when a item is moved inside gantt.
@@ -91,7 +92,7 @@ class GanttChart extends PureComponent{
      * @param {*} newGroupOrder
      */
     this.onItemMoveFunc = (itemId, dragTime, newGroupOrder) => {
-      onItemMoveAction(itemId, dragTime, newGroupOrder);
+      onMove(itemId, dragTime, newGroupOrder);
       onItemMoved? onItemMoved(itemId, dragTime, newGroupOrder): null;
     }
   }
@@ -103,8 +104,8 @@ class GanttChart extends PureComponent{
     const {
       //groups,
       items,
-      onItemResizeAction,
-      onItemMoveAction,
+      onMove,
+      onResize,
       onHorizontalScrollAction,
       sidebarHeadingTitle,
       selectedItemId,
@@ -167,10 +168,6 @@ class GanttChart extends PureComponent{
         showCursorLine={false}
         screenHeight={98}
         getItemHoc={this.ItemByIdHoc}
-        // horizontalLineClassNamesForGroup={(group) => {
-        //   console.log(group);
-        //   return group.root ? ["row-root"] : []
-        // }}
       />
     )
   }
@@ -193,8 +190,8 @@ const mapActionsToProps = {
   //map action here
   // onItemResizeAction,
   // onItemMoveAction,
-  // onHorizontalScrollAction,
-  // onItemSelectAction,
+  onHorizontalScrollAction,
+  onItemSelectAction,
   // onTaskFocusAction,
 };
 
@@ -207,6 +204,8 @@ GanttChart.propTypes = {
   setListReference: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
   projectId: PropTypes.string.isRequired,
+  onMove: PropTypes.func.isRequired,
+  onResize: PropTypes.func.isRequired,
 };
 
 
