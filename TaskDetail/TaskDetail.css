@@ -293,19 +293,33 @@
     padding-bottom: 10px;
 }
 
+.task-detail-subtask-data-container{
+    width: 90%;
+    display: inline-block;
+}
+
+.task-detail-subtask-data-container:hover .task-detail-subtask-delete-container{
+    display: inline-block;
+}
+
 .task-detail-subtask-checkbox-container{
     width: 10%;
     display: inline-block;
 }
 
-.task-detail-subtask-data-container{
-    width: 80%;
+.task-detail-subtask-title-container{
+    width: 90%;
     display: inline-block;
 }
 
 .task-detail-subtask-delete-container{
     width: 10%;
-    display: inline-block;
+    display: none;
+    cursor: pointer;
+}
+
+.task-detail-show-sub-task-delete-dialog{
+    display: inline-block
 }
 
 

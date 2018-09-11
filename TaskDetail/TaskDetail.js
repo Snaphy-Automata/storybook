@@ -367,14 +367,14 @@ const TaskDetail = (props) => {
                     <div className="task-detail-date-container">
                         <div className="task-detail-due-date-container">
                             <div className="task-detail-due-date-text">Due Date</div>
-                            {selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} />}
+                            {selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.endDate}/>}
                             {!selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} />}
                             {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
 
                         </div>
                         <div className="task-detail-start-date-container">
                             <div className="task-detail-start-date-text">Start Date</div>
-                            {selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} />}
+                            {selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.startDate}/>}
                             {!selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} />}
                             {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
 

@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import moment from 'moment';
-import { Form } from 'semantic-ui-react'
+import { Form,Input } from 'semantic-ui-react'
 
 import MomentLocaleUtils, {
   formatDate,
@@ -29,7 +29,7 @@ import { onDatePickerStateChangedAction, setDateDataAction } from '../TaskList/T
 
 
 const DatePicker = (props) => {
-  let { format, meta: { touched, error }, width, required, isDatePickerOpened, dateData, onDatePickerStateChangedAction, setDateDataAction, title, style, dataType, onUpdateDate, taskId } = props;
+  let { format, meta: { touched, error }, width, required, isDatePickerOpened, dateData, onDatePickerStateChangedAction, setDateDataAction, title, style, dataType, onUpdateDate, taskId, dateValue } = props;
   format = format || "DD/MM/YYYY";
 
   // const onOpenDataPicker = function(){
@@ -37,14 +37,17 @@ const DatePicker = (props) => {
   // }
 
   const onDayChanged = function (day) {
+     console.log("Day Format", day);
     if (day) {
       //console.log("Day Format", day);
       if (dataType === "due") {
         setDateDataAction("due", day, !isDatePickerOpened, taskId);
         onUpdateDate(day);
+        onDatePickerStateChangedAction("due", !isDatePickerOpened, dateData);
       } else if (dataType === "start") {
         setDateDataAction("start", day, !isDatePickerOpened, taskId);
         onUpdateDate(day);
+        onDatePickerStateChangedAction("start", !isDatePickerOpened, dateData);
       }
     }
 
@@ -74,9 +77,29 @@ const DatePicker = (props) => {
     if (e.stopPropagation) e.stopPropagation();
   }
 
-  const onBlurEvent = function (e) {
-    console.log("Blur getting called", e);
-    //onDatePickerStateChangedAction("due", !isDatePickerOpened, dateData);
+  // const onBlurEvent = function (e) {
+   
+    
+  // }
+
+  const onBlurEvent = (e) => {
+    e.preventDefault();
+    console.log("Blur getting called", e.target.value);
+    
+   
+    // if(dataType === "due"){
+    //   onDatePickerStateChangedAction("due", !isDatePickerOpened, dateData);
+    // } else if(dataType === "start"){
+    //   onDatePickerStateChangedAction("start", !isDatePickerOpened, dateData);
+    // }
+  }
+
+  const onMouseUpEvent = () => {
+    console.log("On Mouse Up Event geeting called");
+  }
+
+  const onChangeData = (event, data) => {
+    return props.input.onChange(data.value)
   }
 
   const getDate = function () {
@@ -92,27 +115,40 @@ const DatePicker = (props) => {
 
   const getInputDate = function () {
     let value = "";
+    console.log("Input Date Data", dateData);
     if (dateData) {
       let date = moment(dateData).format("DD/MM/YYYY");
       value = date;
     }
+    // if(dataType === "due"){
+    //   onDatePickerStateChangedAction("due", !isDatePickerOpened, dateData);
+    // } else if(dataType === "start"){
+    //   onDatePickerStateChangedAction("start", !isDatePickerOpened, dateData);
+    // }
     return value;
   }
   return (
     <div style={style}>
       {isDatePickerOpened && <Form.Field >
         {isDatePickerOpened && <DayPickerInput
+          //ref={ref => (this.datePicker = ref)}
+          dayPickerProps={props}
           showOverlay
           placeholder={format}
           format={format}
           value={getInputDate()}
           required={required}
           formatDate={formatDate}
-          component={InputWithIcon}
+          component={props => <Input {...props}  size="mini"
+          autoFocus
+          style={{width:"120px", height:"32px"}}
+          icon='calendar minus outline'
+          onChange={onChangeData}
+          iconPosition='left' />}
           parseDate={parseDate}
-          inputProps={{ ...props.input }}
+          {...props}
+          inputProps={{ ...props.input, onBlur: onBlurEvent }}
           onDayChange={onDayChanged}
-          onBlur={onBlurEvent}
         />}
         {touched && error && <span>{error}</span>}
       </Form.Field>}
@@ -136,6 +172,8 @@ function mapStateToProps(store, props) {
   let dateData = null;
   if( taskListReducerConfig && props.taskId === taskListReducerConfig.taskId){
     dateData = taskListReducerConfig && taskListReducerConfig.dateData ? taskListReducerConfig.dateData : null;
+  } else if(props.dateValue){
+    dateData = props.dateValue;
   }
   
   //console.log("Calling map to props", taskListReducerConfig);

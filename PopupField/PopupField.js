@@ -3,14 +3,20 @@ import {Popup} from 'semantic-ui-react';
 
 
 const PopupField = (props) => {
-    const {isDialogOpened, onDialogStateChange} = props;
+    const {isDialogOpened, onDialogStateChange, style, position} = props;
     //sconsole.log("Popup Field Props", props);
     const onOpenDialog = () => {
-        onDialogStateChange(true);
+        if(onDialogStateChange){
+            onDialogStateChange(true);
+        }
+      
     }
 
     const onCloseDialog = () => {
-        //onDialogStateChange(false);
+        if(onDialogStateChange){
+            onDialogStateChange(false);
+        }
+        
     }
     return (
         <Popup
@@ -19,9 +25,10 @@ const PopupField = (props) => {
         on='click'
         basic
         open={isDialogOpened}
-        style={props.style}
-        onClose={onOpenDialog}
-        onOpen={onCloseDialog}
+        position={position}
+        style={style}
+        onClose={onCloseDialog}
+        onOpen={onOpenDialog}
         
         />
     )
