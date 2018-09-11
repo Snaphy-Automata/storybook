@@ -28,8 +28,6 @@ import {
     onUserAddButtonClickedAction,
     onLabelAddButtonClickedAction,
 } from '../TaskList/TaskListActions';
-import SelectLabel from '../SelectLabel';
-
 
 
 const TaskDetail = (props) => {
@@ -67,7 +65,7 @@ const TaskDetail = (props) => {
         deleteComment,
         onUpdateDescription
     } = props;
-    
+
 
     //console.log("Task Detail Props", subTaskList);
 
@@ -210,7 +208,7 @@ const TaskDetail = (props) => {
         } else{
             subTaskDataList.push({});
         }
-        
+
         //console.log("Add SubTask getting called", subTaskDataList);
         onAddSubTask(selectedTask.id, subTaskDataList, "empty", null, null);
     }
@@ -223,7 +221,7 @@ const TaskDetail = (props) => {
             for(var i=0;i<subTaskDataList.length;i++){
                 if(subTaskDataList[i].id === subTaskId){
                     indexValue = i;
-                    
+
                     if(i === subTaskDataList.length -1){
                         subTaskDataList.push({});
                     }
@@ -307,7 +305,7 @@ const TaskDetail = (props) => {
                 <div className="task-detail-task-detail-container">
                     <SnaphyForm>
                     <div className="task-detail-task-name-container">
-                        <Field name={getTitleFieldName()} type="text" placeholder="Write a task name" size="large" rows="1" label="TaskTitle" component={InputElement} onDataChanged={onTitleDataChanged}></Field>
+                        <Field className="task-detail-task-name-input" name={getTitleFieldName()} type="text" placeholder="Write a task name" size="large" rows="1" label="TaskTitle" component={InputElement} onDataChanged={onTitleDataChanged}></Field>
                         {/* <InputElement placeholder="Write a task name" size="large"></InputElement> */}
                     </div>
                     </SnaphyForm>
@@ -455,7 +453,7 @@ const TaskDetail = (props) => {
                             {selectedTask && selectedTask.description &&  <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} descriptionData={selectedTask.description} onUpdateTaskDescription={onUpdateTaskDescription} taskId={selectedTask.id}></Field>}
                             {selectedTask && !selectedTask.description && <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} onUpdateTaskDescription={onUpdateTaskDescription} taskId={selectedTask.id}></Field>}
                             {!selectedTask && <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} onUpdateTaskDescription={onUpdateTaskDescription}></Field>}
-                           
+
                             {/* <Field name="title" type="text" placeholder="Write a task name" size="large" comonent={InputField}></Field> */}
                             {/* <Description placeholder="Write Description Here" style={{ minHeight: '150px', marginTop: '15px' }}></Description> */}
 
@@ -513,7 +511,7 @@ const TaskDetail = (props) => {
                 <SnaphyForm error={error} onSubmit={handleSubmit}>
                     <TaskCommentForm invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
                 </SnaphyForm>
-               
+
                 <ShareDialog onClose={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened}></ShareDialog>
             {/* </SnaphyForm> */}
         </div>

@@ -10,7 +10,7 @@ import SubmitButton from '../SubmitButton';
 
 const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedAction, input, taskTitleDataAction, label, rows, defaultValue, onDataChanged, invalid, submitting, pristine}) => {
 
-   
+
 
     let inputElementState = inputElementReducer[label];
     let isFocused = inputElementState && inputElementState.isFocused ? true : false;
@@ -37,7 +37,7 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
         if(onDataChanged){
             onDataChanged(data.value);
         }
-       
+
         //taskTitleDataAction(data.value);
         return input.onChange(data.value);
     }
@@ -67,7 +67,7 @@ const InputElement = ({placeholder, size, inputElementReducer, inputFocusChagedA
                 {...input}
                 autoHeight
                 rows= {rows}
-                
+
                 style={{padding: ".67857143em 1em", height: "52px !important", border:'none'}}
                 onFocus = {onFocusChanged}
                 onChange={onChange}
