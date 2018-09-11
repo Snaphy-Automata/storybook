@@ -16,12 +16,15 @@ class CustomScrollbar extends Component {
 
   render(){
 
-    const {id, onScroll} = this.props;
+    let {id, onScroll, style} = this.props;
+    style = style || {};
+    let className = "react-thumb-vertical"
+    className = `${className} ${this.props.className}`
     return (
       <Scrollbars
-        renderThumbVertical={props => <div {...props} className="react-thumb-vertical"/>}
+        renderThumbVertical={props => <div {...props} className={className}/>}
         id={id}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", height: "100%", ...style }}
         universal
         onScroll={onScroll}
         // This will activate auto hide

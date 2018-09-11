@@ -1,21 +1,20 @@
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux';
-import Timeline from 'react-calendar-timeline/lib'
-import 'react-calendar-timeline/lib/Timeline.css'
+import Timeline from '../../react-calendar-timeline/src';
+import'react-calendar-timeline/lib/Timeline.css';
 import PropTypes from 'prop-types';
 
 
 //Custom Import
 import {
-  onItemResizeAction,
-  onItemMoveAction,
   onHorizontalScrollAction,
   onItemSelectAction,
   onTaskFocusAction,
 } from "./GanttChartActions";
 import GroupRenderer from "./GroupRenderer";
-import ItemRenderer from "./ItemRenderer";
+import ItemRenderer  from "./ItemRenderer";
+import ItembyHocByProjectId   from "./ItemByIdHoc"
 
 //Custom style
 import "./GanttChart.css";
@@ -29,8 +28,8 @@ var keys = {
   //itemTitleKey: 'title',
   //itemDivTitleKey: 'title',
   itemGroupKey: 'groupId',
-  itemTimeStartKey: 'startDate',
-  itemTimeEndKey: 'endDate'
+  itemTimeStartKey: 'startDateMs',
+  itemTimeEndKey: 'endDateMs'
 }
 
 const defaultHeaderLabelFormats = {
@@ -62,101 +61,126 @@ const state = {
   defaultTimeEnd
 }
 
-const GanttChart = (props) => {
-  const { defaultTimeStart, defaultTimeEnd } = state
-  const {
-    groups,
-    items,
-    onItemResizeAction,
-    onItemMoveAction,
-    onHorizontalScrollAction,
-    sidebarHeadingTitle,
-    selectedItemId,
-    onItemSelectAction,
-    onTaskFocusAction,
-    //Method called from outside from gantt-chart
-    onItemMoved,
-    onTaskResized,
-    scrollRef,
-  } = props;
+class GanttChart extends PureComponent{
+  constructor(props){
+    super(props)
+    const {
+      onItemResizeAction,
+      onItemMoveAction,
+      onItemMoved,
+      onTaskResized,
+      projectId,
+      onMove,
+      onResize,
+    } = props;
 
-  /**
-   * On Task Resize Task is saved and moved to new position..
-   */
-  const onItemResize = (itemId, time, edge) => {
-    onItemResizeAction(itemId, time, edge);
-    onTaskResized? onTaskResized(itemId, time, edge): null;
+    this.ItemByIdHoc = ItembyHocByProjectId(projectId)
+
+    /**
+     * On Task Resize Task is saved and moved to new position..
+     */
+    this.onItemResize = (itemId, time, edge) => {
+      onResize(itemId, time, edge);
+      onTaskResized? onTaskResized(itemId, time, edge): null;
+    }
+
+
+    /**
+     * Will get called when a item is moved inside gantt.
+     * @param {*} itemId
+     * @param {*} dragTime
+     * @param {*} newGroupOrder
+     */
+    this.onItemMoveFunc = (itemId, dragTime, newGroupOrder) => {
+      onMove(itemId, dragTime, newGroupOrder);
+      onItemMoved? onItemMoved(itemId, dragTime, newGroupOrder): null;
+    }
   }
 
-  /**
-   * Will get called when a item is moved inside gantt.
-   * @param {*} itemId
-   * @param {*} dragTime
-   * @param {*} newGroupOrder
-   */
-  const onItemMoveFunc = (itemId, dragTime, newGroupOrder) => {
-    onItemMoveAction(itemId, dragTime, newGroupOrder);
-    onItemMoved? onItemMoved(itemId, dragTime, newGroupOrder): null;
+
+
+  render(){
+    const { defaultTimeStart, defaultTimeEnd } = state
+    const {
+      //groups,
+      items,
+      onMove,
+      onResize,
+      onHorizontalScrollAction,
+      sidebarHeadingTitle,
+      selectedItemId,
+      onItemSelectAction,
+      onTaskFocusAction,
+      //Method called from outside from gantt-chart
+      onItemMoved,
+      onTaskResized,
+      setListReference,
+      setRowListRef,
+      //height
+    } = this.props;
+
+
+    // setTimeout(()=>{
+    //   const task = groups[groups.length -1];
+    //   console.log("Focusing Task");
+    //   onTaskFocusAction(task.id);
+    // }, 5000);
+
+    return (
+      <Timeline
+        setListReference={setListReference}
+        setRowListRef={setRowListRef}
+        groups={items}
+        items={items}
+        keys={keys}
+        itemsSorted
+        itemTouchSendsClick={false}
+        stackItems={false}
+        showCursorLine
+        canMove={true}
+        canMoveGroup={false}
+        canResize={"both"}
+        defaultTimeStart={defaultTimeStart}
+        defaultTimeEnd={defaultTimeEnd}
+        lineHeight={25}
+        selected={selectedItemId}
+        sidebarWidth={170}
+        sidebarContent={<div>{sidebarHeadingTitle}</div>}
+        dragSnap={60*60*1000*24} //dragging unit set to be 24 hours 1 day
+        headerLabelGroupHeight={0} //remvoe top header
+        headerLabelHeight={23}
+        itemHeightRatio={1}
+        minZoom={60*60*1000*24} //Smallest time that can be zoomed. 1 day
+        maxZoom={365.24 * 86400 * 1000} //longest time that can be zoomed 1 year.
+        timeSteps={{
+          day: 1,
+          month: 1,
+          year: 1
+        }}
+        canChangeGroup={false} //items cannot be moved outside a group.
+        itemRenderer={ItemRenderer}
+        useResizeHandle={true}
+        onItemResize={this.onItemResize}
+        onItemMove={this.onItemMoveFunc}
+        groupRenderer={GroupRenderer}
+        onTimeChange={onHorizontalScrollAction}
+        onItemSelect={onItemSelectAction}
+        showCursorLine={false}
+        screenHeight={98}
+        getItemHoc={this.ItemByIdHoc}
+      />
+    )
   }
-
-  setTimeout(()=>{
-    const task = groups[groups.length -1];
-    //console.log("Focusing Task");
-    onTaskFocusAction(task.id);
-  }, 5000);
-
-
-  return (
-    <Timeline
-      groups={groups}
-      items={items}
-      keys={keys}
-      itemsSorted
-      itemTouchSendsClick={false}
-      stackItems={false}
-      showCursorLine
-      canMove={true}
-      canResize={"both"}
-      defaultTimeStart={defaultTimeStart}
-      defaultTimeEnd={defaultTimeEnd}
-      lineHeight={25}
-      selected={selectedItemId}
-      sidebarWidth={170}
-      sidebarContent={<div>{sidebarHeadingTitle}</div>}
-      dragSnap={60*60*1000*24} //dragging unit set to be 24 hours 1 day
-      headerLabelGroupHeight={0} //remvoe top header
-      headerLabelHeight={23}
-      itemHeightRatio={1}
-      minZoom={60*60*1000*24} //Smallest time that can be zoomed. 1 day
-      maxZoom={365.24 * 86400 * 1000} //longest time that can be zoomed 1 year.
-      timeSteps={{
-        day: 1,
-        month: 1,
-        year: 1
-      }}
-      canChangeGroup={false} //items cannot be moved outside a group.
-      itemRenderer={ItemRenderer}
-      useResizeHandle={true}
-      onItemResize={onItemResize}
-      onItemMove={onItemMoveFunc}
-      groupRenderer={GroupRenderer}
-      onTimeChange={onHorizontalScrollAction}
-      onItemSelect={onItemSelectAction}
-      showCursorLine={false}
-    />
-  )
-};
-
+}
 
 
 // Retrieve data from store as props
-function mapStateToProps(store) {
-
+function mapStateToProps(store, props) {
   return {
     sidebarHeadingTitle: store.GanttChartReducer.sidebarHeadingTitle,
     selectedItemId: store.GanttChartReducer.selectedItemId,
-    items: store.GanttChartReducer.data.items,
-    groups: store.GanttChartReducer.data.groups,
+    // items: store.GanttChartReducer.data.items,
+    // groups: store.GanttChartReducer.data.groups,
   };
 }
 
@@ -164,11 +188,11 @@ function mapStateToProps(store) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
   //map action here
-  onItemResizeAction,
-  onItemMoveAction,
+  // onItemResizeAction,
+  // onItemMoveAction,
   onHorizontalScrollAction,
   onItemSelectAction,
-  onTaskFocusAction,
+  // onTaskFocusAction,
 };
 
 
@@ -176,6 +200,12 @@ const mapActionsToProps = {
 GanttChart.propTypes = {
   onTaskResized: PropTypes.func.isRequired,
   onItemMoved: PropTypes.func.isRequired,
+  setRowListRef: PropTypes.func.isRequired,
+  setListReference: PropTypes.func.isRequired,
+  items: PropTypes.array.isRequired,
+  projectId: PropTypes.string.isRequired,
+  onMove: PropTypes.func.isRequired,
+  onResize: PropTypes.func.isRequired,
 };
 
 

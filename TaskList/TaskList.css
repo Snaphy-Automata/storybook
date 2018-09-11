@@ -28,6 +28,7 @@
 .task-list-heading-container{
     margin-left: 56px;
     padding: 12px;
+    padding-top: 13px;
     padding-left: 0;
     color: #000000;
     font-size: 13px;
@@ -298,7 +299,7 @@
     display: inline-block;
     width: calc(100% - 418px);
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
     height: 41px;
     line-height: 41px;
@@ -306,7 +307,7 @@
 
 .task-list-item-new-task-title{
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
     height: 41px;
     line-height: 41px;

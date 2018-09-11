@@ -47,6 +47,7 @@
 
 .react-calendar-timeline .rct-sidebar{
     border-right: solid 0.3px #f3f3f3;
+    cursor: ns-resize;
 }
 
 .rct-sidebar-row-odd{
@@ -411,17 +412,14 @@
 .gantt-chart-top-subheading-container{
     display: inline-block;
     padding-left: 65px;
-}
-
-.task-list-heading-drag-angle-icon{
-  height: 39.5px;
-  line-height: 39.5px;
+    position: relative;
+    top: -3px;
 }
 
 
 .gantt-chart-top-heading-title{
     padding-left: 7px !important;
-    line-height: 16px;
+    line-height: 17px;
 }
 
 .gantt-chart-top-heading-title:hover{
@@ -429,12 +427,12 @@
 }
 
 .gantt-chart-top-heading-arrow{
-  height: 39.5px;
-  line-height: 39.5px;
+  height: 39.5px !important;
+  line-height: 42.5px !important;
 }
 
 .gantt-chart-top-header-container{
-  height:39.5px;
+  height:39.5px !important;
 }
 
 

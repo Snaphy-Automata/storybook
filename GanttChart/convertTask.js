@@ -65,7 +65,7 @@ export const enhanceTask = (task) => {
  * Will convert a task to task list format
  */
  export const convertTask = (taskList, assigneeList) => {
-     const newTaskList = [], groups=[];
+     const newTaskList = [], groups=[], byId={};
     taskList = taskList || [];
     for(let i=0; i< taskList.length; i++){
         let task = getDates(taskList[i]);
@@ -74,15 +74,16 @@ export const enhanceTask = (task) => {
         //newData.isCompletedType  = true;
         newData.endDate = moment().endOf('day');
         const group = {...task};
-        groups.push(task);
+        groups.push(task.id);
         task.groupId = group.id;
         newData.groupId = group.id;
         task = enhanceTask(task);
         newData = enhanceTask(newData);
-        newTaskList.push(task);
+        newTaskList.push(task.id);
+        byId[task.id] = task;
         //newTaskList.push(newData);
     }
-    return {items: newTaskList, groups: groups};
+    return {items: newTaskList, groups: groups, byId: byId};
 };
 
 

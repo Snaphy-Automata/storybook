@@ -7,7 +7,7 @@ import moment from 'moment'
 
 //Custom Import
 import month from './month.json';
-import {convertTask, enhanceTask, findPos} from "./convertTask";
+import {enhanceTask, findPos} from "./convertTask";
 import {
   ON_GANTT_ITEM_MOVED,
   ON_GANTT_ITEM_RESIZE,
@@ -37,10 +37,6 @@ const initialState = {
   sidebarHeadingTitle: sidebarTitle(),
   selectedItemId: undefined,
   assignedTo:[],
-  data: {
-    taskList:[],
-  },
-  isTaskLoaded: false,
 };
 
 const GanttChartReducer = (state = initialState, action) => {
@@ -154,13 +150,14 @@ const GanttChartReducer = (state = initialState, action) => {
       break;
     }
     case INITIALIZE_GANTT_WITH_DATA:{
-      const {groups, items} = convertTask(action.payload.taskList);
+      console.log("Getting Initialized Gantt Chart");
       state = {
         ...state,
         isTaskLoaded: true,
         data:{
-          groups: groups,
-          items: items,
+          groups: action.payload.groups,
+          items: action.payload.items,
+          byId: action.payload.byId
         }
       }
       break;

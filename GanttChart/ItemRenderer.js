@@ -56,7 +56,7 @@ const ItemRenderer = (props) => {
                 <Icon name="angle left"></Icon>
               </div>}
 
-              <div  className='gantt-chart-item-title'></div>
+              <div className='gantt-chart-item-title'></div>
               {/* {selected && <p className='tip'>{item.tip}</p>} */}
 
               {selected &&<div className={`gantt-chart-item-icon ${statusClass} right`}>

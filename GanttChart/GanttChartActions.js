@@ -16,6 +16,8 @@ export const ON_GANTT_CHART_TASK_FOCUSED         = "ON_GANTT_CHART_TASK_FOCUSED"
 export const ON_GANTT_CHART_TASK_UPDATED         = "ON_GANTT_CHART_TASK_UPDATED";
 export const ON_TASK_FOCUSED                     = "ON_TASK_FOCUSED";
 
+import {convertTask} from "./convertTask";
+
 //Will trigger when canvas is horizontally scrolled for date change
 //Also change the group item
 export function onHorizontalScrollAction(visibleTimeStart, visibleTimeEnd, updateScrollCanvas){
@@ -105,12 +107,17 @@ export function onItemSelectAction(itemId){
  */
 export function onTaskInitAction(taskList){
   return (dispatch) => {
-    dispatch({
-      type: INITIALIZE_GANTT_WITH_DATA,
-      payload:{
-        taskList,
-      }
-    })
+    const {groups, items, byId} = convertTask(taskList);
+    setTimeout(()=>{
+      dispatch({
+        type: INITIALIZE_GANTT_WITH_DATA,
+        payload:{
+          groups,
+          items,
+          byId,
+        }
+      });
+    });
   }
 }
 
