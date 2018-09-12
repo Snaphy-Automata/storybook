@@ -28,23 +28,23 @@ class ChangeDateDialog extends React.Component{
     }
 
     render(){
-       // console.log("Change Date Dialog Props", this.props);
+       console.log("Change Date Dialog Props", this.props);
         const nextWeek = moment().add(1, 'weeks').startOf('isoWeek').format("DD MMM");
 
         const onTodaySelected = () => {
-            //console.log("Today Selected getting called");
+            console.log("Today Selected getting called");
             this.props.onSelectDateAction(this.props.task.id, true, false, false);
             this.props.onCloseDateDialog();
         }
 
         const onTomorrowSelected = () => {
-            //console.log("Tomorrow Selected getting called");
+            console.log("Tomorrow Selected getting called");
             this.props.onSelectDateAction(this.props.task.id, false, true, false);
             this.props.onCloseDateDialog();
         }
 
         const onNextWeekSelected = () => {
-            //console.log("Next Week Selected getting called");
+            console.log("Next Week Selected getting called");
             this.props.onSelectDateAction(this.props.task.id, false, false, true);
             this.props.onCloseDateDialog();
         }

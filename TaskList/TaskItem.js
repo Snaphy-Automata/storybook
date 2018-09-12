@@ -67,6 +67,8 @@ const TaskItem = (props) => {
         targetTaskId
     } = props;
 
+    //console.log("Task Item Props", taskId);
+
     //console.log("Member Obj", memberIdList);
     // if(selectedTask){
     //     console.log("Selected Task", selectedTask, isActiveTaskSection);
@@ -288,6 +290,7 @@ const TaskItem = (props) => {
     }
 
     const openSelectDateDialog = (e) => {
+        console.log("On Select Date Dialog", task);
         // console.log("Formatted Date", formattedDueDateObj.date);
         if (formattedDueDateObj.date === "today") {
             onQuickUpdateCurrentDateAction(task.id, true, false, false);
@@ -564,13 +567,7 @@ function mapStateToProps(store, props) {
     const draggedTaskOrSection = modelDataReducer.draggedTaskOrSection;
     const selectedTaskStatusData = modelDataReducer.selectedTaskStatusData;
     const taskMemberListObj = modelDataReducer.taskMemberListObj;
-    selectedTask = modelDataReducer.selectedTask;
-    if (selectedTask) {
-        if (selectedTask.id !== props.taskId) {
-            selectedTask = null;
-        }
-    }
-
+ 
     if (titleData) {
         if (props.taskId) {
             if (titleData.taskId && titleData.taskId !== props.taskId) {
@@ -604,12 +601,20 @@ function mapStateToProps(store, props) {
 
     const allTaskObj = store.ModelDataReducer.task;
     let isActiveTaskSection = false;
-    if(props.task){
-        const taskObj = allTaskObj.byId[props.task.id];
+    if(props.taskId){
+        const taskObj = allTaskObj.byId[props.taskId];
         if(taskObj.sectionId === props.activeSectionId){
             isActiveTaskSection = true;
         }
 
+    }
+    let selectedTaskId = modelDataReducer.selectedTask;
+    if(selectedTaskId === props.taskId){
+        selectedTask = allTaskObj.byId[selectedTaskId];
+    }
+    let task;
+    if(props.taskId){
+        task = allTaskObj.byId[props.taskId];
     }
 
 
@@ -629,7 +634,8 @@ function mapStateToProps(store, props) {
         statusObjData,
         taskMemberList,
         targetTaskId,
-        isActiveTaskSection
+        isActiveTaskSection,
+        task
     }
 
 
