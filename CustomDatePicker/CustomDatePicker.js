@@ -30,6 +30,7 @@ import { onDatePickerStateChangedAction, setDateDataAction } from '../TaskList/T
 
 const DatePicker = (props) => {
   let { format, meta: { touched, error }, width, required, isDatePickerOpened, dateData, onDatePickerStateChangedAction, setDateDataAction, title, style, dataType, onUpdateDate, taskId, dateValue } = props;
+  //console.log("Date Picker Props", dateData);
   format = format || "DD/MM/YYYY";
 
   // const onOpenDataPicker = function(){
@@ -105,7 +106,7 @@ const DatePicker = (props) => {
   const getDate = function () {
     let value;
     if (dateData) {
-      let date = moment(dateData).format("DD MMMM");
+      let date = moment(dateData).format("DD MMM");
       value = date;
     } else {
       value = title;
@@ -170,11 +171,14 @@ function mapStateToProps(store, props) {
   const taskListReducerConfig = store.TaskListReducer[props.dataType];
   const isDatePickerOpened = taskListReducerConfig && taskListReducerConfig.isDatePickerOpened ? true : false;
   let dateData = null;
-  if( taskListReducerConfig && props.taskId === taskListReducerConfig.taskId){
-    dateData = taskListReducerConfig && taskListReducerConfig.dateData ? taskListReducerConfig.dateData : null;
-  } else if(props.dateValue){
+  if(props.dateValue){
     dateData = props.dateValue;
   }
+  // if( taskListReducerConfig && props.taskId === taskListReducerConfig.taskId){
+  //   dateData = taskListReducerConfig && taskListReducerConfig.dateData ? taskListReducerConfig.dateData : null;
+  // } else if(props.dateValue){
+  //   dateData = props.dateValue;
+  // }
   
   //console.log("Calling map to props", taskListReducerConfig);
   return {

@@ -70,8 +70,7 @@ const TaskDetail = (props) => {
 
 
     //console.log("Task Detail Props", subTaskList);
-
-
+    //console.log("Task Detail Props", selectedTask);
 
     const getOptions = () => {
         let optionsList = [];

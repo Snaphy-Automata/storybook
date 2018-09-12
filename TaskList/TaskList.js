@@ -165,8 +165,8 @@ const SortableTask = SortableElement((props)=>{
 
     return (
         <div style={style}>
-           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={taskId} task={task}  onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} activeSectionId={activeTasks[0]}/>}
-           {task && task.projectId && !task.title && <TaskItem isNew taskId={taskId} index={indexValue} task={task} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} activeSectionId={activeTasks[0]}></TaskItem>}
+           {task && task.title && <TaskItem isLastTask={isLastTask} index={indexValue} taskId={task.id}  onTaskSelected={onTaskSelected} onAddNewtaskClicked={onAddNewtaskClicked} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} activeSectionId={activeTasks[0]}/>}
+           {task && task.projectId && !task.title && <TaskItem isNew taskId={task.id} index={indexValue} onTaskItemBlurEvent={onTaskItemBlurEvent} onTaskItemFocusEvent={onTaskItemFocusEvent} onEnterNextNewTask={onEnterNextNewTask} statusObj={statusObj} findMemberById={findMemberById} findLabelById={findLabelById} onQuickUpdateDate={onQuickUpdateDate} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} activeSectionId={activeTasks[0]}></TaskItem>}
         </div>
     )
 });
