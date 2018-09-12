@@ -121,7 +121,7 @@ const mapActionsToProps = {
 
 
 GanttChart.propTypes = {
-    items: PropTypes.array.isRequired,
+    items: PropTypes.array,
     onTaskResized: PropTypes.func.isRequired,
     onItemMoved: PropTypes.func.isRequired,
     onToggleBtnClick: PropTypes.func,
