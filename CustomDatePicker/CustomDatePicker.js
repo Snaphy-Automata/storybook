@@ -30,7 +30,7 @@ import { onDatePickerStateChangedAction, setDateDataAction } from '../TaskList/T
 
 const DatePicker = (props) => {
   let { format, meta: { touched, error }, width, required, isDatePickerOpened, dateData, onDatePickerStateChangedAction, setDateDataAction, title, style, dataType, onUpdateDate, taskId, dateValue } = props;
-  console.log("Date Picker Props", dateData);
+  //console.log("Date Picker Props", dateData);
   format = format || "DD/MM/YYYY";
 
   // const onOpenDataPicker = function(){
