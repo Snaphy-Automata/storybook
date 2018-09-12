@@ -1,6 +1,6 @@
 
 /* Created By Nikita Mittal
-   16th July 2018 
+   16th July 2018
 */
 
 
@@ -43,7 +43,7 @@
     float: right;
     margin-right: 15px;
     color: #707070;
-    
+
 }
 
 
@@ -55,19 +55,22 @@
 
 .task-detail-task-detail-container{
     padding: 15px;
+    padding-top: 0;
 }
 
 .task-detail-task-name-container{
     padding-bottom: 5px;
     line-height: 1.6;
     font-family: Lato;
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-left: 10px;
 }
 
 .task-detail-task-action-button-conatiner{
     width: 100%;
-    padding-Top:10px;
-    padding-bottom: 10px;
-    line-height: 20px;
+    padding-top:4px;
+    padding-bottom: 4px;
 }
 
 .task-detail-action-button{
@@ -258,7 +261,7 @@
     padding:10px;
     border-style: solid;
     border-width: 1px 0px 0px 0px;
-    border-color: #eeeeee; 
+    border-color: #eeeeee;
 }
 
 .task-detail-comment-text{

@@ -8,12 +8,16 @@ import { Field } from 'redux-form';
 
 //Custom import..
 import InputElement     from '../ReduxForm/InputElement';
-
+import SnaphyForm       from '../ReduxForm/SnaphyForm'
 
 const TaskTitle = ({task, placeholder, label, rows, onDataChanged, size}) =>{
 
   return (
-    <Field className="task-detail-task-name-input" name={getTitleFieldName(task)} type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={InputElement} onDataChanged={onDataChanged}></Field>
+    <div className="task-detail-task-name-container">
+      <SnaphyForm>
+        <Field className="task-detail-task-name-input" name={getTitleFieldName(task)} type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={InputElement} onDataChanged={onDataChanged}></Field>
+      </SnaphyForm>
+    </div>
   )
 }
 

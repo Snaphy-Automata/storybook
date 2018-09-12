@@ -29,11 +29,13 @@
 .input-element-text-area textarea:hover{
   border: 1px solid rgba(34,36,38,0.13) !important;
   padding: 3px !important;
+  padding-left: 6px !important;
 }
 
 .input-element-text-area textarea:focus{
   border: 1px solid rgba(34,36,38,0.30) !important;
   padding: 3px !important;
+  padding-left: 6px !important;
 }
 
 

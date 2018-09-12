@@ -239,15 +239,9 @@ const TaskDetail = (props) => {
         <div>
           {/* Header Section */}
           <Header openShareDialog={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened} onAddSubTasksToList={onAddSubTasksToList} />
-
+          <TaskTitle  task={selectedTask} onDataChanged={onTitleDataChanged} />
           {/* Task Detail Form */}
           <div className="task-detail-task-detail-container">
-              <SnaphyForm>
-              <div className="task-detail-task-name-container">
-                  <TaskTitle  task={selectedTask} onDataChanged={onTitleDataChanged} />
-                  {/* <InputElement placeholder="Write a task name" size="large"></InputElement> */}
-              </div>
-              </SnaphyForm>
               <div className="task-detail-task-action-button-conatiner">
                   <div className="task-detail-completed-container">
                       {selectedTask && !selectedTask.isCompleted && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
