@@ -52,7 +52,11 @@ TaskTitle.defaultProps = {
 };
 
 TaskTitle.propTypes = {
-
+  task: PropTypes.object,
+  onDataChanged: PropTypes.func,
+  label: PropTypes.string,
+  size: PropTypes.string,
+  rows: PropTypes.number
 }
 
 

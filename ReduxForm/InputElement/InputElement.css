@@ -38,25 +38,63 @@
 
 
 /* Input Text Area.. */
-.input-element-text-area textarea::-webkit-input-placeholder { /* Chrome */
+
+/* Chrome */
+.input-element-text-area textarea::-webkit-input-placeholder {
   color: #989898 !important;
   font-size: 24px;
   font-weight: 500;
 }
 
-.input-element-text-area textarea:focus::-webkit-input-placeholder { /* Chrome */
+.input-element-text-area textarea:focus::-webkit-input-placeholder {
   color: #989898 !important;
   font-size: 24px;
   font-weight: 500;
 }
 
-.input-element-text-area textarea:-ms-input-placeholder { /* IE 10+ */
-  color: #c7c7c7;
-}
-.input-element-text-area textarea::-moz-placeholder { /* Firefox 19+ */
-  color: #c7c7c7;
-}
-.input-element-text-area textarea:-moz-placeholder { /* Firefox 4 - 18 */
-  color: #c7c7c7;
+/* End Chrome */
+
+/* IE 10+ */
+.input-element-text-area textarea:-ms-input-placeholder {
+  color: #989898 !important;
+  font-size: 24px;
+  font-weight: 500;
 }
 
+.input-element-text-area textarea:focus:-ms-input-placeholder  {
+  color: #989898 !important;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* ------end IE 10+ ---- */
+
+/* Firefox 19+ */
+
+.input-element-text-area textarea::-moz-placeholder {
+  color: #989898 !important;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.input-element-text-area textarea:focus::-moz-placeholder {
+  color: #989898 !important;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* end Firefox 19+ */
+
+/* Firefox 4 - 18 */
+.input-element-text-area textarea:-moz-placeholder {
+  color: #989898 !important;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.input-element-text-area textarea:focus:-moz-placeholder {
+  color: #989898 !important;
+  font-size: 24px;
+  font-weight: 500;
+}
+/* end Firefox 4 - 18 */

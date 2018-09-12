@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm, reset } from 'redux-form';
-import { Icon, Button, Label, Form } from 'semantic-ui-react';
+import { Field, reduxForm } from 'redux-form';
+import { Icon, Button } from 'semantic-ui-react';
 import map from 'lodash/map';
 import capitalize from 'lodash/capitalize';
 import moment from 'moment';
@@ -14,7 +14,6 @@ import SubTask          from './SubTask';
 import TaskAttachment   from './TaskAttachment'
 import TagContainer     from '../TagContainer';
 import DatePickerForm   from '../CustomDatePicker/DatePickerForm';
-import ShareDialog      from './ShareDialog';
 import DropDownFieldUI  from '../ReduxForm/DropDownField';
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
 import TaskComment      from '../TaskComment'
@@ -22,6 +21,7 @@ import TaskCommentForm  from '../TaskCommentForm'
 import DurationForm     from '../DurationForm';
 import DescriptionField from '../ReduxForm/DescriptionField';
 import TaskTitle        from './TaskTitle';
+import Header           from './Header';
 
 import {
     onMarkCompleteClickedAction,
@@ -81,9 +81,6 @@ const TaskDetail = (props) => {
         }
         return optionsList;
     }
-
-    let fileInput = null;
-    const uid = Math.random().toString(36).substring(7);
 
     const onDataChanged = (event, data) => {
         //console.log("In Status Selected", data.value);
@@ -241,44 +238,7 @@ const TaskDetail = (props) => {
     return (
         <div>
           {/* Header Section */}
-          <div className="task-detail-header-conatiner">
-              <div className="task-detail-share-container">
-                  <Icon name="share alternate" style={{ display: "inline" }}></Icon>
-                  <div style={{ display: "inline", marginLeft: '5px', cursor: 'pointer' }} onClick={props.openShareDialog}>Share</div>
-              </div>
-              <div className="task-detail-add-attachment-container">
-                  <Label width="4" as="label" style={{ backgroundColor: "#ffffff", cursor: "pointer", fontSize: "11px" }} htmlFor={uid}>
-                      <Icon name="attach" />
-                      Add Attachment
-                  </Label>
-                  <input id={uid} hidden type="file" onChange={() => {
-                      console.log("File Choosen", fileInput.files[0])
-                      if (fileInput.files[0].type === "image/jpeg" || fileInput.files[0].type === "image/png") {
-                          let reader = new FileReader();
-                          reader.onload = (e) => {
-                              //call action to get the image and content..
-                              let title = fileInput.files[0].name;
-                              let image = e.target.result;
-                              { props.addAttachment({ title: title, image: image, isImage: true }) }
-                          };
-                          reader.readAsDataURL(fileInput.files[0]);
-                      }
-                  }}
-                      ref={input => {
-                          fileInput = input;
-                      }} />
-              </div>
-
-
-              <div className="task-detail-add-subtask-button-conatiner" onClick={onAddSubTasksToList}>
-                  <Icon name="unordered list" style={{ display: "inline" }}></Icon>
-                  <div style={{ display: "inline", marginLeft: '5px', cursor: 'pointer' }}>Add Subtasks</div>
-              </div>
-              <div className="task-detail-close-button-conatiner">
-                  <Icon name="close" style={{ display: "inline" }}></Icon>
-              </div>
-
-          </div>
+          <Header openShareDialog={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened} onAddSubTasksToList={onAddSubTasksToList} />
 
           {/* Task Detail Form */}
           <div className="task-detail-task-detail-container">
@@ -491,7 +451,7 @@ const TaskDetail = (props) => {
               <TaskCommentForm invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
           </SnaphyForm>
 
-          <ShareDialog onClose={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened}></ShareDialog>
+
 
         </div>
     )
