@@ -40,7 +40,10 @@ const InputElement = (props) => {
     const onKeyPress = function(e){
         if(e.key === 'Enter'){
             //Prevent Title from further propagating..
+            //First Set Blur..
             e.preventDefault();
+            e.target.blur();
+            //FIXME: Save data..
             inputFocusChagedAction(false, label);
             //call autosave function..
         }
