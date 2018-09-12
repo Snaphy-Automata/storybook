@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { Icon, Button } from 'semantic-ui-react';
 import map from 'lodash/map';
 import capitalize from 'lodash/capitalize';
 import moment from 'moment';
@@ -14,7 +13,7 @@ import SubTask          from './SubTask';
 import TaskAttachment   from './TaskAttachment'
 import TagContainer     from '../TagContainer';
 import DatePickerForm   from '../CustomDatePicker/DatePickerForm';
-import DropDownFieldUI  from '../ReduxForm/DropDownField';
+
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
 import TaskComment      from '../TaskComment'
 import TaskCommentForm  from '../TaskCommentForm'
@@ -22,6 +21,7 @@ import DurationForm     from '../DurationForm';
 import DescriptionField from '../ReduxForm/DescriptionField';
 import TaskTitle        from './TaskTitle';
 import Header           from './Header';
+import ActionButton     from './ActionButton';
 
 import {
     onMarkCompleteClickedAction,
@@ -235,44 +235,19 @@ const TaskDetail = (props) => {
         }
     }
 
+    const isTaskCompleted = ()=>{
+      console.log(selectedTask);
+      return false;
+    }
+
     return (
         <div>
           {/* Header Section */}
           <Header openShareDialog={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened} onAddSubTasksToList={onAddSubTasksToList} />
-          <TaskTitle  task={selectedTask} onDataChanged={onTitleDataChanged} />
+          <TaskTitle task={selectedTask} onDataChanged={onTitleDataChanged} />
           {/* Task Detail Form */}
           <div className="task-detail-task-detail-container">
-              <div className="task-detail-task-action-button-conatiner">
-                  <div className="task-detail-completed-container">
-                      {selectedTask && !selectedTask.isCompleted && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
-                          <Icon name="check" />
-                          Mark Complete
-                      </Button>}
-                      {selectedTask && selectedTask.isCompleted && <Button size="tiny" color="green" onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
-                          <Icon name="check" />
-                          Completed
-                  </Button>}
-                      {!selectedTask && <Button size="tiny" basic onClick={onMarkCompletedButtonClicked} style={{ width: "135px" }} className="task-detail-action-button">
-                          <Icon name="check" />
-                          Mark Complete
-                      </Button>}
-                  </div>
-                  <div className="task-detail-status-container">
-                      {!props.isStatusClicked && <Button size="tiny" basic icon labelPosition='right' onClick={onStatusChanged} style={{ width: "127px" }} className="task-detail-action-button">
-                          <Icon name="angle down" />
-                          {statusText}
-                      </Button>}
-                      {props.isStatusClicked && <Field options={getOptions()} name="status.title" type="text" placeholder="In Progress" open={props.isStatusClicked} size="tiny" onDataChanged={onDataChanged} style={{ width: "127px" }} component={DropDownFieldUI} />}
-
-                  </div>
-                  <div className="task-detail-archive-container">
-                      <Button size="tiny" basic className="task-detail-action-button">
-                          <Icon name="archive" />
-                          Archive
-                  </Button>
-
-                  </div>
-              </div>
+              <ActionButton statusText={statusText} isCompleted={isTaskCompleted()} isStatusClicked={props.isStatusClicked} onStatusChanged={onStatusChanged}  onDataChanged={onDataChanged} onCompletedButtonClick={onCompletedButtonClick} />
               <div className="task-detail-assigned-to-container">
                   <div className="task-detail-assigned-to-text">Assigned To</div>
                   {selectedTask && <TagContainer
