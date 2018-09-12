@@ -3,27 +3,29 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Input, Form} from 'semantic-ui-react';
 
+import "./inputElement.css"
+
 //Import Actions..
 import {inputFocusChagedAction} from './InputElementAction';
-import SubmitButton from '../SubmitButton';
-//import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
 
-const InputElement = ({
-  placeholder,
-  size,
-  inputElementReducer,
-  inputFocusChagedAction,
-  input,
-  label,
-  rows,
-  onDataChanged,
-  invalid,
-  submitting,
-  pristine,
-  style,
-  isFocused,
-}) => {
 
+const InputElement = (props) => {
+    const {
+      placeholder,
+      size,
+      inputElementReducer,
+      inputFocusChagedAction,
+      input,
+      label,
+      rows,
+      onDataChanged,
+      invalid,
+      submitting,
+      pristine,
+      style,
+      isFocused,
+      autoFocus,
+    } = props
 
     const onFocusChanged = function(){
         inputFocusChagedAction(true, label);
@@ -37,6 +39,8 @@ const InputElement = ({
 
     const onKeyPress = function(e){
         if(e.key === 'Enter'){
+            //Prevent Title from further propagating..
+            e.preventDefault();
             inputFocusChagedAction(false, label);
             //call autosave function..
         }
@@ -50,40 +54,33 @@ const InputElement = ({
     }
 
     let className = "input-element-text-area"
+
+    if(props.className){
+      className = `${props.className} ${className}`
+    }
+
+
+
     let styleObj  = style || {}
     styleObj = {
-      fontSize: "22px",
-      fontWeight: 500,
-      color: "#000000",
+      padding: "4px",
+      minHeight: "36px",
+      overflow: "hidden",
       ...styleObj,
     }
     return (
-      <div className={className}>
-        {
-          isFocused &&
-          <div>
-            <Form.TextArea
-            placeholder={placeholder}
-            {...input}
-            autoFocus
-            rows = {rows}
-            autoHeight
-            onBlur = {onBlurEvent}
-            onKeyPress = {onKeyPress}
-            onChange={onChange}
-            style={{...styleObj}}
-        />
-        </div>}
-        {!isFocused && <Form.TextArea
-            placeholder={placeholder}
-            {...input}
-            autoHeight
-            rows= {rows}
-            style={{...styleObj}}
-            onFocus = {onFocusChanged}
-            onChange={onChange}
-        />}
-    </div>
+      <Form.TextArea
+        placeholder={placeholder}
+        {...input}
+        autoFocus={autoFocus}
+        rows = {rows}
+        autoHeight
+        className={className}
+        onBlur = {onBlurEvent}
+        onKeyPress = {onKeyPress}
+        onChange={onChange}
+        style={styleObj}
+      />
     )
 }
 
