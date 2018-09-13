@@ -154,14 +154,6 @@ const SortableHeading = SortableElement((props)=>{
 const SortableTask = SortableElement((props)=>{
     //console.log("Sortable task props", props);
     const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers} = props;
-    //console.log("Sortable Task Props", props);
-    // let isActiveTaskSection = false;
-    // if(task && task.type === "section" && task.protectedName === "active_tasks"){
-    //   isActiveTaskSection = true;
-    // }
-    // if(task && task.type === "task" && task.sectionId === activeTasks[0]){
-    //     isActiveTaskSection = true;
-    // }
 
     return (
         <div style={style}>
@@ -296,8 +288,9 @@ class TaskList extends Component {
   onSortEnd(e){
     const {
       onItemPositionChanged,
+      onAddNewTaskVisible
     }  = this.props;
-
+    onAddNewTaskVisible(true);
     if (e.oldIndex !== e.newIndex) {
       //console.log("Hoc Method getting called");
       onItemPositionChanged(e.oldIndex, e.newIndex);
