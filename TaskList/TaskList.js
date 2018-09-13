@@ -47,6 +47,8 @@ const isSectionEmpty = (activeTasks, index, findTaskById) => {
             if(nextItem.type === "section"){
                 return true;
             }
+        } else{
+            return true;
         }
     }
     return false;
@@ -199,9 +201,9 @@ class VirtualList extends Component {
                     }
 
                 }else{
-                    
+                    //console.log("Section Row Heights", isCollapsed, isEmptySection, isAddNewTaskVisible, task, collapsedSectionList);
                     if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
-                        console.log("Section Row Heights", isCollapsed, isEmptySection, isAddNewTaskVisible, task, collapsedSectionList);
+                        
                         return 100;
                     } else{
                         return 59;
@@ -310,9 +312,9 @@ class TaskList extends Component {
   onSortStart(e){
     const {onAddNewTaskVisible} = this.props;
     onAddNewTaskVisible(false);
-    const instance = this.SortableList.getWrappedInstance();
-    ListRef.recomputeRowHeights();
-    instance.forceUpdate();
+    // const instance = this.SortableList.getWrappedInstance();
+    // ListRef.recomputeRowHeights();
+    // instance.forceUpdate();
   }
 
 
