@@ -63,11 +63,12 @@ const TaskListHeading = (props) => {
 
     const onStateChanged = () => {
         //populateCollapsedSectionArray(sectionId);
-        onSectionStateChanged(sectionId, index, isCollapsed, isEmptySection, onSectionCollapsed);
-        // if(isEmptySection){
-        //     onSectionCollapsed();
-        // }
-       
+        let emptySectionId = null;
+        if(isEmptySection){
+            emptySectionId = sectionId;
+        }
+        onSectionStateChanged(sectionId, index, isCollapsed, emptySectionId);
+        //onSectionCollapsed();
     }
 
     const onAddNewTaskClicked = () => {

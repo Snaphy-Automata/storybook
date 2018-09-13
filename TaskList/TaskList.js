@@ -69,7 +69,7 @@ const isSectionCollapsed = (collapsedSectionList, sectionId) => {
 
 
 
-const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers, collpasedSectionListCopy) => {
+const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers) => {
 
     const rowRenderer =  (props)  => {
         const {
@@ -100,7 +100,7 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
             <div style={{...style, ...customStyle }}  key={key}>
             {
                 taskOrSection && taskOrSection.type === "section" &&
-                <SortableHeading isEmptySection={isEmptySection} isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray} collpasedSectionListCopy={collpasedSectionListCopy}></SortableHeading>
+                <SortableHeading isEmptySection={isEmptySection} isFirst={isFirst} index={index} indexValue={index} section={taskOrSection} onNewTaskAdded={onNewTaskAdded} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray}></SortableHeading>
             }
             {
                 taskOrSection && taskOrSection.type === "task" &&
@@ -134,7 +134,7 @@ const renderRow = (activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, on
 
 const SortableHeading = SortableElement((props)=>{
     //console.log("Sortable heading props", props);
-    const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, collpasedSectionListCopy} = props;
+    const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray} = props;
 
    // console.log("Heading props", style);
    //const isEmptySection = isSectionEmpty(activeTasks, indexValue, findTaskById);
@@ -142,7 +142,7 @@ const SortableHeading = SortableElement((props)=>{
         <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
             <div className="task-list-section-wrapper" style={{background: "#fff", ...style}}>
-                <TaskListHeading isEmptySection={isEmptySection} index={indexValue} sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed" onNewTaskAdded={onNewTaskAdded} protectedName={section.protectedName} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray} collpasedSectionListCopy={collpasedSectionListCopy}/>
+                <TaskListHeading isEmptySection={isEmptySection} index={indexValue} sectionId={section.id} id={section.id} heading={section.title} protected={section.isProtected} type="fixed" onNewTaskAdded={onNewTaskAdded} protectedName={section.protectedName} onSectionStateChanged={onSectionStateChanged} onAddNewtaskClicked={onAddNewtaskClicked} onSectionCollapsed={onSectionCollapsed} populateCollapsedSectionArray={populateCollapsedSectionArray}/>
             </div>
         </div>
 
@@ -181,8 +181,7 @@ class VirtualList extends Component {
      */
     getRowHeight({index}){
         //console.log("I am getting called");
-      const {activeTasks, findTaskById, isAddNewTaskVisible, collapsedSectionList, collpasedSectionListCopy} = this.props;
-      
+      const {activeTasks, findTaskById, isAddNewTaskVisible, collapsedSectionList} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
@@ -202,7 +201,7 @@ class VirtualList extends Component {
                 }else{
                     
                     if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
-                        console.log("Section Row Heights", collpasedSectionListCopy ,collapsedSectionList);
+                        console.log("Section Row Heights", isCollapsed, isEmptySection, isAddNewTaskVisible, task, collapsedSectionList);
                         return 100;
                     } else{
                         return 59;
@@ -243,10 +242,9 @@ class VirtualList extends Component {
           onQuickUpdateTaskMembers,
           height,
           width,
-          collpasedSectionListCopy
         } = this.props;
         //console.log("Virtual List Props getting called");
-      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers, collpasedSectionListCopy);
+      const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers);
       const totalRows = activeTasks.length;
       return (
         <List
@@ -355,12 +353,14 @@ class TaskList extends Component {
       statusObj,
       onQuickUpdateDate,
       memberIdList,
-      onQuickUpdateTaskMembers
+      onQuickUpdateTaskMembers,
+      collapsedEmptySectionId
     }  = this.props;
     //console.log("task List props getting called");
     const id = "snaphy-react-custom-scrollbar";
-
-    const collpasedSectionListCopy = collapsedSectionList;
+    if(collapsedEmptySectionId){
+        this.onSectionCollapsed();
+    }
 
     return (
       <CustomScrollbar id={id} onScroll={this.handleScroll.bind(this)}>
@@ -393,7 +393,6 @@ class TaskList extends Component {
                 findLabelById={findLabelById}
                 isAddNewTaskVisible={isAddNewTaskVisible}
                 collapsedSectionList={collapsedSectionList}
-                collpasedSectionListCopy={collpasedSectionListCopy}
                 onSectionCollapsed={this.onSectionCollapsed.bind(this)}
                 populateCollapsedSectionArray={populateCollapsedSectionArray}
                 statusObj={statusObj}
