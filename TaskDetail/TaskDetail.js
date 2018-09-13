@@ -65,7 +65,8 @@ const TaskDetail = (props) => {
         onSaveSubTaskState,
         onDeleteSubTask,
         deleteComment,
-        onUpdateDescription
+        onUpdateDescription,
+        onTaskDetailStateChanged
     } = props;
     
 
@@ -258,6 +259,10 @@ const TaskDetail = (props) => {
         }
     }
 
+    const onTaskDetailClosed = () => {
+        onTaskDetailStateChanged();
+    }
+
     return (
         <div>
             {/* <SnaphyForm error={error} onSubmit={handleSubmit}  > */}
@@ -296,7 +301,7 @@ const TaskDetail = (props) => {
                         <Icon name="unordered list" style={{ display: "inline" }}></Icon>
                         <div style={{ display: "inline", marginLeft: '5px', cursor: 'pointer' }}>Add Subtasks</div>
                     </div>
-                    <div className="task-detail-close-button-conatiner">
+                    <div className="task-detail-close-button-conatiner" onClick={onTaskDetailClosed}>
                         <Icon name="close" style={{ display: "inline" }}></Icon>
                     </div>
 

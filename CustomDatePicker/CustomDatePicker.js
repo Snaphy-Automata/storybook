@@ -130,7 +130,7 @@ const DatePicker = (props) => {
   }
   return (
     <div style={style}>
-      {isDatePickerOpened && <Form.Field >
+      {/* {isDatePickerOpened && <Form.Field > */}
         {isDatePickerOpened && <DayPickerInput
           //ref={ref => (this.datePicker = ref)}
           dayPickerProps={props}
@@ -151,8 +151,8 @@ const DatePicker = (props) => {
           inputProps={{ ...props.input, onBlur: onBlurEvent }}
           onDayChange={onDayChanged}
         />}
-        {touched && error && <span>{error}</span>}
-      </Form.Field>}
+        {/* {touched && error && <span>{error}</span>} */}
+      {/* </Form.Field>} */}
       {!isDatePickerOpened && dateData && <IconLabel size="small" icon="calendar minus outline" name={getDate()} isLabel onClick={onOpenDatePicker} onRemove={onRemoveDate}></IconLabel>}
       {!isDatePickerOpened && !dateData && <IconLabel size="small" icon="calendar minus outline" name={getDate()} onClick={onOpenDatePicker}></IconLabel>}
     </div>
