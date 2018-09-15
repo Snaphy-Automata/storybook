@@ -69,6 +69,7 @@ const TaskDetail = (props) => {
         onTaskDetailStateChanged
     } = props;
     
+    //console.log("task Detail props", props);
 
     //console.log("Task Detail Props", subTaskList);
     //console.log("Task Detail Props", selectedTask);
@@ -263,6 +264,35 @@ const TaskDetail = (props) => {
         onTaskDetailStateChanged();
     }
 
+    const initTaskDate = () => {
+        //console.log("Init Task Date getting called");
+        let taskDateObj = {};
+        if(selectedTask && selectedTask[selectedTask.id]){
+            if(selectedTask[selectedTask.id].startDateValue){
+                taskDateObj = {
+                    startDateValue : selectedTask[selectedTask.id].startDateValue
+                }
+            } else{
+                taskDateObj = {
+                    startDateValue : ""
+                }
+            }
+            if(selectedTask[selectedTask.id].endDateValue){
+                taskDateObj = {
+                    ...taskDateObj,
+                    endDateValue : selectedTask[selectedTask.id].endDateValue
+                }
+            } else{
+                taskDateObj = {
+                    ...taskDateObj,
+                    endDateValue : ""
+                }
+            }
+        }
+
+        return taskDateObj;
+    }
+
     return (
         <div>
             {/* <SnaphyForm error={error} onSubmit={handleSubmit}  > */}
@@ -371,14 +401,15 @@ const TaskDetail = (props) => {
                     <div className="task-detail-date-container">
                         <div className="task-detail-due-date-container">
                             <div className="task-detail-due-date-text">Due Date</div>
-                            {selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.endDate}/>}
-                            {!selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} />}
+                            {selectedTask && <DatePickerForm initialValues={initTaskDate()} nameValue="endDateValue" title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.endDate}/>}
+                            {!selectedTask && <DatePickerForm nameValue="endDateValue" title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} />}
+                          
                             {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
 
                         </div>
                         <div className="task-detail-start-date-container">
                             <div className="task-detail-start-date-text">Start Date</div>
-                            {selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.startDate}/>}
+                            {selectedTask && <DatePickerForm initialValues={initTaskDate()} nameValue="startDateValue" title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.startDate}/>}
                             {!selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} />}
                             {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
 

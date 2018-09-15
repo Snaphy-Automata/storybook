@@ -222,6 +222,8 @@ class VirtualList extends Component {
     }
 
 
+
+
     render() {
       const {
           activeTasks,
@@ -244,10 +246,23 @@ class VirtualList extends Component {
           onQuickUpdateTaskMembers,
           height,
           width,
+          //scrollToIndexData,
         } = this.props;
         //console.log("Virtual List Props getting called");
       const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers);
       const totalRows = activeTasks.length;
+      
+    //  let scrollIndex =  Math.min(
+    //     totalRows - 1,
+    //     parseInt(scrollToIndexData, 10),
+    //   );
+    //   console.log("ScrollToIndex", scrollIndex);
+    //   const handle_scroll = ({scrollTop}) => {
+    //       console.log("Scroll Top", scrollTop);
+    //     // if (this.state.scrolling_to_week != null && scrollTop == row_height * this.scrolling_to_week) {
+    //     //   this.setState({scrolling_to_week: null})
+    //     // }
+    //   }
       return (
         <List
         ref={(instance) => {
@@ -258,6 +273,9 @@ class VirtualList extends Component {
         rowCount={totalRows}
         height={height}
         width={width}
+        // onScroll={handle_scroll}
+        //scrollToIndex={scrollToIndexData/50}
+
         style={{
           overflowX: false,
           overflowY: false,
@@ -299,6 +317,7 @@ class TaskList extends Component {
     if (e.oldIndex !== e.newIndex) {
       //console.log("Hoc Method getting called");
       onItemPositionChanged(e.oldIndex, e.newIndex);
+      //scrollToIndex = e.newIndex;
       // We need to inform React Virtualized that the items have changed heights
       const instance = this.SortableList.getWrappedInstance();
 
@@ -312,9 +331,9 @@ class TaskList extends Component {
   onSortStart(e){
     const {onAddNewTaskVisible} = this.props;
     onAddNewTaskVisible(false);
-    // const instance = this.SortableList.getWrappedInstance();
-    // ListRef.recomputeRowHeights();
-    // instance.forceUpdate();
+    const instance = this.SortableList.getWrappedInstance();
+    ListRef.recomputeRowHeights();
+    instance.forceUpdate();
   }
 
 
@@ -356,7 +375,9 @@ class TaskList extends Component {
       onQuickUpdateDate,
       memberIdList,
       onQuickUpdateTaskMembers,
-      collapsedEmptySectionId
+      collapsedEmptySectionId,
+      setScrollRef,
+      
     }  = this.props;
     //console.log("task List props getting called");
     const id = "snaphy-react-custom-scrollbar";
@@ -364,8 +385,12 @@ class TaskList extends Component {
         this.onSectionCollapsed();
     }
 
+    let scrollToIndex = 0;
+
+    //console.log("Task List ", setScrollRef);
+
     return (
-      <CustomScrollbar id={id} onScroll={this.handleScroll.bind(this)}>
+      <CustomScrollbar setScrollRef={setScrollRef} id={id} onScroll={this.handleScroll.bind(this)}>
         <div className="task-list-block-scrollbar-container">
           <div  className="task-list-block-scrollbar-block">
             <AutoSizer  style={{ width: "inherit", height: "inherit" }}>
@@ -401,12 +426,13 @@ class TaskList extends Component {
                 onQuickUpdateDate={onQuickUpdateDate}
                 memberIdList={memberIdList}
                 onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
+                // scrollToIndexData={scrollToIndexData}
               />
             )}
           </AutoSizer>
         </div>
       </div>
-    </CustomScrollbar>
+   </CustomScrollbar>
     );
   }
 }
@@ -424,6 +450,7 @@ class TaskList extends Component {
 //     //map action here
 
 // };
+
 
 
 

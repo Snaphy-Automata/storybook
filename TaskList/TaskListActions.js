@@ -19,6 +19,8 @@ export const ON_LABEL_ADD_BUTTON_CLICKED          = "on_label_add_button_clicked
 export const ON_DUE_DATE_UPDATED_ACTION           = "on_due_date_updated_action";
 export const ON_QUICK_CURRENT_UPDATE_DATE         = "on_quick_current_update_date";
 
+export const ON_TASK_DATE_CHANGE_ACTION           = "on_task_date_change_action";
+
 export function onOpenChangeDateDialogAction(state, id){
     //console.log("Change date Dialog Action called", data, id)
     return (dispatch) => {
@@ -245,6 +247,22 @@ export function onQuickUpdateCurrentDateAction(taskId, isTodaySelected, isTomorr
                 isTodaySelected,
                 isTomorrowSelected,
                 isNextWeekSelected
+            }
+        })
+    }
+}
+
+/**
+ * Will store the temp value of date on editing from input field..
+ * @param {*} dateData 
+ */
+export function onTaskDateChangeAction(dateType, dateData){
+    return (dispatch) => {
+        dispatch({
+            type : ON_TASK_DATE_CHANGE_ACTION,
+            payload: {
+                dateType,
+                dateData
             }
         })
     }

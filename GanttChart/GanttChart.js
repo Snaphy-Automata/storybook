@@ -77,6 +77,7 @@ class GanttChart extends Component {
             onResize,
             onMove,
         } = this.props;
+        //console.log("Gantt Chart getting called", this.props);
         if(items && items.length){
           return (
             <CustomScroller onScroll={this.handleScroll} id="gantt-chart-custom-scrollbar">
