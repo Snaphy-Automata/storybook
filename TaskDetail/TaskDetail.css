@@ -69,13 +69,39 @@
 
 .task-detail-task-action-button-conatiner{
     width: 100%;
-    padding-top:4px;
+    padding-top:6px;
     padding-bottom: 4px;
 }
 
 .task-detail-action-button{
-    border-radius: 5px !important;
+  border-radius: 5px !important;
+  width: 136.6px;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #707070;
+  padding-left: 12px !important;
 }
+
+.task-detail-action-button .task-completed-tick{
+  margin-right: 12px;
+}
+
+.task-detail-action-button.task-completed .task-completed-tick{
+  color: #ffffff;
+}
+
+.task-detail-action-button.task-completed{
+  background-color: #2ecc71 !important;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+
+.task-detail-action-button.task-completed:hover{
+  background-color: #2cbc69 !important;
+}
+
 
 .task-detail-completed-container{
     width: 148px;

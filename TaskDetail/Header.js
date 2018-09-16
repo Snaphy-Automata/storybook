@@ -25,7 +25,7 @@ class Header extends Component {
   };
 
   static propTypes = {
-    task: PropTypes.object.isRequired,
+    task: PropTypes.object,
     openShareDialog: PropTypes.func.isRequired,
     attachmentId: PropTypes.string.isRequired,
     attachmentLabel: PropTypes.string,

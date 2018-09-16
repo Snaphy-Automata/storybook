@@ -23,6 +23,7 @@ class CustomScrollbar extends Component {
     return (
       <Scrollbars
         renderThumbVertical={props => <div {...props} className={className}/>}
+        renderThumbHorizontal={props => <div {...props} className={className}/>}
         id={id}
         style={{ width: "100%", height: "100%", ...style }}
         universal

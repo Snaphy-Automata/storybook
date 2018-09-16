@@ -65,7 +65,7 @@ const TaskDetail = (props) => {
         onSaveSubTaskState,
         onDeleteSubTask,
         deleteComment,
-        onUpdateDescription
+        onUpdateDescription,
     } = props;
 
 
@@ -110,13 +110,9 @@ const TaskDetail = (props) => {
     // const statusText = capitalize || "Status";
 
     const onMarkCompletedButtonClicked = () => {
-        //console.log("Mark is completed getting called");
+        console.log("Mark is completed getting called");
         if (selectedTask) {
-            if (selectedTask.isCompleted) {
-                onMarkCompletedClicked(selectedTask.id, false);
-            } else {
-                onMarkCompletedClicked(selectedTask.id, true);
-            }
+          onMarkCompletedClicked(selectedTask.id, !selectedTask.isCompleted);
         }
     }
 
@@ -236,8 +232,7 @@ const TaskDetail = (props) => {
     }
 
     const isTaskCompleted = ()=>{
-      console.log(selectedTask);
-      return false;
+      return selectedTask?selectedTask.isCompleted:false;
     }
 
     return (
@@ -247,7 +242,7 @@ const TaskDetail = (props) => {
           <TaskTitle task={selectedTask} onDataChanged={onTitleDataChanged} />
           {/* Task Detail Form */}
           <div className="task-detail-task-detail-container">
-              <ActionButton statusText={statusText} isCompleted={isTaskCompleted()} isStatusClicked={props.isStatusClicked} onStatusChanged={onStatusChanged}  onDataChanged={onDataChanged} onCompletedButtonClick={onCompletedButtonClick} />
+              <ActionButton getOptions={getOptions} statusText={statusText} isCompleted={isTaskCompleted()} isStatusClicked={props.isStatusClicked} onStatusChanged={onStatusChanged}  onDataChanged={onDataChanged} onCompletedButtonClick={onMarkCompletedButtonClicked} />
               <div className="task-detail-assigned-to-container">
                   <div className="task-detail-assigned-to-text">Assigned To</div>
                   {selectedTask && <TagContainer
