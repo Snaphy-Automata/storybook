@@ -1,0 +1,401 @@
+
+/* Created By Nikita Mittal
+   16th July 2018
+*/
+
+
+.task-detail-header-conatiner{
+    line-height: 35.5px;
+    height: 35.5px;
+    width: 100%;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #eeeeee;
+}
+
+.task-detail-share-container{
+    display: inline-block;
+    width: 103px;
+   font-size: 11px;
+   color: #707070;
+   text-align: center;
+}
+
+.task-detail-add-attachment-container{
+    display: inline-block;
+    width: 122px;
+    font-size: 11px;
+    color: #707070;
+    cursor: pointer;
+    text-align: left;
+}
+
+.task-detail-add-subtask-button-conatiner{
+    display: inline-block;
+    width : 122px;
+    font-size: 11px;
+    color: #707070;
+    cursor: pointer;
+    text-align: center;
+}
+
+.task-detail-close-button-conatiner{
+    float: right;
+    margin-right: 15px;
+    color: #707070;
+
+}
+
+
+
+
+/***********************************End of Heading css ******************************************/
+
+/************************************ Task Item Detail Css ************************************/
+
+.task-detail-task-detail-container{
+    padding: 15px;
+    padding-top: 0;
+}
+
+.task-detail-task-name-container{
+    padding-bottom: 5px;
+    line-height: 1.6;
+    font-family: Lato;
+    padding-top: 10px;
+    padding-right: 15px;
+    padding-left: 10px;
+}
+
+.task-detail-task-action-button-conatiner{
+    width: 100%;
+    padding-top:6px;
+    padding-bottom: 4px;
+}
+
+.task-detail-action-button{
+  border-radius: 5px !important;
+  width: 136.6px;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #707070;
+  padding-left: 12px !important;
+}
+
+.task-detail-action-button .task-completed-tick{
+  margin-right: 12px;
+}
+
+.task-detail-action-button.task-completed .task-completed-tick{
+  color: #ffffff;
+}
+
+.task-detail-action-button.task-completed{
+  background-color: #2ecc71 !important;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+
+.task-detail-action-button.task-completed:hover{
+  background-color: #2cbc69 !important;
+}
+
+
+.task-detail-completed-container{
+    width: 148px;
+    display: inline-block;
+    font-size: 11px;
+}
+
+
+.task-detail-status-container{
+    display:inline-block;
+    text-align: left;
+    margin-left: 15px;
+    font-size: 11px;
+}
+
+.task-detail-archive-container{
+    float: right;
+    font-size: 11px;
+}
+
+
+.task-detail-assigned-to-container{
+    padding-bottom: 5px;
+    margin-top: 10px;
+}
+
+.task-detail-assigned-to-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-assigned-to-data-container{
+    width: 100%;
+    margin-top: 10px;
+    border-style: solid;
+    height: 40px;
+    border-width: 0px 0px 1px 0px;
+    border-color: lightgray;
+}
+
+.task-detail-assigned-to-list-conatiner{
+    width: 90%;
+    display: 'inline-block';
+}
+
+.task-detail-add-assigned-button-container{
+    float: right;
+    border-radius: 32px;
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 25px;
+    font-family: Lato;
+    color: #707070;
+    cursor: pointer;
+    text-align: center;
+    border-color: lightgray;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.task-detail-add-icon{
+    margin:0 0 0 0 !important;
+    text-align: center !important
+}
+
+.task-detail-add-assigned-button-container > .task-detail-add-icon{
+    position:relative;
+    top: calc(50% - 10px); /* 50% - 3/4 of icon height */
+  }
+
+
+
+.task-detail-date-container{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.task-detail-due-date-container{
+    font-family: Lato;
+    float: left;
+}
+
+.task-detail-due-date-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-start-date-container{
+    display: inline-block;
+    font-family: Lato;
+    margin-left: 35px;
+}
+
+.task-detail-start-date-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-duration-container{
+    font-family: Lato;
+    float: right;
+}
+
+.task-detail-duration-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-labels-container{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.task-detail-labels-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-sub-tasks-container{
+    width: 100%;
+    margin-top:15px;
+}
+
+.task-detail-sub-tasks-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-attachment-container{
+    width: 100%;
+    margin-top:15px;
+}
+
+.task-detail-attachment-text{
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-labels-data-container{
+    width: 100%;
+    margin-top: 10px;
+    border-style: solid;
+    height: 40px;
+    border-width: 0px 0px 1px 0px;
+    border-color: lightgray;
+}
+
+.task-detail-labels-list-conatiner{
+    width: 90%;
+    display: 'inline-block';
+}
+
+.task-detail-add-labels-button-container{
+    float: right;
+    border-radius: 32px;
+    font-size: 14px;
+    height: 30px;
+    width: 30px;
+    line-height: 25px;
+    font-family: Lato;
+    color: #707070;
+    cursor: pointer;
+    text-align: center;
+    border-color: lightgray;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.task-detail-description-container{
+    margin-top: 15px;
+}
+
+.task-detail-description-text{
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-comment-container{
+    width: 100%;
+    margin-top: 15px;
+    padding:10px;
+    border-style: solid;
+    border-width: 1px 0px 0px 0px;
+    border-color: #eeeeee;
+}
+
+.task-detail-comment-text{
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.task-detail-comment-data-container{
+    display : inline-block;
+    width : 75%;
+    margin-top : 5px;
+}
+
+.task-detail-comment-button-container{
+    display : inline-block;
+    width : 25%;
+    margin-top : 5px;
+    vertical-align: top;
+    text-align: right;
+}
+
+
+/******************************* Sub Task Css *****************************************/
+
+.task-detail-subtask-container{
+    width: 100%;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #eeeeee;
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.task-detail-subtask-data-container{
+    width: 90%;
+    display: inline-block;
+}
+
+.task-detail-subtask-data-container:hover .task-detail-subtask-delete-container{
+    display: inline-block;
+}
+
+.task-detail-subtask-checkbox-container{
+    width: 10%;
+    display: inline-block;
+}
+
+.task-detail-subtask-title-container{
+    width: 90%;
+    display: inline-block;
+}
+
+.task-detail-subtask-delete-container{
+    width: 10%;
+    display: none;
+    cursor: pointer;
+}
+
+.task-detail-show-sub-task-delete-dialog{
+    display: inline-block
+}
+
+
+/************************************ Task Attachment Css **********************************/
+
+.task-detail-task-attachment-container{
+    width: 100%;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #eeeeee;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.task-detail-task-attachment-icon-container{
+    width: 10%;
+    display: inline-block;
+}
+
+.task-detail-task-attachment-data-container{
+    width: 70%;
+    display: inline-block;
+}
+
+.task-detail-task-attachment-action-container{
+    width: 20%;
+    display: inline-block;
+}
+
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
