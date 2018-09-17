@@ -148,21 +148,20 @@ Robins Gupta
 
 .task-detail-assign-sidebar-icon{
   float: left;
+  width: 25px;
+  height: 25px;
 }
 
 .task-detail-custom-checkbox{
 
 }
 
-.task-detail-assign-sidebar-body{
-  font-size: 11px;
-  font-weight: 500;
-  color: #4d4f5c;
-}
-
 
 .task-detail-assign-sidebar-body{
   float: left;
+  font-size: 11px;
+  font-weight: 500;
+  color: #4d4f5c;
 }
 
 /* End Assign Task Box */
