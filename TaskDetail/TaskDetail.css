@@ -3,3 +3,102 @@
 Robins Gupta
 **/
 
+
+/* ------------------------------------------ HEADER ------------------------------------------- */
+.task-detail-heading-container{
+  height: 35.5px;
+  line-height: 35.5px;
+  border-bottom: solid 1px #eeeeee;
+}
+
+
+.task-detail-header-padding-conatiner{
+  padding-left:17px;
+  padding-right: 0;
+}
+
+.task-detail-heading-status-dropdown{
+  float: left;
+  width: 140.6px;
+  font-size: 11px !important;
+  font-weight: bold !important;
+  color: #75818d !important;
+  text-transform: uppercase;
+}
+
+
+.task-detail-heading-status-dropdown .default{
+  color: #75818d !important;
+}
+
+.task-detail-header-attachment-container{
+  float: left;
+  /* width: 93.2px; */
+  font-size: 11px;
+  color: #707070;
+  cursor: pointer;
+  text-align: left;
+}
+
+.task-detail-header-attachment-container .label{
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 11px;
+  color: #707070;
+}
+
+.task-detail-header-move-container{
+  float: left;
+  /* width: 65px; */
+  font-size: 11px;
+  color: #707070;
+  cursor: pointer;
+  text-align: left;
+}
+
+.task-detail-header-move-container .label{
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 11px;
+  color: #707070;
+}
+
+
+.task-detail-header-right-items{
+  float: right;
+  font-size: 11px;
+  color: #707070;
+}
+
+.task-detail-header-icon{
+  float: left;
+  cursor: pointer;
+  text-align: right;
+  font-size: 11px !important;
+  padding: .5833em .833em;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.task-detail-header-add-subtask-button-container{
+
+}
+
+
+.task-detail-header-add-archive-button-container{
+
+}
+
+.task-detail-header-add-share-button-container{
+
+}
+
+.task-detail-header-add-close-button-container{
+  padding-right: 13px;
+  font-size: 12px !important;
+}
+
+
+
+
+/* -------------------------------------------- END HEADER ---------------------------------------- */

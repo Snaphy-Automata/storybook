@@ -19,7 +19,7 @@ const DropDownFilter = (props) => {
   }
   return (
     <div className={classNameStr}>
-      <Icon className="dropdown-with-icon-icon-filter" name={icon} ></Icon>
+      {icon && <Icon className="dropdown-with-icon-icon-filter" name={icon} ></Icon>}
       <Dropdown
         className="dropdown-with-icon-filter-dropdown"
         options={options}
@@ -31,9 +31,19 @@ const DropDownFilter = (props) => {
 };
 
 
-DropDownFilter.propTypes = {
-
+DropDownFilter.defaultProps = {
+  className: "",
+  icon: undefined,
 }
+
+DropDownFilter.propTypes = {
+  className: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+  options: PropTypes.object.isRequired,
+}
+
+
 
 
 
