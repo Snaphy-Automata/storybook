@@ -7,10 +7,13 @@ import "./CircularIconBox.css"
 
 
 const CircularIconBox = (props) => {
-  const className = `${props.className}`
+  const className = `cirular-icon-custom-checkbox ${props.className}`
   return (
     <div className={className} onMouseDown={props.onClick}>
-        <Icon name={props.icon} style={{margin:0}}></Icon>
+        <div className="cirular-icon-custom-tag">
+          <Icon name="plus" style={{margin:0, color: "#fff", fontSize: "9px", paddingLeft: "1px"}}></Icon>
+        </div>
+        <Icon name={props.icon} style={{margin:0, color: "#4d4f5c", fontSize: "9px",position: "relative", bottom: "4px", textAlign: "center"}}></Icon>
     </div>
   )
 }

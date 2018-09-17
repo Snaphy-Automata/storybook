@@ -150,6 +150,7 @@ Robins Gupta
   float: left;
   width: 25px;
   height: 25px;
+  margin-right: 11px;
 }
 
 .task-detail-custom-checkbox{
@@ -162,6 +163,15 @@ Robins Gupta
   font-size: 11px;
   font-weight: 500;
   color: #4d4f5c;
+  height: 25px;
+  width: 396.5px;
+  padding-left: 15px;
+  line-height: 25px;
+  cursor: pointer;
+}
+
+.task-detail-assign-task-container{
+  margin-top: 15px;
 }
 
 /* End Assign Task Box */
