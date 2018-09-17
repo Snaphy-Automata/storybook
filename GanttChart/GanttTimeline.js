@@ -119,6 +119,8 @@ class GanttChart extends PureComponent{
       //height
     } = this.props;
 
+   // console.log("Gantt Timeline getting called", this.props);
+
 
     // setTimeout(()=>{
     //   const task = groups[groups.length -1];

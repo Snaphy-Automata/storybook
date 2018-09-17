@@ -59,7 +59,8 @@ class Header extends Component {
       onAddSubTasksToList,
       openShareDialog,
       subtaskLabel,
-      isShareDialogOpened
+      isShareDialogOpened,
+      onTaskDetailClosed,
     } = this.props
 
     return (
@@ -79,7 +80,7 @@ class Header extends Component {
             <Icon name="unordered list" style={{ display: "inline" }}></Icon>
             <div style={{ display: "inline", marginLeft: '5px', cursor: 'pointer' }}>{subtaskLabel}</div>
         </div>
-        <div className="task-detail-close-button-conatiner">
+        <div onClick={onTaskDetailClosed} className="task-detail-close-button-conatiner">
             <Icon name="close" style={{ display: "inline" }}></Icon>
         </div>
         <ShareDialog onClose={openShareDialog} isShareDialogOpened={isShareDialogOpened}></ShareDialog>

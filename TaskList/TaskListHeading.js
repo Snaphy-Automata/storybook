@@ -41,6 +41,8 @@ const TaskListHeading = (props) => {
         iconClassName,
     } = props;
 
+    //console.log("Is Add new Task Visible", isAddNewTaskVisible);
+
     let containerClassName = `task-list-heading-parent-wrapper`;
     if(className){
       containerClassName = `${containerClassName} ${className}`;
@@ -63,7 +65,11 @@ const TaskListHeading = (props) => {
 
     const onStateChanged = () => {
         //populateCollapsedSectionArray(sectionId);
-        onSectionStateChanged(sectionId, index, isCollapsed);
+        let emptySectionId = null;
+        if(isEmptySection){
+            emptySectionId = sectionId;
+        }
+        onSectionStateChanged(sectionId, index, isCollapsed, emptySectionId);
         //onSectionCollapsed();
     }
 
@@ -86,7 +92,7 @@ const TaskListHeading = (props) => {
 
     return (
         <div>
-            <div className={containerClassName}>
+           <div className={containerClassName}>
                 <div className={iconClassNameStr}>
                     <div className={getDragContainerClassName()}>
                         {protectedName !== "active_tasks" && <DragHandle />}
@@ -153,7 +159,7 @@ const TaskListHeading = (props) => {
                         </div>
 
                         <div className="task-list-item-new-task-title" style={{color:"#9e9e9e", paddingLeft:"2px"}}>
-                                Add New Task
+                               Add New task
                         </div>
                     </div>
                 </div>

@@ -17,7 +17,8 @@ import {
     ON_OPEN_DATE_PICKER,
     SET_DATE_DATA,
     ON_DUE_DATE_UPDATED_ACTION,
-    ON_QUICK_CURRENT_UPDATE_DATE
+    ON_QUICK_CURRENT_UPDATE_DATE,
+    ON_TASK_DATE_CHANGE_ACTION
 } from './TaskListActions';
 
 
@@ -62,7 +63,8 @@ const initialState = {
     selectedUserList : [],
     selectedLabelList : [],
     dateData : null,
-    isDatePickerOpened : false
+    isDatePickerOpened : false,
+    taskDateObj: {},
 }
 
 const TaskListReducer = (state = initialState, action) => {
@@ -251,7 +253,8 @@ const TaskListReducer = (state = initialState, action) => {
                 [action.payload.id]:{
                     isDatePickerOpened : action.payload.data,
                     dateData : action.payload.dateData
-                }
+                },
+               
             }
             break;
         }
@@ -279,6 +282,20 @@ const TaskListReducer = (state = initialState, action) => {
                 }
             }
             //console.log("Change Date Reducer getting called", state.quickCurrentUpdateDate);
+            break;
+        }
+
+        case ON_TASK_DATE_CHANGE_ACTION:{
+            state = {
+                ...state,
+                taskDateObj:{
+                    ...state.taskDateObj,
+                    [action.payload.dateType]: {
+                        ...state.taskDateObj[action.payload.dateType],
+                        dateData: action.payload.dateData
+                    }
+                }
+            }
             break;
         }
 

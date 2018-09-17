@@ -66,8 +66,10 @@ const TaskDetail = (props) => {
         onDeleteSubTask,
         deleteComment,
         onUpdateDescription,
+        onTaskDetailStateChanged
     } = props;
 
+    //console.log("task Detail props", props);
 
     //console.log("Task Detail Props", subTaskList);
     //console.log("Task Detail Props", selectedTask);
@@ -234,11 +236,43 @@ const TaskDetail = (props) => {
     const isTaskCompleted = ()=>{
       return selectedTask?selectedTask.isCompleted:false;
     }
+    const onTaskDetailClosed = () => {
+        onTaskDetailStateChanged();
+    }
+
+    const initTaskDate = () => {
+        //console.log("Init Task Date getting called");
+        let taskDateObj = {};
+        if(selectedTask && selectedTask[selectedTask.id]){
+            if(selectedTask[selectedTask.id].startDateValue){
+                taskDateObj = {
+                    startDateValue : selectedTask[selectedTask.id].startDateValue
+                }
+            } else{
+                taskDateObj = {
+                    startDateValue : ""
+                }
+            }
+            if(selectedTask[selectedTask.id].endDateValue){
+                taskDateObj = {
+                    ...taskDateObj,
+                    endDateValue : selectedTask[selectedTask.id].endDateValue
+                }
+            } else{
+                taskDateObj = {
+                    ...taskDateObj,
+                    endDateValue : ""
+                }
+            }
+        }
+
+        return taskDateObj;
+    }
 
     return (
         <div>
           {/* Header Section */}
-          <Header openShareDialog={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened} onAddSubTasksToList={onAddSubTasksToList} />
+          <Header onTaskDetailClosed={onTaskDetailClosed} openShareDialog={props.openShareDialog} isShareDialogOpened={props.isShareDialogOpened} onAddSubTasksToList={onAddSubTasksToList} />
           <TaskTitle task={selectedTask} onDataChanged={onTitleDataChanged} />
           {/* Task Detail Form */}
           <div className="task-detail-task-detail-container">
@@ -405,18 +439,10 @@ const TaskDetail = (props) => {
                       }
                   </div>
               </div>}
-
-
-
-
-
           </div>
           <SnaphyForm error={error} onSubmit={handleSubmit}>
               <TaskCommentForm invalid={props.invalid} submitting={props.submitting} pristine={props.pristine}/>
           </SnaphyForm>
-
-
-
         </div>
     )
 

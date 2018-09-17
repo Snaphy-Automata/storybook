@@ -47,6 +47,8 @@ const isSectionEmpty = (activeTasks, index, findTaskById) => {
             if(nextItem.type === "section"){
                 return true;
             }
+        } else{
+            return true;
         }
     }
     return false;
@@ -137,7 +139,7 @@ const SortableHeading = SortableElement((props)=>{
     const {style, section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray} = props;
 
    // console.log("Heading props", style);
-
+   //const isEmptySection = isSectionEmpty(activeTasks, indexValue, findTaskById);
     return (
         <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
@@ -154,14 +156,6 @@ const SortableHeading = SortableElement((props)=>{
 const SortableTask = SortableElement((props)=>{
     //console.log("Sortable task props", props);
     const {style, activeTasks, isLastTask, className, index, taskId, task, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, indexValue, onEnterNextNewTask, onAddNewtaskClicked, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers} = props;
-    //console.log("Sortable Task Props", props);
-    // let isActiveTaskSection = false;
-    // if(task && task.type === "section" && task.protectedName === "active_tasks"){
-    //   isActiveTaskSection = true;
-    // }
-    // if(task && task.type === "task" && task.sectionId === activeTasks[0]){
-    //     isActiveTaskSection = true;
-    // }
 
     return (
         <div style={style}>
@@ -197,7 +191,7 @@ class VirtualList extends Component {
         if(task){
             if(task.type === "section"){
                 let isCollapsed = isSectionCollapsed(collapsedSectionList, task.id);
-                //console.log("Section Row Heights", isCollapsed);
+             
                 const firstSectionId = activeTasks[0];
                 if(taskId === firstSectionId){
                     if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
@@ -207,7 +201,9 @@ class VirtualList extends Component {
                     }
 
                 }else{
-                    if(isEmptySection && isAddNewTaskVisible && isCollapsed){
+                    //console.log("Section Row Heights", isCollapsed, isEmptySection, isAddNewTaskVisible, task, collapsedSectionList);
+                    if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
+                        
                         return 100;
                     } else{
                         return 59;
@@ -224,6 +220,8 @@ class VirtualList extends Component {
 
         return 41;
     }
+
+
 
 
     render() {
@@ -248,9 +246,23 @@ class VirtualList extends Component {
           onQuickUpdateTaskMembers,
           height,
           width,
+          //scrollToIndexData,
         } = this.props;
+        //console.log("Virtual List Props getting called");
       const rowRenderer = renderRow(activeTasks, findTaskById, onNewTaskAdded, onTaskSelected, onTaskItemBlurEvent, onTaskItemFocusEvent, onEnterNextNewTask, onSectionStateChanged, onAddNewtaskClicked, onSectionCollapsed, populateCollapsedSectionArray, statusObj, findMemberById, findLabelById, onQuickUpdateDate, memberIdList, onQuickUpdateTaskMembers);
       const totalRows = activeTasks.length;
+      
+    //  let scrollIndex =  Math.min(
+    //     totalRows - 1,
+    //     parseInt(scrollToIndexData, 10),
+    //   );
+    //   console.log("ScrollToIndex", scrollIndex);
+    //   const handle_scroll = ({scrollTop}) => {
+    //       console.log("Scroll Top", scrollTop);
+    //     // if (this.state.scrolling_to_week != null && scrollTop == row_height * this.scrolling_to_week) {
+    //     //   this.setState({scrolling_to_week: null})
+    //     // }
+    //   }
       return (
         <List
         ref={(instance) => {
@@ -261,6 +273,9 @@ class VirtualList extends Component {
         rowCount={totalRows}
         height={height}
         width={width}
+        // onScroll={handle_scroll}
+        //scrollToIndex={scrollToIndexData/50}
+
         style={{
           overflowX: false,
           overflowY: false,
@@ -296,11 +311,13 @@ class TaskList extends Component {
   onSortEnd(e){
     const {
       onItemPositionChanged,
+      onAddNewTaskVisible
     }  = this.props;
-
+    onAddNewTaskVisible(true);
     if (e.oldIndex !== e.newIndex) {
       //console.log("Hoc Method getting called");
       onItemPositionChanged(e.oldIndex, e.newIndex);
+      //scrollToIndex = e.newIndex;
       // We need to inform React Virtualized that the items have changed heights
       const instance = this.SortableList.getWrappedInstance();
 
@@ -357,13 +374,23 @@ class TaskList extends Component {
       statusObj,
       onQuickUpdateDate,
       memberIdList,
-      onQuickUpdateTaskMembers
+      onQuickUpdateTaskMembers,
+      collapsedEmptySectionId,
+      setScrollRef,
+      
     }  = this.props;
-
+    //console.log("task List props getting called");
     const id = "snaphy-react-custom-scrollbar";
+    if(collapsedEmptySectionId){
+        this.onSectionCollapsed();
+    }
+
+    let scrollToIndex = 0;
+
+    //console.log("Task List ", setScrollRef);
 
     return (
-      <CustomScrollbar id={id} onScroll={this.handleScroll.bind(this)}>
+      <CustomScrollbar setScrollRef={setScrollRef} id={id} onScroll={this.handleScroll.bind(this)}>
         <div className="task-list-block-scrollbar-container">
           <div  className="task-list-block-scrollbar-block">
             <AutoSizer  style={{ width: "inherit", height: "inherit" }}>
@@ -399,32 +426,34 @@ class TaskList extends Component {
                 onQuickUpdateDate={onQuickUpdateDate}
                 memberIdList={memberIdList}
                 onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
+                // scrollToIndexData={scrollToIndexData}
               />
             )}
           </AutoSizer>
         </div>
       </div>
-    </CustomScrollbar>
+   </CustomScrollbar>
     );
   }
 }
 
-// Retrieve data from store as props
-function mapStateToProps(store) {
-    return {
+// // Retrieve data from store as props
+// function mapStateToProps(store) {
+//     return {
 
-    };
-}
-
-
-//Map Redux Actions to Props..
-const mapActionsToProps = {
-    //map action here
-
-};
+//     };
+// }
 
 
+// //Map Redux Actions to Props..
+// const mapActionsToProps = {
+//     //map action here
+
+// };
 
 
-export default connect(mapStateToProps, mapActionsToProps)(TaskList);
+
+
+
+export default TaskList;
 
