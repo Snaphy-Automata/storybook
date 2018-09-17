@@ -68,10 +68,10 @@ const InputElement = (props) => {
     styleObj = {
       paddingLeft: "11.5px",
       paddingRight: "11.5px",
-      paddingTop: 0,
-      paddingBottom: 0,
-      minHeight: 37,
-      lineHeight: "37px",
+      paddingTop: "5px",
+      paddingBottom: "5px",
+      minHeight: 25,
+      lineHeight: "25px",
       overflow: "hidden",
       ...styleObj,
     }

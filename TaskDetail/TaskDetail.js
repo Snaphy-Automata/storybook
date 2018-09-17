@@ -16,6 +16,7 @@ import './TaskDetail.css';
 //Custom import..
 import Header            from './Header'
 import TaskTitle         from './TaskTitle'
+import AssignTask        from './AssignTask'
 
 class TaskDetail extends PureComponent{
   static propTypes = {
@@ -62,6 +63,7 @@ class TaskDetail extends PureComponent{
         <Header onSubTaskAdded={this.onSubTaskAdded} />
         <div className="task-detail-container">
           <TaskTitle task={task} onDataChanged={onTitleChanged}/>
+          <AssignTask task={task}  />
         </div>
       </div>
     )
