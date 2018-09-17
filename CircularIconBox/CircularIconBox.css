@@ -7,7 +7,7 @@ Created by Robins Gupta
 .cirular-icon-custom-checkbox{
   width: 25px;
   height: 25px;
-  line-height: 20px;
+  line-height: 0;
   text-align: center;
   border-radius: 25px;
   background-color: #f8f7f8;
