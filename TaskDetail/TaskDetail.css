@@ -102,3 +102,35 @@ Robins Gupta
 
 
 /* -------------------------------------------- END HEADER ---------------------------------------- */
+
+
+/* Common */
+.task-detail-container{
+  padding-left: 17px;
+  padding-right: 13px;
+  padding-top: 10.5px;
+}
+
+/* End Common */
+
+
+/* Task Title */
+
+.task-detail-task-title-container{
+
+}
+
+.task-detail-task-title-completed-container{
+  width: 25px;
+  height: 25px;
+  margin-right: 11px;
+  float: left;
+}
+
+.task-detail-task-title-input{
+
+}
+
+
+
+/* END Task Title  */

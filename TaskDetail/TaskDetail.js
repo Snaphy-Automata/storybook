@@ -6,17 +6,21 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import { Field, reduxForm } from 'redux-form';
+import map from 'lodash/map';
+import capitalize from 'lodash/capitalize';
+import moment from 'moment';
 import './TaskDetail.css';
 
 
 //Custom import..
-import Header from './Header'
-
+import Header            from './Header'
+import TaskTitle         from './TaskTitle'
 
 class TaskDetail extends PureComponent{
   static propTypes = {
-
+    onTitleChanged: PropTypes.func.isRequired,
+    task: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
@@ -46,14 +50,52 @@ class TaskDetail extends PureComponent{
     // onAddSubTask(selectedTask.id, subTaskDataList, "empty", null, null);
   }
 
+
   render(){
+    const {
+      onTitleChanged,
+      task,
+    } = this.props
+
     return (
       <div>
         <Header onSubTaskAdded={this.onSubTaskAdded} />
+        <div className="task-detail-container">
+          <TaskTitle task={task} onDataChanged={onTitleChanged}/>
+        </div>
       </div>
     )
   }
 }
 
 
-export default TaskDetail;
+
+
+function mapStateToProps(store) {
+  return {
+      // isMarkCompletedClicked: store.TaskListReducer.isMarkCompletedClicked,
+      // isStatusClicked: store.TaskListReducer.isStatusClicked,
+      // statusData: store.TaskListReducer.statusData,
+      // isUserButtonClicked: store.TaskListReducer.isUserButtonClicked,
+      // isLabelButtonClicked: store.TaskListReducer.isLabelButtonClicked,
+      //labels : store.ModelDataReducer.labels,
+      //users : store.ModelDataReducer.users,
+      // selectedUserList : store.TaskListReducer.selectedUserList
+  }
+}
+
+const mapActionsToProps = {
+  // onMarkCompleteClickedAction,
+  // onStatusChangedAction,
+  // getStatusDataAction,
+  // onUserAddButtonClickedAction,
+  // onLabelAddButtonClickedAction,
+}
+
+
+const TaskDetailForm = reduxForm({
+  form: "taskForm",
+  enableReinitialize: true
+})(TaskDetail);
+
+export default connect(mapStateToProps, mapActionsToProps)(TaskDetailForm);

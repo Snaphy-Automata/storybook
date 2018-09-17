@@ -18,24 +18,25 @@
 
 
 .input-element-text-area textarea{
-  font-size: 22px !important;
+  font-size: 18px !important;
   font-weight: 500;
-  border: none !important;
+  border: 1px solid #ffffff !important;
   -webkit-transition: none !important;
   transition: none !important;
 }
 
-
+/*
 .input-element-text-area textarea:hover{
   border: 1px solid rgba(34,36,38,0.13) !important;
-  padding: 3px !important;
-  padding-left: 6px !important;
-}
+  padding-left: 10.5px;
+  padding-right: 10.5px;
+  padding-top: 0;
+  padding-bottom: 0;
+} */
 
 .input-element-text-area textarea:focus{
-  border: 1px solid rgba(34,36,38,0.30) !important;
-  padding: 3px !important;
-  padding-left: 6px !important;
+  /* border: 1px solid rgba(34,36,38,0.30) !important; */
+  border-color: #efefef !important;
 }
 
 
@@ -44,14 +45,14 @@
 /* Chrome */
 .input-element-text-area textarea::-webkit-input-placeholder {
   /* color: #989898 !important; */
-  color: #a6b9cc !important;
-  font-size: 22px;
+  color: #9e9e9e !important;
+  font-size: 18px;
   font-family: Lato;
 }
 
 .input-element-text-area textarea:focus::-webkit-input-placeholder {
-  color: #75818b !important;
-  font-size: 22px;
+  color: #9e9e9e !important;
+  font-size: 18px;
   font-family: Lato;
 }
 
@@ -59,15 +60,15 @@
 
 /* IE 10+ */
 .input-element-text-area textarea:-ms-input-placeholder {
-  color: #989898 !important;
-  font-size: 24px;
-  font-weight: 500;
+  color: #9e9e9e !important;
+  font-size: 18px;
+  font-family: Lato;
 }
 
 .input-element-text-area textarea:focus:-ms-input-placeholder  {
-  color: #989898 !important;
-  font-size: 24px;
-  font-weight: 500;
+  color: #9e9e9e !important;
+  font-size: 18px;
+  font-family: Lato;
 }
 
 /* ------end IE 10+ ---- */
@@ -75,29 +76,29 @@
 /* Firefox 19+ */
 
 .input-element-text-area textarea::-moz-placeholder {
-  color: #989898 !important;
-  font-size: 24px;
-  font-weight: 500;
+  color: #9e9e9e !important;
+  font-size: 18px;
+  font-family: Lato;
 }
 
 .input-element-text-area textarea:focus::-moz-placeholder {
-  color: #989898 !important;
-  font-size: 24px;
-  font-weight: 500;
+  color: #9e9e9e !important;
+  font-size: 18px;
+  font-family: Lato;
 }
 
 /* end Firefox 19+ */
 
 /* Firefox 4 - 18 */
 .input-element-text-area textarea:-moz-placeholder {
-  color: #989898 !important;
-  font-size: 24px;
-  font-weight: 500;
+  color: #9e9e9e !important;
+  font-size: 18px;
+  font-family: Lato;
 }
 
 .input-element-text-area textarea:focus:-moz-placeholder {
-  color: #989898 !important;
-  font-size: 24px;
-  font-weight: 500;
+  color: #9e9e9e !important;
+  font-size: 18px;
+  font-family: Lato;
 }
 /* end Firefox 4 - 18 */
