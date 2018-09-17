@@ -34,17 +34,17 @@
 }
 
 .custom-checkbox-wrapper.mini{
-    font-size: 9px;
-    height: 21px;
-    width: 21px;
-    line-height: 21px;
+    font-size: 11px;
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
 }
 
 .custom-checkbox-wrapper.isSelected.mini{
-    font-size: 9px;
-    height: 21px;
-    width: 21px;
-    line-height: 21px;
+    font-size: 11px;
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
 }
 
 .custom-checkbox-wrapper.isSelected.tiny{

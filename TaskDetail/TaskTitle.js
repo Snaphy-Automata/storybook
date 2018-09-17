@@ -9,12 +9,12 @@ import { Field } from 'redux-form';
 //Custom import..
 import InputElement     from '../ReduxForm/InputElement';
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
-
-const TaskTitle = ({task, placeholder, label, rows, onDataChanged, size}) =>{
+import CustomCheckbox   from '../CustomCheckbox'
+const TaskTitle = ({task, placeholder, label, rows, onDataChanged, size, isSelected, onTaskCompleted}) =>{
   return (
     <div className="task-detail-task-title-container">
       <div className="task-detail-task-title-completed-container">
-
+        <CustomCheckbox className="task-detail-custom-checkbox" size='mini' isSelected={isSelected} onItemClicked={onTaskCompleted}></CustomCheckbox>
       </div>
       <div style={{float: "left", width: "396.5px"}}>
         <SnaphyForm>
@@ -56,7 +56,9 @@ TaskTitle.defaultProps = {
   placeholder: "Enter a task name",
   label: "TaskTitle",
   size: "large",
-  rows: 1
+  rows: 1,
+  isSelected: false,
+
 };
 
 TaskTitle.propTypes = {
@@ -64,7 +66,9 @@ TaskTitle.propTypes = {
   onDataChanged: PropTypes.func,
   label: PropTypes.string,
   size: PropTypes.string,
-  rows: PropTypes.number
+  rows: PropTypes.number,
+  isSelected: PropTypes.bool.func,
+  onTaskCompleted: PropTypes.func,
 }
 
 

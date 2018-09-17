@@ -111,6 +111,12 @@ Robins Gupta
   padding-top: 10.5px;
 }
 
+.task-detail-custom-checkbox{
+  background-color: #f8f7f8;
+  color: #4d4e5c;
+  border-color: #4d4e5c;
+}
+
 /* End Common */
 
 
@@ -122,7 +128,7 @@ Robins Gupta
 
 .task-detail-task-title-completed-container{
   width: 25px;
-  height: 25px;
+  margin-top: 7px;
   margin-right: 11px;
   float: left;
 }
@@ -130,6 +136,7 @@ Robins Gupta
 .task-detail-task-title-input{
 
 }
+
 
 
 
