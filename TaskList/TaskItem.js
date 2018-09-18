@@ -257,10 +257,10 @@ const TaskItem = (props) => {
 
     /**
      * Select date from date Dialog..
-     * @param {*} taskId 
-     * @param {*} isTodaySelected 
-     * @param {*} isTomorrowSelected 
-     * @param {*} isNextWeekSelected 
+     * @param {*} taskId
+     * @param {*} isTodaySelected
+     * @param {*} isTomorrowSelected
+     * @param {*} isNextWeekSelected
      */
     const onSelectDateAction = (taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected) => {
         //console.log("Data prepare to be updated", taskId, isTodaySelected, isTomorrowSelected, isNextWeekSelected);
@@ -567,7 +567,7 @@ function mapStateToProps(store, props) {
     const draggedTaskOrSection = modelDataReducer.draggedTaskOrSection;
     const selectedTaskStatusData = modelDataReducer.selectedTaskStatusData;
     const taskMemberListObj = modelDataReducer.taskMemberListObj;
- 
+
     if (titleData) {
         if (props.taskId) {
             if (titleData.taskId && titleData.taskId !== props.taskId) {
@@ -597,7 +597,7 @@ function mapStateToProps(store, props) {
         targetTaskId = props.taskId;
     }
 
-    
+
 
     const allTaskObj = store.ModelDataReducer.task;
     let isActiveTaskSection = false;
@@ -637,12 +637,6 @@ function mapStateToProps(store, props) {
         isActiveTaskSection,
         task
     }
-
-
-    //const isAssinedUserDialogOpened = taskConfig && taskConfig.isAssinedUserDialogOpened ? true : false;
-    // const isTodaySelected = taskConfig && taskConfig.isTodaySelected ? true : false;
-    // const isTomorrowSelected = taskConfig && taskConfig.isTomorrowSelected ? true : false;
-    // const isNextWeekSelected = taskConfig && taskConfig.isNextWeekSelected ? true : false;
 
 }
 

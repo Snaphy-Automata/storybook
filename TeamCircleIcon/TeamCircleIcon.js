@@ -11,28 +11,29 @@ import "./TeamCircleIcon.css";
 import AssignedUserDialog from "../AssignedUserDialog";
 
 //FIXME: Implement tooltip.. 2nd Aug 2018 Robins
-
-const TeamCircleIcon = ({ 
-    className, 
-    style, 
-    onClick, 
-    title, 
-    icon, 
-    size, 
-    src, 
-    tooltip, 
-    isAssinedUserDialogOpened, 
-    onClose, 
-    task, 
-    isDatePicker, 
-    isDatePickerOpened, 
-    onDatePickerOpenedAction, 
-    previousDateDialogId, 
+//FIXME: Robins
+//Why is datepicker in
+const TeamCircleIcon = ({
+    className,
+    style,
+    onClick,
+    title,
+    icon,
+    size,
+    src,
+    tooltip,
+    isAssinedUserDialogOpened,
+    onClose,
+    task,
+    isDatePicker,
+    isDatePickerOpened,
+    onDatePickerOpenedAction,
+    previousDateDialogId,
     onDatePicked,
     findMemberById,
     memberIdList,
     taskMemberList,
-    onQuickUpdateTaskMembers 
+    onQuickUpdateTaskMembers
 }) => {
     //size = mini | tiny | small | large | big | huge | massive;
 
@@ -49,10 +50,10 @@ const TeamCircleIcon = ({
 
     }
     if(!isDatePicker){
-        
+
         //console.log("Tooltip Data", tooltip);
     }
-   
+
 
     return (
         <div className={className}>
@@ -73,14 +74,12 @@ const TeamCircleIcon = ({
                             style={{ fontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity: "0.8" }}
                             size='mini'
                         >
-
                         </Popup>
                     }
                     <Popup
                         trigger={<div>{isAssinedUserDialogOpened && <div onClick={onClick} style={style}>
                             {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                             {char && !src && char}
-
                             {!char && icon && <Icon name={icon} />}
                         </div>}</div>}
                         content={<AssignedUserDialog onClose={onClose} task={task} memberIdList={memberIdList} findMemberById={findMemberById} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>}
@@ -92,11 +91,8 @@ const TeamCircleIcon = ({
                         hideOnScroll
                         style={{ width: "242px", padding: "0" }}
                         size='mini'>
-
                     </Popup>
-
                 </div>
-
             }
             {
                 !isDatePicker && !tooltip && <div onClick={onClick} className={className} style={style}>
@@ -155,31 +151,20 @@ const TeamCircleIcon = ({
 };
 
 
+TeamCircleIcon.defaultProps = {
+  icon: "user"
+}
+
+
 TeamCircleIcon.propTypes = {
     src: PropTypes.string,
     icon: PropTypes.string,
     title: PropTypes.string,
     tooltip: PropTypes.string,
     size: PropTypes.string,
+    className: PropTypes.string,
 }
 
 
 export default TeamCircleIcon;
 
-//   // Retrieve data from store as props
-// function mapStateToProps(store) {
-
-//     return {
-
-//     };
-// }
-
-
-// //Map Redux Actions to Props..
-// const mapActionsToProps = {
-// //map action here
-
-// };
-
-
-//export default connect(mapStateToProps, mapActionsToProps)(TeamCircleIcon);

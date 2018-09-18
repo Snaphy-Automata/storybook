@@ -153,9 +153,10 @@ Robins Gupta
   margin-right: 11px;
 }
 
-.task-detail-custom-checkbox{
+/* .task-detail-custom-checkbox{
 
-}
+} */
+
 
 
 .task-detail-assign-sidebar-body{
@@ -172,6 +173,23 @@ Robins Gupta
 
 .task-detail-assign-task-container{
   margin-top: 15px;
+}
+
+.task-detal-assigned-teams-container{
+  float: left;
+}
+
+.task-detail-assigned-team-class{
+  background-color: #3b86ff;
+  color: #ffffff;
+}
+
+.task-detail-assigned-team-class:hover{
+  background-color: #3a7eed;
+}
+
+.task-detail-assigned-team-box{
+  margin-left: 10px;
 }
 
 /* End Assign Task Box */

@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 
 //Custom import..
 import CircularIconBox   from '../CircularIconBox'
+import AssignedTeams     from './AssignedTeams'
 
 
-
-const AssignTask = ({onAssignTaskClick, members}) => {
-  const hasMember = !!members.length
+const AssignTask = ({onAssignTaskClick, memberIds}) => {
+  const hasMember = !!memberIds.length
   return (
     <div className="task-detail-assign-task-container">
       <div className="task-detail-assign-sidebar-icon">
@@ -19,7 +19,7 @@ const AssignTask = ({onAssignTaskClick, members}) => {
       </div>
       <div className="task-detail-assign-sidebar-body">
         {!hasMember && <span>Assign Task</span> }
-
+        {hasMember && <AssignedTeams memberIds={[memberIds]} />}
       </div>
     </div>
   )
@@ -27,13 +27,13 @@ const AssignTask = ({onAssignTaskClick, members}) => {
 
 
 AssignTask.defaultProps = {
-  members: []
+  memberIds: ["rkfqQAbnf"]
 }
 
 
 AssignTask.propTypes = {
   onAssignTaskClick: PropTypes.func.isRequired,
-  members: PropTypes.array
+  memberIds: PropTypes.array
 }
 
 

@@ -1,5 +1,5 @@
-/* 
-Created By Robins 
+/*
+Created By Robins
 10th April 2018
 */
 
@@ -40,7 +40,7 @@ function getRandomInt(min, max) {
 
 
 /*
-Project Card Components.. 
+Project Card Components..
  */
 const CircleTeamBox = function({title, status}){
     const char = title[0];
@@ -69,7 +69,7 @@ const CircleTeamBox = function({title, status}){
             </div>
             <div className="dark-text circle-team-box-text-to-title-full-name" style={textStyle} >
                 {title}
-            </div> 
+            </div>
         </div>
     );
 };
@@ -77,7 +77,7 @@ const CircleTeamBox = function({title, status}){
 
 CircleTeamBox.propTypes = {
     //Project data fetched using GraphQL
-    
+
 }
 
 export default CircleTeamBox;

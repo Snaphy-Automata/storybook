@@ -1,6 +1,6 @@
 /**
  * Created by Robins
- * 2nd Aug 2018 
+ * 2nd Aug 2018
  */
 import moment from 'moment';
 
@@ -44,12 +44,12 @@ import moment from 'moment';
         if(this.task){
             statusData = this.task.statusId && statusObj[this.task.statusId]? statusObj[this.task.statusId]: undefined;
         }
-        return statusData; 
+        return statusData;
     }
 
     /**
      * Will return labels with tooltip if more than one label
-     * @param {*} labelObj 
+     * @param {*} labelObj
      * {
      *  label: {},
      *  tooltip: ""
@@ -73,14 +73,14 @@ import moment from 'moment';
                     if(!isLast && index >0){
                         tooltip = `${tooltip}, `
                     }
-                }  
+                }
             });
         }
         return {
             labelList : labelList,
             tooltip : tooltip
         }
-       
+
 
     }
 
@@ -103,7 +103,7 @@ import moment from 'moment';
                     if(!isLast && index >0){
                         tooltip = `${tooltip}, `
                     }
-                }  
+                }
             });
         }
         return {
@@ -122,7 +122,7 @@ import moment from 'moment';
     getFormattedDueDate(){
         let type, date;
         if(this.task && this.task.endDate){
-           
+
             const dueDate = this.task.endDate;
             if (moment().format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
                // console.log("Task End date", this.task);
@@ -141,7 +141,7 @@ import moment from 'moment';
                 }else{
                     dueDateArray = moment.utc(dueDate).format("DD MMM, YYYY");
                 }
-                   
+
                 date = dueDateArray;
                 type = this.isDelayed()? "delayed":"coming";
             }
@@ -152,7 +152,7 @@ import moment from 'moment';
     getSelectedTaskFormattedDate(selectedTask){
         let type, date;
         if(selectedTask && selectedTask.endDate){
-           
+
             const dueDate = selectedTask.endDate;
             if (moment().format("DD MMMM YYYY") === moment(dueDate).format("DD MMMM YYYY")) {
                // console.log("Task End date", selectedTask);
@@ -171,7 +171,7 @@ import moment from 'moment';
                 }else{
                     dueDateArray = moment.utc(dueDate).format("DD MMM, YYYY");
                 }
-                   
+
                 date = dueDateArray;
                 type = this.isSelectedTaskDelayed(selectedTask)? "delayed":"coming";
             }
@@ -251,10 +251,10 @@ import moment from 'moment';
                         }else{
                             tooltip = `${tooltip}, ${member.firstName}`;
                         }
-                        
+
                         if(member.lastName){
                             tooltip = `${tooltip} ${member.lastName}`;
-                        }   
+                        }
 
                     }
                 });
@@ -268,7 +268,7 @@ import moment from 'moment';
                     iconObj.tooltip = `${member.firstName}`;
                     if(member.lastName){
                         iconObj.tooltip = `${iconObj.tooltip} ${member.lastName}`;
-                    }   
+                    }
                 }else{
                     iconObj.icon = "user";
                     iconObj.tooltip="Assign this task";
@@ -281,9 +281,10 @@ import moment from 'moment';
         }else{
             iconObj.icon = "user";
             iconObj.tooltip = "Assign this task";
-        }   
+        }
         return iconObj;
     }
+
 
     getTargetTaskIcon(taskMemberList, findMemberById){
         const iconObj = {};
@@ -301,10 +302,10 @@ import moment from 'moment';
                         }else{
                             tooltip = `${tooltip}, ${member.firstName}`;
                         }
-                        
+
                         if(member.lastName){
                             tooltip = `${tooltip} ${member.lastName}`;
-                        }   
+                        }
 
                     }
                 });
@@ -318,7 +319,7 @@ import moment from 'moment';
                     iconObj.tooltip = `${member.firstName}`;
                     if(member.lastName){
                         iconObj.tooltip = `${iconObj.tooltip} ${member.lastName}`;
-                    }   
+                    }
                 }else{
                     iconObj.icon = "user";
                     iconObj.tooltip="Assign this task";
@@ -342,7 +343,7 @@ import moment from 'moment';
      *      title: "Robins",
      *      thumnailUrl: "/robins_profile.png"
      * }
-     * @param {*} membersObj 
+     * @param {*} membersObj
      */
     getIcon(findMemberById){
         const iconObj = {};
@@ -364,10 +365,10 @@ import moment from 'moment';
                         }else{
                             tooltip = `${tooltip}, ${member.firstName}`;
                         }
-                        
+
                         if(member.lastName){
                             tooltip = `${tooltip} ${member.lastName}`;
-                        }   
+                        }
 
                     }
                 });
@@ -381,7 +382,7 @@ import moment from 'moment';
                     iconObj.tooltip = `${member.firstName}`;
                     if(member.lastName){
                         iconObj.tooltip = `${iconObj.tooltip} ${member.lastName}`;
-                    }   
+                    }
                 }else{
                     iconObj.icon = "user";
                     iconObj.tooltip="Assign this task";
@@ -394,7 +395,7 @@ import moment from 'moment';
         }else{
             iconObj.icon = "user";
             iconObj.tooltip = "Assign this task";
-        }   
+        }
         return iconObj;
     }
 
@@ -417,7 +418,7 @@ import moment from 'moment';
         return memberName;
 
     }
-    
+
  }
 
 
@@ -432,14 +433,14 @@ import moment from 'moment';
 
 
  const getDueDateObj = (date, type, task, isCompletedColorCode, isActiveTaskSection) => {
-    let colorCode; 
+    let colorCode;
     //console.log("Get Due date Obj", task);
     if( task && task.isCompleted){
         colorCode = isCompletedColorCode;
     }else{
         colorCode = dueDateColorCode[type];
     }
-    
+
     if(!isActiveTaskSection){
         colorCode = dueDateColorCode.default;
     }
