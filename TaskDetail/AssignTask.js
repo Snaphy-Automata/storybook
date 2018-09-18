@@ -10,15 +10,16 @@ import CircularIconBox   from '../CircularIconBox'
 
 
 
-const AssignTask = ({isNew, onAssignTaskClick}) => {
-
+const AssignTask = ({onAssignTaskClick, members}) => {
+  const hasMember = !!members.length
   return (
     <div className="task-detail-assign-task-container">
       <div className="task-detail-assign-sidebar-icon">
-        <CircularIconBox className="task-detail-custom-checkbox" icon="user" />
+        <CircularIconBox isNew={!hasMember} className="task-detail-custom-checkbox" icon="user" />
       </div>
       <div className="task-detail-assign-sidebar-body">
-        Assign Task
+        {!hasMember && <span>Assign Task</span> }
+
       </div>
     </div>
   )
@@ -26,12 +27,13 @@ const AssignTask = ({isNew, onAssignTaskClick}) => {
 
 
 AssignTask.defaultProps = {
-
+  members: []
 }
 
 
 AssignTask.propTypes = {
-
+  onAssignTaskClick: PropTypes.func.isRequired,
+  members: PropTypes.array
 }
 
 
