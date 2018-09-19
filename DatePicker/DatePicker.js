@@ -2,16 +2,17 @@
  * Created by Robins Gupta
  * 17th Sept 2018
  */
-import React, {PureComponent}  from 'react';
-import PropTypes               from 'prop-types';
-import DayPickerInput          from 'react-day-picker/DayPickerInput';
-import 'react-day-picker/lib/style.css';
-import { Input, Popup }        from 'semantic-ui-react'
-import moment                  from 'moment';
+import React, {PureComponent}  from 'react'
+import PropTypes               from 'prop-types'
+import DayPickerInput          from 'react-day-picker/DayPickerInput'
+import { Popup }               from 'semantic-ui-react'
 import {
   formatDate,
   parseDate,
-}                              from 'react-day-picker/moment';
+}                              from 'react-day-picker/moment'
+
+//Style
+import 'react-day-picker/lib/style.css'
 
 
 class DatePicker extends PureComponent {
@@ -50,7 +51,6 @@ class DatePicker extends PureComponent {
   }
 
   handleDayChange(selectedDay, modifiers, dayPickerInput) {
-    console.log(selectedDay)
     if(selectedDay){
       this.props.onDayChanged?this.props.onDayChanged(selectedDay):null
     }
@@ -59,11 +59,14 @@ class DatePicker extends PureComponent {
 
   render(){
     const {name, format, date, placeholder, className} = this.props
+    const inputProps = {
+      className
+    }
     return (
       <DayPickerInput
           ref={node=>this.dateRef=node}
           name={name}
-          className={className}
+          inputProps={inputProps}
           placeholder={placeholder}
           format={format}
           hideOnDayClick={true}
