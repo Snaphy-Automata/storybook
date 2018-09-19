@@ -17,6 +17,8 @@ import './TaskDetail.css';
 import Header            from './Header'
 import TaskTitle         from './TaskTitle'
 import AssignTask        from './AssignTask'
+import Dates             from './Dates'
+import Labels            from './Labels'
 
 class TaskDetail extends PureComponent{
   static propTypes = {
@@ -63,7 +65,10 @@ class TaskDetail extends PureComponent{
         <Header onSubTaskAdded={this.onSubTaskAdded} />
         <div className="task-detail-container">
           <TaskTitle task={task} onDataChanged={onTitleChanged}/>
+          {/* Send member id here.. */}
           <AssignTask task={task}  />
+          <Dates task={task} />
+          {/* <Labels /> */}
         </div>
       </div>
     )

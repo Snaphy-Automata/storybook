@@ -15,7 +15,7 @@ import MomentLocaleUtils, {
   parseDate,
 } from 'react-day-picker/moment';
 
-//Custom Import 
+//Custom Import
 import InputWithIcon from './InputWithIcon';
 import IconLabel from '../IconLabel';
 
@@ -56,7 +56,6 @@ const DatePicker = (props) => {
     }
 
     return props.input.onChange(day);
-
   }
 
   const onOpenDatePicker = function () {
@@ -72,7 +71,7 @@ const DatePicker = (props) => {
     setDateDataAction(dataType, null, isDatePickerOpened, taskId);
     onUpdateDate(null);
     // if (dataType === "due") {
-     
+
     // } else if (dataType === "start") {
     //   setDateDataAction("start", null, isDatePickerOpened, taskId);
     //   onUpdateDate(null);
@@ -83,15 +82,15 @@ const DatePicker = (props) => {
   }
 
   // const onBlurEvent = function (e) {
-   
-    
+
+
   // }
 
   const onBlurEvent = (e) => {
     //e.preventDefault();
     setTimeout(() => {
       //console.log("Blur getting called", e.target.value);
-     
+
       let pattern1 = /[0-1][0-9]\/[0-3][0-9]\/2[0-9][0-9][0-9]/g
       let pattern2 = /[0-1][0-9]\/[0-3][0-9]\//g
       let pattern3 = /[0-1][0-9]\/[0-3][0-9]/g
@@ -102,7 +101,7 @@ const DatePicker = (props) => {
         let day = moment(dateData, "MM/DD/YYYY").toDate();
         setDateDataAction(dataType, day, !isDatePickerOpened, taskId);
          onUpdateDate(day);
-      
+
       } else{
 
       }
@@ -116,9 +115,9 @@ const DatePicker = (props) => {
     // }
     }, 50);
 
-    
-   
-   
+
+
+
   }
 
   const onFocusEvent = (e) => {
@@ -133,7 +132,7 @@ const DatePicker = (props) => {
     console.log("On Mouse Up Event geeting called");
   }
 
-  
+
 
   const getDate = function () {
     let value;
@@ -183,7 +182,7 @@ const DatePicker = (props) => {
           formatDate={formatDate}
           component={props => {
             //console.log("Input Date Props", props, input);
-            
+
             // const onChangeData = (event, data) => {
             //   console.log(" Change Date Data getting called", data.value);
             //   return props.input.onChange(data.value)
@@ -238,7 +237,7 @@ function mapStateToProps(store, props) {
   // } else if(props.dateValue){
   //   dateData = props.dateValue;
   // }
-  
+
   //console.log("Calling map to props", taskListReducerConfig);
   return {
     isDatePickerOpened,

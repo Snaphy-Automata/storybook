@@ -31,13 +31,13 @@ class AssignedTeams extends PureComponent {
     const assignedTeams = this.props.assignedTeams
     const getTooltip    = this.getTooltip
     if(assignedTeams && assignedTeams.length){
-      return map(assignedTeams, (user)=>{
+      return map(assignedTeams, (user, index)=>{
         const title = getTooltip(user)
         const props = {
           icon: 'user',
           title,
           tooltip: title,
-          className:"task-detail-assigned-team-box"
+          className:!!index? "task-detail-assigned-team-box": ""
           //FIXME: Add src for images..
           //18th Sept 2018
         }
