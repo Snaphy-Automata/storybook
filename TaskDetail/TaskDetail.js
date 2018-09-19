@@ -7,9 +7,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import map from 'lodash/map';
-import capitalize from 'lodash/capitalize';
-import moment from 'moment';
 import './TaskDetail.css';
 
 
@@ -68,7 +65,7 @@ class TaskDetail extends PureComponent{
           {/* Send member id here.. */}
           <AssignTask task={task}  />
           <Dates task={task} />
-          {/* <Labels /> */}
+          <Labels labelsIds={[]} />
         </div>
       </div>
     )

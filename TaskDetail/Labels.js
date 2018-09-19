@@ -23,12 +23,16 @@ class Labels extends PureComponent{
   }
 
   render(){
+    const {labelIds} = this.props
+
+    const hasLabels = !!labelIds.length
     return (
       <div className="task-detail-labels-container">
         <div className="task-detail-labels-sidebar-icon">
-          <CircularIconBox className="task-detail-labels-checkbox" icon="user" />
+          <CircularIconBox isNew={!hasLabels} className="task-detail-labels-checkbox" icon="tag" />
         </div>
-        <div className="task-detail-label-sidebar-body">
+        <div className="task-detail-assign-sidebar-body">
+          {!hasLabels && <span>Assign Labels</span> }
 
         </div>
       </div>

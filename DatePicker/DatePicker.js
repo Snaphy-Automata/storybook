@@ -46,7 +46,7 @@ class DatePicker extends PureComponent {
   overlayComponent({ children, ...props }) {
     const open = true;
     return (
-        <Popup hideOnScroll context={this.dateRef.getInput()} content={children} position='bottom left' open={open} />
+        <Popup fluid hideOnScroll context={this.dateRef.getInput()} content={children} position='bottom left' open={open} />
     );
   }
 

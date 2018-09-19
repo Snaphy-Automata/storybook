@@ -44,7 +44,6 @@ class DateBox extends PureComponent {
       name,
       placeholder,
     } = this.props
-    console.log("Classname", this.state.className)
     return (
       <div className="task-detail-date-box">
         <div className="task-detail-dates-icon">
