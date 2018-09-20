@@ -7,19 +7,19 @@ import CustomCheckbox from '../CustomCheckbox'
 import PopupField from '../PopupField';
 
 //Import Actions..
-import { onSubTaskTitleEditAction, onSubTaskDeleteClickedAction } from '../../baseComponents/GridView/components/ModelData/ModelDataActions';
+import { onSubTaskTitleEditAction, onSubTaskDeleteClickedAction } from '../../baseComponents/GridView/components/ModelData/SubTask/action';
 
 const SubTask = (props) => {
-    const { 
-        title, 
-        isSelected, 
-        subTaskId, 
-        onSaveSubTask, 
-        onSubTaskStateChanged, 
-        indexValue, 
-        onRemoveSubTask, 
-        isEditable, 
-        isDialogOpened 
+    const {
+        title,
+        isSelected,
+        subTaskId,
+        onSaveSubTask,
+        onSubTaskStateChanged,
+        indexValue,
+        onRemoveSubTask,
+        isEditable,
+        isDialogOpened
     } = props;
     const onKeyPressEvent = (e) => {
         if (e.key === "Enter") {
@@ -89,7 +89,7 @@ const SubTask = (props) => {
 
                         <Icon name="ellipsis horizontal" style={{ color: "#707070" }}></Icon>
                     </div>}
-                    contentComponent={<div style={{cursor:"pointer"}}onClick={onRemoveSubTaskClicked}>Delete</div>} 
+                    contentComponent={<div style={{cursor:"pointer"}}onClick={onRemoveSubTaskClicked}>Delete</div>}
                     isDialogOpened = {isDialogOpened}
                     position="bottom right"
                     onDialogStateChange={onSubTaskDeleteDialogStateChanged} />

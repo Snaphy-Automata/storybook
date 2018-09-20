@@ -15,7 +15,7 @@ import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
-import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/ModelDataActions';
+import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/User/action';
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 

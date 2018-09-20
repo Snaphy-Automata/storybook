@@ -6,7 +6,7 @@ import './TaskComment.css';
 
 
 //Import Actions..
-import { changeCommentDialogStateAction } from '../../baseComponents/GridView/components/ModelData/ModelDataActions'
+import { changeCommentDialogStateAction } from '../../baseComponents/GridView/components/ModelData/Comment/action'
 
 
 const TaskComment = (props) => {
