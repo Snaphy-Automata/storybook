@@ -10,10 +10,8 @@ import map from 'lodash/map';
 import './AssignedUserDialog.css';
 import TeamCircleIcon from '../TeamCircleIcon';
 import CustomCheckbox from '../CustomCheckbox';
-//import {memberObj, MEMBERS} from '../../data/taskListData';
-import TaskHelper from '../TaskList/helper';
 
-import {getTaskMembersAction} from '../../baseComponents/GridView/components/ModelData/ModelDataActions';
+import {getTaskMembersAction} from '../../baseComponents/GridView/components/ModelData/User/action';
 
 
 
@@ -22,7 +20,7 @@ class AssignedUserDailog extends React.Component {
 
 
     componentDidMount(){
-        
+
         // this.memberList = MEMBERS;
         // let selectedMemberDataList = [];
         // if(this.props.taskMemberList && this.props.task.assignedTo.length){
@@ -31,7 +29,7 @@ class AssignedUserDailog extends React.Component {
         //     });
         //     this.props.getSelectedMemberListAction(selectedMemberDataList);
         // }
-       
+
     }
 
     render() {
@@ -52,7 +50,7 @@ class AssignedUserDailog extends React.Component {
         //     let selectedMemberList_ = this.props.selectedMemberList;
         //     let isSelected_ = false;
         //     if(selectedMemberList_ && selectedMemberList_.length){
-               
+
         //         selectedMemberList_.forEach((memberData, index) =>{
         //             if(memberData.member === member){
         //                 if(memberData.isSelected){
@@ -60,7 +58,7 @@ class AssignedUserDailog extends React.Component {
         //                 } else{
         //                     isSelected_ = false;
         //                 }
-                       
+
         //             }
         //         })
         //     }
@@ -98,7 +96,7 @@ class AssignedUserDailog extends React.Component {
                                    if(taskMemberList){
                                        temptaskMemberList = [...taskMemberList];
                                        if(temptaskMemberList.length){
-                                        
+
                                            for(var i=0;i<temptaskMemberList.length;i++){
                                                if(temptaskMemberList[i] === memberId){
                                                    temptaskMemberList.splice(i, 1);
@@ -121,12 +119,12 @@ class AssignedUserDailog extends React.Component {
                                         <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" title={`${memberObj.firstName}`}></TeamCircleIcon>
                                         <div className="assined-user-dialog-name-container">{`${memberObj.firstName} ${memberObj.lastName}`}</div>
                                         <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container" isSelected={getSelectedMember()} color="blue" type="assigneduser" onItemClicked={onTaskMemberSelected}></CustomCheckbox></div>
-                                    ) 
+                                    )
                                    } else{
-                                       return 
+                                       return
                                    }
                                } else{
-                                   return 
+                                   return
                                }
                            })
                        }
@@ -139,7 +137,7 @@ class AssignedUserDailog extends React.Component {
                                 if(index<4){
 
                                     console.log("Blank list getting called");
-                                   
+
                                     return (
                                         <div key={index} className="assigned-user-dialog-item-container">
                                         <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" title={taskHelper.getMemberName(memberObj, member)}></TeamCircleIcon>
@@ -149,10 +147,10 @@ class AssignedUserDailog extends React.Component {
                                 } else{
                                     return;
                                 }
-                                
+
                             })
                         }
-                        
+
                     </div>
                     }
                     {MEMBERS && MEMBERS.length > 4 && <div className="assigned-user-dialog-see-more-container">See More</div>} */}
