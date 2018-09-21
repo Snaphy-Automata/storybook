@@ -50,7 +50,7 @@ class TaskItem extends React.PureComponent {
             if (task.isCompleted) {
                 this.delayedClassName = `task-item-delayed-block completed`;
             } else {
-                this.delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
+                //this.delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
             }
         } else {
             this.delayedClassName = `task-item-delayed-block`;
@@ -63,7 +63,7 @@ class TaskItem extends React.PureComponent {
             this.iconObj = this.taskHelper.getIcon(findMemberById);
         } else if (!selectedTask && targetTaskId && taskMemberList) {
             this.iconObj = this.taskHelper.getTargetTaskIcon(taskMemberList, findMemberById);
-    
+
         }
 
         this.openAssignedUserDialog = this.openAssignedUserDialog.bind(this);
@@ -145,12 +145,12 @@ class TaskItem extends React.PureComponent {
 
     render() {
         const {
-            style, 
-            isNew, 
-            isCreate, 
-            isScrolling, 
-            selectedTask, 
-            task, 
+            style,
+            isNew,
+            isCreate,
+            isScrolling,
+            selectedTask,
+            task,
             itemTitleData,
             findMemberById,
             taskMemberList,
@@ -172,11 +172,11 @@ class TaskItem extends React.PureComponent {
             } else {
                 titleName = "title_new";
             }
-    
+
             return titleName;
         }
 
-        
+
         return (
             <div style={{ ...style, ...this.lastTaskStyle }} className={this.getWrapperClassName()}>
                 {!isNew && !isCreate &&
@@ -192,7 +192,7 @@ class TaskItem extends React.PureComponent {
                                     <div className={'task-list-item-icon'}>
                                         {this.iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} title={this.iconObj.title} tooltip={this.iconObj.tooltip} onClick={this.openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={this.onCloseAssignedUserDialog()} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
                                         {this.iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} icon={this.iconObj.icon} tooltip={this.iconObj.tooltip} onClick={this.openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={this.onCloseAssignedUserDialog()} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
-                                     
+
                                     </div>}
                             </div>
 
@@ -295,7 +295,7 @@ class TaskItem extends React.PureComponent {
                                     {
                                         !selectedTask && formattedDueDateObj.date &&
                                         <div className="task-list-item-date-container" style={{ color: formattedDueDateObj.colorCode }}>
-                                           
+
                                             {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
                                                 content="Change Due Date"
                                                 position='bottom center'
@@ -325,7 +325,7 @@ class TaskItem extends React.PureComponent {
                                     {
                                         selectedTask && selectedTask.id === task.id && selectedTaskDueDateObj.date &&
                                         <div className="task-list-item-date-container" style={{ color: selectedTaskDueDateObj.colorCode }}>
-                                          
+
                                             {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: selectedTaskDueDateObj.colorCode }} onClick={openSelectDateDialog}>{selectedTaskDueDateObj.date}</div>}</div>}
                                                 content="Change Due Date"
                                                 position='bottom center'
