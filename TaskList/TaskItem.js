@@ -90,13 +90,13 @@ class TaskItem extends React.PureComponent {
 
     openAssignedUserDialog = () => {
         const {getTaskMembersAction, onOpenAssignedUserDialogAction, task} = this.props;
-        getTaskMembersAction(task.id, task.assignedTo);
+        //getTaskMembersAction(task.id, task.assignedTo);
         //onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
     }
 
     onCloseAssignedUserDialog = () => {
         const {getTaskMembersAction, onOpenAssignedUserDialogAction, task} = this.props;
-        getTaskMembersAction(null, []);
+        //getTaskMembersAction(null, []);
         //onOpenAssignedUserDialogAction(false, task.id)
     }
 
@@ -161,6 +161,8 @@ class TaskItem extends React.PureComponent {
             isAddNewTaskVisible,
         } = this.props;
 
+        console.log("Task Item Props getting called");
+
         const getTitleFieldName = () => {
             let titleName;
             if (task) {
@@ -178,6 +180,7 @@ class TaskItem extends React.PureComponent {
 
 
         return (
+
             <div style={{ ...style, ...this.lastTaskStyle }} className={this.getWrapperClassName()}>
                 {!isNew && !isCreate &&
                     <div className="task-list-item-delayed-wrapper">
@@ -418,7 +421,6 @@ function mapStateToProps(store, props) {
     let isNextWeekSelected = false;
     let selectedTask = null;
     let itemTitleData = null;
-    let statusObjData = null;
     let taskMemberList;
     let targetTaskId;
     if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
@@ -432,8 +434,6 @@ function mapStateToProps(store, props) {
     }
     const modelDataReducer = store.ModelDataReducer;
     const titleData = modelDataReducer.titleData;
-    const draggedTaskOrSection = modelDataReducer.draggedTaskOrSection;
-    const selectedTaskStatusData = modelDataReducer.selectedTaskStatusData;
     const taskMemberListObj = modelDataReducer.taskMemberListObj;
 
     if (titleData) {
@@ -445,13 +445,6 @@ function mapStateToProps(store, props) {
             }
         }
 
-    }
-
-    if (draggedTaskOrSection && draggedTaskOrSection.taskId === props.taskId) {
-        isAddTaskVisisble = draggedTaskOrSection.isAddTaskVisisble;
-    }
-    if (selectedTaskStatusData && selectedTaskStatusData.taskId === props.taskId && selectedTaskStatusData.data) {
-        statusObjData = selectedTaskStatusData.data;
     }
 
     if (quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId) {
@@ -499,7 +492,6 @@ function mapStateToProps(store, props) {
         itemTitleData,
         isAddNewTaskVisible: store.ModelDataReducer.isAddNewTaskVisible,
         labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
-        statusObjData,
         taskMemberList,
         targetTaskId,
         isActiveTaskSection,

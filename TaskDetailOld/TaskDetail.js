@@ -69,7 +69,7 @@ const TaskDetail = (props) => {
         onTaskDetailStateChanged
     } = props;
 
-    //console.log("task Detail props", props);
+  console.log("task Detail Old Getting called");
 
     //console.log("Task Detail Props", subTaskList);
     //console.log("Task Detail Props", selectedTask);
@@ -290,27 +290,27 @@ const TaskDetail = (props) => {
                       updateTaskSelectedMemberList={updateTaskSelectedMemberList}
                   >
                   </TagContainer>}
-                  {!selectedTask && <TagContainer
+                  {/* {!selectedTask && <TagContainer
                       type="user"
                       onAddButtonClickedAction={onUserAddButtonClicked}
                       isButtonClicked={props.isUserButtonClicked}
                       totalItemList={props.users}
                       selectedMemberListObj={selectedMemberListObj}>
-                  </TagContainer>}
+                  </TagContainer>} */}
               </div>
 
               <div className="task-detail-date-container">
                   <div className="task-detail-due-date-container">
                       <div className="task-detail-due-date-text">Due Date</div>
                       {selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.endDate}/>}
-                      {!selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} />}
+                      {/* {!selectedTask && <DatePickerForm title="Due Date" dataType="due" onRemoveDate={props.onRemoveDueDate} onUpdateDate={onUpdateTaskDueDate} style={{ marginTop: "7px" }} />} */}
                       {/* <IconLabel size="tiny" icon="calendar minus outline" name="Due Date"></IconLabel> */}
 
                   </div>
                   <div className="task-detail-start-date-container">
                       <div className="task-detail-start-date-text">Start Date</div>
                       {selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} taskId={selectedTask.id} dateValue={selectedTask.startDate}/>}
-                      {!selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} />}
+                      {/* {!selectedTask && <DatePickerForm title="Start Date" dataType="start" onRemoveDate={props.onRemoveStartDate} onUpdateDate={onUpdateTaskStartDate} style={{ marginTop: "7px" }} />} */}
                       {/* <IconLabel size="tiny" icon="calendar minus outline" name="Start Date"></IconLabel> */}
 
                   </div>
@@ -318,7 +318,7 @@ const TaskDetail = (props) => {
                       <div className="task-detail-duration-text">Duration</div>
                       <div style={{ marginTop: "7px" }}>
                           {selectedTask && <DurationForm taskId={selectedTask.id} onUpdateTaskDuration={onUpdateTaskDuration}></DurationForm>}
-                          {!selectedTask && <DurationForm onUpdateTaskDuration={onUpdateTaskDuration}></DurationForm>}
+                          {/* {!selectedTask && <DurationForm onUpdateTaskDuration={onUpdateTaskDuration}></DurationForm>} */}
                           {/* <IconLabel size="small" icon="clock outline" name="Duration" /> */}
 
                       </div>
@@ -348,7 +348,7 @@ const TaskDetail = (props) => {
                           deleteLabel={deleteLabel}>
                       </TagContainer>
                   }
-                  {!selectedTask &&
+                  {/* {!selectedTask &&
                       <TagContainer
                           type="label"
                           onAddButtonClickedAction={onLabelAddButtonClicked}
@@ -361,7 +361,7 @@ const TaskDetail = (props) => {
                           saveLabel={saveLabel}
                           deleteLabel={deleteLabel}>
                       </TagContainer>
-                  }
+                  } */}
               </div>
 
               {props.subTaskList && props.subTaskList.length !== 0 && <div className="task-detail-sub-tasks-container">
@@ -389,7 +389,7 @@ const TaskDetail = (props) => {
                       {/* <Field name={getTitleFieldName()} type="text" placeholder="Write a task name" size="large" rows="1" label="TaskTitle" component={InputElement} onDataChanged={onTitleDataChanged}></Field> */}
                       {selectedTask && selectedTask.description &&  <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} descriptionData={selectedTask.description} onUpdateTaskDescription={onUpdateTaskDescription} taskId={selectedTask.id}></Field>}
                       {selectedTask && !selectedTask.description && <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} onUpdateTaskDescription={onUpdateTaskDescription} taskId={selectedTask.id}></Field>}
-                      {!selectedTask && <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} onUpdateTaskDescription={onUpdateTaskDescription}></Field>}
+                      {/* {!selectedTask && <Field name="description" type="text" placeholder="Write a description Here" size="large" rows="3" label="TaskDescription" component={DescriptionField} invalid={props.invalid} submitting={props.submitting} pristine={props.pristine} onUpdateTaskDescription={onUpdateTaskDescription}></Field>} */}
 
                       {/* <Field name="title" type="text" placeholder="Write a task name" size="large" comonent={InputField}></Field> */}
                       {/* <Description placeholder="Write Description Here" style={{ minHeight: '150px', marginTop: '15px' }}></Description> */}

@@ -56,14 +56,14 @@ class TaskDetail extends PureComponent{
       onTitleChanged,
       task,
     } = this.props
-
+    console.log("New task Deatil getting called");
     return (
       <div>
         <Header onSubTaskAdded={this.onSubTaskAdded} />
         <div className="task-detail-container">
           <TaskTitle task={task} onDataChanged={onTitleChanged}/>
           {/* Send member id here.. */}
-          <AssignTask task={task}  />
+          {/* <AssignTask task={task}  /> */}
           <Dates task={task} />
           <Labels labelsIds={[]} />
           {/* <SubTasks task={task} /> */}
