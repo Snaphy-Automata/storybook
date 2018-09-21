@@ -211,6 +211,7 @@ class VirtualList extends PureComponent {
               indexValue={index}
               section={taskOrSection}
               onNewTaskAdded={onNewTaskAdded}
+              //disabled={true}
               onSectionStateChanged={onSectionStateChanged}
               onAddNewtaskClicked={onAddNewtaskClicked}/>
           }
@@ -349,6 +350,7 @@ class TaskList extends PureComponent {
     }
   }
 
+
   onSortEndRaw(e){
     const {
       onItemPositionChanged,
@@ -356,30 +358,29 @@ class TaskList extends PureComponent {
     }  = this.props;
     onAddNewTaskVisible(true);
     if (e.oldIndex !== e.newIndex) {
-      //console.log("Hoc Method getting called");
       onItemPositionChanged(e.oldIndex, e.newIndex);
-      //scrollToIndex = e.newIndex;
       if(this.SortableList){
         // We need to inform React Virtualized that the items have changed heights
         const instance = this.SortableList.getWrappedInstance();
-
-        //ListRef.recomputeRowHeights();
-        //instance.forceUpdate();
+        console.log(instance, ListRef)
+        setTimeout(()=>{
+          //ListRef.recomputeRowHeights();
+          instance.forceUpdate();
+        })
       }
     }
   }
 
 
-
   onSortStartRaw(e){
-    //e.preventDefault()
-    console.log("Getting Called");
     const {onAddNewTaskVisible} = this.props;
     onAddNewTaskVisible(false);
     if(this.SortableList){
       const instance = this.SortableList.getWrappedInstance();
-      //ListRef.recomputeRowHeights();
-      //instance.forceUpdate();
+      setTimeout(()=>{
+         //ListRef.recomputeRowHeights();
+         instance.forceUpdate();
+      })
     }
 
   }
@@ -387,8 +388,8 @@ class TaskList extends PureComponent {
 
   onSectionCollapsedRaw(){
     const instance = this.SortableList.getWrappedInstance();
-    //ListRef.recomputeRowHeights();
-    //instance.forceUpdate();
+    ListRef.recomputeRowHeights();
+    instance.forceUpdate();
   }
 
   getElement(id){
