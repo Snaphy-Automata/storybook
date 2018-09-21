@@ -476,7 +476,7 @@ function mapStateToProps(store, props) {
         }
 
     }
-    let selectedTaskId = modelDataReducer.selectedTask;
+    let selectedTaskId = modelDataReducer.selectedTaskId;
     if (selectedTaskId === props.taskId) {
         selectedTask = allTaskObj.byId[selectedTaskId];
     }
