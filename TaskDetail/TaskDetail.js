@@ -64,7 +64,7 @@ class TaskDetail extends PureComponent{
           <TaskTitle task={task} onDataChanged={onTitleChanged}/>
           {/* Send member id here.. */}
           {/* <AssignTask task={task}  /> */}
-          <Dates task={task} />
+          <Dates  task={task} />
           <Labels labelsIds={[]} />
           {/* <SubTasks task={task} /> */}
         </div>
