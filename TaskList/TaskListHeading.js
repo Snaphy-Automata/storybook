@@ -190,12 +190,15 @@ class TaskListHeading extends PureComponent{
 // Retrieve data from store as props
 function mapStateToProps(store, props) {
     const modelDataReducer = store.ModelDataReducer;
-    const sectionState = modelDataReducer.sectionState[props.sectionId];
+   // const sectionState = modelDataReducer.sectionState[props.sectionId];
     const section      = modelDataReducer.task.byId[props.sectionId];
     let isCollapsed = false;
-    if (sectionState && sectionState.isCollapsed) {
+    if(section && section.isCollapsed){
         isCollapsed = true;
     }
+    // if (sectionState && sectionState.isCollapsed) {
+    //     isCollapsed = true;
+    // }
 
     const heading = props.heading? props.heading:section.title
     const protectedName = props.protectedName? props.protectedName: section.protectedName

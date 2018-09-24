@@ -51,17 +51,21 @@ const isSectionEmpty = (activeTasks, index, findTaskById) => {
 }
 
 
-const isSectionCollapsed = (collapsedSectionList, sectionId) => {
+const isSectionCollapsed = (section) => {
     //console.log("Collapsed Section List", collapsedSectionList);
-    if(collapsedSectionList && collapsedSectionList.length){
-        for(var i=0;i<collapsedSectionList.length;i++){
-            if(collapsedSectionList[i] === sectionId){
-                return true;
-            }
-        }
-
+    if(section && section.isCollapsed){
+        return section.isCollapsed;
+    } else{
+        return false;
     }
-    return false;
+    // if(collapsedSectionList && collapsedSectionList.length){
+    //     for(var i=0;i<collapsedSectionList.length;i++){
+    //         if(collapsedSectionList[i] === sectionId){
+    //             return true;
+    //         }
+    //     }
+
+    // }
 }
 
 
@@ -254,7 +258,7 @@ class VirtualList extends PureComponent {
         const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
         if(task){
           if(task.type === "section"){
-              let isCollapsed = isSectionCollapsed(collapsedSectionList, task.id);
+              let isCollapsed = isSectionCollapsed(task);
 
               const firstSectionId = activeTasks[0];
               if(taskId === firstSectionId){
