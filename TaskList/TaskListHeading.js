@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {Component, PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Icon, Input } from 'semantic-ui-react'
@@ -18,7 +18,7 @@ const DragHandle = SortableHandle(() => (
 )); // This can be any component you want
 
 
-class TaskListHeading extends PureComponent{
+class TaskListHeading extends Component{
   static defaultProps = {
     type: "fixed",
   }
@@ -33,7 +33,6 @@ class TaskListHeading extends PureComponent{
     headingClassName: PropTypes.string,
     isCollapsed: PropTypes.bool,
     isEmptySection: PropTypes.bool,
-    isAddNewTaskVisible: PropTypes.bool,
     className: PropTypes.string,
     iconClassName: PropTypes.string,
     onNewTaskAdded: PropTypes.func,
@@ -57,6 +56,7 @@ class TaskListHeading extends PureComponent{
         emptySectionId = sectionId;
     }
     onSectionStateChanged(sectionId, index, isCollapsed, emptySectionId);
+
   }
 
   onAddNewTaskClickedRaw(){
@@ -89,7 +89,6 @@ class TaskListHeading extends PureComponent{
       protectedName,
       isCollapsed,
       isEmptySection,
-      isAddNewTaskVisible,
       className,
       iconClassName,
     } = this.props;
@@ -159,7 +158,7 @@ class TaskListHeading extends PureComponent{
                 }
             </div>
         </div>
-        {
+        {/* {
             isEmptySection && !isCollapsed && isAddNewTaskVisible &&
             <div className="task-list-item-delayed-wrapper" style={{backgroundColor:"#fcfcfc"}} onClick={this.onWriteTask}>
                 <div className="task-list-item-container" >
@@ -177,7 +176,7 @@ class TaskListHeading extends PureComponent{
                     </div>
                 </div>
             </div>
-        }
+        } */}
       </div>
     )
 
@@ -228,7 +227,6 @@ function mapStateToProps(store, props) {
       isCollapsed,
       heading,
       protectedName,
-      isAddNewTaskVisible : store.ModelDataReducer.isAddNewTaskVisible
     };
 }
 

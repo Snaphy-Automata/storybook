@@ -133,18 +133,16 @@ class TaskItem extends React.PureComponent {
         const {
             style,
             isNew,
-            isCreate,
             isScrolling,
             selectedTask,
             task,
             itemTitleData,
             findMemberById,
             memberIdList,
-            isLastTask,
-            isAddNewTaskVisible,
+            isEmpty,
         } = this.props;
 
-        console.log("Task Item Props getting called");
+        console.log("Task Item Props getting called", task);
 
         const getTitleFieldName = () => {
             let titleName;
@@ -165,7 +163,7 @@ class TaskItem extends React.PureComponent {
         return (
 
             <div style={{ ...style, ...this.lastTaskStyle }} className={this.getWrapperClassName()}>
-                {!isNew && !isCreate &&
+                {!isNew && !isEmpty && 
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
                             <div className={this.delayedClassName}></div>
@@ -346,7 +344,7 @@ class TaskItem extends React.PureComponent {
 
                 }
                  {
-                isLastTask && isAddNewTaskVisible && !isNew &&
+                isEmpty  &&
                 <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onClick={this.onWriteTask}>
                     <div className={this.taskItemContainerClassName} >
                         <div className={this.delayedClassName}></div>
@@ -473,7 +471,6 @@ function mapStateToProps(store, props) {
         isDatePickerOpened,
         selectedTask,
         itemTitleData,
-        isAddNewTaskVisible: store.ModelDataReducer.isAddNewTaskVisible,
         labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
         taskMemberList,
         targetTaskId,

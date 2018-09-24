@@ -112,9 +112,11 @@ const SortableTask = SortableElement((props)=>{
       onQuickUpdateTaskMembers
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
+    let isEmpty = (task && !task.projectId)? true: false
+    //console.log("Sortable Task", task);
     return (
         <div style={style}>
-           {task && task.title &&
+           {task &&
            <TaskItem
             isLastTask={isLastTask}
             index={indexValue}
@@ -128,6 +130,7 @@ const SortableTask = SortableElement((props)=>{
             onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
             activeSectionId={activeTasks[0]}
             isNew={isNew}
+            isEmpty={isEmpty}
             onTaskItemBlurEvent={onTaskItemBlurEvent}
             onTaskItemFocusEvent={onTaskItemFocusEvent}
             onEnterNextNewTask={onEnterNextNewTask}
@@ -252,7 +255,7 @@ class VirtualList extends PureComponent {
      * @param {*} index
      */
     _getRowHeight({index}){
-        const {activeTasks, findTaskById, isAddNewTaskVisible, collapsedSectionList} = this.props;
+        const {activeTasks, findTaskById} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
@@ -263,24 +266,27 @@ class VirtualList extends PureComponent {
 
               const firstSectionId = activeTasks[0];
               if(taskId === firstSectionId){
-                  if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
-                      return 85.5
-                  } else{
-                      return 44.5;
-                  }
+                  return 44.5;
+                //   if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
+                //       return 85.5
+                //   } else{
+                //       return 44.5;
+                //   }
 
               }else{
-                  if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
-                      return 100;
-                  } else{
-                      return 59;
-                  }
+                  return 59;
+                //   if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
+                //       return 100;
+                //   } else{
+                //       return 59;
+                //   }
               }
-            } else if(task.type === "task"){
-                if(isLastTask && isAddNewTaskVisible && task.title){
-                    return 82;
-                }
-            }
+            } 
+            // else if(task.type === "task"){
+            //     if(isLastTask && isAddNewTaskVisible && task.title){
+            //         return 82;
+            //     }
+            // }
         }
         return 41;
     }
@@ -357,10 +363,8 @@ class TaskList extends PureComponent {
 
   onSortEndRaw(e){
     const {
-      onItemPositionChanged,
-      onAddNewTaskVisible
+      onItemPositionChanged,     
     }  = this.props;
-    onAddNewTaskVisible(true);
     if (e.oldIndex !== e.newIndex) {
       onItemPositionChanged(e.oldIndex, e.newIndex);
       if(this.SortableList){
@@ -377,8 +381,6 @@ class TaskList extends PureComponent {
 
 
   onSortStartRaw(e){
-    const {onAddNewTaskVisible} = this.props;
-    onAddNewTaskVisible(false);
     if(this.SortableList){
       const instance = this.SortableList.getWrappedInstance();
       setTimeout(()=>{
@@ -422,7 +424,6 @@ class TaskList extends PureComponent {
       onEnterNextNewTask,
       onSectionStateChanged,
       onAddNewtaskClicked,
-      isAddNewTaskVisible,
       collapsedSectionList,
       onQuickUpdateDate,
       memberIdList,
@@ -469,7 +470,6 @@ class TaskList extends PureComponent {
               onSortStart={this.onSortStart}
               findMemberById={findMemberById}
               findLabelById={findLabelById}
-              isAddNewTaskVisible={isAddNewTaskVisible}
               collapsedSectionList={collapsedSectionList}
               onSectionCollapsed={this.onSectionCollapsed}
               onQuickUpdateDate={onQuickUpdateDate}
