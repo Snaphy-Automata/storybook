@@ -14,8 +14,12 @@ const SelectLabel = ({name, isSelected, color, style, onClick, type, className, 
       onButtonClick? onButtonClick(event, labelId): null
     }
 
+    const onLabelBoxBtnClick = (event)=>{
+      onClick?onClick(event, labelId): null
+    }
+
     return (
-        <div className={className_} style={style} onClick={onClick}>
+        <div className={className_} style={style} onClick={onLabelBoxBtnClick}>
             <div className="select-label-content-container">{name}</div>
             <div onClick={onLabelBtnClick} className="select-label-add-container" style={{backgroundColor: color}}>
                 {type!=="read" && type!=="edit" && !isSelected && <Icon style={{margin:0}} name="add"/>}

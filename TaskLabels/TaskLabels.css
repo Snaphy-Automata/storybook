@@ -11,3 +11,17 @@ Created by Robins Gupta
   position: relative;
   top: 0.4px;
 }
+
+.task-detail-select-label-box-container{
+  float: left;
+  display: block;
+  margin-top: 19px;
+}
+
+.task-detail-create-label-btn{
+  float: left;
+  height: 25px;
+  border-radius: 5px;
+  border: solid 0.7px #eeeeee;
+
+}

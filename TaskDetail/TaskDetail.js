@@ -21,6 +21,7 @@ class TaskDetail extends PureComponent{
   static propTypes = {
     onTitleChanged: PropTypes.func.isRequired,
     task: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
   }
 
   static defaultProps = {
@@ -58,6 +59,7 @@ class TaskDetail extends PureComponent{
     const {
       onTitleChanged,
       task,
+      projectId,
     } = this.props
     console.log("New task Deatil getting called", task);
     return (
@@ -68,7 +70,7 @@ class TaskDetail extends PureComponent{
           {/* Send member id here.. */}
           {/* <AssignTask task={task}  /> */}
           <Dates  task={task} />
-          <Labels labelIds={task.labels} />
+          <Labels projectId={projectId} labelIds={task.labels} />
           {/* <SubTasks task={task} /> */}
         </div>
       </div>

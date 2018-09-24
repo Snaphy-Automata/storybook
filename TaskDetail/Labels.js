@@ -20,10 +20,11 @@ class Labels extends PureComponent{
 
   static propTypes = {
     labelIds: PropTypes.array,
+    projectId: PropTypes.string.isRequired,
   }
 
   render(){
-    const {labelIds} = this.props
+    const {labelIds, projectId} = this.props
     console.log("Labels Ids", labelIds)
     const hasLabels = !!labelIds.length
     console.log("has Labels", hasLabels)
@@ -38,6 +39,7 @@ class Labels extends PureComponent{
             hasLabels &&
             <TaskLabel
               labelIds={labelIds}
+              projectId={projectId}
             />
           }
         </div>

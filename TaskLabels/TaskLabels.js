@@ -10,24 +10,27 @@ import PropTypes from 'prop-types'
 import map from 'lodash/map'
 import "./TaskLabels.css"
 
+
 //Custom import
 import Label from '../SelectLabel'
 import TeamCircleIcon from '../TeamCircleIcon'
+import TaskLabelBox from './TaskLabelBox'
+
 
 class TaskLabels extends PureComponent {
   static labelClosedClass="task-detail-assigned-team-box task-detail-assigned-team-class"
   static labelOpenClass = "task-detail-assigned-team-box task-detail-assigned-team-class close"
   static defaultProps = {
-    labelIds: []
+    labelIds: [],
   }
 
   static propTypes = {
     labelIds: PropTypes.array,
+    projectId: PropTypes.string.isRequired,
   }
 
   constructor(props) {
     super(props)
-    const that = this
     this.onLabelRemoveBtnClick = this._onLabelRemoveBtnClick.bind(this)
     this.onAddLabelBtnClick   = this._onAddLabelBtnClick.bind(this)
     this.state={
@@ -47,20 +50,21 @@ class TaskLabels extends PureComponent {
     })
   }
 
-  getLabels(labelsIds){
-    return map(labelsIds, (labelId, index)=>{
+  getLabels(labelIds){
+    return map(labelIds, (labelId, index)=>{
       let style = {marginLeft: "15px"}
       if(index === 0){
         style = {}
       }
       return (
-        <Label key={index} onButtonClick={this.onLabelRemoveBtnClick} labelId={labelId} style={style} name="demo" type="read" color="#d55fe0" />
+        <Label key={index} onButtonClick={this.onLabelRemoveBtnClick} labelId={labelId} style={style} type="read"/>
       )
     })
   }
 
+
   render() {
-    const {labelIds} = this.props
+    const {labelIds, projectId} = this.props
     const {isDialogOpened} = this.state
     let assignLabelProp
     if(isDialogOpened){
@@ -81,10 +85,16 @@ class TaskLabels extends PureComponent {
       <div className="task-labels-container">
         {this.getLabels(labelIds)}
         <TeamCircleIcon onClick={this.onAddLabelBtnClick} iconClassName="task-detail-label-add-new-cicle" size="tiny" key={"assign-labels"} {...assignLabelProp}/>
+        {
+          isDialogOpened &&
+          <TaskLabelBox projectId={projectId} />
+        }
       </div>
     )
   }
 }
+
+
 
 
 export default TaskLabels
