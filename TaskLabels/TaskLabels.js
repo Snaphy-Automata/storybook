@@ -22,6 +22,7 @@ class TaskLabels extends PureComponent {
   static labelOpenClass = "task-detail-assigned-team-box task-detail-assigned-team-class close"
   static defaultProps = {
     labelIds: [],
+    hasLabels: false,
   }
 
   static propTypes = {
@@ -31,32 +32,20 @@ class TaskLabels extends PureComponent {
     onLabelRemoveBtnClick: PropTypes.func.isRequired,
     //When a label is added..
     onLabelAdded: PropTypes.func.isRequired,
+    //On plus button click to display label dialog box to select labels.
+    onAddLabelBtnClick: PropTypes.func.isRequired,
+    hasLabels: PropTypes.bool,
   }
 
   constructor(props) {
     super(props)
-    this.onAddLabelBtnClick    = this._onAddLabelBtnClick.bind(this)
-    this.state={
-      isDialogOpened: false
-    }
   }
 
 
-
-  _onAddLabelBtnClick(){
-    console.log("Add Label Btn clicked")
-    const state = !this.state.isDialogOpened
-    this.setState({
-      isDialogOpened: state
-    })
-  }
 
   getLabels(labelIds, onLabelRemoveBtnClick){
     return map(labelIds, (labelId, index)=>{
-      let style = {marginLeft: "15px"}
-      if(index === 0){
-        style = {}
-      }
+      let style = {marginRight: "15px", marginBottom: "10px"}
       return (
         <Label key={index} onButtonClick={onLabelRemoveBtnClick} labelId={labelId} style={style} type="read"/>
       )
@@ -65,8 +54,7 @@ class TaskLabels extends PureComponent {
 
 
   render() {
-    const {labelIds, projectId, onLabelRemoveBtnClick, onLabelAdded} = this.props
-    const {isDialogOpened} = this.state
+    const {labelIds, projectId, onLabelRemoveBtnClick, onLabelAdded, onAddLabelBtnClick, isDialogOpened, hasLabels} = this.props
     let assignLabelProp
     if(isDialogOpened){
       assignLabelProp = {
@@ -84,8 +72,9 @@ class TaskLabels extends PureComponent {
 
     return (
       <div className="task-labels-container">
-        {this.getLabels(labelIds, onLabelRemoveBtnClick)}
-        <TeamCircleIcon onClick={this.onAddLabelBtnClick} iconClassName="task-detail-label-add-new-cicle" size="tiny" key={"assign-labels"} {...assignLabelProp}/>
+        {!hasLabels && <span style={{cursor:"pointer"}} onClick={onAddLabelBtnClick}>Assign Labels</span> }
+        {hasLabels && this.getLabels(labelIds, onLabelRemoveBtnClick)}
+        { (hasLabels || isDialogOpened) && <TeamCircleIcon onClick={onAddLabelBtnClick} iconClassName="task-detail-label-add-new-cicle" size="tiny" key={"assign-labels"} {...assignLabelProp}/>}
         {
           isDialogOpened &&
           <TaskLabelBox selectedLabelIds={labelIds} onLabelAdded={onLabelAdded} projectId={projectId} />

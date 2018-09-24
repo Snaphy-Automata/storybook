@@ -25,10 +25,7 @@ class TaskDetail extends PureComponent{
   }
 
   static defaultProps = {
-    //Remove later
-    task:{
-      labels: []
-    }
+
   }
 
   constructor(props){
@@ -70,7 +67,7 @@ class TaskDetail extends PureComponent{
           {/* Send member id here.. */}
           {/* <AssignTask task={task}  /> */}
           <Dates  task={task} />
-          <Labels projectId={projectId} labelIds={task.labels} />
+          <Labels taskId={task.id} projectId={projectId} />
           {/* <SubTasks task={task} /> */}
         </div>
       </div>
