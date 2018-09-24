@@ -6,3 +6,8 @@ Created by Robins Gupta
 .task-labels-container{
   display: inline-block;
 }
+
+.task-detail-label-add-new-cicle{
+  position: relative;
+  top: 0.4px;
+}

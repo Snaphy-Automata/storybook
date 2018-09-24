@@ -192,6 +192,15 @@ Robins Gupta
   margin-left: 10px;
 }
 
+.task-detail-assigned-team-box.task-detail-assigned-team-class.closed{
+  background-color: #ff1744;
+}
+
+
+.task-detail-assigned-team-box.task-detail-assigned-team-class.closed:hover{
+  background-color: #e5163f;
+}
+
 /* End Assign Task Box */
 
 

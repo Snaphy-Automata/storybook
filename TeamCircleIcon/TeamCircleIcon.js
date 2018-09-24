@@ -33,6 +33,7 @@ const TeamCircleIcon = ({
     findMemberById,
     memberIdList,
     taskMemberList,
+    iconClassName,
     onQuickUpdateTaskMembers
 }) => {
     //size = mini | tiny | small | large | big | huge | massive;
@@ -56,17 +57,20 @@ const TeamCircleIcon = ({
 
 
     return (
-        <div className={className}>
+        <div style={{cursor:"pointer"}} className={className}>
             {
                 !isDatePicker && tooltip &&
                 <div>
                     {
                         !isAssinedUserDialogOpened && <Popup
-                            trigger={<div>{!isAssinedUserDialogOpened && <div onClick={onClick} style={style}>
+                            trigger={
+                            <div>
+                            {!isAssinedUserDialogOpened &&
+                            <div onClick={onClick} style={style}>
                                 {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                                 {char && !src && char}
 
-                                {!char && icon && <Icon name={icon} />}
+                                {!char && icon && <Icon style={{margin:0}} className={iconClassName} name={icon} />}
                             </div>}</div>}
                             content={tooltip}
                             position='bottom center'
@@ -80,7 +84,7 @@ const TeamCircleIcon = ({
                         trigger={<div>{isAssinedUserDialogOpened && <div onClick={onClick} style={style}>
                             {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                             {char && !src && char}
-                            {!char && icon && <Icon name={icon} />}
+                            {!char && icon && <Icon className={iconClassName} name={icon} />}
                         </div>}</div>}
                         content={<AssignedUserDialog onClose={onClose} task={task} memberIdList={memberIdList} findMemberById={findMemberById} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList}/>}
                         position='bottom center'
@@ -95,10 +99,10 @@ const TeamCircleIcon = ({
                 </div>
             }
             {
-                !isDatePicker && !tooltip && <div onClick={onClick} className={className} style={style}>
+                !isDatePicker && !tooltip && <div onClick={onClick}  style={style}>
                     {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                     {char && !src && char}
-                    {!char && icon && <Icon name={icon} />}
+                    {!char && icon && <Icon className={iconClassName} name={icon} />}
                 </div>
             }
             {
@@ -110,7 +114,7 @@ const TeamCircleIcon = ({
                                 {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                                 {char && !src && char}
 
-                                {!char && icon && <Icon name={icon} />}
+                                {!char && icon && <Icon className={iconClassName} name={icon} />}
                             </div>}</div>}
                             content={tooltip}
                             position='bottom center'
@@ -126,7 +130,7 @@ const TeamCircleIcon = ({
                             {!icon && src && <img className="team-circle-icon-image-container" src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" />}
                             {char && !src && char}
 
-                            {!char && icon && <Icon name={icon} />}
+                            {!char && icon && <Icon className={iconClassName} name={icon} />}
                         </div>}</div>}
                         content={<div style={{textAlign:'center'}}>
                             <DayPicker className = "date-picker-container" onDayClick={onDayChanged}/>
@@ -163,6 +167,8 @@ TeamCircleIcon.propTypes = {
     tooltip: PropTypes.string,
     size: PropTypes.string,
     className: PropTypes.string,
+    iconClassName: PropTypes.string,
+    onClick: PropTypes.func,
 }
 
 

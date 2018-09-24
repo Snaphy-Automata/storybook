@@ -1,5 +1,4 @@
 .select-label-container {
-  min-width: 80px;
   float: left;
   cursor: pointer;
 }
@@ -14,10 +13,11 @@
   /* padding: 3px; */
   font-size: 10px;
   color: white;
+  line-height: 26px;
 }
 
 .select-label-content-container {
-  max-width: 77.8px;
+  max-width: 116.8px;
   padding-left: 10px;
   padding-right: 10px;
   border-top: 0.7px solid #eee;
