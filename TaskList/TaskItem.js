@@ -66,9 +66,6 @@ class TaskItem extends React.PureComponent {
 
         }
 
-        this.openAssignedUserDialog = this.openAssignedUserDialog.bind(this);
-        this.onCloseAssignedUserDialog = this.onCloseAssignedUserDialog.bind(this);
-
         this.onWriteTask = this.onWriteTask.bind(this);
 
         this.onTitleBlur = this.onTitleBlur.bind(this);
@@ -88,17 +85,6 @@ class TaskItem extends React.PureComponent {
         return wrapperClassName;
     }
 
-    openAssignedUserDialog = () => {
-        const {getTaskMembersAction, onOpenAssignedUserDialogAction, task} = this.props;
-        //getTaskMembersAction(task.id, task.assignedTo);
-        //onOpenAssignedUserDialogAction(!isAssinedUserDialogOpened, task.id)
-    }
-
-    onCloseAssignedUserDialog = () => {
-        const {getTaskMembersAction, onOpenAssignedUserDialogAction, task} = this.props;
-        //getTaskMembersAction(null, []);
-        //onOpenAssignedUserDialogAction(false, task.id)
-    }
 
     onWriteTask(){
         const {onAddNewtaskClicked, task, index} = this.props;
@@ -153,10 +139,7 @@ class TaskItem extends React.PureComponent {
             task,
             itemTitleData,
             findMemberById,
-            taskMemberList,
-            onQuickUpdateTaskMembers,
             memberIdList,
-            isAssinedUserDialogOpened,
             isLastTask,
             isAddNewTaskVisible,
         } = this.props;
@@ -193,8 +176,8 @@ class TaskItem extends React.PureComponent {
                                 }
                                 {!isScrolling &&
                                     <div className={'task-list-item-icon'}>
-                                        {this.iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} title={this.iconObj.title} tooltip={this.iconObj.tooltip} onClick={this.openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={this.onCloseAssignedUserDialog()} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
-                                        {this.iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} icon={this.iconObj.icon} tooltip={this.iconObj.tooltip} onClick={this.openAssignedUserDialog} isAssinedUserDialogOpened={isAssinedUserDialogOpened} onClose={this.onCloseAssignedUserDialog()} task={task} findMemberById={findMemberById} memberIdList={memberIdList} onQuickUpdateTaskMembers={onQuickUpdateTaskMembers} taskMemberList={taskMemberList} />}
+                                        {this.iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} title={this.iconObj.title} tooltip={this.iconObj.tooltip}  task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+                                        {this.iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} icon={this.iconObj.icon} tooltip={this.iconObj.tooltip}  task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
 
                                     </div>}
                             </div>
