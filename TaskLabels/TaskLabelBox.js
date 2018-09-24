@@ -43,7 +43,7 @@ const getLabels=(labelIds)=>{
       delete style.marginRight
     }
     return (
-      <Label key={index} onClick={onLabelBtnAddClick} labelId={labelId} style={style} type="read"/>
+      <Label key={index} onClick={onLabelBtnAddClick} labelId={labelId} style={style} type="add"/>
     )
   })
 }

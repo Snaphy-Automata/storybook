@@ -22,9 +22,9 @@ const SelectLabel = ({name, isSelected, color, style, onClick, type, className, 
         <div className={className_} style={style} onClick={onLabelBoxBtnClick}>
             <div className="select-label-content-container">{name}</div>
             <div onClick={onLabelBtnClick} className="select-label-add-container" style={{backgroundColor: color}}>
-                {type!=="read" && type!=="edit" && !isSelected && <Icon style={{margin:0}} name="add"/>}
-                {type!=="read" && type!=="edit" && isSelected && <Icon style={{margin:0}} name="check"/>}
-                {type!=="read" && type==="edit" && <Icon style={{margin:0}} name="pencil"/>}
+                {type!=="read" && type === "add" && type !=="edit" && !isSelected && <Icon style={{margin:0}} name="add"/>}
+                {type!=="read" && type !== "add" && type !=="edit" && isSelected && <Icon style={{margin:0}} name="check"/>}
+                {type!=="read" && type !== "add" && type ==="edit" && <Icon style={{margin:0}} name="pencil"/>}
                 {type==="read" && <Icon style={{margin:0}} name="close"/>}
             </div>
         </div>
