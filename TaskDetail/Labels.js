@@ -7,7 +7,7 @@ import PropTypes              from 'prop-types'
 
 //Custom Import..
 import CircularIconBox        from '../CircularIconBox'
-
+import TaskLabel              from '../TaskLabels'
 
 class Labels extends PureComponent{
   constructor(props){
@@ -24,16 +24,22 @@ class Labels extends PureComponent{
 
   render(){
     const {labelIds} = this.props
-
+    console.log("Labels Ids", labelIds)
     const hasLabels = !!labelIds.length
+    console.log("has Labels", hasLabels)
     return (
       <div className="task-detail-labels-container">
         <div className="task-detail-labels-sidebar-icon">
           <CircularIconBox isNew={!hasLabels} className="task-detail-labels-checkbox" icon="tag" />
         </div>
         <div className="task-detail-assign-sidebar-body">
-          {!hasLabels && <span>Assign Labels</span> }
-
+          { !hasLabels && <span>Assign Labels</span> }
+          {
+            hasLabels &&
+            <TaskLabel
+              labelIds={labelIds}
+            />
+          }
         </div>
       </div>
     )

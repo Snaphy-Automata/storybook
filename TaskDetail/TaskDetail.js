@@ -24,7 +24,10 @@ class TaskDetail extends PureComponent{
   }
 
   static defaultProps = {
-
+    //Remove later
+    task:{
+      labels: []
+    }
   }
 
   constructor(props){
@@ -56,7 +59,7 @@ class TaskDetail extends PureComponent{
       onTitleChanged,
       task,
     } = this.props
-    console.log("New task Deatil getting called");
+    console.log("New task Deatil getting called", task);
     return (
       <div>
         <Header onSubTaskAdded={this.onSubTaskAdded} />
@@ -65,7 +68,7 @@ class TaskDetail extends PureComponent{
           {/* Send member id here.. */}
           {/* <AssignTask task={task}  /> */}
           <Dates  task={task} />
-          <Labels labelsIds={[]} />
+          <Labels labelIds={task.labels} />
           {/* <SubTasks task={task} /> */}
         </div>
       </div>
