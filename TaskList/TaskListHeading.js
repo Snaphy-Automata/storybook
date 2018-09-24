@@ -39,6 +39,7 @@ class TaskListHeading extends PureComponent{
     onNewTaskAdded: PropTypes.func,
     onSectionStateChanged: PropTypes.func,
     onAddNewtaskClicked: PropTypes.func,
+    projectId: PropTypes.string //to be send in case of gantt chart only..
   }
 
   constructor(props){
@@ -190,11 +191,31 @@ class TaskListHeading extends PureComponent{
 // Retrieve data from store as props
 function mapStateToProps(store, props) {
     const modelDataReducer = store.ModelDataReducer;
-   // const sectionState = modelDataReducer.sectionState[props.sectionId];
+    let projectObj;
+    if(props.projectId){
+      projectObj = modelDataReducer.project.byId[props.projectId];
+    }
+   
     const section      = modelDataReducer.task.byId[props.sectionId];
+    let userProjectSetting;
+    if(projectObj && projectObj.projectUserSettingId){
+        userProjectSetting = modelDataReducer.userProjectSetting.byId[projectObj.projectUserSettingId]
+    }
+  
     let isCollapsed = false;
-    if(section && section.isCollapsed){
-        isCollapsed = true;
+    if(section){
+        if(section.isCollapsed){
+            isCollapsed = true;
+        } else{
+            isCollapsed = false;
+        }
+    } else{
+        if(userProjectSetting && userProjectSetting.isGanttChartCollapsed){
+            isCollapsed = true;
+        } else{
+            isCollapsed = false;
+        }
+
     }
     // if (sectionState && sectionState.isCollapsed) {
     //     isCollapsed = true;
