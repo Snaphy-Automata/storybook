@@ -27,20 +27,21 @@ class TaskLabels extends PureComponent {
   static propTypes = {
     labelIds: PropTypes.array,
     projectId: PropTypes.string.isRequired,
+    //When a label is removed..
+    onLabelRemoveBtnClick: PropTypes.func.isRequired,
+    //When a label is added..
+    onLabelAdded: PropTypes.func.isRequired,
   }
 
   constructor(props) {
     super(props)
-    this.onLabelRemoveBtnClick = this._onLabelRemoveBtnClick.bind(this)
-    this.onAddLabelBtnClick   = this._onAddLabelBtnClick.bind(this)
+    this.onAddLabelBtnClick    = this._onAddLabelBtnClick.bind(this)
     this.state={
       isDialogOpened: false
     }
   }
 
-  _onLabelRemoveBtnClick(event, labelId){
-    console.log("On Label Remove btn click", labelId)
-  }
+
 
   _onAddLabelBtnClick(){
     console.log("Add Label Btn clicked")
@@ -50,21 +51,21 @@ class TaskLabels extends PureComponent {
     })
   }
 
-  getLabels(labelIds){
+  getLabels(labelIds, onLabelRemoveBtnClick){
     return map(labelIds, (labelId, index)=>{
       let style = {marginLeft: "15px"}
       if(index === 0){
         style = {}
       }
       return (
-        <Label key={index} onButtonClick={this.onLabelRemoveBtnClick} labelId={labelId} style={style} type="read"/>
+        <Label key={index} onButtonClick={onLabelRemoveBtnClick} labelId={labelId} style={style} type="read"/>
       )
     })
   }
 
 
   render() {
-    const {labelIds, projectId} = this.props
+    const {labelIds, projectId, onLabelRemoveBtnClick, onLabelAdded} = this.props
     const {isDialogOpened} = this.state
     let assignLabelProp
     if(isDialogOpened){
@@ -83,11 +84,11 @@ class TaskLabels extends PureComponent {
 
     return (
       <div className="task-labels-container">
-        {this.getLabels(labelIds)}
+        {this.getLabels(labelIds, onLabelRemoveBtnClick)}
         <TeamCircleIcon onClick={this.onAddLabelBtnClick} iconClassName="task-detail-label-add-new-cicle" size="tiny" key={"assign-labels"} {...assignLabelProp}/>
         {
           isDialogOpened &&
-          <TaskLabelBox projectId={projectId} />
+          <TaskLabelBox selectedLabelIds={labelIds} onLabelAdded={onLabelAdded} projectId={projectId} />
         }
       </div>
     )

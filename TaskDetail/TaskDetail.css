@@ -168,7 +168,7 @@ Robins Gupta
   width: 396.5px;
   padding-left: 12px;
   line-height: 25px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .task-detail-assign-task-container{

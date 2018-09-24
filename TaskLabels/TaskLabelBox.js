@@ -10,16 +10,17 @@ import map from 'lodash/map'
 
 //Custom import
 import Label from '../SelectLabel'
+import {
+  getRemainingLabels,
+}    from '../../baseComponents/GridView/components/ModelData/Label/selector'
 
-const TaskLabelBox = ({allLabelIds, onAddEditLabelDialogBtnClick }) => {
+const TaskLabelBox = ({allLabelIds, onAddEditLabelDialogBtnClick, onLabelAdded}) => {
   const hasLabels = !!allLabelIds.length
-
-
   return (
     <div className="task-detail-select-label-box-container noselect">
       {
         hasLabels &&
-        getLabels(allLabelIds)
+        getLabels(allLabelIds, onLabelAdded)
       }
       {/* Add Create Label Dialog Box */}
       <div onClick={onAddEditLabelDialogBtnClick} className="task-detail-create-label-btn"></div>
@@ -28,12 +29,11 @@ const TaskLabelBox = ({allLabelIds, onAddEditLabelDialogBtnClick }) => {
 }
 
 
-const onLabelBtnAddClick = (event, labelId) => {
-  console.log("On Label Btn Add click", labelId);
-}
 
-
-const getLabels=(labelIds)=>{
+const getLabels=(labelIds, onLabelAdded)=>{
+  const onLabelBtnAddClick = (event, labelId)=>{
+    onLabelAdded? onLabelAdded(event, labelId):null
+  }
   return map(labelIds, (labelId, index)=>{
     let style = {
       marginRight: "15px",
@@ -42,37 +42,32 @@ const getLabels=(labelIds)=>{
     if(index === (labelIds.length-1)){
       delete style.marginRight
     }
+
     return (
-      <Label key={index} onClick={onLabelBtnAddClick} labelId={labelId} style={style} type="add"/>
+      <Label key={index} labelClassName="task-detail-select-label-wrapper" onClick={onLabelBtnAddClick} labelId={labelId} style={style} type="add"/>
     )
   })
 }
 
 
+
 TaskLabelBox.defaultProps = {
   //Will store all labels of the project by ids..
-  allLabelIds: []
+  allLabelIds: [],
+  selectedLabelIds: []
 }
 
 
 
 TaskLabelBox.propTypes = {
   projectId: PropTypes.string.isRequired,
+  selectedLabelIds: PropTypes.array,
   onAddEditLabelDialogBtnClick: PropTypes.func,
-
+  onLabelAdded: PropTypes.func,
 }
 
 function mapStateToProps(store, props) {
-  const projectId = props.projectId
-  const modelData = store.ModelDataReducer
-  let allLabelIds
-  if(projectId){
-    const project = modelData.project.byId[projectId]
-    if(project){
-      allLabelIds =  project.labels
-    }
-  }
-
+  let allLabelIds = getRemainingLabels(store, props)
   return {
     allLabelIds: allLabelIds
   }
@@ -80,7 +75,5 @@ function mapStateToProps(store, props) {
 
 
 const mapActionsToProps = {}
-
-
 
 export default connect(mapStateToProps, mapActionsToProps)(TaskLabelBox)

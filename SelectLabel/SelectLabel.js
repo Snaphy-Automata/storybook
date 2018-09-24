@@ -7,8 +7,12 @@ import './SelectLabel.css';
 
 
 
-const SelectLabel = ({name, isSelected, color, style, onClick, type, className, onButtonClick, labelId}) => {
+const SelectLabel = ({name, isSelected, color, style, onClick, type, className, labelClassName, onButtonClick, labelId}) => {
     let className_ = className? `${className} select-label-container`: `select-label-container`
+    let labelClassName_ = "select-label-content-container"
+    if(labelClassName){
+      labelClassName_ = `${labelClassName_} ${labelClassName}`
+    }
 
     const onLabelBtnClick = (event)=>{
       onButtonClick? onButtonClick(event, labelId): null
@@ -20,7 +24,7 @@ const SelectLabel = ({name, isSelected, color, style, onClick, type, className, 
 
     return (
         <div className={className_} style={style} onClick={onLabelBoxBtnClick}>
-            <div className="select-label-content-container">{name}</div>
+            <div className={labelClassName_}>{name}</div>
             <div onClick={onLabelBtnClick} className="select-label-add-container" style={{backgroundColor: color}}>
                 {type!=="read" && type === "add" && type !=="edit" && !isSelected && <Icon style={{margin:0}} name="add"/>}
                 {type!=="read" && type !== "add" && type !=="edit" && isSelected && <Icon style={{margin:0}} name="check"/>}

@@ -10,10 +10,6 @@ import CircularIconBox        from '../CircularIconBox'
 import TaskLabel              from '../TaskLabels'
 
 class Labels extends PureComponent{
-  constructor(props){
-    super(props)
-  }
-
   static defaultProps = {
     labelIds: []
   }
@@ -22,6 +18,22 @@ class Labels extends PureComponent{
     labelIds: PropTypes.array,
     projectId: PropTypes.string.isRequired,
   }
+
+  constructor(props){
+    super(props)
+    this.onLabelAdded          = this._onLabelAdded.bind(this)
+    this.onLabelRemoveBtnClick = this._onLabelRemoveBtnClick.bind(this)
+  }
+
+
+  _onLabelRemoveBtnClick(event, labelId){
+    console.log("On Label Remove btn click", labelId)
+  }
+
+  _onLabelAdded(event, labelId){
+    console.log("On Label Btn Add click", labelId);
+  }
+
 
   render(){
     const {labelIds, projectId} = this.props
@@ -40,6 +52,8 @@ class Labels extends PureComponent{
             <TaskLabel
               labelIds={labelIds}
               projectId={projectId}
+              onLabelAdded={onLabelAdded}
+              onLabelRemoveBtnClick={onLabelRemoveBtnClick}
             />
           }
         </div>

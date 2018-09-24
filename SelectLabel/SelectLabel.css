@@ -17,9 +17,9 @@
 }
 
 .select-label-content-container {
-  width: 87.8px;
-  padding-left: 5px;
-  padding-right: 5px;
+  max-width: 93.8px;
+  padding-left: 8px;
+  padding-right: 8px;
   border-top: 0.7px solid #eee;
   border-bottom: 0.7px solid #eee;
   border-left: 0.7px solid #eee;
