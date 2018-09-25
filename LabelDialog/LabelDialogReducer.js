@@ -1,25 +1,23 @@
 import {
-    INITIALIZE_LABEL_DIALOG_FORM_DATA
+  ON_LABEL_DIALOG_DATA_INITIALIZE
 } from './LabelDialogAction';
 
 
 const initialState = {
-    initializeLabelDialogFormData : null,
+  labelDialogFormDataInit : null,
 }
 
 const LabelDialogReducer = (state = initialState, action) => {
-    switch(action.type){
-        case INITIALIZE_LABEL_DIALOG_FORM_DATA:{
-            state = {
-                ...state,
-                initializeLabelDialogFormData : action.payload
-            }
-            break;
-        }
-            
+  switch(action.type){
+    case ON_LABEL_DIALOG_DATA_INITIALIZE:{
+      state = {
+        ...state,
+        labelDialogFormDataInit: action.payload
+      }
+      break;
     }
-
-    return state;
+  }
+  return state;
 }
 
 export default LabelDialogReducer;
