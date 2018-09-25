@@ -57,7 +57,7 @@ class DatePicker extends PureComponent {
       <div>
         {
           this.state.dateRef &&
-          <Popup size="mini" fluid hideOnScroll context={this.state.dateRef.getInput()} content={children} position='bottom left' open={open} />
+          <Popup size="mini" hideOnScroll context={this.state.dateRef.getInput()} content={children} position='bottom left' open={open} />
         }
       </div>
     );
@@ -108,6 +108,7 @@ class DatePicker extends PureComponent {
     const inputProps = {
       className
     }
+    const date_ = date?new Date(date):date;
     return (
       <div>
         {
@@ -126,7 +127,7 @@ class DatePicker extends PureComponent {
             showOverlay={true}
             hideOnDayClick={true}
             keepFocus={false}
-            value={date}
+            value={date_}
             formatDate={formatDate}
             parseDate={parseDate}
             overlayComponent={this.overlay}

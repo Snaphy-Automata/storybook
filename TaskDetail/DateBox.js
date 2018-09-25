@@ -103,6 +103,9 @@ DateBox.defaultProps = {
 DateBox.propTypes = {
   onDayChanged: PropTypes.func,
   date: PropTypes.any,
+  heading: PropTypes.string,
+  onDayChanged: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 }
 
 
