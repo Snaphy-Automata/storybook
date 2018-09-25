@@ -1,13 +1,31 @@
-export const INITIALIZE_LABEL_DIALOG_FORM_DATA = "initialize_label_dialog_form_data";
+/**
+ * Created by Robins Gupta
+ * 25th Sept 2018
+ */
+export const ON_LABEL_DIALOG_DATA_INITIALIZE = "on_label_dialog_data_initialize";
 
 
-export function initializeLabelDialogFormAction(formData){
-    return (dispatch) => {
-        dispatch({
-            type : INITIALIZE_LABEL_DIALOG_FORM_DATA,
-            payload : formData
-        })
+const initializeLabelData = (data) => {
+  return {
+    type: ON_LABEL_DIALOG_DATA_INITIALIZE,
+    payload: data
+  }
+}
+
+
+/**
+ * Will Store the label form data..
+ * @param {*} formObj
+ */
+export const initializeLabelDialogFormDataAction = (labelId) => {
+  return (dispatch, getState) => {
+    const modelData = getState().ModelDataReducer
+    let labelData;
+    if(labelId){
+      labelData = modelData.label.byId[labelId]
     }
+    dispatch(initializeLabelData(labelData))
+  }
 }
 
 

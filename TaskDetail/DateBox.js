@@ -11,32 +11,22 @@ import DatePicker        from '../DatePicker'
 
 
 class DateBox extends PureComponent {
-
+  static className = "task-detail-date-picker"
   constructor(props){
     super(props)
-    this.state = { className: "task-detail-date-picker" };
     this.onDayChangedListener = this.onDayChanged.bind(this)
   }
-
-
 
 
   //On Day Changed
   onDayChanged(selectedDate){
     console.log(selectedDate)
-    let typeClassName = getDateClassName(selectedDate)
-    let className = "task-detail-date-picker"
-    if(typeClassName){
-      className = `${className} ${typeClassName}`
-      this.setState({className});
-    }
+
     this.props.onDayChanged?this.props.onDayChanged(selectedDate):null
   }
 
 
   render(){
-
-
     const {
       date,
       format,
@@ -44,6 +34,11 @@ class DateBox extends PureComponent {
       name,
       placeholder,
     } = this.props
+    let className = this.className
+    let typeClassName = getDateClassName(date)
+    if(typeClassName){
+      className = `${this.className} ${typeClassName}`
+    }
     return (
       <div className="task-detail-date-box">
         <div className="task-detail-dates-icon">
@@ -53,7 +48,7 @@ class DateBox extends PureComponent {
           <div className="task-detail-date-body-label">{heading}</div>
           <div className="task-detail-date-body-placeholder">
             {/* mm/dd/yyyy */}
-            <DatePicker onDayChanged={this.onDayChangedListener} className={this.state.className} placeholder={placeholder} name={name} format={format} date={date} />
+            <DatePicker onDayChanged={this.onDayChangedListener} className={className} placeholder={placeholder} name={name} format={format} date={date} />
           </div>
         </div>
       </div>
@@ -107,6 +102,10 @@ DateBox.defaultProps = {
 
 DateBox.propTypes = {
   onDayChanged: PropTypes.func,
+  date: PropTypes.any,
+  heading: PropTypes.string,
+  onDayChanged: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 }
 
 

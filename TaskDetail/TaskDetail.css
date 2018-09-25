@@ -168,7 +168,7 @@ Robins Gupta
   width: 396.5px;
   padding-left: 12px;
   line-height: 25px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .task-detail-assign-task-container{
@@ -189,7 +189,18 @@ Robins Gupta
 }
 
 .task-detail-assigned-team-box{
-  margin-left: 10px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  float: right;
+}
+
+.task-detail-assigned-team-box.task-detail-assigned-team-class.closed{
+  background-color: #ff1744;
+}
+
+
+.task-detail-assigned-team-box.task-detail-assigned-team-class.closed:hover{
+  background-color: #e5163f;
 }
 
 /* End Assign Task Box */

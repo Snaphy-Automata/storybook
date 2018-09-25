@@ -4,36 +4,86 @@
  */
 import React, {PureComponent} from 'react'
 import PropTypes              from 'prop-types'
+import { connect }            from 'react-redux'
 
 //Custom Import..
 import CircularIconBox        from '../CircularIconBox'
+import TaskLabel              from '../TaskLabels'
+import {
+  onTaskLabelAddedAction,
+  onTaskLabelRemoveAction,
+} from '../../baseComponents/GridView/components/ModelData/Task/action'
 
+import {getTaskLabels} from  '../../baseComponents/GridView/components/ModelData/Label/selector'
 
 class Labels extends PureComponent{
-  constructor(props){
-    super(props)
-  }
-
   static defaultProps = {
     labelIds: []
   }
 
   static propTypes = {
     labelIds: PropTypes.array,
+    projectId: PropTypes.string.isRequired,
+    taskId: PropTypes.string.isRequired,
   }
 
-  render(){
-    const {labelIds} = this.props
+  constructor(props){
+    super(props)
+    this.onLabelAdded          = this._onLabelAdded.bind(this)
+    this.onLabelRemoveBtnClick = this._onLabelRemoveBtnClick.bind(this)
+    this.onAddLabelBtnClick    = this._onAddLabelBtnClick.bind(this)
+    this.state={
+      isDialogOpened: false
+    }
+  }
 
+
+  _onLabelRemoveBtnClick(event, labelId){
+    const {taskId, onTaskLabelRemoveAction} = this.props
+    //Call the reducer and mutation
+    //TODO: Add mutation here..
+    onTaskLabelRemoveAction(taskId, labelId)
+    console.log("On Label Remove btn click", labelId)
+
+  }
+
+  _onLabelAdded(event, labelId){
+    const {taskId, onTaskLabelAddedAction} = this.props
+    //Call the reducer and mutation
+    //TODO: Add mutation here..
+    onTaskLabelAddedAction(taskId, labelId)
+    console.log("On Label Btn Add click", labelId);
+  }
+
+
+
+  _onAddLabelBtnClick(){
+    console.log("Add Label Btn clicked")
+    const state = !this.state.isDialogOpened
+    this.setState({
+      isDialogOpened: state
+    })
+  }
+
+
+  render(){
+    const {labelIds, projectId, taskId} = this.props
     const hasLabels = !!labelIds.length
     return (
       <div className="task-detail-labels-container">
-        <div className="task-detail-labels-sidebar-icon">
+        <div onClick={this.onAddLabelBtnClick} className="task-detail-labels-sidebar-icon">
           <CircularIconBox isNew={!hasLabels} className="task-detail-labels-checkbox" icon="tag" />
         </div>
         <div className="task-detail-assign-sidebar-body">
-          {!hasLabels && <span>Assign Labels</span> }
-
+            <TaskLabel
+              hasLabels={hasLabels}
+              isDialogOpened={this.state.isDialogOpened}
+              onAddLabelBtnClick={this.onAddLabelBtnClick}
+              labelIds={labelIds}
+              projectId={projectId}
+              onLabelAdded={this.onLabelAdded}
+              onLabelRemoveBtnClick={this.onLabelRemoveBtnClick}
+            />
         </div>
       </div>
     )
@@ -41,6 +91,17 @@ class Labels extends PureComponent{
 }
 
 
+const mapStateToProps = (state, props) => {
+  return {
+    labelIds: getTaskLabels(state, props)
+  }
+}
 
-export default Labels
+const mapActionToProps = {
+  onTaskLabelAddedAction,
+  onTaskLabelRemoveAction,
+}
+
+
+export default connect(mapStateToProps, mapActionToProps)(Labels)
 

@@ -9,12 +9,11 @@ import PropTypes from 'prop-types'
 import DateBox from './DateBox'
 
 
-const Dates = (props) => {
-
+const Dates = ({taskId, endDate, startDate, onDueDateChanged, onStartDateChanged}) => {
   return (
     <div className="task-detail-dates-container">
-      <DateBox heading="Due Date" name="dueDate" />
-      <DateBox heading="Start Date" name="startDate" />
+      <DateBox date={endDate} onDayChanged={onDueDateChanged} heading="Due Date" name="dueDate" />
+      <DateBox date={startDate} onDayChanged={onStartDateChanged} heading="Start Date" name="startDate" />
     </div>
   )
 }
@@ -22,12 +21,16 @@ const Dates = (props) => {
 
 
 Dates.defaultProps = {
-
+  task: {}
 }
 
 
 Dates.propTypes = {
-  task: PropTypes.object,
+  taskId: PropTypes.string.isRequired,
+  startDate: PropTypes.any,
+  endDate: PropTypes.any,
+  onDueDateChanged: PropTypes.func.isRequired,
+  onStartDateChanged: PropTypes.func.isRequired,
 }
 
 
