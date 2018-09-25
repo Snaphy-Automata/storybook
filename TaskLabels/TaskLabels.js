@@ -45,9 +45,8 @@ class TaskLabels extends PureComponent {
 
   getLabels(labelIds, onLabelRemoveBtnClick){
     return map(labelIds, (labelId, index)=>{
-      let style = {marginRight: "15px", marginBottom: "10px"}
       return (
-        <Label key={index} onButtonClick={onLabelRemoveBtnClick} labelId={labelId} style={style} type="read"/>
+        <Label className="label-list-label-item" key={index} onButtonClick={onLabelRemoveBtnClick} labelId={labelId} type="read"/>
       )
     })
   }
