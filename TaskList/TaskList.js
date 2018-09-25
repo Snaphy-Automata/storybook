@@ -391,7 +391,7 @@ class TaskList extends PureComponent {
         // We need to inform React Virtualized that the items have changed heights
         const instance = this.SortableList.getWrappedInstance();
         ListRef.recomputeRowHeights();
-        console.log(instance, ListRef)
+        //console.log(instance, ListRef)
         setTimeout(()=>{
           //ListRef.recomputeRowHeights();
           instance.forceUpdate();
@@ -455,7 +455,7 @@ class TaskList extends PureComponent {
       setScrollRef,
 
     }  = this.props;
-    console.log("task List props getting called", activeTasks);
+   // console.log("task List props getting called", activeTasks);
     const id = "snaphy-react-custom-scrollbar";
     //FIXME:  21st sept 2018.
     //TODO: Remvoe action calling from here..
