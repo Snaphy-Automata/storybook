@@ -38,6 +38,7 @@ class TaskListHeading extends Component{
     onNewTaskAdded: PropTypes.func,
     onSectionStateChanged: PropTypes.func,
     onAddNewtaskClicked: PropTypes.func,
+    onSectionCollapsed: PropTypes.func, //function for recomputing heights on section collpased ..to be removed later..
     projectId: PropTypes.string //to be send in case of gantt chart only..
   }
 
@@ -50,12 +51,13 @@ class TaskListHeading extends Component{
 
 
   onStateChangedRaw(){
-    const {onSectionStateChanged, sectionId, isCollapsed, index, isEmptySection} = this.props
+    const {onSectionStateChanged, sectionId, isCollapsed, index, isEmptySection, onSectionCollapsed} = this.props
     let emptySectionId = null;
     if(isEmptySection){
         emptySectionId = sectionId;
     }
     onSectionStateChanged(sectionId, index, isCollapsed, emptySectionId);
+    onSectionCollapsed();
 
   }
 

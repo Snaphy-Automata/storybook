@@ -72,7 +72,16 @@ const isSectionCollapsed = (section) => {
 
 
 const SortableHeading = SortableElement((props)=>{
-    const {section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked} = props;
+    const {
+      section, 
+      isFirst, 
+      onNewTaskAdded, 
+      indexValue, 
+      onSectionStateChanged, 
+      isEmptySection, 
+      onAddNewtaskClicked,
+      onSectionCollapsed
+    } = props;
     return (
         <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
@@ -84,6 +93,7 @@ const SortableHeading = SortableElement((props)=>{
                 onNewTaskAdded={onNewTaskAdded}
                 onSectionStateChanged={onSectionStateChanged}
                 onAddNewtaskClicked={onAddNewtaskClicked}
+                onSectionCollapsed={onSectionCollapsed}
                 />
             </div>
         </div>
@@ -186,7 +196,8 @@ class VirtualList extends PureComponent {
         findLabelById,
         onQuickUpdateDate,
         memberIdList,
-        onQuickUpdateTaskMembers
+        onQuickUpdateTaskMembers,
+        onSectionCollapsed
       } = this.props
       const {
           index,       // Index of row
@@ -224,6 +235,7 @@ class VirtualList extends PureComponent {
               onNewTaskAdded={onNewTaskAdded}
               //disabled={isDisabled}
               onSectionStateChanged={onSectionStateChanged}
+              onSectionCollapsed={onSectionCollapsed}
               onAddNewtaskClicked={onAddNewtaskClicked}/>
           }
           {
@@ -396,104 +408,6 @@ class TaskList extends PureComponent {
     }
 
   }
-
-
-  _onSortMove(event){
-    console.log("On Sort move", event.target)
-  }
-
-  _onSortOver({index, oldIndex, newIndex}, e){
-    // const {activeTasks, findTaskById} = this.props;  
-    // if(activeTasks && findTaskById){
-    //     let newIndexItemId = activeTasks[newIndex];
-    //     let oldIndexItemId = activeTasks[oldIndex];
-    //     let indexId = activeTasks[index];
-    //     let newIndexItemObj = findTaskById(newIndexItemId);
-    //     let oldIndexItemObj = findTaskById(oldIndexItemId);
-    //     let indexObj = findTaskById(indexId);
-    //     console.log("Next Item Obj", newIndexItemObj);
-    //     console.log("Old Item Obj", oldIndexItemObj);
-    //     if(indexObj.type === "task"){
-    //         let sectionObj;
-    //         let oldSectionObj;
-    //         if(oldIndexItemObj.type === "task"){
-    //             oldSectionObj = findTaskById(oldIndexItemObj.sectionId);
-    //         } else{
-    //             oldSectionObj = findTaskById(oldIndexItemObj.id);
-    //         }
-    //         if(index>newIndex){
-    //             if(newIndexItemObj.type === "task"){
-    //                 sectionObj = findTaskById(newIndexItemObj.sectionId);
-    //             } else{
-    //                 sectionObj = findTaskById(newIndexItemObj.id);
-    //             }
-               
-    //             if((newIndexItemObj.type === "task" && newIndexItemObj.sectionId !== indexObj.sectionId) || newIndexItemObj.type === "section" && newIndexItemObj.id !== indexObj.sectionId){
-    //                 //add translation style to add new Task..
-                   
-    //                 if(sectionObj.newTaskId){
-    //                     const taskId = `sortable_${sectionObj.newTaskId}`
-    //                     let newTaskNode = document.getElementById(taskId).firstChild;
-                       
-    //                     newTaskNode.style.transitionDuration = "300ms"
-    //                     newTaskNode.style.transform = "translate3d(0px, 41px, 0px)"
-    //                     console.log("New task Node",sectionObj, newTaskNode);
-    //                 }
-    //             }
-    //             if(oldSectionObj && sectionObj && oldSectionObj.id !== sectionObj.id){
-    //                 console.log("Old and New Section Obj", oldSectionObj.id, sectionObj.id);
-    //                 if(newIndex > oldIndex){
-    //                     if(oldSectionObj.newTaskId){
-    //                         const taskId = `sortable_${oldSectionObj.newTaskId}`
-    //                         let newTaskNode = document.getElementById(taskId).firstChild;
-                         
-    //                         newTaskNode.style.transitionDuration = "300ms"
-    //                         newTaskNode.style.transform = "translate3d(0px, 0px, 0px)"
-    //                         console.log("Old task Node",oldSectionObj, newTaskNode);
-    //                     }
-    //                 }
-    //             }
-    //             e.preventDefault()
-    //         } else if(index<newIndex){
-    //             sectionObj = findTaskById(indexObj.sectionId);
-    //             if((newIndexItemObj.type === "task" && newIndexItemObj.sectionId !== indexObj.sectionId) || newIndexItemObj.type === "section" && newIndexItemObj.id !== indexObj.sectionId){
-    //                 //add translation style to add new Task..
-                   
-    //                 if(sectionObj.newTaskId){
-    //                     const taskId = `sortable_${sectionObj.newTaskId}`
-    //                     let newTaskNode = document.getElementById(taskId).firstChild;
-                       
-    //                     newTaskNode.style.transitionDuration = "300ms"
-    //                     newTaskNode.style.transform = "translate3d(0px, -41px, 0px)"
-    //                     console.log("New task Node2",sectionObj, newTaskNode);
-    //                 }
-                   
-    //             }
-    //             if(oldSectionObj && sectionObj && oldSectionObj.id !== sectionObj.id){
-    //                 console.log("Old and New Section Obj", oldSectionObj.id, sectionObj.id);
-    //                 if(newIndex > oldIndex){
-    //                     if(oldSectionObj.newTaskId){
-    //                         const taskId = `sortable_${oldSectionObj.newTaskId}`
-    //                         let newTaskNode = document.getElementById(taskId).firstChild;
-                         
-    //                         newTaskNode.style.transitionDuration = "300ms"
-    //                         newTaskNode.style.transform = "translate3d(0px, 0px, 0px)"
-    //                         console.log("Old task Node",oldSectionObj, newTaskNode);
-    //                     }
-    //                 }
-                   
-    //             }
-    //             e.preventDefault()
-    //         }
-            
-           
-    //     }
-       
-       
-    // }
-    //console.log("Sort Over Index", e);
-  }
-  
 
 
   onSectionCollapsedRaw(){
