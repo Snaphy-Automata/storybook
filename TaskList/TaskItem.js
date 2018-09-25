@@ -56,15 +56,7 @@ class TaskItem extends React.PureComponent {
             this.delayedClassName = `task-item-delayed-block`;
         }
 
-        this.taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
-        if (selectedTask && selectedTask.id === task.id) {
-            this.iconObj = this.taskHelper.getSelectedIcon(selectedTask, findMemberById);
-        } else if (!targetTaskId) {
-            this.iconObj = this.taskHelper.getIcon(findMemberById);
-        } else if (!selectedTask && targetTaskId && taskMemberList) {
-            this.iconObj = this.taskHelper.getTargetTaskIcon(taskMemberList, findMemberById);
-
-        }
+       
 
         this.onWriteTask = this.onWriteTask.bind(this);
 
@@ -140,6 +132,9 @@ class TaskItem extends React.PureComponent {
             findMemberById,
             memberIdList,
             isEmpty,
+            isActiveTaskSection,
+            targetTaskId,
+            taskMemberList
         } = this.props;
 
         //console.log("Task Item Props getting called", task);
@@ -159,6 +154,19 @@ class TaskItem extends React.PureComponent {
             return titleName;
         }
 
+        const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
+        let iconObj;
+        if (selectedTask && selectedTask.id === task.id) {
+            iconObj = taskHelper.getSelectedIcon(selectedTask, findMemberById);
+        } else if (!targetTaskId) {
+            iconObj = taskHelper.getIcon(findMemberById);
+        } else if (!selectedTask && targetTaskId && taskMemberList) {
+            iconObj = taskHelper.getTargetTaskIcon(taskMemberList, findMemberById);
+
+        }
+
+        //console.log("Task Item Title", this.taskHelper.getTitle(), task);
+
 
         return (
 
@@ -174,16 +182,16 @@ class TaskItem extends React.PureComponent {
                                 }
                                 {!isScrolling &&
                                     <div className={'task-list-item-icon'}>
-                                        {this.iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} title={this.iconObj.title} tooltip={this.iconObj.tooltip}  task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
-                                        {this.iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={this.iconObj.thumbnailUrl} icon={this.iconObj.icon} tooltip={this.iconObj.tooltip}  task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+                                        {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip}  task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+                                        {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip}  task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
 
                                     </div>}
                             </div>
 
                             <div className="task-list-item-title">
-                                {!selectedTask && <div className="task-list-item-title-item">{this.taskHelper.getTitle()}</div>}
+                                {!selectedTask && <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>}
                                 {selectedTask && selectedTask.id === task.id && <div className="task-list-item-title-item">{itemTitleData}</div>}
-                                {selectedTask && selectedTask.id !== task.id && <div className="task-list-item-title-item">{this.taskHelper.getTitle()}</div>}
+                                {selectedTask && selectedTask.id !== task.id && <div className="task-list-item-title-item">{taskHelper.getTitle()}</div>}
                             </div>
                             {/* {
                                 !isScrolling &&

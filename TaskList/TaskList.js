@@ -82,6 +82,7 @@ const SortableHeading = SortableElement((props)=>{
       onAddNewtaskClicked,
       onSectionCollapsed
     } = props;
+    //console.log("Section Data", section);
     return (
         <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
@@ -123,6 +124,7 @@ const SortableTask = SortableElement((props)=>{
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
     let isEmpty = (task && !task.projectId)? true: false
+    //console.log("task Data", task);
     //console.log("Sortable Task", task);
     return (
         <div style={style}>
@@ -221,6 +223,7 @@ class VirtualList extends PureComponent {
       }
 
       const taskId = `sortable_${taskOrSection.id}`
+      //console.log("Active Tasks Data", taskOrSection);
 
       return (
           <div id={taskId} style={{...style }}  key={key}>
@@ -452,7 +455,7 @@ class TaskList extends PureComponent {
       setScrollRef,
 
     }  = this.props;
-    //console.log("task List props getting called");
+    console.log("task List props getting called", activeTasks);
     const id = "snaphy-react-custom-scrollbar";
     //FIXME:  21st sept 2018.
     //TODO: Remvoe action calling from here..
