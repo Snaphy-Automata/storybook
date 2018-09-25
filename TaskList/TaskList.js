@@ -73,12 +73,12 @@ const isSectionCollapsed = (section) => {
 
 const SortableHeading = SortableElement((props)=>{
     const {
-      section, 
-      isFirst, 
-      onNewTaskAdded, 
-      indexValue, 
-      onSectionStateChanged, 
-      isEmptySection, 
+      section,
+      isFirst,
+      onNewTaskAdded,
+      indexValue,
+      onSectionStateChanged,
+      isEmptySection,
       onAddNewtaskClicked,
       onSectionCollapsed
     } = props;
@@ -123,7 +123,7 @@ const SortableTask = SortableElement((props)=>{
       onQuickUpdateTaskMembers
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
-    let isEmpty = (task && !task.projectId)? true: false
+    let isEmpty = (task)?false:true
     //console.log("task Data", task);
     //console.log("Sortable Task", task);
     return (
@@ -215,18 +215,10 @@ class VirtualList extends PureComponent {
       const isFirst    = activeTasks[0] === taskOrSectionId;
       const isLastTask = isTaskLast(activeTasks, index, findTaskById);
       const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
-      let isDisabled = false;
-      if(!taskOrSection.projectId){
-          isDisabled = true;
-      } else if(taskOrSection.type === "section" && taskOrSection.id === activeTasks[0]){
-          isDisabled = true;
-      }
 
-      const taskId = `sortable_${taskOrSection.id}`
-      //console.log("Active Tasks Data", taskOrSection);
 
       return (
-          <div id={taskId} style={{...style }}  key={key}>
+          <div style={{...style }}  key={key}>
           {
               taskOrSection && taskOrSection.type === "section" &&
               <SortableHeading
@@ -300,7 +292,7 @@ class VirtualList extends PureComponent {
                 //       return 59;
                 //   }
               }
-            } 
+            }
             // else if(task.type === "task"){
             //     if(isLastTask && isAddNewTaskVisible && task.title){
             //         return 82;
@@ -383,7 +375,7 @@ class TaskList extends PureComponent {
 
   onSortEndRaw({index, oldIndex, newIndex}){
     const {
-      onItemPositionChanged,     
+      onItemPositionChanged,
     }  = this.props;
     if (oldIndex !== newIndex) {
       onItemPositionChanged(oldIndex, newIndex);
