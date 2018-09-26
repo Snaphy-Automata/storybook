@@ -98,7 +98,7 @@ class TaskLabelBox extends PureComponent{
 
 
   _onLabelDelete(label){
-    const {onLabelRemoveAction, projectId, deleteLabelMutation} = this.props
+    const {onLabelRemoveAction, projectId, deleteLabelMutation, reset, initializeLabelDialogFormDataAction} = this.props
     onLabelRemoveAction(label, projectId, deleteLabelMutation)
     .then(data=>{
       //Data removed..
@@ -106,6 +106,9 @@ class TaskLabelBox extends PureComponent{
     .catch(error=>{
       console.error("Error updating label.", error)
     })
+    reset('labelCreateForm')
+    //Reset the initilize form..
+    initializeLabelDialogFormDataAction(null)
   }
 
 
@@ -118,64 +121,6 @@ class TaskLabelBox extends PureComponent{
     .catch(error=>{
       console.error("Error saving label", error)
     })
-  }
-
-  deleteLabel(labelObj){
-    console.log("Deleting label", labelObj)
-    // if (labelObj && labelObj.id) {
-    //     //console.log("Label to be deleted", labelObj.title, labelObj.id);
-    //     if (selectedTask) {
-    //         let selectedLabelList = selectedLabelListObj.selectedLabelList;
-    //         for (var i = 0; i < selectedLabelList.length; i++) {
-    //             if (selectedLabelList[i] === labelObj.id) {
-    //                 selectedLabelList.splice(i, 1);
-    //                 //console.log("updated Selected Label List", selectedLabelList);
-    //                 populateSelectedLabelListAction(selectedTask.id, selectedLabelList);
-    //                 //console.log("After Updated Selected Label List", selectedLabelListObj.selectedLabelList);
-    //             }
-    //         }
-
-    //     }
-    //     return deleteLabelMutation({
-    //         variables: {
-    //             id: labelObj.id
-    //         },
-    //         update: (proxy, { data: { engines: { PM: { label: { deleteById } } } } }) => {
-    //             try {
-    //                 this.props.client.writeFragment({
-    //                     id: `Engine_PM_Label:${labelObj.id}`,
-    //                     fragment: findLabelLocally,
-    //                     data: {
-    //                         __typename: 'Engine_PM_Label',
-    //                         id: null,
-    //                         title: null,
-    //                         colorCode: null,
-    //                         projectId: null
-    //                     }
-    //                 })
-    //                 //_.remove(label,)
-    //             } catch (e) {
-    //                 console.error("Error in deleting from fragment", e);
-    //             }
-    //         }
-    //     })
-    //         .then(({ data }) => {
-    //             if (data) {
-
-    //             }
-    //             console.log("Before Updation of label");
-    //             onUpdateLabelDialogForm(null);
-    //             updateProjectLabelIdsAction(projectId, labelObj.id);
-
-
-
-    //             console.log("Label has been deleted", data);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error in deleting label", error);
-    //         })
-    // }
-
   }
 
 

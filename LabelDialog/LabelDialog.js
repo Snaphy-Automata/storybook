@@ -54,7 +54,6 @@ class LabelDialog extends PureComponent{
 
 
   _deleteFormLabel(){
-    console.log("Deleting Form label")
     const {formData, onLabelDelete} = this.props
     if(formData){
       onLabelDelete(formData);
