@@ -68,7 +68,7 @@ class TaskDetail extends PureComponent{
           {/* <AssignTask task={task}  /> */}
           <Dates  taskId={task.id} startDate={task.startDate} endDate={task.endDate} />
           <Labels taskId={task.id} projectId={projectId} />
-          {/* <SubTasks task={task} /> */}
+          <SubTasks task={task} />
         </div>
       </div>
     )
