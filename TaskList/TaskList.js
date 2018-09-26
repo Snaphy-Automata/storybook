@@ -396,11 +396,12 @@ class TaskList extends PureComponent {
   }
 
 
-  onSortEndRaw({index, oldIndex, newIndex}){
+  onSortEndRaw({oldIndex, newIndex, collection}){
     const {
       onItemPositionChanged,
     }  = this.props;
     if (oldIndex !== newIndex) {
+      console.log("List collection", collection)
       onItemPositionChanged(oldIndex, newIndex);
       if(this.SortableList){
         // We need to inform React Virtualized that the items have changed heights
@@ -418,11 +419,11 @@ class TaskList extends PureComponent {
 
   onSortStartRaw(e){
     if(this.SortableList){
-      const instance = this.SortableList.getWrappedInstance();
-      setTimeout(()=>{
-         //ListRef.recomputeRowHeights();
-         instance.forceUpdate();
-      })
+      // const instance = this.SortableList.getWrappedInstance();
+      // setTimeout(()=>{
+      //    //ListRef.recomputeRowHeights();
+      //    instance.forceUpdate();
+      // })
     }
 
   }
