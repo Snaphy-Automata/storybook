@@ -52,6 +52,7 @@ class LabelDialog extends PureComponent{
     this.onUpdateLabelDialogForm = this._onUpdateLabelDialogForm.bind(this)
   }
 
+
   _deleteFormLabel(){
     console.log("Deleting Form label")
     const {formData, onLabelDelete} = this.props
@@ -141,7 +142,7 @@ class LabelDialog extends PureComponent{
                                 {
                                   labelId &&
                                   <div className="label-dialog-label-container">
-                                    <SelectLabel labelId={labelId} type="edit" onClick={onEditLabel} />
+                                    <SelectLabel labelClassName="label-dialog-select-label-container" labelId={labelId} type="edit" onClick={onEditLabel} />
                                   </div>
                                 }
                               </div>
@@ -162,7 +163,6 @@ function mapStateToProps(store, props) {
 
   return {
     allLabelIds: getAllLabels(store, props),
-
   }
 }
 
