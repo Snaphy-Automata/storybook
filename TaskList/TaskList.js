@@ -361,7 +361,7 @@ class TaskList extends PureComponent {
       if(this.SortableList){
         // We need to inform React Virtualized that the items have changed heights
         const instance = this.SortableList.getWrappedInstance();
-        console.log(instance, ListRef)
+        //console.log(instance, ListRef)
         setTimeout(()=>{
           ListRef.recomputeRowHeights();
           instance.forceUpdate();
