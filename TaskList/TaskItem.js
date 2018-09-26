@@ -134,9 +134,11 @@ class TaskItem extends React.PureComponent {
             isEmpty,
             isActiveTaskSection,
             targetTaskId,
-            taskMemberList
+            taskMemberList,
+            index
         } = this.props;
 
+        //console.log("task Item Index", index);
         //console.log("Task Item Props getting called", task);
 
         const getTitleFieldName = () => {

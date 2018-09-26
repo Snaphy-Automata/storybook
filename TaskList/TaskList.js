@@ -124,15 +124,17 @@ const SortableTask = SortableElement((props)=>{
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
     let isEmpty = (task)?false:true
-    //console.log("task Data", task);
+    let taskId;
+    if(task){
+      taskId = task.id;
+    }
     //console.log("Sortable Task", task);
     return (
         <div style={style}>
-           {task &&
-           <TaskItem
+          <TaskItem
             isLastTask={isLastTask}
             index={indexValue}
-            taskId={task.id}
+            taskId={taskId}
             onTaskSelected={onTaskSelected}
             onAddNewtaskClicked={onAddNewtaskClicked}
             findMemberById={findMemberById}
@@ -146,7 +148,7 @@ const SortableTask = SortableElement((props)=>{
             onTaskItemBlurEvent={onTaskItemBlurEvent}
             onTaskItemFocusEvent={onTaskItemFocusEvent}
             onEnterNextNewTask={onEnterNextNewTask}
-            />}
+            />
         </div>
     )
 });
@@ -254,6 +256,27 @@ class VirtualList extends PureComponent {
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}></SortableTask>
+          }
+          {
+            <SortableTask
+            isLastTask={isLastTask}
+            index={index}
+            indexValue={index}
+           // disabled={isDisabled}
+            taskId={taskOrSectionId}
+            task={taskOrSection}
+            activeTasks={activeTasks}
+            onTaskSelected={onTaskSelected}
+            onTaskItemBlurEvent={onTaskItemBlurEvent}
+            onTaskItemFocusEvent={onTaskItemFocusEvent}
+            onEnterNextNewTask={onEnterNextNewTask}
+            onAddNewtaskClicked={onAddNewtaskClicked}
+            activeTasks={activeTasks}
+            findMemberById={findMemberById}
+            findLabelById={findLabelById}
+            onQuickUpdateDate={onQuickUpdateDate}
+            memberIdList={memberIdList}
+            onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}></SortableTask>
           }
           </div>
       )
