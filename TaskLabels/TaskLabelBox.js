@@ -33,6 +33,7 @@ import {
   deleteLabelMutation
 } from '../../baseComponents/GridView/components/graphql/label/mutation';
 
+
 class TaskLabelBox extends PureComponent{
   static defaultProps = {
     //Will store all labels of the project by ids..
