@@ -50,27 +50,6 @@ const isSectionEmpty = (activeTasks, index, findTaskById) => {
     return false;
 }
 
-
-const isSectionCollapsed = (section) => {
-    //console.log("Collapsed Section List", collapsedSectionList);
-    if(section && section.isCollapsed){
-        return section.isCollapsed;
-    } else{
-        return false;
-    }
-    // if(collapsedSectionList && collapsedSectionList.length){
-    //     for(var i=0;i<collapsedSectionList.length;i++){
-    //         if(collapsedSectionList[i] === sectionId){
-    //             return true;
-    //         }
-    //     }
-
-    // }
-}
-
-
-
-
 const SortableHeading = SortableElement((props)=>{
     const {section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked} = props;
     return (
@@ -112,15 +91,18 @@ const SortableTask = SortableElement((props)=>{
       onQuickUpdateTaskMembers
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
-    let isEmpty = (task && !task.projectId)? true: false
+    let isEmpty = (task)? false: true
+    let taskId;
+    if(task){
+      taskId = task.id;
+    }
     //console.log("Sortable Task", task);
     return (
         <div style={style}>
-           {task &&
            <TaskItem
             isLastTask={isLastTask}
             index={indexValue}
-            taskId={task.id}
+            taskId={taskId}
             onTaskSelected={onTaskSelected}
             onAddNewtaskClicked={onAddNewtaskClicked}
             findMemberById={findMemberById}
@@ -134,7 +116,7 @@ const SortableTask = SortableElement((props)=>{
             onTaskItemBlurEvent={onTaskItemBlurEvent}
             onTaskItemFocusEvent={onTaskItemFocusEvent}
             onEnterNextNewTask={onEnterNextNewTask}
-            />}
+            />
         </div>
     )
 });
@@ -207,10 +189,21 @@ class VirtualList extends PureComponent {
       const isLastTask = isTaskLast(activeTasks, index, findTaskById);
       const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
 
+      let itemType;
+      if(taskOrSection){
+        if(taskOrSection.type === "section"){
+          itemType = "section"
+        } else if(taskOrSection.type === "task"){
+          itemType = "task"
+        }
+      } else{
+        itemType = "task"
+      }
+
       return (
           <div style={{...style }}  key={key}>
           {
-              taskOrSection && taskOrSection.type === "section" &&
+              taskOrSection && itemType === "section" &&
               <SortableHeading
               isEmptySection={isEmptySection}
               isFirst={isFirst}
@@ -223,7 +216,7 @@ class VirtualList extends PureComponent {
               onAddNewtaskClicked={onAddNewtaskClicked}/>
           }
           {
-              taskOrSection && taskOrSection.type === "task" &&
+              itemType === "task" &&
               <SortableTask
               isLastTask={isLastTask}
               index={index}
@@ -262,8 +255,6 @@ class VirtualList extends PureComponent {
         const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
         if(task){
           if(task.type === "section"){
-              let isCollapsed = isSectionCollapsed(task);
-
               const firstSectionId = activeTasks[0];
               if(taskId === firstSectionId){
                   return 44.5;
