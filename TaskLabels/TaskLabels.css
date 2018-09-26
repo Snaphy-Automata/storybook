@@ -38,7 +38,7 @@ Created by Robins Gupta
 
 
 .task-detail-select-label-wrapper{
-  width: 87.8px;
+  width: 87.8px !important;
   max-width: 87.8px !important;
   padding-left: 5px;
   padding-right: 5px;

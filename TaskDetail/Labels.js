@@ -5,6 +5,7 @@
 import React, {PureComponent} from 'react'
 import PropTypes              from 'prop-types'
 import { connect }            from 'react-redux'
+import { compose, graphql, withApollo } from 'react-apollo'
 
 //Custom Import..
 import CircularIconBox        from '../CircularIconBox'
@@ -15,6 +16,14 @@ import {
 } from '../../baseComponents/GridView/components/ModelData/Task/action'
 
 import {getTaskLabels} from  '../../baseComponents/GridView/components/ModelData/Label/selector'
+
+
+import {
+  addLabel,
+  removeLabel,
+} from '../../baseComponents/GridView/components/graphql/task/mutation';
+
+
 
 class Labels extends PureComponent{
   static defaultProps = {
@@ -39,19 +48,29 @@ class Labels extends PureComponent{
 
 
   _onLabelRemoveBtnClick(event, labelId){
-    const {taskId, onTaskLabelRemoveAction} = this.props
+    const {taskId, onTaskLabelRemoveAction, removeLabel} = this.props
     //Call the reducer and mutation
-    //TODO: Add mutation here..
-    onTaskLabelRemoveAction(taskId, labelId)
+    onTaskLabelRemoveAction(taskId, labelId, removeLabel)
+    .then(data=>{
+      //Label removed.
+    })
+    .catch(error=>{
+      console.error("Error removing labels.", error)
+    })
     console.log("On Label Remove btn click", labelId)
 
   }
 
   _onLabelAdded(event, labelId){
-    const {taskId, onTaskLabelAddedAction} = this.props
+    const {taskId, onTaskLabelAddedAction, addLabel} = this.props
     //Call the reducer and mutation
-    //TODO: Add mutation here..
-    onTaskLabelAddedAction(taskId, labelId)
+    onTaskLabelAddedAction(taskId, labelId, addLabel)
+    .then(data=>{
+      //Done adding label
+    })
+    .catch(error=>{
+      console.error("Error adding label", error)
+    })
     console.log("On Label Btn Add click", labelId);
   }
 
@@ -103,5 +122,9 @@ const mapActionToProps = {
 }
 
 
-export default connect(mapStateToProps, mapActionToProps)(Labels)
+const LabelMutation = compose(
+  graphql(addLabel, { name: "addLabel" }),
+  graphql(removeLabel, { name: "removeLabel" }),
+)(Labels);
 
+export default withApollo(connect(mapStateToProps, mapActionToProps)(LabelMutation))

@@ -10,7 +10,7 @@ import { Icon } from 'semantic-ui-react'
 import map from 'lodash/map'
 import {generate} from 'shortid'
 import { compose, graphql, withApollo } from 'react-apollo';
-
+import { reset} from 'redux-form';
 //Custom import
 import Label from '../SelectLabel'
 import LabelDialog from '../LabelDialog'
@@ -20,6 +20,7 @@ import {
 
 import {
   onLabelSaveAction,
+  onLabelRemoveAction,
 } from '../../baseComponents/GridView/components/ModelData/Label/action'
 
 
@@ -31,6 +32,7 @@ import {
   createOrEditLabelMutation,
   deleteLabelMutation
 } from '../../baseComponents/GridView/components/graphql/label/mutation';
+
 
 class TaskLabelBox extends PureComponent{
   static defaultProps = {
@@ -73,18 +75,17 @@ class TaskLabelBox extends PureComponent{
     this.setState({isLabelDialogOpen:state})
   }
 
-  _onLabelSave(props, value){
+  _onLabelSave(data){
     const {initializeLabelDialogFormDataAction, initialValues, reset} = this.props
     let isNew;
-    console.log("On Label Save getting called", props, value)
     if(initialValues){
       isNew = false
-      this.saveLabel(value, isNew)
+      this.saveLabel(data, isNew)
     }else{
       isNew = true
       //On Create operation..
       const labelValue = {
-        ...value,
+        ...data,
         isSelected: false
       }
       labelValue.id = generate()
@@ -97,8 +98,18 @@ class TaskLabelBox extends PureComponent{
   }
 
 
-  _onLabelDelete(formData){
-    console.log("Deleting Form label data..")
+  _onLabelDelete(label){
+    const {onLabelRemoveAction, projectId, deleteLabelMutation, reset, initializeLabelDialogFormDataAction} = this.props
+    onLabelRemoveAction(label, projectId, deleteLabelMutation)
+    .then(data=>{
+      //Data removed..
+    })
+    .catch(error=>{
+      console.error("Error updating label.", error)
+    })
+    reset('labelCreateForm')
+    //Reset the initilize form..
+    initializeLabelDialogFormDataAction(null)
   }
 
 
@@ -106,68 +117,11 @@ class TaskLabelBox extends PureComponent{
     const {createOrEditLabelMutation, onLabelSaveAction, projectId}  = this.props
     onLabelSaveAction(labelObj, isNew, projectId, createOrEditLabelMutation)
     .then(label=>{
-      console("Label Saved or Updated", label)
+      console.log("Label Saved or Updated", label)
     })
     .catch(error=>{
-      console.error("Error saving label")
+      console.error("Error saving label", error)
     })
-  }
-
-  deleteLabel(labelObj){
-    // if (labelObj && labelObj.id) {
-    //     //console.log("Label to be deleted", labelObj.title, labelObj.id);
-    //     if (selectedTask) {
-    //         let selectedLabelList = selectedLabelListObj.selectedLabelList;
-    //         for (var i = 0; i < selectedLabelList.length; i++) {
-    //             if (selectedLabelList[i] === labelObj.id) {
-    //                 selectedLabelList.splice(i, 1);
-    //                 //console.log("updated Selected Label List", selectedLabelList);
-    //                 populateSelectedLabelListAction(selectedTask.id, selectedLabelList);
-    //                 //console.log("After Updated Selected Label List", selectedLabelListObj.selectedLabelList);
-    //             }
-    //         }
-
-    //     }
-    //     return deleteLabelMutation({
-    //         variables: {
-    //             id: labelObj.id
-    //         },
-    //         update: (proxy, { data: { engines: { PM: { label: { deleteById } } } } }) => {
-    //             try {
-    //                 this.props.client.writeFragment({
-    //                     id: `Engine_PM_Label:${labelObj.id}`,
-    //                     fragment: findLabelLocally,
-    //                     data: {
-    //                         __typename: 'Engine_PM_Label',
-    //                         id: null,
-    //                         title: null,
-    //                         colorCode: null,
-    //                         projectId: null
-    //                     }
-    //                 })
-    //                 //_.remove(label,)
-    //             } catch (e) {
-    //                 console.error("Error in deleting from fragment", e);
-    //             }
-    //         }
-    //     })
-    //         .then(({ data }) => {
-    //             if (data) {
-
-    //             }
-    //             console.log("Before Updation of label");
-    //             onUpdateLabelDialogForm(null);
-    //             updateProjectLabelIdsAction(projectId, labelObj.id);
-
-
-
-    //             console.log("Label has been deleted", data);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error in deleting label", error);
-    //         })
-    // }
-
   }
 
 
@@ -175,8 +129,6 @@ class TaskLabelBox extends PureComponent{
     const {allLabelIds, onLabelAdded, createLabelPlaceholder, projectId, initialValues} = this.props
     const {isLabelDialogOpen} = this.state
     const hasLabels = !!allLabelIds.length
-
-    console.log("Project ID", projectId)
 
     return (
       <div className="task-detail-select-label-box-container noselect">
@@ -209,7 +161,9 @@ function mapStateToProps(store, props) {
 
 const mapActionsToProps = {
   onLabelSaveAction,
+  onLabelRemoveAction,
   initializeLabelDialogFormDataAction,
+  reset,
 }
 
 const TaskLabelBoxMutation = compose(
