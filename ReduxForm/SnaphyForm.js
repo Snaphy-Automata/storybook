@@ -8,7 +8,7 @@ import {
  * SnaphyForm class
  * Will handle like redux Form. With Error message support..
  **/
-class SnaphyForm extends React.Component{
+class SnaphyForm extends React.PureComponent{
 
     constructor(props){
         super(props);
@@ -16,6 +16,7 @@ class SnaphyForm extends React.Component{
 
     //Render..
     render(){
+        console.log("re-rendering snaphy form")
        let novalidate = this.props.noValidate || false;
         return (
             <Form

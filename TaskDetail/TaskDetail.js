@@ -6,7 +6,6 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
 import './TaskDetail.css';
 
 
@@ -59,7 +58,7 @@ class TaskDetail extends PureComponent{
       task,
       projectId,
     } = this.props
-    console.log("New task Deatil getting called", task);
+    console.log("Task Detail getting reloaded", task);
     return (
       <div>
         <Header onSubTaskAdded={this.onSubTaskAdded} />
@@ -101,9 +100,4 @@ const mapActionsToProps = {
 }
 
 
-const TaskDetailForm = reduxForm({
-  form: "taskForm",
-  enableReinitialize: true
-})(TaskDetail);
-
-export default connect(mapStateToProps, mapActionsToProps)(TaskDetailForm);
+export default connect(mapStateToProps, mapActionsToProps)(TaskDetail);

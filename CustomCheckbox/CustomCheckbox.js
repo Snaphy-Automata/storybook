@@ -7,6 +7,7 @@ import './CustomCheckbox.css'
 import {onSelectDateAction, onOpenChangeDateDialogAction, onMemberSelectedAction} from '../TaskList/TaskListActions';
 
 const CustomCheckbox = ({size, isSelected, color, className, onItemClicked, onSelectDateAction, type, data, task, isDateDialogOpened, userId, onMemberSelectedAction}) => {
+    console.log("Checkbox getting reloaded.");
     const customCheckboxClicked = () => {
         //onItemClicked(type, data, task.id);
         if(type === "assigneduser"){

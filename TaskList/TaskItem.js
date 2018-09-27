@@ -56,7 +56,7 @@ class TaskItem extends React.PureComponent {
             this.delayedClassName = `task-item-delayed-block`;
         }
 
-       
+
 
         this.onWriteTask = this.onWriteTask.bind(this);
 
@@ -137,7 +137,7 @@ class TaskItem extends React.PureComponent {
             taskMemberList,
             index
         } = this.props;
-
+        console.log("Task Item getting reloaded.")
         //console.log("task Item Index", index);
         //console.log("Task Item Props getting called", task);
 
@@ -173,7 +173,7 @@ class TaskItem extends React.PureComponent {
         return (
 
             <div style={{ ...style, ...this.lastTaskStyle }} className={this.getWrapperClassName()}>
-                {!isNew && !isEmpty && 
+                {!isNew && !isEmpty &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
                             <div className={this.delayedClassName}></div>
@@ -502,10 +502,5 @@ const mapActionsToProps = {
 
 };
 
-const TaskItemForm = reduxForm({
-    form: "taskForm",
-    enableReinitialize: true
-})(TaskItem)
 
-
-export default connect(mapStateToProps, mapActionsToProps)(TaskItemForm);
+export default connect(mapStateToProps, mapActionsToProps)(TaskItem);

@@ -63,14 +63,15 @@ class SubtaskItem extends PureComponent {
 
     } = this.props
     return (
+
       <div className="task-detail-subtask-item-container">
           <div className="task-detail-subtask-title-completed-container">
             <CustomCheckbox className="task-detail-custom-checkbox" size='mini' isSelected={isSelected} onItemClicked={this.onSubtaskCompletedBtnClick}></CustomCheckbox>
           </div>
           <div className="task-detail-subtask-item-input-container">
-            <SnaphyForm>
-              <Field className="task-detail-subtask-title-input" name="subtask" type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={InputElement} onDataChanged={this.onDataChanged}></Field>
-            </SnaphyForm>
+          <SnaphyForm>
+              <Field className="task-detail-subtask-title-input" name="subtask" type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={InputElement} ></Field>
+          </SnaphyForm>
           </div>
       </div>
     )

@@ -6,10 +6,12 @@ import React, {PureComponent} from 'react'
 import PropTypes              from 'prop-types'
 import { connect }            from 'react-redux'
 import map                    from 'lodash/map'
-
+import { reduxForm }          from 'redux-form';
 //Custom import..
 import SubtaskItem from '../SubtaskItem'
-import {getSubtasks} from '../../baseComponents/GridView/components/ModelData/Task/selector'
+import {
+  generateSubtasks,
+} from '../../baseComponents/GridView/components/ModelData/Task/selector'
 
 class SubTasks extends PureComponent{
   static defaultProps = {
@@ -29,12 +31,12 @@ class SubTasks extends PureComponent{
 
   getSubtasks(){
     const {subtasks, taskId, projectId } = this.props
-    console.log("Subtasks", subtasks)
     return map(subtasks, ((subtaskId, index)=> (<SubtaskItem key={index} subtaskId={subtaskId} taskId={taskId} projectId={projectId} />)))
   }
 
 
   render(){
+    console.log("Subtasks getting rendered", this.props)
     return (
       <div className="task-detail-subtask-main-container" >
         {this.getSubtasks()}
@@ -44,18 +46,28 @@ class SubTasks extends PureComponent{
 
 }
 
-
-
-function mapStateToProps(store, props) {
-  return {
-    subtasks: getSubtasks(store, props)
+const makeMapStateToProps = ()=> {
+  const getSubtasks = generateSubtasks()
+  const mapStateToProps = (store, props) => {
+    return {
+      subtasks: getSubtasks(store, props)
+    }
   }
+
+  return mapStateToProps
 }
+
+
 
 const mapActionsToProps = {
 
 }
 
 
+const TaskDetailForm = reduxForm({
+  form: "subtasksForm",
+  pure: true,
+  //enableReinitialize: true
+})(SubTasks);
 
-export default connect(mapStateToProps, mapActionsToProps)(SubTasks)
+export default connect(makeMapStateToProps, mapActionsToProps)(TaskDetailForm)

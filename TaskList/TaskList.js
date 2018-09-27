@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { List} from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-
+import {  reduxForm } from 'redux-form'
 
 //Custom Import
 import './TaskList.css';
@@ -470,6 +470,8 @@ class TaskList extends PureComponent {
       setScrollRef,
 
     }  = this.props;
+
+    console.log("Task List getting reloaded.")
    // console.log("task List props getting called", activeTasks);
     const id = "snaphy-react-custom-scrollbar";
     //FIXME:  21st sept 2018.
@@ -523,5 +525,10 @@ class TaskList extends PureComponent {
 
 
 
-export default TaskList;
+const TaskListForm = reduxForm({
+  form: "taskItemForm",
+  enableReinitialize: false
+})(TaskList)
+
+export default TaskListForm;
 

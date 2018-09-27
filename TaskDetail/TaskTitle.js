@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 
 //Custom import..
 import InputElement     from '../ReduxForm/InputElement';
@@ -72,6 +72,13 @@ TaskTitle.propTypes = {
 }
 
 
-export default TaskTitle;
+
+const TaskTitleForm = reduxForm({
+  form: "taskTitle",
+  //enableReinitialize: true
+})(TaskTitle);
+
+
+export default TaskTitleForm;
 
 
