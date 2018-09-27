@@ -50,39 +50,8 @@ const isSectionEmpty = (activeTasks, index, findTaskById) => {
     return false;
 }
 
-
-const isSectionCollapsed = (section) => {
-    //console.log("Collapsed Section List", collapsedSectionList);
-    if(section && section.isCollapsed){
-        return section.isCollapsed;
-    } else{
-        return false;
-    }
-    // if(collapsedSectionList && collapsedSectionList.length){
-    //     for(var i=0;i<collapsedSectionList.length;i++){
-    //         if(collapsedSectionList[i] === sectionId){
-    //             return true;
-    //         }
-    //     }
-
-    // }
-}
-
-
-
-
 const SortableHeading = SortableElement((props)=>{
-    const {
-      section,
-      isFirst,
-      onNewTaskAdded,
-      indexValue,
-      onSectionStateChanged,
-      isEmptySection,
-      onAddNewtaskClicked,
-      onSectionCollapsed
-    } = props;
-    //console.log("Section Data", section);
+    const {section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed} = props;
     return (
         <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
@@ -123,7 +92,7 @@ const SortableTask = SortableElement((props)=>{
       onQuickUpdateTaskMembers
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
-    let isEmpty = (task)?false:true
+    let isEmpty = (task)? false: true
     let taskId;
     if(task){
       taskId = task.id;
@@ -131,7 +100,7 @@ const SortableTask = SortableElement((props)=>{
     //console.log("Sortable Task", task);
     return (
         <div style={style}>
-          <TaskItem
+           <TaskItem
             isLastTask={isLastTask}
             index={indexValue}
             taskId={taskId}
@@ -152,6 +121,10 @@ const SortableTask = SortableElement((props)=>{
         </div>
     )
 });
+
+
+
+
 
 class VirtualList extends PureComponent {
     static propTypes = {
@@ -218,11 +191,21 @@ class VirtualList extends PureComponent {
       const isLastTask = isTaskLast(activeTasks, index, findTaskById);
       const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
 
+      let itemType;
+      if(taskOrSection){
+        if(taskOrSection.type === "section"){
+          itemType = "section"
+        } else if(taskOrSection.type === "task"){
+          itemType = "task"
+        }
+      } else{
+        itemType = "task"
+      }
 
       return (
           <div style={{...style }}  key={key}>
           {
-              taskOrSection && taskOrSection.type === "section" &&
+              taskOrSection && itemType === "section" &&
               <SortableHeading
               isEmptySection={isEmptySection}
               isFirst={isFirst}
@@ -230,18 +213,16 @@ class VirtualList extends PureComponent {
               indexValue={index}
               section={taskOrSection}
               onNewTaskAdded={onNewTaskAdded}
-              //disabled={isDisabled}
               onSectionStateChanged={onSectionStateChanged}
               onSectionCollapsed={onSectionCollapsed}
               onAddNewtaskClicked={onAddNewtaskClicked}/>
           }
           {
-              taskOrSection && taskOrSection.type === "task" &&
+              itemType === "task" &&
               <SortableTask
               isLastTask={isLastTask}
               index={index}
               indexValue={index}
-             // disabled={isDisabled}
               taskId={taskOrSectionId}
               task={taskOrSection}
               activeTasks={activeTasks}
@@ -255,28 +236,8 @@ class VirtualList extends PureComponent {
               findLabelById={findLabelById}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
-              onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}></SortableTask>
-          }
-          {
-            <SortableTask
-            isLastTask={isLastTask}
-            index={index}
-            indexValue={index}
-           // disabled={isDisabled}
-            taskId={taskOrSectionId}
-            task={taskOrSection}
-            activeTasks={activeTasks}
-            onTaskSelected={onTaskSelected}
-            onTaskItemBlurEvent={onTaskItemBlurEvent}
-            onTaskItemFocusEvent={onTaskItemFocusEvent}
-            onEnterNextNewTask={onEnterNextNewTask}
-            onAddNewtaskClicked={onAddNewtaskClicked}
-            activeTasks={activeTasks}
-            findMemberById={findMemberById}
-            findLabelById={findLabelById}
-            onQuickUpdateDate={onQuickUpdateDate}
-            memberIdList={memberIdList}
-            onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}></SortableTask>
+              onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
+              ></SortableTask>
           }
           </div>
       )
@@ -292,12 +253,11 @@ class VirtualList extends PureComponent {
         const {activeTasks, findTaskById} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
+        //console.log("REcomputing heights getting called");
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
         const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
         if(task){
           if(task.type === "section"){
-              let isCollapsed = isSectionCollapsed(task);
-
               const firstSectionId = activeTasks[0];
               if(taskId === firstSectionId){
                   return 44.5;
@@ -382,9 +342,8 @@ class TaskList extends PureComponent {
     this.handleScroll       = this.handleScrollRaw.bind(this)
     this.onSortEnd          = this.onSortEndRaw.bind(this)
     this.onSortStart        = this.onSortStartRaw.bind(this)
-   // this.onSortOver         = this._onSortOver.bind(this)
-    this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
-    //this.onSortMove         = this._onSortMove.bind(this)
+   // this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
+
   }
 
   handleScrollRaw({ target }) {
@@ -396,19 +355,18 @@ class TaskList extends PureComponent {
   }
 
 
-  onSortEndRaw({index, oldIndex, newIndex}){
+  onSortEndRaw(e){
     const {
       onItemPositionChanged,
     }  = this.props;
-    if (oldIndex !== newIndex) {
-      onItemPositionChanged(oldIndex, newIndex);
+    if (e.oldIndex !== e.newIndex) {
+      onItemPositionChanged(e.oldIndex, e.newIndex);
       if(this.SortableList){
         // We need to inform React Virtualized that the items have changed heights
         const instance = this.SortableList.getWrappedInstance();
-        ListRef.recomputeRowHeights();
         //console.log(instance, ListRef)
         setTimeout(()=>{
-          //ListRef.recomputeRowHeights();
+          ListRef.recomputeRowHeights();
           instance.forceUpdate();
         })
       }
@@ -428,11 +386,12 @@ class TaskList extends PureComponent {
   }
 
 
-  onSectionCollapsedRaw(){
-    const instance = this.SortableList.getWrappedInstance();
-    ListRef.recomputeRowHeights();
-    instance.forceUpdate();
-  }
+  // onSectionCollapsedRaw(){
+  //   console.log("Recomputing Heights getting called");
+  //   const instance = this.SortableList.getWrappedInstance();
+  //   ListRef.recomputeRowHeights();
+  //   instance.forceUpdate();
+  // }
 
   getElement(id){
     return ()=>{
@@ -480,6 +439,13 @@ class TaskList extends PureComponent {
     //     this.onSectionCollapsed();
     // }
 
+    const onSectionCollapsed = () => {
+      //console.log("Recomputing Heights getting called");
+      const instance = this.SortableList.getWrappedInstance();
+      ListRef.recomputeRowHeights();
+      instance.forceUpdate();
+    }
+
     return (
 
         <CustomScrollbar setScrollRef={setScrollRef} id={id} onScroll={this.handleScroll}>
@@ -490,8 +456,6 @@ class TaskList extends PureComponent {
                   this.SortableList = instance;
               }}
               onSortEnd={this.onSortEnd}
-              //onSortOver={this.onSortOver}
-              //onSortMove={this.onSortMove}
               activeTasks={activeTasks}
               helperClass={'selected_item'}
               useDragHandle
@@ -511,7 +475,7 @@ class TaskList extends PureComponent {
               findMemberById={findMemberById}
               findLabelById={findLabelById}
               collapsedSectionList={collapsedSectionList}
-              onSectionCollapsed={this.onSectionCollapsed}
+              onSectionCollapsed={onSectionCollapsed}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}

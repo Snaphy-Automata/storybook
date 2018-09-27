@@ -29,7 +29,7 @@ const DragHandle = SortableHandle(() => (
     </div>
 )); // This can be any component you want
 
-class TaskItem extends React.PureComponent {
+class TaskItem extends React.Component {
     static lastTaskStyle = {};
     static taskItemContainerClassName = null;
     static delayedClassName = null;
@@ -424,19 +424,7 @@ function mapStateToProps(store, props) {
         isDatePickerOpened = true;
     }
     const modelDataReducer = store.ModelDataReducer;
-    const titleData = modelDataReducer.titleData;
     const taskMemberListObj = modelDataReducer.taskMemberListObj;
-
-    if (titleData) {
-        if (props.taskId) {
-            if (titleData.taskId && titleData.taskId !== props.taskId) {
-                itemTitleData = null;
-            } else {
-                itemTitleData = titleData.title;
-            }
-        }
-
-    }
 
     if (quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId) {
         isTodaySelected = quickCurrentUpdateDate.isTodaySelected;
