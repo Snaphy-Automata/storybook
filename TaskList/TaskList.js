@@ -253,6 +253,7 @@ class VirtualList extends PureComponent {
         const {activeTasks, findTaskById} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
+        //console.log("REcomputing heights getting called");
         const isLastTask = isTaskLast(activeTasks, index, findTaskById);
         const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
         if(task){
@@ -341,7 +342,7 @@ class TaskList extends PureComponent {
     this.handleScroll       = this.handleScrollRaw.bind(this)
     this.onSortEnd          = this.onSortEndRaw.bind(this)
     this.onSortStart        = this.onSortStartRaw.bind(this)
-    this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
+   // this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
 
   }
 
@@ -385,12 +386,12 @@ class TaskList extends PureComponent {
   }
 
 
-  onSectionCollapsedRaw(){
-    console.log("Recomputing Heights getting called");
-    const instance = this.SortableList.getWrappedInstance();
-    ListRef.recomputeRowHeights();
-    instance.forceUpdate();
-  }
+  // onSectionCollapsedRaw(){
+  //   console.log("Recomputing Heights getting called");
+  //   const instance = this.SortableList.getWrappedInstance();
+  //   ListRef.recomputeRowHeights();
+  //   instance.forceUpdate();
+  // }
 
   getElement(id){
     return ()=>{
@@ -436,6 +437,13 @@ class TaskList extends PureComponent {
     //     this.onSectionCollapsed();
     // }
 
+    const onSectionCollapsed = () => {
+      //console.log("Recomputing Heights getting called");
+      const instance = this.SortableList.getWrappedInstance();
+      ListRef.recomputeRowHeights();
+      instance.forceUpdate();
+    }
+
     return (
 
         <CustomScrollbar setScrollRef={setScrollRef} id={id} onScroll={this.handleScroll}>
@@ -465,7 +473,7 @@ class TaskList extends PureComponent {
               findMemberById={findMemberById}
               findLabelById={findLabelById}
               collapsedSectionList={collapsedSectionList}
-              onSectionCollapsed={this.onSectionCollapsed}
+              onSectionCollapsed={onSectionCollapsed}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
