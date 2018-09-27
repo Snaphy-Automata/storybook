@@ -16,6 +16,7 @@ import TaskTitle         from './TaskTitle'
 import AssignTask        from './AssignTask'
 import Dates             from './Dates'
 import Labels            from './Labels'
+import SubTasks          from './SubTasks'
 
 class TaskDetail extends PureComponent{
   static propTypes = {
@@ -68,7 +69,7 @@ class TaskDetail extends PureComponent{
           {/* <AssignTask task={task}  /> */}
           <Dates  taskId={task.id} startDate={task.startDate} endDate={task.endDate} />
           <Labels taskId={task.id} projectId={projectId} />
-          <SubTasks task={task} />
+          <SubTasks taskId={task.id} projectId={projectId} />
         </div>
       </div>
     )
