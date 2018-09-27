@@ -271,7 +271,7 @@ class VirtualList extends PureComponent {
       } = this.props;
       const totalRows = activeTasks.length;
 
-      console.log("List getting redendered..", activeTasks);
+      //console.log("List getting redendered..", activeTasks);
 
       return (
         <List
