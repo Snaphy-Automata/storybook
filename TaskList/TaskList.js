@@ -51,7 +51,7 @@ const isSectionEmpty = (activeTasks, index, findTaskById) => {
 }
 
 const SortableHeading = SortableElement((props)=>{
-    const {section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked} = props;
+    const {section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed} = props;
     return (
         <div  style={{width:"100%"}}>
             {!isFirst && <div className="task-list-section-seperator"></div>}
@@ -63,6 +63,7 @@ const SortableHeading = SortableElement((props)=>{
                 onNewTaskAdded={onNewTaskAdded}
                 onSectionStateChanged={onSectionStateChanged}
                 onAddNewtaskClicked={onAddNewtaskClicked}
+                onSectionCollapsed={onSectionCollapsed}
                 />
             </div>
         </div>
@@ -172,7 +173,8 @@ class VirtualList extends PureComponent {
         findLabelById,
         onQuickUpdateDate,
         memberIdList,
-        onQuickUpdateTaskMembers
+        onQuickUpdateTaskMembers,
+        onSectionCollapsed
       } = this.props
       const {
           index,       // Index of row
@@ -211,8 +213,8 @@ class VirtualList extends PureComponent {
               indexValue={index}
               section={taskOrSection}
               onNewTaskAdded={onNewTaskAdded}
-              //disabled={true}
               onSectionStateChanged={onSectionStateChanged}
+              onSectionCollapsed={onSectionCollapsed}
               onAddNewtaskClicked={onAddNewtaskClicked}/>
           }
           {
@@ -384,6 +386,7 @@ class TaskList extends PureComponent {
 
 
   onSectionCollapsedRaw(){
+    console.log("Recomputing Heights getting called");
     const instance = this.SortableList.getWrappedInstance();
     ListRef.recomputeRowHeights();
     instance.forceUpdate();

@@ -56,6 +56,7 @@ class TaskListHeading extends Component{
     if(isEmptySection){
         emptySectionId = sectionId;
     }
+    //console.log("Task List Section Index", index);
     onSectionStateChanged(sectionId, index, isCollapsed, emptySectionId);
     onSectionCollapsed();
 
