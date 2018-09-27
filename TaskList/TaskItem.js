@@ -137,9 +137,6 @@ class TaskItem extends React.Component {
             taskMemberList,
             index
         } = this.props;
-        console.log("Task Item getting reloaded.")
-        //console.log("task Item Index", index);
-        //console.log("Task Item Props getting called", task);
 
         const getTitleFieldName = () => {
             let titleName;

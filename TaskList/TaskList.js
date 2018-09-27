@@ -202,8 +202,10 @@ class VirtualList extends PureComponent {
         itemType = "task"
       }
 
+      const height = taskOrSection && taskOrSection.height?taskOrSection.height :"41px"
+
       return (
-          <div style={{...style }}  key={key}>
+          <div style={{...style, height }}  key={key}>
           {
               taskOrSection && itemType === "section" &&
               <SortableHeading
@@ -253,34 +255,9 @@ class VirtualList extends PureComponent {
         const {activeTasks, findTaskById} = this.props;
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
-        //console.log("REcomputing heights getting called");
-        const isLastTask = isTaskLast(activeTasks, index, findTaskById);
-        const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
         if(task){
-          if(task.type === "section"){
-              const firstSectionId = activeTasks[0];
-              if(taskId === firstSectionId){
-                  return 44.5;
-                //   if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
-                //       return 85.5
-                //   } else{
-                //       return 44.5;
-                //   }
-
-              }else{
-                  return 59;
-                //   if(isEmptySection && isAddNewTaskVisible && !isCollapsed){
-                //       return 100;
-                //   } else{
-                //       return 59;
-                //   }
-              }
-            }
-            // else if(task.type === "task"){
-            //     if(isLastTask && isAddNewTaskVisible && task.title){
-            //         return 82;
-            //     }
-            // }
+          console.log(`Task: ${task.title}$$ Task Type: ${task.type}$$ Task Height: ${task.height}`);
+          return task.height
         }
         return 41;
     }
@@ -293,6 +270,9 @@ class VirtualList extends PureComponent {
         width,
       } = this.props;
       const totalRows = activeTasks.length;
+
+      console.log("List getting redendered..", activeTasks);
+
       return (
         <List
           ref={(instance) => {
@@ -342,7 +322,7 @@ class TaskList extends PureComponent {
     this.handleScroll       = this.handleScrollRaw.bind(this)
     this.onSortEnd          = this.onSortEndRaw.bind(this)
     this.onSortStart        = this.onSortStartRaw.bind(this)
-   // this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
+    this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
 
   }
 
@@ -386,12 +366,14 @@ class TaskList extends PureComponent {
   }
 
 
-  // onSectionCollapsedRaw(){
-  //   console.log("Recomputing Heights getting called");
-  //   const instance = this.SortableList.getWrappedInstance();
-  //   ListRef.recomputeRowHeights();
-  //   instance.forceUpdate();
-  // }
+  onSectionCollapsedRaw(){
+    console.log("Recomputing Heights getting called");
+    const instance = this.SortableList.getWrappedInstance();
+    setTimeout(()=>{
+      ListRef.recomputeRowHeights();
+      instance.forceUpdate();
+    })
+  }
 
   getElement(id){
     return ()=>{
@@ -430,21 +412,9 @@ class TaskList extends PureComponent {
 
     }  = this.props;
 
-    console.log("Task List getting reloaded.")
-   // console.log("task List props getting called", activeTasks);
-    const id = "snaphy-react-custom-scrollbar";
-    //FIXME:  21st sept 2018.
-    //TODO: Remvoe action calling from here..
-    // if(collapsedEmptySectionId){
-    //     this.onSectionCollapsed();
-    // }
 
-    const onSectionCollapsed = () => {
-      //console.log("Recomputing Heights getting called");
-      const instance = this.SortableList.getWrappedInstance();
-      ListRef.recomputeRowHeights();
-      instance.forceUpdate();
-    }
+    const id = "snaphy-react-custom-scrollbar";
+
 
     return (
 
@@ -475,7 +445,7 @@ class TaskList extends PureComponent {
               findMemberById={findMemberById}
               findLabelById={findLabelById}
               collapsedSectionList={collapsedSectionList}
-              onSectionCollapsed={onSectionCollapsed}
+              onSectionCollapsed={this.onSectionCollapsed}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
