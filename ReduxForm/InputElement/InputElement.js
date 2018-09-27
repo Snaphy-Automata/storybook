@@ -76,7 +76,7 @@ class InputElement extends React.PureComponent{
     return (
       <Form.TextArea
         placeholder={placeholder}
-        {...input}
+        // {...input}
         autoFocus={autoFocus}
         rows = {rows}
         autoHeight
