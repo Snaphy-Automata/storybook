@@ -1,0 +1,25 @@
+/**
+Created by Robins
+27th Sept 2018
+**/
+
+.task-detail-subtask-item-container{
+  float: left;
+}
+
+.task-detail-subtask-title-completed-container{
+  width: 25px;
+  margin-top: 7px;
+  margin-right: 11px;
+  float: left;
+}
+
+.task-detail-subtask-title-input{
+
+}
+
+
+.task-detail-subtask-item-input-container {
+  float: left;
+   width: 396.5px;
+}

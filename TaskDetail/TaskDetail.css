@@ -309,6 +309,16 @@ Robins Gupta
   border-color: #4d4e5c;
 }
 
-
-
 /* End Labels */
+
+
+/* Subtask */
+.task-detail-subtask-main-container{
+  float: left;
+  width: 100%;
+  display: block;
+  margin-top: 12px;
+}
+
+
+/* End Subtask */
