@@ -13,6 +13,10 @@ import {
   generateSubtasks,
 } from '../../baseComponents/GridView/components/ModelData/Task/selector'
 
+import {
+  onTitleChanged,
+} from '../../baseComponents/GridView/components/ModelData/SubTask/action'
+
 class SubTasks extends PureComponent{
   static defaultProps = {
     subtasks:[]
@@ -26,12 +30,21 @@ class SubTasks extends PureComponent{
 
   constructor(props){
     super(props)
+    this.onTitleChanged = this._onTitleChanged.bind(this)
+  }
+
+  //On subtask title changed
+  _onTitleChanged(title, subtaskId){
+    const {taskId, projectId, onTitleChanged} = this.props
+    //Dispatch..
+    onTitleChanged(projectId, taskId, subtaskId, title)
   }
 
 
   getSubtasks(){
     const {subtasks, taskId, projectId } = this.props
-    return map(subtasks, ((subtaskId, index)=> (<SubtaskItem key={index} subtaskId={subtaskId} taskId={taskId} projectId={projectId} />)))
+    const onTitleChanged = this.onTitleChanged
+    return map(subtasks, ((subtaskId, index)=> (<SubtaskItem key={index} onDataChanged={onTitleChanged} subtaskId={subtaskId} taskId={taskId} projectId={projectId} />)))
   }
 
 
@@ -60,14 +73,8 @@ const makeMapStateToProps = ()=> {
 
 
 const mapActionsToProps = {
-
+  onTitleChanged,
 }
 
 
-const TaskDetailForm = reduxForm({
-  form: "subtasksForm",
-  pure: true,
-  //enableReinitialize: true
-})(SubTasks);
-
-export default connect(makeMapStateToProps, mapActionsToProps)(TaskDetailForm)
+export default connect(makeMapStateToProps, mapActionsToProps)(SubTasks)
