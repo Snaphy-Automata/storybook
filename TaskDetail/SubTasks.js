@@ -15,6 +15,7 @@ import {
 
 import {
   onTitleChanged,
+  onIsCompletedBtnClicked,
 } from '../../baseComponents/GridView/components/ModelData/SubTask/action'
 
 
@@ -51,13 +52,30 @@ class SubTasks extends PureComponent{
 
   //on subtask completed btn clicked..
   _onSubTaskCompletedBtnClick(isCompleted, subtaskId){
-    const {taskId, projectId} = this.props
+    const {taskId, projectId, onIsCompletedBtnClicked, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation} = this.props
+    //Dispatch..
+    onIsCompletedBtnClicked(projectId, taskId, subtaskId, isCompleted, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation)
+    .then(subtask=>{
+      console.log("Subtask saved successfully")
+    })
+    .catch(error=>{
+      console.error("Error saving subtask")
+    })
   }
 
   getSubtasks(){
     const {subtasks, taskId, projectId } = this.props
     const onTitleChanged = this.onTitleChanged
-    return map(subtasks, ((subtaskId, index)=> (<SubtaskItem key={index} onDataChanged={onTitleChanged} subtaskId={subtaskId} taskId={taskId} projectId={projectId} />)))
+    const onSubTaskCompletedBtnClick = this.onSubTaskCompletedBtnClick
+    return map(subtasks, ((subtaskId, index)=> (
+    <SubtaskItem
+      key={index}
+      onDataChanged={onTitleChanged}
+      subtaskId={subtaskId}
+      taskId={taskId}
+      projectId={projectId}
+      onSubTaskCompletedClick={onSubTaskCompletedBtnClick}
+      />)))
   }
 
 
@@ -87,6 +105,7 @@ const makeMapStateToProps = ()=> {
 
 const mapActionsToProps = {
   onTitleChanged,
+  onIsCompletedBtnClicked,
 }
 
 
