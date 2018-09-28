@@ -35,7 +35,7 @@ const DragHandle = SortableHandle(() => (
 class TaskItem extends React.Component {
     static lastTaskStyle = {};
     static taskItemContainerClassName = null;
-    static delayedClassName = null;
+   
     static taskHelper = null;
     static iconObj = null;
     constructor(props) {
@@ -49,15 +49,7 @@ class TaskItem extends React.Component {
         }
         this.getWrapperClassName = this.getWrapperClassName.bind(this);
         this.taskItemContainerClassName = `task-list-item-container`;
-        if (isActiveTaskSection) {
-            if (task.isCompleted) {
-                this.delayedClassName = `task-item-delayed-block completed`;
-            } else {
-                //this.delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
-            }
-        } else {
-            this.delayedClassName = `task-item-delayed-block`;
-        }
+       
 
 
 
@@ -131,7 +123,6 @@ class TaskItem extends React.Component {
             isScrolling,
             selectedTask,
             task,
-            itemTitleData,
             findMemberById,
             memberIdList,
             isEmpty,
@@ -143,9 +134,11 @@ class TaskItem extends React.Component {
             totalAttachments,
             totalSubTasks,
             completedSubTasks,
-            labelList,
+            labelObj,
             endDate,
             isDelayed,
+            isCompleted,
+            userObj,
             duration //to be fetch later..
         } = this.props;
 
@@ -164,18 +157,21 @@ class TaskItem extends React.Component {
             return titleName;
         }
 
-        const taskHelper = new TaskHelper(task, COMPLETED_TASK_COLOR_CODE, isActiveTaskSection);
-        let iconObj;
-        if (selectedTask && selectedTask.id === task.id) {
-            iconObj = taskHelper.getSelectedIcon(selectedTask, findMemberById);
-        } else if (!targetTaskId) {
-            iconObj = taskHelper.getIcon(findMemberById);
-        } else if (!selectedTask && targetTaskId && taskMemberList) {
-            iconObj = taskHelper.getTargetTaskIcon(taskMemberList, findMemberById);
+        const getDelayedClassName = () => {
+            let delayedClassName = null;
+            if (isActiveTaskSection) {
+                if (isCompleted) {
+                    delayedClassName = `task-item-delayed-block completed`;
+                } else {
+                    delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
+                }
+            } else {
+                delayedClassName = `task-item-delayed-block`;
+            }
 
+            return delayedClassName
+    
         }
-
-        //console.log("Task Item Title", this.taskHelper.getTitle(), task);
 
 
         return (
@@ -184,7 +180,7 @@ class TaskItem extends React.Component {
                 {!isNew && !isEmpty &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
-                            <div className={this.delayedClassName}></div>
+                            <div className={getDelayedClassName()}></div>
                             {!isScrolling && <div className="task-list-item-side-bar-container">
                                 <div className={'task-list-item-side-line'}>
                                     <DragHandle />
@@ -192,8 +188,8 @@ class TaskItem extends React.Component {
 
 
                                 <div className={'task-list-item-icon'}>
-                                    {iconObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} title={iconObj.title} tooltip={iconObj.tooltip} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
-                                    {iconObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={iconObj.thumbnailUrl} icon={iconObj.icon} tooltip={iconObj.tooltip} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+                                    {userObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} tooltip={userObj.tooltip} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+                                    {userObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} icon={userObj.icon} tooltip={userObj.tooltip} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
 
                                 </div>
                             </div>}
@@ -246,12 +242,12 @@ class TaskItem extends React.Component {
                                     </div>
                                     <div className="task-list-item-tags-container">
                                         {
-                                            labelList &&
-                                            labelList.length > 0 &&
+                                            labelObj && labelObj.labelList && 
+                                            labelObj.labelList.length > 0 &&
                                             <div className="task-list-item-tag-item">
-                                                <Label title={labelList[0].title} color={labelList[0].colorCode} tooltip={labelList[0].title} style={{ float: 'left' }} />
-                                                {/* {labelList.length > 1 &&
-                                                    <Label title="..." style={{ float: 'right' }} tooltip={labelObjData.tooltip} />} */}
+                                                <Label title={labelObj.labelList[0].title} color={labelObj.labelList[0].colorCode} tooltip={labelObj.labelList[0].title} style={{ float: 'left' }} />
+                                                {labelObj.tooltip &&
+                                                    <Label title="..." style={{ float: 'right' }} tooltip={labelObj.tooltip} />}
                                             </div>
 
                                         }
@@ -306,7 +302,7 @@ class TaskItem extends React.Component {
                     isEmpty && !isScrolling &&
                     <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onClick={this.onWriteTask}>
                         <div className={this.taskItemContainerClassName} >
-                            <div className={this.delayedClassName}></div>
+                            <div className={getDelayedClassName()}></div>
                             <div className="task-list-item-side-bar-container">
                                 <div className={'task-list-item-side-line'}>
                                 </div>
@@ -325,7 +321,7 @@ class TaskItem extends React.Component {
                     isNew && !isScrolling &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
-                            <div className={this.delayedClassName}></div>
+                            <div className={getDelayedClassName()}></div>
                             <div className="task-list-item-side-bar-container">
                                 <div className={'task-list-item-side-line'}>
                                 </div>
@@ -348,17 +344,7 @@ class TaskItem extends React.Component {
 
 
 function mapStateToProps(store, props) {
-    if (props.isScrolling) {
-        const allTaskObj = store.ModelDataReducer.task;
-        let task;
-        if (props.taskId) {
-            task = allTaskObj.byId[props.taskId];
-        }
-        return {
-            title: task ? task.title : undefined
-        }
-    } else {
-        const taskListReducer = store.TaskListReducer;
+    const taskListReducer = store.TaskListReducer;
         const dateDialog = taskListReducer.dateDialog;
         const assignedUserDialog = taskListReducer.assignedUserDialog;
         const datePickerDialog = taskListReducer.datePickerDialog;
@@ -370,7 +356,6 @@ function mapStateToProps(store, props) {
         let isTomorrowSelected = false;
         let isNextWeekSelected = false;
         let selectedTask = null;
-        let itemTitleData = null;
         let taskMemberList;
         let targetTaskId;
         if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
@@ -415,9 +400,11 @@ function mapStateToProps(store, props) {
             totalSubTasks,
             completedSubTasks,
             endDate,
-            labelList,
+            labelObj,
             totalAttachments,
-            isDelayed
+            isDelayed,
+            isCompleted,
+            userObj
         } = getTaskData(store, props)
 
 
@@ -431,7 +418,6 @@ function mapStateToProps(store, props) {
             isAssinedUserDialogOpened,
             isDatePickerOpened,
             selectedTask,
-            itemTitleData,
             labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
             taskMemberList,
             targetTaskId,
@@ -444,11 +430,11 @@ function mapStateToProps(store, props) {
             totalAttachments,
             endDate,
             isDelayed,
-            labelList
-
+            labelObj,
+            isCompleted,
+            userObj
 
         }
-    }
 
 
 }
