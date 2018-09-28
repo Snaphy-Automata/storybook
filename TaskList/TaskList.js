@@ -89,7 +89,8 @@ const SortableTask = SortableElement((props)=>{
       findLabelById,
       onQuickUpdateDate,
       memberIdList,
-      onQuickUpdateTaskMembers
+      onQuickUpdateTaskMembers,
+      isScrolling
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
     let isEmpty = (task)? false: true
@@ -238,6 +239,7 @@ class VirtualList extends PureComponent {
               findLabelById={findLabelById}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
+              isScrolling={isScrolling}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
               ></SortableTask>
           }
