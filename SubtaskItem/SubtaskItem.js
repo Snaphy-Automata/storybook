@@ -111,7 +111,7 @@ class SubtaskItem extends PureComponent {
           </div>
           <div className="task-detail-subtask-item-input-container">
             <SnaphyForm>
-              <InputElement value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
+              <InputElement onBlur={this.onDataSave} value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
             </SnaphyForm>
             <div  className="task-detail-subtask-item-icon-container">
               <OptionPopup

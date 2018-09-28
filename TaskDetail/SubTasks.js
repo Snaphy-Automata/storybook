@@ -66,6 +66,7 @@ class SubTasks extends PureComponent{
   }
 
   _onDataSave(subtaskId){
+    console.log("Data saved");
     const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation} = this.props
     //Dispatch..
     onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation)
