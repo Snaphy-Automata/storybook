@@ -10,16 +10,97 @@ Created by Robins
 .task-detail-subtask-title-completed-container{
   width: 25px;
   margin-top: 7px;
-  margin-right: 11px;
+  margin-right: 21px;
   float: left;
 }
 
-.task-detail-subtask-title-input{
 
+.task-detail-subtask-item-icon-container{
+  float: left;
+  cursor: pointer;
 }
 
+
+.task-detail-subtask-item-icon-container .icon{
+  margin: 0;
+  margin-top: 9px;
+  visibility: hidden
+}
+
+
+.task-detail-subtask-item-container:hover .task-detail-subtask-item-icon-container .icon{
+  margin: 0;
+  margin-top: 9px;
+  visibility: visible;
+}
 
 .task-detail-subtask-item-input-container {
   float: left;
-   width: 396.5px;
+  width: 384.5px;
+  border-bottom: 1px solid #eeeeee;
+  color: #707070;
 }
+
+.task-detail-subtask-item-input-container .ui.form{
+  float: left;
+  width: 94%;
+}
+
+.task-detail-subtask-title-input textarea{
+  font-size: 15px !important;
+  padding: 4px 2px !important;
+  color: #707070 !important;
+}
+
+
+
+.task-detail-subtask-title-input textarea:focus{
+  border-color: #ffffff !important;
+}
+
+
+/* Input Text Area.. */
+
+/* Chrome */
+.task-detail-subtask-title-input textarea::-webkit-input-placeholder {
+  font-size: 15px !important;
+}
+
+.task-detail-subtask-title-input textarea:focus::-webkit-input-placeholder {
+  font-size: 15px !important;
+}
+
+/* End Chrome */
+
+/* IE 10+ */
+.task-detail-subtask-title-input textarea:-ms-input-placeholder {
+  font-size: 15px !important;
+}
+
+.task-detail-subtask-title-input textarea:focus:-ms-input-placeholder  {
+  font-size: 15px !important;
+}
+
+/* ------end IE 10+ ---- */
+
+/* Firefox 19+ */
+
+.task-detail-subtask-title-input textarea::-moz-placeholder {
+  font-size: 15px !important;
+}
+
+.task-detail-subtask-title-input textarea:focus::-moz-placeholder {
+  font-size: 15px !important;
+}
+
+/* end Firefox 19+ */
+
+/* Firefox 4 - 18 */
+.task-detail-subtask-title-input textarea:-moz-placeholder {
+  font-size: 15px !important;
+}
+
+.task-detail-subtask-title-input textarea:focus:-moz-placeholder {
+  font-size: 15px !important;
+}
+/* end Firefox 4 - 18 */
