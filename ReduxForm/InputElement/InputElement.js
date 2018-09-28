@@ -1,57 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Input, Form} from 'semantic-ui-react';
+import {Form} from 'semantic-ui-react';
 
 import "./inputElement.css"
 
 class InputElement extends React.PureComponent{
+
+  static propTypes = {
+    //Properties
+    style: PropTypes.object,
+    rows: PropTypes.number,
+    className: PropTypes.string,
+    autoFocus: PropTypes.bool,
+    blurOnEnter: PropTypes.bool,
+    placeholder: PropTypes.string,
+    autoHeight: PropTypes.bool,
+    //Methods
+    onBlur: PropTypes.func,
+    onChange: PropTypes.func,
+    onKeyPress: PropTypes.func,
+
+  }
+
+
+  static defaultProps = {
+    style: {},
+    className: "",
+    rows: 1,
+    autoFocus: false,
+    blurOnEnter: true,
+    autoHeight: true,
+    placeholder: "Enter value",
+  }
+
   constructor(props){
     super(props)
-    this.styleObj  = props.style || {}
-    this.styleObj = {
-      paddingLeft: "11.5px",
-      paddingRight: "11.5px",
-      paddingTop: "5px",
-      paddingBottom: "5px",
-      minHeight: 25,
-      lineHeight: "25px",
-      overflow: "hidden",
-      ...this.styleObj,
-    }
-    this.onFocusChanged = this._onFocusChanged.bind(this)
     this.onBlurEvent    = this._onBlurEvent.bind(this)
     this.onKeyPress     = this._onKeyPress.bind(this)
     this.onChange       = this._onChange.bind(this)
   }
 
-  _onFocusChanged(){
-    //inputFocusChagedAction(true, label);
-  }
 
   _onBlurEvent(e){
+    const {onBlur} = this.props
     e.preventDefault();
-    //inputFocusChagedAction(false, label);
-    //call autosave function..
+    onBlur? onBlur(e): null
   }
 
   _onKeyPress(e){
-    if(e.key === 'Enter'){
-        //Prevent Title from further propagating..
-        //First Set Blur..
+    const {blurOnEnter, onKeyPress} = this.props
+    if(blurOnEnter && e.key === 'Enter'){
         e.preventDefault();
         e.target.blur();
-        //FIXME: Save data..
-        //inputFocusChagedAction(false, label);
-        //call autosave function..
     }
+    onKeyPress? onKeyPress(e): null
   }
 
   _onChange(event, data){
-    const {input, onDataChanged} = this.props
+    const {input, onChange} = this.props
     event.preventDefault()
-    input.onChange(data.value);
-    if(onDataChanged){
-      onDataChanged(data.value);
+    input && input.onChange ?input.onChange(data.value):null
+    if(onChange){
+      onChange(data.value);
     }
   }
 
@@ -61,8 +71,20 @@ class InputElement extends React.PureComponent{
       placeholder,
       rows,
       autoFocus,
+      autoHeight,
     } = this.props
 
+
+    const styleObj = {
+      paddingLeft: "11.5px",
+      paddingRight: "11.5px",
+      paddingTop: "5px",
+      paddingBottom: "5px",
+      minHeight: 25,
+      lineHeight: "25px",
+      overflow: "hidden",
+      ...this.props.style,
+    }
 
     let className = "input-element-text-area"
 
@@ -70,21 +92,17 @@ class InputElement extends React.PureComponent{
       className = `${this.props.className} ${className}`
     }
 
-    console.log("Re-Rendering Input Element")
-
-
     return (
       <Form.TextArea
         placeholder={placeholder}
-        // {...input}
         autoFocus={autoFocus}
         rows = {rows}
-        autoHeight
+        autoHeight={autoHeight}
         className={className}
         onBlur = {this.onBlurEvent}
         onKeyPress = {this.onKeyPress}
         onChange={this.onChange}
-        style={this.styleObj}
+        style={styleObj}
       />
     )
   }
