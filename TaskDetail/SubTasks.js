@@ -63,6 +63,11 @@ class SubTasks extends PureComponent{
     })
   }
 
+  _onDataSave(){
+    const {taskId, projectId, onIsCompletedBtnClicked, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation} = this.props
+
+  }
+
   getSubtasks(){
     const {subtasks, taskId, projectId } = this.props
     const onTitleChanged = this.onTitleChanged
