@@ -6,7 +6,7 @@ import React, {PureComponent} from 'react'
 import PropTypes              from 'prop-types'
 import { connect }            from 'react-redux'
 import map                    from 'lodash/map'
-import { reduxForm }          from 'redux-form';
+import { compose, graphql, withApollo } from 'react-apollo';
 //Custom import..
 import SubtaskItem from '../SubtaskItem'
 import {
@@ -16,6 +16,14 @@ import {
 import {
   onTitleChanged,
 } from '../../baseComponents/GridView/components/ModelData/SubTask/action'
+
+
+import {
+  createOrEditSubTaskMutation,
+  updateIsCompletedMutation,
+  deleteSubTaskMutation
+} from '../../baseComponents/GridView/components/graphql/subtask/mutation';
+
 
 class SubTasks extends PureComponent{
   static defaultProps = {
@@ -30,7 +38,8 @@ class SubTasks extends PureComponent{
 
   constructor(props){
     super(props)
-    this.onTitleChanged = this._onTitleChanged.bind(this)
+    this.onTitleChanged              = this._onTitleChanged.bind(this)
+    this.onSubTaskCompletedBtnClick  = this._onSubTaskCompletedBtnClick.bind(this)
   }
 
   //On subtask title changed
@@ -40,6 +49,10 @@ class SubTasks extends PureComponent{
     onTitleChanged(projectId, taskId, subtaskId, title)
   }
 
+  //on subtask completed btn clicked..
+  _onSubTaskCompletedBtnClick(isCompleted, subtaskId){
+    const {taskId, projectId} = this.props
+  }
 
   getSubtasks(){
     const {subtasks, taskId, projectId } = this.props
@@ -77,4 +90,13 @@ const mapActionsToProps = {
 }
 
 
-export default connect(makeMapStateToProps, mapActionsToProps)(SubTasks)
+
+const SubTasksMutation = compose(
+  graphql(deleteSubTaskMutation, { name: "deleteSubTaskMutation" }),
+  graphql(updateIsCompletedMutation, { name: "updateIsCompletedSubTaskMutation" }),
+  graphql(createOrEditSubTaskMutation, { name: "createOrEditSubTaskMutation" }),
+)(SubTasks);
+
+
+
+export default withApollo(connect(makeMapStateToProps, mapActionsToProps)(SubTasksMutation))
