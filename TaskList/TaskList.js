@@ -256,7 +256,7 @@ class VirtualList extends PureComponent {
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
         if(task){
-          console.log(`Task: ${task.title}$$ Task Type: ${task.type}$$ Task Height: ${task.height}`);
+          //console.log(`Task: ${task.title}$$ Task Type: ${task.type}$$ Task Height: ${task.height}`);
           return task.height
         }
         return 41;
