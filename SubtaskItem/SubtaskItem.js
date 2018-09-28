@@ -5,7 +5,7 @@
 
 import React, {PureComponent}  from 'react';
 import PropTypes               from 'prop-types';
-import { Icon, Popup }         from 'semantic-ui-react'
+import { Icon}         from 'semantic-ui-react'
 //Style.
 import "./SubtaskItem.css"
 
@@ -13,6 +13,8 @@ import "./SubtaskItem.css"
 import InputElement     from '../ReduxForm/InputElement';
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
 import CustomCheckbox   from '../CustomCheckbox'
+import OptionPopup      from '../OptionPopup'
+
 
 class SubtaskItem extends PureComponent {
   static defaultProps = {
@@ -40,17 +42,36 @@ class SubtaskItem extends PureComponent {
   constructor(props){
     super(props)
     this.onSubtaskCompletedBtnClick = this._onSubtaskCompletedBtnClick.bind(this)
-    this.onDataChanged = this._onDataChanged.bind(this)
+    this.onDataChanged              = this._onDataChanged.bind(this)
+    this.onSubTaskDelete            = this._onSubTaskDelete.bind(this)
+    this.onDataSave                 = this._onDataSave.bind(this)
+    this.state = {
+      forceClose: false
+    }
   }
 
 
   _onSubtaskCompletedBtnClick(event){
-
+    const {onTaskCompletedClick} = this.props
   }
 
   _onDataChanged(event){
 
   }
+
+
+  _onSubTaskDelete(event){
+    console.log("Deleting subtask")
+    this.setState({
+      forceClose: true
+    })
+  }
+
+  _onDataSave(event){
+
+  }
+
+
 
   render(){
     const {
@@ -59,7 +80,7 @@ class SubtaskItem extends PureComponent {
       size,
       rows,
       label,
-
+      title,
     } = this.props
     return (
 
@@ -69,26 +90,20 @@ class SubtaskItem extends PureComponent {
           </div>
           <div className="task-detail-subtask-item-input-container">
             <SnaphyForm>
-                <InputElement className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
+              <InputElement value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
             </SnaphyForm>
-            <div className="task-detail-subtask-item-icon-container">
-              <Popup
-                style={{
-                  right: "23px"
-                }}
-                basic
+            <div  className="task-detail-subtask-item-icon-container">
+              <OptionPopup
+                heading="Task Actions"
+                close={this.state.forceClose}
                 trigger={
-                    <Icon name="ellipsis horizontal" />
-
+                  <Icon name="ellipsis horizontal" />
                 }
-                content={
-                  <div>
-                    hhbh
-                  </div>
-                }
-                on='click'
-                position='bottom right'
-              />
+              >
+                <div className="task-detail-subtask-dialog-item" onClick={this.onSubTaskDelete}>
+                  Delete Item
+                </div>
+              </OptionPopup>
             </div>
           </div>
       </div>

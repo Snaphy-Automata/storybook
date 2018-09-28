@@ -15,6 +15,7 @@ class InputElement extends React.PureComponent{
     blurOnEnter: PropTypes.bool,
     placeholder: PropTypes.string,
     autoHeight: PropTypes.bool,
+    value: PropTypes.any,
     //Methods
     onBlur: PropTypes.func,
     onChange: PropTypes.func,
@@ -72,6 +73,7 @@ class InputElement extends React.PureComponent{
       rows,
       autoFocus,
       autoHeight,
+      value,
     } = this.props
 
 
@@ -103,6 +105,7 @@ class InputElement extends React.PureComponent{
         onKeyPress = {this.onKeyPress}
         onChange={this.onChange}
         style={styleObj}
+        value={value}
       />
     )
   }

@@ -22,6 +22,20 @@ Created by Robins
   text-align: center;
 }
 
+.task-detail-subtask-dialog-item{
+  cursor: pointer;
+  font-size: 12px;
+  text-transform: capitalize;
+  height: 41px;
+  line-height: 41px;
+  padding-left: 9px;
+}
+
+.task-detail-subtask-dialog-item:hover{
+  background-color: #f9f9f9;
+  border-bottom: 0.7px solid #eeeeee;
+}
+
 
 .task-detail-subtask-item-icon-container .icon{
   margin: 0;

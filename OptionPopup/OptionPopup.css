@@ -1,0 +1,33 @@
+/**
+Created by Robins Gupta
+28th Sept 2018.
+**/
+
+
+.option-popup-dialog-header{
+  font-size: 12px;
+  font-weight: 600;
+  color: #4d4f5c;
+  text-transform: capitalize;
+  height: 41px;
+  line-height: 41px;
+  /* margin-bottom: 10px; */
+  padding-left: 8px;
+  padding-right: 8px;
+  /* padding-left: 4px; */
+  border-bottom: 0.7px solid #eeeeee;
+}
+
+.option-popup-container{
+  min-width: 180px;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 8px;
+}
+
+.option-popup-dialog-body{
+  font-size: 12px;
+  font-weight: 500;
+  color: #4d4f5c;
+  /* padding-bottom: 5px; */
+}
