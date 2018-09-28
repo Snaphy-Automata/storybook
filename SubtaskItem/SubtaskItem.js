@@ -5,7 +5,8 @@
 
 import React, {PureComponent}  from 'react';
 import PropTypes               from 'prop-types';
-import { Icon}         from 'semantic-ui-react'
+import { Icon}                 from 'semantic-ui-react'
+import { connect }             from 'react-redux'
 //Style.
 import "./SubtaskItem.css"
 
@@ -14,15 +15,17 @@ import InputElement     from '../ReduxForm/InputElement';
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
 import CustomCheckbox   from '../CustomCheckbox'
 import OptionPopup      from '../OptionPopup'
-
+import {getSubTask}     from '../../baseComponents/GridView/components/ModelData/SubTask/selector'
 
 class SubtaskItem extends PureComponent {
   static defaultProps = {
-    isSelected: false,
     placeholder: "Add a subtask",
     size: "mini",
     label: "Add a subtask",
     rows: 1,
+    subtask:{
+      isCompleted: false,
+    }
   }
 
   static propTypes = {
@@ -37,6 +40,12 @@ class SubtaskItem extends PureComponent {
     size: PropTypes.string,
     rows: PropTypes.number,
     label: PropTypes.string,
+
+    //Methods
+    onSubTaskCompletedClick: PropTypes.func,
+    onDataChanged: PropTypes.func,
+    onSubTaskDelete: PropTypes.func,
+    onDataSave: PropTypes.func,
   }
 
   constructor(props){
@@ -52,23 +61,31 @@ class SubtaskItem extends PureComponent {
 
 
   _onSubtaskCompletedBtnClick(event){
-    const {onTaskCompletedClick} = this.props
+    const {onSubTaskCompletedClick, subtaskId, subtask} = this.props
+    const {
+      isCompleted,
+    } = subtask
+    onSubTaskCompletedClick? onSubTaskCompletedClick(!isCompleted, subtaskId):null
   }
 
-  _onDataChanged(event){
-
+  _onDataChanged(title){
+    const {onDataChanged, subtaskId} = this.props
+    onDataChanged?onDataChanged(title, subtaskId):null
   }
 
 
   _onSubTaskDelete(event){
-    console.log("Deleting subtask")
+    const state = !this.state.forceClose
     this.setState({
-      forceClose: true
+      forceClose:state
     })
+    const {onSubTaskDelete, } = this.props
+    onSubTaskDelete? onSubTaskDelete(subtaskId):null
   }
 
   _onDataSave(event){
-
+    const {onDataSave, subtaskId} = this.props
+    onDataSave?onDataSave(subtaskId):null
   }
 
 
@@ -77,16 +94,20 @@ class SubtaskItem extends PureComponent {
     const {
       isSelected,
       placeholder,
-      size,
       rows,
-      label,
-      title,
+      subtask,
     } = this.props
+
+    const {
+      title,
+      isCompleted,
+    } = subtask
+
     return (
 
       <div className="task-detail-subtask-item-container">
           <div className="task-detail-subtask-title-completed-container">
-            <CustomCheckbox className="task-detail-custom-checkbox" size='mini' isSelected={isSelected} onItemClicked={this.onSubtaskCompletedBtnClick}></CustomCheckbox>
+            <CustomCheckbox className="task-detail-custom-checkbox" size='mini' isSelected={isCompleted} onItemClicked={this.onSubtaskCompletedBtnClick}></CustomCheckbox>
           </div>
           <div className="task-detail-subtask-item-input-container">
             <SnaphyForm>
@@ -113,4 +134,13 @@ class SubtaskItem extends PureComponent {
 }
 
 
-export default SubtaskItem
+const mapStateToProps = (state, props) => {
+  return {
+    subtask: getSubTask(state, props)
+  }
+}
+
+const mapActionToProps = {}
+
+
+export default connect(mapStateToProps, mapActionToProps)(SubtaskItem)

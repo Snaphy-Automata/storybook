@@ -47,8 +47,9 @@ class OptionPopup extends PureComponent{
 
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.close !== this.state.isDialogDisplayed){
-      return this.onClose? this.onClose():null
+    if(nextProps.close !== this.props.close){
+      this.onClose? this.onClose():null
+      //return false;
     }
    else return null;
   }
