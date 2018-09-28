@@ -1,8 +1,9 @@
-import React from "react";
+import React from "react"
+import PropTypes from 'prop-types'
 import {
     Form,
     Message,
-  } from 'semantic-ui-react';
+  } from 'semantic-ui-react'
 
 /**
  * SnaphyForm class
@@ -10,27 +11,46 @@ import {
  **/
 class SnaphyForm extends React.PureComponent{
 
+  static propTypes = {
+    //methods
+    onSubmit: PropTypes.func,
+
+    //Prop
+    noValidate: PropTypes.bool,
+    error: PropTypes.bool,
+    style: PropTypes.object,
+    className: PropTypes.string,
+    errorHeading: PropTypes.string,
+  }
+
+  static defaultProps = {
+    noValidate: false,
+    error: false,
+    style: {},
+    className: "",
+    errorHeading: ""
+  }
+
+
     constructor(props){
         super(props);
     }
 
     //Render..
     render(){
-        console.log("re-rendering snaphy form")
-       let novalidate = this.props.noValidate || false;
+       let novalidate = this.props.noValidate;
         return (
-            <Form
-            noValidate={novalidate}
+            <Form noValidate={novalidate}
             onSubmit={this.props.onSubmit}
-            error={this.props.error?true:false}
+            error={this.props.error}
             style={this.props.style}
             className={this.props.className} >
                 {
                     this.props.error && (<Message error={true} header={this.props.errorHeading} content={this.props.error} />)
                 }
-                <div>
-                    {this.props.children}
-                </div>
+                {
+                  this.props.children
+                }
             </Form>
         );
     }

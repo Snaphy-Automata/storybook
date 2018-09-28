@@ -5,8 +5,7 @@
 
 import React, {PureComponent}  from 'react';
 import PropTypes               from 'prop-types';
-import { Field }               from 'redux-form';
-
+import { Icon, Popup }         from 'semantic-ui-react'
 //Style.
 import "./SubtaskItem.css"
 
@@ -69,9 +68,28 @@ class SubtaskItem extends PureComponent {
             <CustomCheckbox className="task-detail-custom-checkbox" size='mini' isSelected={isSelected} onItemClicked={this.onSubtaskCompletedBtnClick}></CustomCheckbox>
           </div>
           <div className="task-detail-subtask-item-input-container">
-          <SnaphyForm>
-              <Field className="task-detail-subtask-title-input" name="subtask" type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={InputElement} ></Field>
-          </SnaphyForm>
+            <SnaphyForm>
+                <InputElement className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
+            </SnaphyForm>
+            <div className="task-detail-subtask-item-icon-container">
+              <Popup
+                style={{
+                  right: "23px"
+                }}
+                basic
+                trigger={
+                    <Icon name="ellipsis horizontal" />
+
+                }
+                content={
+                  <div>
+                    hhbh
+                  </div>
+                }
+                on='click'
+                position='bottom right'
+              />
+            </div>
           </div>
       </div>
     )

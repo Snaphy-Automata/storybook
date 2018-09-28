@@ -4,13 +4,12 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
 
 //Custom import..
 import InputElement     from '../ReduxForm/InputElement';
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
 import CustomCheckbox   from '../CustomCheckbox'
-const TaskTitle = ({task, placeholder, label, rows, onDataChanged, size, isSelected, onTaskCompleted}) =>{
+const TaskTitle = ({task, placeholder, rows, onDataChanged, size, isSelected, onTaskCompleted}) =>{
   return (
     <div className="task-detail-task-title-container">
       <div className="task-detail-task-title-completed-container">
@@ -18,7 +17,7 @@ const TaskTitle = ({task, placeholder, label, rows, onDataChanged, size, isSelec
       </div>
       <div style={{float: "left", width: "396.5px"}}>
         <SnaphyForm>
-          <Field className="task-detail-task-title-input" name={getTitleFieldName(task)} type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={InputElement} onDataChanged={onDataChanged}></Field>
+          <InputElement className="task-detail-task-title-input"  type="text" placeholder={placeholder} size={size} rows={rows} onChange={onDataChanged}></InputElement>
         </SnaphyForm>
       </div>
     </div>
@@ -26,39 +25,14 @@ const TaskTitle = ({task, placeholder, label, rows, onDataChanged, size, isSelec
 }
 
 
-/**
- * Will return title field name
- */
-const getTitleFieldName = (task) => {
-  let titleName;
-  if (task) {
-      if (task.id) {
-          if (task.title) {
-              titleName = `${task.id}.title`;
-          } else {
-              titleName = `${task.id}.title_new`;
-          }
-
-      } else {
-          titleName = "title";
-      }
-
-  } else {
-      titleName = "title";
-  }
-  return titleName;
-}
-
 
 
 //Adding Default props
 TaskTitle.defaultProps = {
   placeholder: "Enter a task name",
-  label: "TaskTitle",
   size: "large",
   rows: 1,
   isSelected: false,
-
 };
 
 TaskTitle.propTypes = {
@@ -73,12 +47,6 @@ TaskTitle.propTypes = {
 
 
 
-const TaskTitleForm = reduxForm({
-  form: "taskTitle",
-  //enableReinitialize: true
-})(TaskTitle);
-
-
-export default TaskTitleForm;
+export default TaskTitle;
 
 
