@@ -17,14 +17,16 @@ Created by Robins
 
 .task-detail-subtask-item-icon-container{
   float: left;
+  width: 11%;
   cursor: pointer;
+  text-align: center;
 }
 
 
 .task-detail-subtask-item-icon-container .icon{
   margin: 0;
   margin-top: 9px;
-  visibility: hidden
+  visibility: hidden;
 }
 
 
@@ -43,7 +45,7 @@ Created by Robins
 
 .task-detail-subtask-item-input-container .ui.form{
   float: left;
-  width: 94%;
+  width: 89%;
 }
 
 .task-detail-subtask-title-input textarea{

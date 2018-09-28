@@ -5,7 +5,7 @@
 
 import React, {PureComponent}  from 'react';
 import PropTypes               from 'prop-types';
-import { Icon }                from 'semantic-ui-react'
+import { Icon, Popup }         from 'semantic-ui-react'
 //Style.
 import "./SubtaskItem.css"
 
@@ -72,7 +72,23 @@ class SubtaskItem extends PureComponent {
                 <InputElement className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
             </SnaphyForm>
             <div className="task-detail-subtask-item-icon-container">
-              <Icon name="ellipsis horizontal" />
+              <Popup
+                style={{
+                  right: "23px"
+                }}
+                basic
+                trigger={
+                    <Icon name="ellipsis horizontal" />
+
+                }
+                content={
+                  <div>
+                    hhbh
+                  </div>
+                }
+                on='click'
+                position='bottom right'
+              />
             </div>
           </div>
       </div>
