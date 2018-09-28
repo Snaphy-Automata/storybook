@@ -92,16 +92,18 @@ class SubtaskItem extends PureComponent {
 
   render(){
     const {
-      isSelected,
       placeholder,
       rows,
       subtask,
     } = this.props
 
     const {
+      id,
       title,
       isCompleted,
     } = subtask
+
+    const focus = id?false:true
 
     return (
 
@@ -111,7 +113,7 @@ class SubtaskItem extends PureComponent {
           </div>
           <div className="task-detail-subtask-item-input-container">
             <SnaphyForm>
-              <InputElement onBlur={this.onDataSave} value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
+              <InputElement autoFocus={focus} onBlur={this.onDataSave} value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
             </SnaphyForm>
             <div  className="task-detail-subtask-item-icon-container">
               <OptionPopup
