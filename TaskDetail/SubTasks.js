@@ -16,6 +16,7 @@ import {
 import {
   onTitleChanged,
   onIsCompletedBtnClicked,
+  onSubtaskSave,
 } from '../../baseComponents/GridView/components/ModelData/SubTask/action'
 
 
@@ -63,9 +64,16 @@ class SubTasks extends PureComponent{
     })
   }
 
-  _onDataSave(){
-    const {taskId, projectId, onIsCompletedBtnClicked, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation} = this.props
-
+  _onDataSave(subtaskId){
+    const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation} = this.props
+    //Dispatch..
+    onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation)
+    .then(subtask=>{
+      console.log("Subtask saved successfully")
+    })
+    .catch(error=>{
+      console.error("Error saving subtask")
+    })
   }
 
   getSubtasks(){
@@ -111,6 +119,7 @@ const makeMapStateToProps = ()=> {
 const mapActionsToProps = {
   onTitleChanged,
   onIsCompletedBtnClicked,
+  onSubtaskSave,
 }
 
 
