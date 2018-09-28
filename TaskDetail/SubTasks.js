@@ -42,6 +42,7 @@ class SubTasks extends PureComponent{
     super(props)
     this.onTitleChanged              = this._onTitleChanged.bind(this)
     this.onSubTaskCompletedBtnClick  = this._onSubTaskCompletedBtnClick.bind(this)
+    this.onDataSave                  = this._onDataSave.bind(this)
   }
 
   //On subtask title changed
@@ -80,6 +81,7 @@ class SubTasks extends PureComponent{
     const {subtasks, taskId, projectId } = this.props
     const onTitleChanged = this.onTitleChanged
     const onSubTaskCompletedBtnClick = this.onSubTaskCompletedBtnClick
+    const onDataSave = this.onDataSave
     return map(subtasks, ((subtaskId, index)=> (
     <SubtaskItem
       key={index}
@@ -87,8 +89,9 @@ class SubTasks extends PureComponent{
       subtaskId={subtaskId}
       taskId={taskId}
       projectId={projectId}
+      onDataSave={onDataSave}
       onSubTaskCompletedClick={onSubTaskCompletedBtnClick}
-      />)))
+    />)))
   }
 
 
