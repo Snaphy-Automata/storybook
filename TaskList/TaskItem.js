@@ -173,6 +173,8 @@ class TaskItem extends React.Component {
     
         }
 
+        console.log("On End Date", endDate);
+
 
         return (
 
@@ -256,14 +258,14 @@ class TaskItem extends React.Component {
                                         !endDate &&
                                         <div className="task-list-item-date-default-container">
                                             <div style={{ position: "relative", top: "2px" }}>
-                                                <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date" onDatePicked={onDatePicked} isDatePickerOpened={isDatePickerOpened} isDatePicker onClick={openDatePickerDialog} onClose={onCloseDatePickerDialog} onDatePickerOpenedAction={props.onDatePickerOpenedAction} task={task}></TeamCircleIcon>
+                                                <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date"></TeamCircleIcon>
                                             </div>
                                         </div>
                                     }
                                     {
                                         endDate &&
-                                        <div className="task-list-item-date-container">
-                                            <div className="task-list-item-date-item">{endDate}</div>
+                                        <div className="task-list-item-date-container" style={{color : endDate.colorCode}}>
+                                            <div className="task-list-item-date-item" style={{color : endDate.colorCode}}>{endDate.title}</div>
 
                                             {/* {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
                                                 content="Change Due Date"
@@ -272,8 +274,8 @@ class TaskItem extends React.Component {
                                                 style={{ fontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity: "0.8" }}
                                                 size='mini'>
 
-                                            </Popup>} */}
-                                            {/* <Popup trigger={
+                                            </Popup>}
+                                            <Popup trigger={
                                                 <div style={{ display: "inline" }}>
                                                     {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
                                                 </div>
