@@ -21,6 +21,7 @@ class OptionPopup extends PureComponent{
     heading: PropTypes.string,
     verticalOffset: 0,
     on: PropTypes.string,
+    basic: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -28,6 +29,7 @@ class OptionPopup extends PureComponent{
     position: "bottom right",
     verticalOffset:0,
     heading:"",
+    basic: true,
     close: false,
     style:{
       right: "23px",
@@ -80,6 +82,7 @@ class OptionPopup extends PureComponent{
       heading,
       style,
       verticalOffset,
+      basic,
     } = this.props
 
     const {isDialogDisplayed} = this.state
@@ -92,7 +95,7 @@ class OptionPopup extends PureComponent{
         onClose={this.onClose}
         onOpen={this.onOpen}
         style={style}
-        basic
+        basic={basic}
         verticalOffset={verticalOffset}
         trigger={trigger}
         content={
