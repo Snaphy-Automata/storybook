@@ -17,6 +17,7 @@ import {
   onTitleChanged,
   onIsCompletedBtnClicked,
   onSubtaskSave,
+  onSubtaskRemove,
 } from '../../baseComponents/GridView/components/ModelData/SubTask/action'
 
 
@@ -43,6 +44,7 @@ class SubTasks extends PureComponent{
     this.onTitleChanged              = this._onTitleChanged.bind(this)
     this.onSubTaskCompletedBtnClick  = this._onSubTaskCompletedBtnClick.bind(this)
     this.onDataSave                  = this._onDataSave.bind(this)
+    this.onSubTaskDelete             = this._onSubTaskDelete.bind(this)
   }
 
   //On subtask title changed
@@ -66,10 +68,22 @@ class SubTasks extends PureComponent{
   }
 
   _onDataSave(subtaskId){
-    console.log("Data saved");
-    const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation} = this.props
+    const {taskId, projectId, onSubtaskRemove, createOrEditSubTaskMutation} = this.props
     //Dispatch..
-    onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation)
+    onSubtaskRemove(projectId, taskId, subtaskId, createOrEditSubTaskMutation)
+    .then(subtask=>{
+      console.log("Subtask removed successfully")
+    })
+    .catch(error=>{
+      console.error("Error removing subtask")
+    })
+  }
+
+
+  _onSubTaskDelete(subtaskId){
+    const {taskId, projectId, onSubtaskSave, deleteSubTaskMutation} = this.props
+    //Dispatch..
+    onSubtaskSave(projectId, taskId, subtaskId, deleteSubTaskMutation)
     .then(subtask=>{
       console.log("Subtask saved successfully")
     })
@@ -83,6 +97,7 @@ class SubTasks extends PureComponent{
     const onTitleChanged = this.onTitleChanged
     const onSubTaskCompletedBtnClick = this.onSubTaskCompletedBtnClick
     const onDataSave = this.onDataSave
+    const onSubTaskDelete = this.onSubTaskDelete
     return map(subtasks, ((subtaskId, index)=> (
     <SubtaskItem
       key={index}
@@ -91,13 +106,13 @@ class SubTasks extends PureComponent{
       taskId={taskId}
       projectId={projectId}
       onDataSave={onDataSave}
+      onSubTaskDelete={onSubTaskDelete}
       onSubTaskCompletedClick={onSubTaskCompletedBtnClick}
     />)))
   }
 
 
   render(){
-    console.log("Subtasks getting rendered", this.props)
     return (
       <div className="task-detail-subtask-main-container" >
         {this.getSubtasks()}
@@ -124,6 +139,7 @@ const mapActionsToProps = {
   onTitleChanged,
   onIsCompletedBtnClicked,
   onSubtaskSave,
+  onSubtaskRemove,
 }
 
 

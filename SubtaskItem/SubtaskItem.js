@@ -79,7 +79,7 @@ class SubtaskItem extends PureComponent {
     this.setState({
       forceClose:state
     })
-    const {onSubTaskDelete, } = this.props
+    const {onSubTaskDelete, subtaskId} = this.props
     onSubTaskDelete? onSubTaskDelete(subtaskId):null
   }
 
@@ -104,6 +104,7 @@ class SubtaskItem extends PureComponent {
     } = subtask
 
     const focus = id?false:true
+    const titleVal = title?title:undefined
 
     return (
 
@@ -113,7 +114,7 @@ class SubtaskItem extends PureComponent {
           </div>
           <div className="task-detail-subtask-item-input-container">
             <SnaphyForm>
-              <InputElement autoFocus={focus} onBlur={this.onDataSave} value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
+              <InputElement autoFocus={focus} onBlur={this.onDataSave} value={titleVal} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
             </SnaphyForm>
             <div  className="task-detail-subtask-item-icon-container">
               <OptionPopup
