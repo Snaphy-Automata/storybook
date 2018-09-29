@@ -25,7 +25,7 @@ class TaskListHeading extends Component{
 
   static propTypes = {
     heading: PropTypes.string.isRequired,
-    protectedName: PropTypes.string.isRequired,
+    protectedName: PropTypes.string,
     type: PropTypes.string, //custom || fixed
     sectionId: PropTypes.string.isRequired,
     onArchiveClicked: PropTypes.func,

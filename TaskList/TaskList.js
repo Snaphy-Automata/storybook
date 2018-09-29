@@ -89,7 +89,8 @@ const SortableTask = SortableElement((props)=>{
       findLabelById,
       onQuickUpdateDate,
       memberIdList,
-      onQuickUpdateTaskMembers
+      onQuickUpdateTaskMembers,
+      isScrolling
     } = props;
     let isNew = (task && task.projectId && !task.title)? true:false
     let isEmpty = (task)? false: true
@@ -238,6 +239,7 @@ class VirtualList extends PureComponent {
               findLabelById={findLabelById}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
+              isScrolling={isScrolling}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
               ></SortableTask>
           }
@@ -256,7 +258,7 @@ class VirtualList extends PureComponent {
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
         if(task){
-          console.log(`Task: ${task.title}$$ Task Type: ${task.type}$$ Task Height: ${task.height}`);
+          //console.log(`Task: ${task.title}$$ Task Type: ${task.type}$$ Task Height: ${task.height}`);
           return task.height
         }
         return 41;
