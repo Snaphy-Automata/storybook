@@ -173,8 +173,6 @@ class TaskItem extends React.Component {
     
         }
 
-        console.log("On End Date", endDate);
-
 
         return (
 
