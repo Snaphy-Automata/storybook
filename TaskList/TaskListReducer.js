@@ -137,7 +137,7 @@ const TaskListReducer = (state = initialState, action) => {
             state = {
                 ...state,
                 datePickerDialog:{
-                    taskId: action.payload.id 
+                    taskId: action.payload.state ? action.payload.id: null
                 }
             }
             break;

@@ -417,6 +417,8 @@ class TaskList extends PureComponent {
 
     const id = "snaphy-react-custom-scrollbar";
 
+    //console.log("Task List getting reloaded")
+
 
     return (
 

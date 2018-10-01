@@ -31,6 +31,7 @@ class OptionPopup extends PureComponent{
     heading:"",
     basic: true,
     close: false,
+    className : "option-popup-container",
     style:{
       right: "23px",
       padding:0
@@ -63,6 +64,7 @@ class OptionPopup extends PureComponent{
   }
 
   _onClose(e){
+    console.log("On Close getting called")
     this.setState({
       isDialogDisplayed: false,
     })
@@ -83,6 +85,7 @@ class OptionPopup extends PureComponent{
       style,
       verticalOffset,
       basic,
+      className
     } = this.props
 
     const {isDialogDisplayed} = this.state
@@ -99,7 +102,7 @@ class OptionPopup extends PureComponent{
         verticalOffset={verticalOffset}
         trigger={trigger}
         content={
-          <div className="option-popup-container">
+          <div className={className}>
             {
             heading &&
             <div className="option-popup-dialog-header">
