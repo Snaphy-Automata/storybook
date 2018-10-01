@@ -62,17 +62,23 @@ class TaskDetail extends PureComponent{
     console.log("Task Detail getting reloaded", task);
     return (
       <div>
-        <Header onSubTaskAdded={this.onSubTaskAdded} />
-        <div className="task-detail-container">
-          <TaskTitle task={task} onDataChanged={onTitleChanged}/>
-          {/* Send member id here.. */}
-          <AssignTask task={task}  />
-          <Dates  taskId={task.id} startDate={task.startDate} endDate={task.endDate} />
-          <Labels taskId={task.id} projectId={projectId} />
-          <SubTasks taskId={task.id} projectId={projectId} />
-          <Description description={task.description} taskId={task.id} projectId={projectId} />
+        {
+          task && 
+          <div>
+          <Header onSubTaskAdded={this.onSubTaskAdded} />
+          <div className="task-detail-container">
+            <TaskTitle task={task} onDataChanged={onTitleChanged}/>
+            {/* Send member id here.. */}
+            <AssignTask task={task}  />
+            <Dates  taskId={task.id} startDate={task.startDate} endDate={task.endDate} />
+            <Labels taskId={task.id} projectId={projectId} />
+            <SubTasks taskId={task.id} projectId={projectId} />
+            <Description description={task.description} taskId={task.id} projectId={projectId} />
+          </div>
         </div>
+        }
       </div>
+     
     )
   }
 }

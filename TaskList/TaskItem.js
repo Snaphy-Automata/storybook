@@ -74,13 +74,14 @@ class TaskItem extends PureComponent {
         this.onOpenAssignedUserDialog = this._onOpenAssignedUserDialog.bind(this)
         this.onCloseAssignedUserDialog = this._onCloseAssignedUserDialog.bind(this)
         this.onUpdateTaskMember = this._onUpdateTaskMember.bind(this)
+        this.onSelectItem = this._onSelectItem.bind(this)
     }
 
     getWrapperClassName() {
-        const { className, selectedTask } = this.props;
+        const { className, selectedTaskId, taskId } = this.props;
         let wrapperClassName = className ? className + " task-list-item-wrapper" : "task-list-item-wrapper";
-        if (selectedTask) {
-            if (selectedTask.id === taskId) {
+        if (selectedTaskId) {
+            if (selectedTaskId === taskId) {
                 wrapperClassName = `${wrapperClassName} active`
             }
         }
@@ -212,6 +213,13 @@ class TaskItem extends PureComponent {
     }
 
 
+    _onSelectItem = () => {
+        const {taskId, onTaskSelected} = this.props
+        console.log(" On task Selected")
+        onTaskSelected(taskId)
+    }
+
+
 
 
 
@@ -329,12 +337,12 @@ class TaskItem extends PureComponent {
                                 </div>
                             </div>}
 
-                            <div className="task-list-item-title">
+                            <div className="task-list-item-title" onClick={this.onSelectItem}>
                                 <div className="task-list-item-title-item">{title}</div>
                             </div>
                             {
                                 !isScrolling &&
-                                <div className="task-list-item-other-container">
+                                <div className="task-list-item-other-container" onClick={this.onSelectItem}>
                                     <div className="task-list-item-status-duration-container">
                                         {isActiveTaskSection && status &&
                                             <div className="task-list-item-status" style={{ color: status.colorCode }}>{status.title}</div>
@@ -521,9 +529,9 @@ function mapStateToProps(store, props) {
 
     const allTaskObj = store.ModelDataReducer.task;
     let selectedTaskId = modelDataReducer.selectedTaskId;
-    if (selectedTaskId === props.taskId) {
-        selectedTask = allTaskObj.byId[selectedTaskId];
-    }
+    // if (selectedTaskId === props.taskId) {
+    //     selectedTaskId = allTaskObj.byId[selectedTaskId];
+    // }
 
     const {
         title,
@@ -546,7 +554,7 @@ function mapStateToProps(store, props) {
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
-        selectedTask,
+        selectedTaskId,
         isActiveTaskSection: isActiveTask,
         status,
         title,
