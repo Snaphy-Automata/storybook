@@ -70,15 +70,14 @@ class SubTasks extends PureComponent{
   }
 
   _onDataSave(subtaskId){
-    const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation} = this.props
-    console.log("Subtask save mutation getting called")
+    const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation, deleteSubTaskMutation} = this.props
     //Dispatch..
-    onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation)
+    onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation, deleteSubTaskMutation)
     .then(subtask=>{
       console.log("Subtask saved successfully")
     })
     .catch(error=>{
-      console.error("Error saved subtask")
+      console.error("Error saved subtask", error)
     })
   }
 
@@ -92,7 +91,7 @@ class SubTasks extends PureComponent{
       console.log("Subtask saved successfully")
     })
     .catch(error=>{
-      console.error("Error saving subtask")
+      console.error("Error removing subtask")
     })
   }
 

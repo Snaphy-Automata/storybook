@@ -60,6 +60,7 @@ class InputElement extends React.PureComponent{
   _onChange(event, data){
     const {input, onChange} = this.props
     event.preventDefault()
+    //Use set time out to prevent race condition..
     input && input.onChange ?input.onChange(data.value):null
     if(onChange){
       onChange(data.value);

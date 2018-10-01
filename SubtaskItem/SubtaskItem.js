@@ -80,7 +80,9 @@ class SubtaskItem extends PureComponent {
       forceClose:state
     })
     const {onSubTaskDelete, subtaskId} = this.props
-    onSubTaskDelete? onSubTaskDelete(subtaskId):null
+    setTimeout(()=>{
+      onSubTaskDelete? onSubTaskDelete(subtaskId):null
+    })
   }
 
   _onDataSave(event){
@@ -107,7 +109,6 @@ class SubtaskItem extends PureComponent {
     const titleVal = title?title:undefined
 
     return (
-
       <div className="task-detail-subtask-item-container">
           <div className="task-detail-subtask-title-completed-container">
             <CustomCheckbox className="task-detail-custom-checkbox" size='mini' isSelected={isCompleted} onItemClicked={this.onSubtaskCompletedBtnClick}></CustomCheckbox>
