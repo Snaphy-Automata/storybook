@@ -2,7 +2,7 @@
  * Created By Nikita Mittal 4 Aug 2018
  */
 
-import React from 'react';
+import React, {PureComponent} from 'react';
 import {Icon} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import map from 'lodash/map';
@@ -16,19 +16,32 @@ import {getTaskMembersAction} from '../../baseComponents/GridView/components/Mod
 
 
 
-class AssignedUserDailog extends React.Component {
+class AssignedUserDailog extends PureComponent {
+
+    constructor(props){
+        super(props)
+        const {memberIdList} = props
+        this.state = {}
+        memberIdList.forEach(memberId=> {
+            this.state = {
+                ...this.state,
+                [memberId] : false
+            }
+        })
+    }
 
 
     componentDidMount(){
-
-        // this.memberList = MEMBERS;
-        // let selectedMemberDataList = [];
-        // if(this.props.taskMemberList && this.props.task.assignedTo.length){
-        //     this.props.task.assignedTo.forEach((memberId, index) => {
-        //         selectedMemberDataList.push({member: memberId, isSelected: true});
-        //     });
-        //     this.props.getSelectedMemberListAction(selectedMemberDataList);
-        // }
+        //Initializing member assigned to task..
+        const {taskMemberIdList} = this.props
+        if(taskMemberIdList && taskMemberIdList.length){
+            taskMemberIdList.forEach(memberId=> {
+                this.setState({
+                    [memberId] : true
+                })
+             })
+        }
+      
 
     }
 
@@ -77,40 +90,55 @@ class AssignedUserDailog extends React.Component {
                 {
                     memberIdList && memberIdList.length!==0 && <div>
                        {
-                           map(memberIdList, function(memberId, index){
+                           memberIdList.map((memberId, index) => {
                                const memberObj = findMemberById(memberId);
-                               const getSelectedMember = () => {
-                                   let isSelected = false;
-                                   if(taskMemberList && taskMemberList.length){
-                                       for(var i=0;i<taskMemberList.length;i++){
-                                           if(taskMemberList[i] === memberId){
-                                               isSelected = true;
-                                           }
-                                       }
+                               const onMemberSelected = () => {
+                                   let memberIdDataList = memberIdList
+                                   console.log("Member Data", memberObj)
+                                   if(this.state[memberId] === true){
+                                       //memberIdDataList.splice(index, 1)
+                                       this.setState({
+                                           [memberId]: false
+                                       })
+                                   } else{
+                                      // memberIdDataList.splice(index)
+                                      this.setState({
+                                          [memberId]: true
+                                      })
                                    }
-                                   return isSelected;
                                }
+                            //    const getSelectedMember = () => {
+                            //        let isSelected = false;
+                            //        if(taskMemberList && taskMemberList.length){
+                            //            for(var i=0;i<taskMemberList.length;i++){
+                            //                if(taskMemberList[i] === memberId){
+                            //                    isSelected = true;
+                            //                }
+                            //            }
+                            //        }
+                            //        return isSelected;
+                            //    }
 
-                               const onTaskMemberSelected = () => {
-                                   let temptaskMemberList = [];
-                                   if(taskMemberList){
-                                       temptaskMemberList = [...taskMemberList];
-                                       if(temptaskMemberList.length){
+                            //    const onTaskMemberSelected = () => {
+                            //        let temptaskMemberList = [];
+                            //        if(taskMemberList){
+                            //            temptaskMemberList = [...taskMemberList];
+                            //            if(temptaskMemberList.length){
 
-                                           for(var i=0;i<temptaskMemberList.length;i++){
-                                               if(temptaskMemberList[i] === memberId){
-                                                   temptaskMemberList.splice(i, 1);
-                                               }
-                                           }
-                                       }
-                                       if(temptaskMemberList.length === taskMemberList.length){
-                                           temptaskMemberList.push(memberId);
-                                       }
-                                   }
-                                   //console.log("Task Member List before action", temptaskMemberList);
-                                   getTaskMembersAction(task.id, temptaskMemberList);
-                                   onQuickUpdateTaskMembers(task.id, memberId);
-                               }
+                            //                for(var i=0;i<temptaskMemberList.length;i++){
+                            //                    if(temptaskMemberList[i] === memberId){
+                            //                        temptaskMemberList.splice(i, 1);
+                            //                    }
+                            //                }
+                            //            }
+                            //            if(temptaskMemberList.length === taskMemberList.length){
+                            //                temptaskMemberList.push(memberId);
+                            //            }
+                            //        }
+                            //        //console.log("Task Member List before action", temptaskMemberList);
+                            //        getTaskMembersAction(task.id, temptaskMemberList);
+                            //        onQuickUpdateTaskMembers(task.id, memberId);
+                            //    }
                                //console.log("MemberObj data", memberObj);
                                if(memberObj){
                                    if(index < 4){
@@ -118,7 +146,7 @@ class AssignedUserDailog extends React.Component {
                                         <div key={index} className="assigned-user-dialog-item-container">
                                         <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" title={`${memberObj.firstName}`}></TeamCircleIcon>
                                         <div className="assined-user-dialog-name-container">{`${memberObj.firstName} ${memberObj.lastName}`}</div>
-                                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container" isSelected={getSelectedMember()} color="blue" type="assigneduser" onItemClicked={onTaskMemberSelected}></CustomCheckbox></div>
+                                        <CustomCheckbox size="mini" className="assigned-user-dialog-checkbox-container" isSelected={this.state[memberId]} color="blue" type="assigneduser" onItemClicked={onMemberSelected}></CustomCheckbox></div>
                                     )
                                    } else{
                                        return

@@ -14,17 +14,18 @@ import InputField from '../ReduxForm/InputField';
 import TaskHelper from './helper';
 import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
+import AssignedUserDialog from '../AssignedUserDialog'
 import DayPicker from 'react-day-picker';
 import OptionPopup from '../OptionPopup'
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
 import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/User/action';
-import {updateTaskDueDateAction} from '../../baseComponents/GridView/components/ModelData/Task/action'
+import { updateTaskDueDateAction, updateTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/Task/action'
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
 //Import Mutation..
-import {updateEndDateMutation} from '../../baseComponents/GridView/components/graphql/task/mutation'
+import {updateEndDateMutation, updateTaskMembersMutation} from '../../baseComponents/GridView/components/graphql/task/mutation'
 
 //Import Selectors..
 import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
@@ -57,10 +58,6 @@ class TaskItem extends PureComponent{
         }
         this.getWrapperClassName = this.getWrapperClassName.bind(this);
         this.taskItemContainerClassName = `task-list-item-container`;
-
-
-
-
         this.onWriteTask = this.onWriteTask.bind(this);
 
         this.onTitleBlur = this.onTitleBlur.bind(this);
@@ -74,6 +71,10 @@ class TaskItem extends PureComponent{
         this.onDatePickerDateChanged = this._onDatePickerDateChanged.bind(this)
         this.onOpenDatePickerDialog = this._onOpenDatePickerDialog.bind(this)
         this.onCloseDatePickerDialog = this._onCloseDatePickerDialog.bind(this)
+        this.onAssignedUserDialogStateChange = this._onAssignedUserDialogStateChange.bind(this)
+        this.onOpenAssignedUserDialog = this._onOpenAssignedUserDialog.bind(this)
+        this.onCloseAssignedUserDialog = this._onCloseAssignedUserDialog.bind(this)
+        this.onUpdateTaskMember = this._onUpdateTaskMember.bind(this)
     }
 
     getWrapperClassName() {
@@ -184,6 +185,32 @@ class TaskItem extends PureComponent{
         if (e.stopPropagation) e.stopPropagation();
     }
 
+    _onAssignedUserDialogStateChange = (stateValue) => {
+        const {taskId, onOpenAssignedUserDialogAction} = this.props
+        onOpenAssignedUserDialogAction(stateValue, taskId)
+    }
+
+    _onOpenAssignedUserDialog = (e) => {
+        const {taskId, onOpenAssignedUserDialogAction} = this.props
+        onOpenAssignedUserDialogAction(true, taskId)
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
+    }
+
+    _onCloseAssignedUserDialog = (e) => {
+        const {taskId, onOpenAssignedUserDialogAction} = this.props
+        onOpenAssignedUserDialogAction(false, taskId)
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
+    }
+
+    _onUpdateTaskMember = (memberIdList) => {
+        const {taskId, updateTaskMembersAction, updateTaskMembersMutation} = this.props
+        updateTaskMembersAction(taskId, memberIdList, updateTaskMembersMutation)
+    }
+
 
 
 
@@ -204,7 +231,7 @@ class TaskItem extends PureComponent{
             isEmpty,
             isActiveTaskSection,
             targetTaskId,
-            taskMemberList,
+            taskMemberIdList,
             status,
             title,
             totalAttachments,
@@ -217,6 +244,7 @@ class TaskItem extends PureComponent{
             userObj,
             isDateDialogOpened,
             isDatePickerOpened,
+            isAssinedUserDialogOpened,
             taskId,
             duration //to be fetch later..
         } = this.props;
@@ -267,7 +295,18 @@ class TaskItem extends PureComponent{
 
 
                                 <div className={'task-list-item-icon'}>
-                                    {userObj.title && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} tooltip={userObj.tooltip} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+                                    {userObj.title && 
+                                    <PopupField 
+                                    triggerComponent={<TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} onClick={this.onOpenAssignedUserDialog}/>}
+                                    contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember}/>}
+                                    position="bottom center"
+                                    style={{ width: "242px", padding: "0" }}
+                                    isDialogOpened={isAssinedUserDialogOpened}
+                                    basic={false}
+                                    onDialogStateChange={this.onAssignedUserDialogStateChange}
+                                   />}
+
+                                   
                                     {userObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} icon={userObj.icon} tooltip={userObj.tooltip} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
 
                                 </div>
@@ -545,12 +584,14 @@ const mapActionsToProps = {
     onQuickUpdateCurrentDateAction,
     getTaskMembersAction,
     //Model Data Actions..
-    updateTaskDueDateAction
+    updateTaskDueDateAction,
+    updateTaskMembersAction
 
 };
 
 const TaskItemMutation = compose(
     graphql(updateEndDateMutation, {name: "updateEndDateMutation"}),
+    graphql(updateTaskMembersMutation, {name: "updateTaskMembersMutation"})
 )(TaskItem)
 
 
