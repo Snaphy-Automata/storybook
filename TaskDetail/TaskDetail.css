@@ -323,3 +323,32 @@ Robins Gupta
 
 
 /* End Subtask */
+
+
+
+
+/* ------------------------- DESCRIPTION ----------------------------- */
+.task-detail-description-container{
+  float: left;
+  width: 100%;
+  display: block;
+  margin-top: 12px;
+}
+
+
+.task-detail-description-icon-container{
+
+}
+
+.task-detail-description-icon{
+
+}
+
+.task-detail-description-field{
+
+}
+
+
+
+
+/* -------------------------END DESCRIPTION -------------------------- */

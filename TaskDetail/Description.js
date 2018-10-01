@@ -51,13 +51,13 @@ class Description extends PureComponent {
     } = this.props
 
     return (
-      <div onClick={this.onAddLabelBtnClick} className="task-detail-description-container">
+      <div className="task-detail-description-container">
         <div className="task-detail-description-icon-container">
           <CircularIconBox  className="task-detail-description-icon" icon="tag" />
         </div>
         <div className="task-detail-description-field">
           <SnaphyForm error={error} onSubmit={handleSubmit}>
-            <Field name="description" type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={DescriptionField} invalid={invalid} submitting={submitting} pristine={pristine} descriptionData={description} onUpdateTaskDescription={onUpdateTaskDescription} taskId={taskId}></Field>}
+            <Field name="description" type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={DescriptionField} invalid={invalid} submitting={submitting} pristine={pristine} descriptionData={description} onUpdateTaskDescription={onUpdateTaskDescription} taskId={taskId}></Field>
           </SnaphyForm>
         </div>
       </div>

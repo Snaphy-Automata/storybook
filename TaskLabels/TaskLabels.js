@@ -58,13 +58,13 @@ class TaskLabels extends PureComponent {
     if(isDialogOpened){
       assignLabelProp = {
         icon: 'cancel',
-        //tooltip:'Close',
+        tooltip:'Close',
         className: "task-detail-assigned-team-box task-detail-assigned-team-class closed"
       }
     }else{
       assignLabelProp = {
         icon: 'plus',
-        //tooltip:'Assign Labels',
+        tooltip:'Assign Labels',
         className: "task-detail-assigned-team-box task-detail-assigned-team-class"
       }
     }
