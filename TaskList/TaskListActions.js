@@ -108,13 +108,13 @@ export function onMemberSelectedAction(memberId, isSelected){
     }
 }
 
-export function onDatePickerOpenedAction(data, id){
+export function onDatePickerOpenedAction(state, id){
     return (dispatch) => {
         dispatch({
             type : ON_DATE_PICKER_OPENED,
             payload : {
                 id,
-                data
+                state
             }
         })
     }

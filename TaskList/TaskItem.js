@@ -14,6 +14,7 @@ import InputField from '../ReduxForm/InputField';
 import TaskHelper from './helper';
 import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
+import DayPicker from 'react-day-picker';
 import OptionPopup from '../OptionPopup'
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
@@ -66,9 +67,13 @@ class TaskItem extends PureComponent{
         this.onTitleFocus = this.onTitleFocus.bind(this);
         this.onEnterData = this.onEnterData.bind(this);
         this.onDateDialogStateChange = this._onDateDialogStateChange.bind(this)
+        this.onDatePickerDialogStateChange = this._onDatePickerDialogStateChange.bind(this)
         this.onCloseDateDialog = this._onCloseDateDialog.bind(this)
         this.onOpenDateDialog = this._onOpenDateDialog.bind(this)
         this.onUpdateDueDate = this._onUpdateDueDate.bind(this)
+        this.onDatePickerDateChanged = this._onDatePickerDateChanged.bind(this)
+        this.onOpenDatePickerDialog = this._onOpenDatePickerDialog.bind(this)
+        this.onCloseDatePickerDialog = this._onCloseDatePickerDialog.bind(this)
     }
 
     getWrapperClassName() {
@@ -141,15 +146,44 @@ class TaskItem extends PureComponent{
         onOpenChangeDateDialogAction(stateValue, taskId)
     }
 
-
     _onUpdateDueDate = (endDate) => {
         const {taskId, updateTaskDueDateAction, updateEndDateMutation} = this.props
         if(endDate){
             //console.log("Update Due Date action getting called", endDate)
             updateTaskDueDateAction(taskId, endDate, updateEndDateMutation)
         }
-       
     }
+
+    _onDatePickerDateChanged = (day) => {
+        console.log("Date Picker Date", day)
+        const {taskId, updateTaskDueDateAction, updateEndDateMutation} = this.props
+        if(day){
+            updateTaskDueDateAction(taskId, day, updateEndDateMutation)
+        }
+    }
+
+    _onDatePickerDialogStateChange = (stateValue) => {
+        const {taskId, onDatePickerOpenedAction} = this.props
+        onDatePickerOpenedAction(stateValue, taskId)
+
+    }
+
+    _onOpenDatePickerDialog = (e) => {
+        const {taskId, onDatePickerOpenedAction} = this.props
+        onDatePickerOpenedAction(true, taskId)
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
+    }
+
+    _onCloseDatePickerDialog = (e) => {
+        const {taskId, onDatePickerOpenedAction} = this.props
+        onDatePickerOpenedAction(false, taskId)
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
+    }
+
 
 
 
@@ -182,6 +216,7 @@ class TaskItem extends PureComponent{
             isCompleted,
             userObj,
             isDateDialogOpened,
+            isDatePickerOpened,
             taskId,
             duration //to be fetch later..
         } = this.props;
@@ -300,7 +335,15 @@ class TaskItem extends PureComponent{
                                         !endDate &&
                                         <div className="task-list-item-date-default-container">
                                             <div style={{ position: "relative", top: "2px" }}>
-                                                <TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" tooltip="Assign Due Date"></TeamCircleIcon>
+                                            <PopupField
+                                                triggerComponent={<TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" onClick={this.onOpenDatePickerDialog}></TeamCircleIcon>}
+                                                contentComponent={<DayPicker className = "date-picker-container" onDayClick={this.onDatePickerDateChanged}/>}
+                                                position="bottom center"
+                                                style={{width:"242px", padding:"0"}}
+                                                basic={false}
+                                                isDialogOpened={isDatePickerOpened}
+                                                onDialogStateChange={this.onDatePickerDialogStateChange}
+                                                />
                                             </div>
                                         </div>
                                     }

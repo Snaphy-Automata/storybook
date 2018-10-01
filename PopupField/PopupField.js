@@ -14,6 +14,7 @@ const PopupField = (props) => {
 
     const onCloseDialog = () => {
         if(onDialogStateChange){
+            console.log("I am getting called");
             onDialogStateChange(false);
         }
         
