@@ -13,12 +13,9 @@ const getLabelDiv = (color, title) => {
 
 
 const Label = ({title, color, className, style, tooltip}) => {
-
-
-
     return(
         <div className={className} style={style}>
-              {title === "..." && <Popup 
+              {title === "..." && <Popup
               trigger={<div className="label-empty-container"><div>...</div></div>}
               content={tooltip}
               inverted
@@ -26,8 +23,8 @@ const Label = ({title, color, className, style, tooltip}) => {
               style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"10px", paddingLeft:"10px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word", opacity: "0.8"}}
               />}
               {title !== "..." && !tooltip && getLabelDiv(color, title)}
-              {title !== "..." && tooltip && 
-              <Popup 
+              {title !== "..." && tooltip &&
+              <Popup
                 trigger={getLabelDiv(color, title)}
                 content={tooltip}
                 inverted
@@ -35,7 +32,7 @@ const Label = ({title, color, className, style, tooltip}) => {
                 style={{textTransform: 'capitalize', fontSize:'10px', paddingRight:"10px", paddingLeft:"10px", maxWidth:"200px", letterSpacing:"0.5px", wordBreak:"break-word", opacity: "0.8"}}
               />}
         </div>
-      
+
     )
 }
 
