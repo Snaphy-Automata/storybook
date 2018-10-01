@@ -55,6 +55,9 @@ class TaskItem extends PureComponent {
                 borderBottomRightRadius: "5px"
             }
         }
+        this.state = {
+            isEditable : false
+        }
         this.getWrapperClassName = this.getWrapperClassName.bind(this);
         this.taskItemContainerClassName = `task-list-item-container`;
         this.onWriteTask = this.onWriteTask.bind(this);
@@ -90,27 +93,47 @@ class TaskItem extends PureComponent {
     }
 
 
-    onWriteTask() {
-        const { onAddNewtaskClicked, task, index } = this.props;
-        onAddNewtaskClicked(index, task.sectionId);
+    onWriteTask(e) {
+        const {taskId, onTaskSelected} = this.props
+        this.setState({
+            isEditable : true
+        })
+        onTaskSelected(taskId)
+        e.preventDefault()
+       // onAddNewtaskClicked(index, task.sectionId);
     }
 
     onTitleBlur = (value) => {
-        const { task, onTaskItemBlurEvent, index } = this.props;
-        if (value && value !== "") {
-            task.title = value;
-            let taskObj = { ...task };
-            onTaskItemBlurEvent(taskId, taskObj, index, "add");
-        } else {
-            //Remove the empty data from alltaskIds..
-            onTaskItemBlurEvent(taskId, null, index, "remove");
+        console.log(" On Title Blur getting called")
+        if(!value || value === ""){
+            this.setState({
+                isEditable : false
+            })
+        } else{
+            //generate the id..
+            //save the value to database..
+
+
         }
+       
+        // this.setState({
+        //     isEditable : false
+        // })
+        // const { task, onTaskItemBlurEvent, index } = this.props;
+        // if (value && value !== "") {
+        //     task.title = value;
+        //     let taskObj = { ...task };
+        //     onTaskItemBlurEvent(taskId, taskObj, index, "add");
+        // } else {
+        //     //Remove the empty data from alltaskIds..
+        //     onTaskItemBlurEvent(taskId, null, index, "remove");
+        // }
 
     }
 
     onTitleFocus = () => {
-        const { onTaskItemFocusEvent, task } = this.props;
-        onTaskItemFocusEvent(task);
+        // const { onTaskItemFocusEvent, task } = this.props;
+        // onTaskItemFocusEvent(task);
 
     }
 
@@ -287,6 +310,8 @@ class TaskItem extends PureComponent {
 
         }
 
+        const { isEditable } = this.state
+
 
         return (
 
@@ -459,8 +484,8 @@ class TaskItem extends PureComponent {
 
                 }
                 {
-                    isEmpty && !isScrolling &&
-                    <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onClick={this.onWriteTask}>
+                    isEmpty && !isScrolling && !isEditable && 
+                    <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onMouseDown={this.onWriteTask}>
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>
                             <div className="task-list-item-side-bar-container">
@@ -478,7 +503,7 @@ class TaskItem extends PureComponent {
                     </div>
                 }
                 {
-                    isNew && !isScrolling &&
+                    isEmpty && !isScrolling && isEditable && 
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>
@@ -491,7 +516,7 @@ class TaskItem extends PureComponent {
 
                             <div className="task-list-item-new-task-title">
                                 <div className="task-list-item-new-task-container">
-                                    <Field name={getTitleFieldName()} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} onBlurEvent={this.onTitleBlur()} onFocusEvent={this.onTitleFocus()} onKeyPressEvent={this.onEnterData()} />
+                                    <Field name={getTitleFieldName()} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
                                 </div>
                             </div>
                         </div>
