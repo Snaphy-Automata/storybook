@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {PureComponent, Component} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import { SortableHandle } from 'react-sortable-hoc';
 import moment from 'moment';
+import {graphql, compose } from 'react-apollo';
 
 //Custom import..
 import './TaskList.css';
@@ -13,14 +14,20 @@ import InputField from '../ReduxForm/InputField';
 import TaskHelper from './helper';
 import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
+import OptionPopup from '../OptionPopup'
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
 import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/User/action';
+import {updateTaskDueDateAction} from '../../baseComponents/GridView/components/ModelData/Task/action'
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
+//Import Mutation..
+import {updateEndDateMutation} from '../../baseComponents/GridView/components/graphql/task/mutation'
+
 //Import Selectors..
 import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
+import PopupField from '../PopupField/PopupField';
 
 /**
  * Drag handle
@@ -32,10 +39,10 @@ const DragHandle = SortableHandle(() => (
     </div>
 )); // This can be any component you want
 
-class TaskItem extends React.Component {
+class TaskItem extends PureComponent{
     static lastTaskStyle = {};
     static taskItemContainerClassName = null;
-   
+
     static taskHelper = null;
     static iconObj = null;
     constructor(props) {
@@ -49,7 +56,7 @@ class TaskItem extends React.Component {
         }
         this.getWrapperClassName = this.getWrapperClassName.bind(this);
         this.taskItemContainerClassName = `task-list-item-container`;
-       
+
 
 
 
@@ -58,6 +65,10 @@ class TaskItem extends React.Component {
         this.onTitleBlur = this.onTitleBlur.bind(this);
         this.onTitleFocus = this.onTitleFocus.bind(this);
         this.onEnterData = this.onEnterData.bind(this);
+        this.onDateDialogStateChange = this._onDateDialogStateChange.bind(this)
+        this.onCloseDateDialog = this._onCloseDateDialog.bind(this)
+        this.onOpenDateDialog = this._onOpenDateDialog.bind(this)
+        this.onUpdateDueDate = this._onUpdateDueDate.bind(this)
     }
 
     getWrapperClassName() {
@@ -110,6 +121,37 @@ class TaskItem extends React.Component {
     }
 
 
+    _onCloseDateDialog = () => {
+        const {taskId, onOpenChangeDateDialogAction} = this.props
+        onOpenChangeDateDialogAction(false, taskId)
+
+    }
+
+
+    _onOpenDateDialog = (e) => {
+        const {taskId, onOpenChangeDateDialogAction} = this.props
+        onOpenChangeDateDialogAction(true, taskId)
+        if (!e) var e = window.event;
+        e.cancelBubble = true;
+        if (e.stopPropagation) e.stopPropagation();
+    }
+
+    _onDateDialogStateChange = (stateValue) => {
+        const {taskId, onOpenChangeDateDialogAction} = this.props
+        onOpenChangeDateDialogAction(stateValue, taskId)
+    }
+
+
+    _onUpdateDueDate = (endDate) => {
+        const {taskId, updateTaskDueDateAction, updateEndDateMutation} = this.props
+        if(endDate){
+            //console.log("Update Due Date action getting called", endDate)
+            updateTaskDueDateAction(taskId, endDate, updateEndDateMutation)
+        }
+       
+    }
+
+
 
 
 
@@ -139,6 +181,8 @@ class TaskItem extends React.Component {
             isDelayed,
             isCompleted,
             userObj,
+            isDateDialogOpened,
+            taskId,
             duration //to be fetch later..
         } = this.props;
 
@@ -170,7 +214,7 @@ class TaskItem extends React.Component {
             }
 
             return delayedClassName
-    
+
         }
 
 
@@ -242,7 +286,7 @@ class TaskItem extends React.Component {
                                     </div>
                                     <div className="task-list-item-tags-container">
                                         {
-                                            labelObj && labelObj.labelList && 
+                                            labelObj && labelObj.labelList &&
                                             labelObj.labelList.length > 0 &&
                                             <div className="task-list-item-tag-item">
                                                 <Label title={labelObj.labelList[0].title} color={labelObj.labelList[0].colorCode} tooltip={labelObj.labelList[0].title} style={{ float: 'left' }} />
@@ -262,8 +306,17 @@ class TaskItem extends React.Component {
                                     }
                                     {
                                         endDate &&
-                                        <div className="task-list-item-date-container" style={{color : endDate.colorCode}}>
-                                            <div className="task-list-item-date-item" style={{color : endDate.colorCode}}>{endDate.title}</div>
+                                        <div className="task-list-item-date-container" style={{ color: endDate.colorCode }}>
+                                            <PopupField 
+                                              triggerComponent={ <div className="task-list-item-date-item" style={{ color: endDate.colorCode }} onClick={this.onOpenDateDialog}>{endDate.title}</div>}
+                                              contentComponent={<ChangeDateDialog taskId={taskId} endDate={endDate} onUpdateDueDate={this.onUpdateDueDate} onCloseDateDialog={this.onCloseDateDialog}/>}
+                                              position="bottom left"
+                                              style={{width: "157px", height: "120px", padding:"0"}}
+                                              isDialogOpened={isDateDialogOpened}
+                                              basic={false}
+                                              onDialogStateChange={this.onDateDialogStateChange}
+                                              />
+                                            
 
                                             {/* {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
                                                 content="Change Due Date"
@@ -345,96 +398,96 @@ class TaskItem extends React.Component {
 
 function mapStateToProps(store, props) {
     const taskListReducer = store.TaskListReducer;
-        const dateDialog = taskListReducer.dateDialog;
-        const assignedUserDialog = taskListReducer.assignedUserDialog;
-        const datePickerDialog = taskListReducer.datePickerDialog;
-        const quickCurrentUpdateDate = taskListReducer.quickCurrentUpdateDate;
-        let isAssinedUserDialogOpened = false;
-        let isDateDialogOpened = false;
-        let isDatePickerOpened = false;
-        let isTodaySelected = false;
-        let isTomorrowSelected = false;
-        let isNextWeekSelected = false;
-        let selectedTask = null;
-        let taskMemberList;
-        let targetTaskId;
-        if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
-            isAssinedUserDialogOpened = true;
-        }
-        if (dateDialog && dateDialog.taskId === props.taskId) {
-            isDateDialogOpened = true;
-        }
-        if (datePickerDialog && datePickerDialog.taskId === props.taskId) {
-            isDatePickerOpened = true;
-        }
-        const modelDataReducer = store.ModelDataReducer;
-        const taskMemberListObj = modelDataReducer.taskMemberListObj;
+    const dateDialog = taskListReducer.dateDialog;
+    const assignedUserDialog = taskListReducer.assignedUserDialog;
+    const datePickerDialog = taskListReducer.datePickerDialog;
+    const quickCurrentUpdateDate = taskListReducer.quickCurrentUpdateDate;
+    let isAssinedUserDialogOpened = false;
+    let isDateDialogOpened = false;
+    let isDatePickerOpened = false;
+    let isTodaySelected = false;
+    let isTomorrowSelected = false;
+    let isNextWeekSelected = false;
+    let selectedTask = null;
+    let taskMemberList;
+    let targetTaskId;
+    if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
+        isAssinedUserDialogOpened = true;
+    }
+    if (dateDialog && dateDialog.taskId === props.taskId) {
+        isDateDialogOpened = true;
+    }
+    if (datePickerDialog && datePickerDialog.taskId === props.taskId) {
+        isDatePickerOpened = true;
+    }
+    const modelDataReducer = store.ModelDataReducer;
+    const taskMemberListObj = modelDataReducer.taskMemberListObj;
 
-        if (quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId) {
-            isTodaySelected = quickCurrentUpdateDate.isTodaySelected;
-            isTomorrowSelected = quickCurrentUpdateDate.isTomorrowSelected;
-            isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
-        }
+    if (quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId) {
+        isTodaySelected = quickCurrentUpdateDate.isTodaySelected;
+        isTomorrowSelected = quickCurrentUpdateDate.isTomorrowSelected;
+        isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
+    }
 
-        if (taskMemberListObj && taskMemberListObj.taskId === props.taskId) {
-            taskMemberList = taskMemberListObj.selectedTaskMemberList;
-            targetTaskId = props.taskId;
-        }
-
-
-
-        const allTaskObj = store.ModelDataReducer.task;
-        let selectedTaskId = modelDataReducer.selectedTaskId;
-        if (selectedTaskId === props.taskId) {
-            selectedTask = allTaskObj.byId[selectedTaskId];
-        }
-        let task;
-        if (props.taskId) {
-            task = allTaskObj.byId[props.taskId];
-        }
-
-        const {
-            title,
-            status,
-            isActiveTask,
-            totalSubTasks,
-            completedSubTasks,
-            endDate,
-            labelObj,
-            totalAttachments,
-            isDelayed,
-            isCompleted,
-            userObj
-        } = getTaskData(store, props)
+    if (taskMemberListObj && taskMemberListObj.taskId === props.taskId) {
+        taskMemberList = taskMemberListObj.selectedTaskMemberList;
+        targetTaskId = props.taskId;
+    }
 
 
 
+    const allTaskObj = store.ModelDataReducer.task;
+    let selectedTaskId = modelDataReducer.selectedTaskId;
+    if (selectedTaskId === props.taskId) {
+        selectedTask = allTaskObj.byId[selectedTaskId];
+    }
+    let task;
+    if (props.taskId) {
+        task = allTaskObj.byId[props.taskId];
+    }
 
-        return {
-            isTodaySelected,
-            isTomorrowSelected,
-            isNextWeekSelected,
-            isDateDialogOpened,
-            isAssinedUserDialogOpened,
-            isDatePickerOpened,
-            selectedTask,
-            labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
-            taskMemberList,
-            targetTaskId,
-            task,
-            isActiveTaskSection: isActiveTask,
-            status,
-            title,
-            completedSubTasks,
-            totalSubTasks,
-            totalAttachments,
-            endDate,
-            isDelayed,
-            labelObj,
-            isCompleted,
-            userObj
+    const {
+        title,
+        status,
+        isActiveTask,
+        totalSubTasks,
+        completedSubTasks,
+        endDate,
+        labelObj,
+        totalAttachments,
+        isDelayed,
+        isCompleted,
+        userObj
+    } = getTaskData(store, props)
 
-        }
+
+
+
+    return {
+        isTodaySelected,
+        isTomorrowSelected,
+        isNextWeekSelected,
+        isDateDialogOpened,
+        isAssinedUserDialogOpened,
+        isDatePickerOpened,
+        selectedTask,
+        labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
+        taskMemberList,
+        targetTaskId,
+        task,
+        isActiveTaskSection: isActiveTask,
+        status,
+        title,
+        completedSubTasks,
+        totalSubTasks,
+        totalAttachments,
+        endDate,
+        isDelayed,
+        labelObj,
+        isCompleted,
+        userObj
+
+    }
 
 
 }
@@ -448,8 +501,14 @@ const mapActionsToProps = {
     onDatePickerOpenedAction,
     onQuickUpdateCurrentDateAction,
     getTaskMembersAction,
+    //Model Data Actions..
+    updateTaskDueDateAction
 
 };
 
+const TaskItemMutation = compose(
+    graphql(updateEndDateMutation, {name: "updateEndDateMutation"}),
+)(TaskItem)
 
-export default connect(mapStateToProps, mapActionsToProps)(TaskItem);
+
+export default connect(mapStateToProps, mapActionsToProps)(TaskItemMutation);
