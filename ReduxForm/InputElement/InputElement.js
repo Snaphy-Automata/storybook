@@ -4,52 +4,16 @@ import {Form} from 'semantic-ui-react';
 
 import "./inputElement.css"
 
-class InputElement extends React.PureComponent{
+const InputElement = (props) => {
 
-  static propTypes = {
-    //Properties
-    style: PropTypes.object,
-    rows: PropTypes.number,
-    className: PropTypes.string,
-    autoFocus: PropTypes.bool,
-    blurOnEnter: PropTypes.bool,
-    placeholder: PropTypes.string,
-    autoHeight: PropTypes.bool,
-    value: PropTypes.any,
-    //Methods
-    onBlur: PropTypes.func,
-    onChange: PropTypes.func,
-    onKeyPress: PropTypes.func,
-
-  }
-
-
-  static defaultProps = {
-    style: {},
-    className: "",
-    rows: 1,
-    autoFocus: false,
-    blurOnEnter: true,
-    autoHeight: true,
-    placeholder: "Enter value",
-  }
-
-  constructor(props){
-    super(props)
-    this.onBlurEvent    = this._onBlurEvent.bind(this)
-    this.onKeyPress     = this._onKeyPress.bind(this)
-    this.onChange       = this._onChange.bind(this)
-  }
-
-
-  _onBlurEvent(e){
-    const {onBlur} = this.props
+  const onBlurEvent = (e)=>{
+    const {onBlur} = props
     e.preventDefault();
     onBlur? onBlur(e): null
   }
 
-  _onKeyPress(e){
-    const {blurOnEnter, onKeyPress} = this.props
+  const onKeyPress = (e) => {
+    const {blurOnEnter, onKeyPress} = props
     if(blurOnEnter && e.key === 'Enter'){
         e.preventDefault();
         e.target.blur();
@@ -57,8 +21,8 @@ class InputElement extends React.PureComponent{
     onKeyPress? onKeyPress(e): null
   }
 
-  _onChange(event, data){
-    const {input, onChange} = this.props
+  const onChange = (event, data) => {
+    const {input, onChange} = props
     event.preventDefault()
     //Use set time out to prevent race condition..
     input && input.onChange ?input.onChange(data.value):null
@@ -67,49 +31,75 @@ class InputElement extends React.PureComponent{
     }
   }
 
-
-  render(){
-    const {
-      placeholder,
-      rows,
-      autoFocus,
-      autoHeight,
-      value,
-    } = this.props
-
-
-    const styleObj = {
-      paddingLeft: "11.5px",
-      paddingRight: "11.5px",
-      paddingTop: "5px",
-      paddingBottom: "5px",
-      minHeight: 25,
-      lineHeight: "25px",
-      overflow: "hidden",
-      ...this.props.style,
-    }
-
-    let className = "input-element-text-area"
-
-    if(this.props.className){
-      className = `${this.props.className} ${className}`
-    }
-
-    return (
-      <Form.TextArea
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-        rows = {rows}
-        autoHeight={autoHeight}
-        className={className}
-        onBlur = {this.onBlurEvent}
-        onKeyPress = {this.onKeyPress}
-        onChange={this.onChange}
-        style={styleObj}
-        value={value}
-      />
-    )
+  const {
+    placeholder,
+    rows,
+    autoFocus,
+    autoHeight,
+    value,
+  } = props
+  const valueStr = value?value:""
+  const styleObj = {
+    paddingLeft: "11.5px",
+    paddingRight: "11.5px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    minHeight: 25,
+    lineHeight: "25px",
+    overflow: "hidden",
+    ...props.style,
   }
+
+  let className = "input-element-text-area"
+
+  if(props.className){
+    className = `${props.className} ${className}`
+  }
+
+  return (
+    <Form.TextArea
+      placeholder={placeholder}
+      autoFocus={autoFocus}
+      rows = {rows}
+      autoHeight={autoHeight}
+      className={className}
+      onBlur = {onBlurEvent}
+      onKeyPress = {onKeyPress}
+      onChange={onChange}
+      style={styleObj}
+      value={valueStr}
+    />
+  )
+}
+
+
+
+InputElement.propTypes = {
+  //Properties
+  style: PropTypes.object,
+  rows: PropTypes.number,
+  className: PropTypes.string,
+  autoFocus: PropTypes.bool,
+  blurOnEnter: PropTypes.bool,
+  placeholder: PropTypes.string,
+  autoHeight: PropTypes.bool,
+  value: PropTypes.any,
+  //Methods
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  onKeyPress: PropTypes.func,
+
+}
+
+
+InputElement.defaultProps = {
+  style: {},
+  className: "",
+  rows: 1,
+  autoFocus: false,
+  blurOnEnter: true,
+  autoHeight: true,
+  placeholder: "Enter value",
 }
 
 

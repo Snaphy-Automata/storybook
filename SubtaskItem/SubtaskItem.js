@@ -61,7 +61,7 @@ class SubtaskItem extends PureComponent {
 
 
   _onSubtaskCompletedBtnClick(event){
-    const {onSubTaskCompletedClick, subtaskId, subtask} = this.props
+    const {onSubTaskCompletedClick, subtaskId, subtask, indexVal} = this.props
     const {
       isCompleted,
     } = subtask
@@ -69,7 +69,7 @@ class SubtaskItem extends PureComponent {
   }
 
   _onDataChanged(title){
-    const {onDataChanged, subtaskId} = this.props
+    const {onDataChanged, subtaskId, subtask, indexVal} = this.props
     onDataChanged?onDataChanged(title, subtaskId):null
   }
 
@@ -79,24 +79,25 @@ class SubtaskItem extends PureComponent {
     this.setState({
       forceClose:state
     })
-    const {onSubTaskDelete, subtaskId} = this.props
+    const {onSubTaskDelete, subtaskId, subtask, indexVal} = this.props
     setTimeout(()=>{
       onSubTaskDelete? onSubTaskDelete(subtaskId):null
     })
   }
 
+
   _onDataSave(event){
-    const {onDataSave, subtaskId} = this.props
+    const {onDataSave, subtaskId, subtask, indexVal} = this.props
     onDataSave?onDataSave(subtaskId):null
   }
-
-
 
   render(){
     const {
       placeholder,
       rows,
       subtask,
+      subtaskId,
+      autoFocus,
     } = this.props
 
     const {
@@ -105,17 +106,16 @@ class SubtaskItem extends PureComponent {
       isCompleted,
     } = subtask
 
-    const focus = id?false:true
-    const titleVal = title?title:undefined
+    console.log(`Allow Auto Focus: ${autoFocus} title:${title}`)
 
     return (
-      <div className="task-detail-subtask-item-container">
+      <div id={subtaskId} className="task-detail-subtask-item-container">
           <div className="task-detail-subtask-title-completed-container">
             <CustomCheckbox className="task-detail-custom-checkbox" size='mini' isSelected={isCompleted} onItemClicked={this.onSubtaskCompletedBtnClick}></CustomCheckbox>
           </div>
           <div className="task-detail-subtask-item-input-container">
             <SnaphyForm>
-              <InputElement autoFocus={focus} onBlur={this.onDataSave} value={titleVal} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
+              <InputElement autoFocus={autoFocus} onBlur={this.onDataSave} value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
             </SnaphyForm>
             <div  className="task-detail-subtask-item-icon-container">
               <OptionPopup
@@ -134,7 +134,6 @@ class SubtaskItem extends PureComponent {
       </div>
     )
   }
-
 }
 
 

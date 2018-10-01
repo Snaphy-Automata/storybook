@@ -45,11 +45,13 @@ class SubTasks extends PureComponent{
     this.onSubTaskCompletedBtnClick  = this._onSubTaskCompletedBtnClick.bind(this)
     this.onDataSave                  = this._onDataSave.bind(this)
     this.onSubTaskDelete             = this._onSubTaskDelete.bind(this)
+    this.state                       = {
+      lastSavedSubtaskId: null
+    }
   }
 
   //On subtask title changed
   _onTitleChanged(title, subtaskId){
-    console.log("Subtask title change mutation getting called.")
     const {taskId, projectId, onTitleChanged} = this.props
     //Dispatch..
     onTitleChanged(projectId, taskId, subtaskId, title)
@@ -58,7 +60,6 @@ class SubTasks extends PureComponent{
   //on subtask completed btn clicked..
   _onSubTaskCompletedBtnClick(isCompleted, subtaskId){
     const {taskId, projectId, onIsCompletedBtnClicked, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation} = this.props
-    console.log("Subtask completed btn click mutation getting called.")
     //Dispatch..
     onIsCompletedBtnClicked(projectId, taskId, subtaskId, isCompleted, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation)
     .then(subtask=>{
@@ -69,7 +70,10 @@ class SubTasks extends PureComponent{
     })
   }
 
+
   _onDataSave(subtaskId){
+    //Save  subtask state..
+    this.setState({lastSavedSubtaskId:subtaskId})
     const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation, deleteSubTaskMutation} = this.props
     //Dispatch..
     onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation, deleteSubTaskMutation)
@@ -84,7 +88,6 @@ class SubTasks extends PureComponent{
 
   _onSubTaskDelete(subtaskId){
     const {taskId, projectId, onSubtaskRemove, deleteSubTaskMutation} = this.props
-    console.log("Subtask Delete mutation getting called")
     //Dispatch..
     onSubtaskRemove(projectId, taskId, subtaskId, deleteSubTaskMutation)
     .then(subtask=>{
@@ -95,34 +98,43 @@ class SubTasks extends PureComponent{
     })
   }
 
+
   getSubtasks(){
     const {subtasks, taskId, projectId } = this.props
     const onTitleChanged = this.onTitleChanged
     const onSubTaskCompletedBtnClick = this.onSubTaskCompletedBtnClick
     const onDataSave = this.onDataSave
     const onSubTaskDelete = this.onSubTaskDelete
-    return map(subtasks, ((subtaskId, index)=> (
-    <SubtaskItem
-      key={index}
-      onDataChanged={onTitleChanged}
-      subtaskId={subtaskId}
-      taskId={taskId}
-      projectId={projectId}
-      onDataSave={onDataSave}
-      onSubTaskDelete={onSubTaskDelete}
-      onSubTaskCompletedClick={onSubTaskCompletedBtnClick}
-    />)))
+    const lastSavedSubtaskId = this.state.lastSavedSubtaskId
+    const lastActiveSubtaskId = subtasks && subtasks.length? subtasks[subtasks.length-2]:null
+    return map(subtasks, ((subtaskId, index)=> {
+      const isLast = !!(index === (subtasks.length - 1))
+      return (
+        <SubtaskItem
+          key={index}
+          indexVal={index}
+          onDataChanged={onTitleChanged}
+          autoFocus={isLast && lastSavedSubtaskId === lastActiveSubtaskId}
+          subtaskId={subtaskId}
+          taskId={taskId}
+          projectId={projectId}
+          onDataSave={onDataSave}
+          onSubTaskDelete={onSubTaskDelete}
+          onSubTaskCompletedClick={onSubTaskCompletedBtnClick}
+        />
+      )
+    }))
   }
 
 
   render(){
+    const {subtasks} = this.props
     return (
       <div className="task-detail-subtask-main-container" >
         {this.getSubtasks()}
       </div>
     )
   }
-
 }
 
 const makeMapStateToProps = ()=> {
