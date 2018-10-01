@@ -106,8 +106,6 @@ class SubtaskItem extends PureComponent {
       isCompleted,
     } = subtask
 
-    console.log(`Allow Auto Focus: ${autoFocus} title:${title}`)
-
     return (
       <div id={subtaskId} className="task-detail-subtask-item-container">
           <div className="task-detail-subtask-title-completed-container">
