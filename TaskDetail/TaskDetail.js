@@ -56,29 +56,29 @@ class TaskDetail extends PureComponent{
   render(){
     const {
       onTitleChanged,
-      task,
+      taskId,
       projectId,
     } = this.props
-    console.log("Task Detail getting reloaded", task);
+    console.log("Task Detail getting reloaded", taskId);
     return (
       <div>
         {
-          task && 
+          taskId &&
           <div>
           <Header onSubTaskAdded={this.onSubTaskAdded} />
           <div className="task-detail-container">
-            <TaskTitle task={task} onDataChanged={onTitleChanged}/>
+            <TaskTitle taskId={taskId} onDataChanged={onTitleChanged}/>
             {/* Send member id here.. */}
-            <AssignTask task={task}  />
-            <Dates  taskId={task.id} startDate={task.startDate} endDate={task.endDate} />
-            <Labels taskId={task.id} projectId={projectId} />
-            <SubTasks taskId={task.id} projectId={projectId} />
-            <Description description={task.description} taskId={task.id} projectId={projectId} />
+            {/* <AssignTask task={task}  /> */}
+            {/* <Dates  taskId={taskId} startDate={task.startDate} endDate={task.endDate} /> */}
+            <Labels taskId={taskId} projectId={projectId} />
+            <SubTasks taskId={taskId} projectId={projectId} />
+            {/* <Description description={task.description} taskId={task.id} projectId={projectId} /> */}
           </div>
         </div>
         }
       </div>
-     
+
     )
   }
 }

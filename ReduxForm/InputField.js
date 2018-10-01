@@ -4,6 +4,7 @@
  */
 
 import React from "react";
+import PropTypes from 'prop-types';
 import {
     Label,
     Input,
@@ -33,6 +34,8 @@ const InputField = (props) => {
         onBlurEvent,
         onFocusEvent,
         onKeyPressEvent,
+        defaultValue,
+        blurOnEnter,
         meta: { touched, error, warning }
     } = props;
 
@@ -46,7 +49,6 @@ const InputField = (props) => {
     const onBlur = (e) => {
         e.preventDefault();
         if(onBlurEvent){
-         
             onBlurEvent(e.target.value);
         }
     }
@@ -59,12 +61,26 @@ const InputField = (props) => {
 
 
     const onKeyPressed = (e) => {
-        if(onKeyPressEvent){
-            onKeyPressEvent(e.key, e.target.value);
-        }
+      if(blurOnEnter && e.key === 'Enter'){
+        e.preventDefault();
+        e.target.blur();
+      }
+      if(onKeyPressEvent){
+          onKeyPressEvent(e.key, e.target.value);
+      }
     }
 
-    
+
+    const onChange = (event, data) => {
+      const {input, onChange} = props
+      event.preventDefault()
+      //Use set time out to prevent race condition..
+      input && input.onChange ?input.onChange(data.value):null
+      if(onChange){
+        onChange(data.value);
+      }
+    }
+
 
     return(
         <Form.Input
@@ -80,62 +96,29 @@ const InputField = (props) => {
             size={size}
             {...input}
             autoComplete={autocomplete}
+            defaultValue={defaultValue}
             label={label}
             placeholder={placeholder}
             onBlur={onBlur}
             onFocus={onFocus}
             onKeyPress={onKeyPressed}
+            onChange={onChange}
         >
         </Form.Input>
     );
 }
 
+
+InputField.propTypes = {
+  onChange:PropTypes.func,
+}
+
+
+InputField.defaultProps = {
+  input:{},
+  meta:{},
+  blurOnEnter: true,
+}
+
 export default InputField;
 
-// import React from "react";
-// import {
-//     Label,
-//     Input,
-//     Form,
-//   } from 'semantic-ui-react';
-
-
-// /**
-//  * Used for Redux Form For Material Input UI
-//  * @param {*} props
-//  */
-// const InputField = (props) => {
-//     let {
-//         input,
-//         required,
-//         label,
-//         type,
-//         size,
-//         placeholder,
-//         autocomplete,
-//         width,
-//         fluid,
-//         meta: { touched, error, warning }
-//     } = props;
-
-//     autocomplete = autocomplete || "off";
-
-//     size = size || "large";
-
-//     return(
-//         <Form.Input
-//             width={width}
-//             error={(touched && error)?true:false}
-//             fluid
-//             required
-//             size={size}
-//             {...input}
-//             autoComplete={autocomplete}
-//             label={label}
-//             placeholder={placeholder}
-//         >
-//         </Form.Input>
-//     );
-// }
-
-// export default InputField;

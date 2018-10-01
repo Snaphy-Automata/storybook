@@ -79,6 +79,7 @@ const SortableTask = SortableElement((props)=>{
       activeTasks,
       isLastTask,
       task,
+      taskId,
       onTaskSelected,
       onTaskItemBlurEvent,
       onTaskItemFocusEvent,
@@ -92,12 +93,15 @@ const SortableTask = SortableElement((props)=>{
       onQuickUpdateTaskMembers,
       isScrolling
     } = props;
-    let isNew = (task && task.projectId && !task.title)? true:false
-    let isEmpty = (task)? false: true
-    let taskId;
+    let isEmpty = false
     if(task){
-      taskId = task.id;
+      if(task.isNew){
+        isEmpty = true
+      }
+    }else{
+      isEmpty = true
     }
+
     //console.log("Sortable Task", task);
     return (
         <div style={style}>
@@ -113,7 +117,6 @@ const SortableTask = SortableElement((props)=>{
             memberIdList={memberIdList}
             onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
             activeSectionId={activeTasks[0]}
-            isNew={isNew}
             isEmpty={isEmpty}
             onTaskItemBlurEvent={onTaskItemBlurEvent}
             onTaskItemFocusEvent={onTaskItemFocusEvent}
@@ -462,11 +465,5 @@ class TaskList extends PureComponent {
 }
 
 
-
-const TaskListForm = reduxForm({
-  form: "taskItemForm",
-  enableReinitialize: false
-})(TaskList)
-
-export default TaskListForm;
+export default TaskList;
 

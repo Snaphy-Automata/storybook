@@ -19,7 +19,11 @@ import DayPicker from 'react-day-picker';
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
 import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/User/action';
-import { updateTaskDueDateAction, updateTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/Task/action'
+import {
+  updateTaskDueDateAction,
+  updateTaskMembersAction,
+  onTitleChangeAction,
+} from '../../baseComponents/GridView/components/ModelData/Task/action'
 
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
@@ -64,6 +68,7 @@ class TaskItem extends PureComponent {
 
         this.onTitleBlur = this.onTitleBlur.bind(this);
         this.onTitleFocus = this.onTitleFocus.bind(this);
+        this.onTitleUpdate = this._onTitleUpdate.bind(this)
         this.onEnterData = this.onEnterData.bind(this);
         this.onDateDialogStateChange = this._onDateDialogStateChange.bind(this)
         this.onDatePickerDialogStateChange = this._onDatePickerDialogStateChange.bind(this)
@@ -93,6 +98,16 @@ class TaskItem extends PureComponent {
     }
 
 
+    _onTitleUpdate(title){
+      const {
+        taskId,
+        onTitleChangeAction,
+      } = this.props
+      console.log("On Update Title", taskId)
+      onTitleChangeAction(taskId, title)
+    }
+
+
     onWriteTask(e) {
         const {taskId, onTaskSelected} = this.props
         this.setState({
@@ -115,19 +130,7 @@ class TaskItem extends PureComponent {
 
 
         }
-       
-        // this.setState({
-        //     isEditable : false
-        // })
-        // const { task, onTaskItemBlurEvent, index } = this.props;
-        // if (value && value !== "") {
-        //     task.title = value;
-        //     let taskObj = { ...task };
-        //     onTaskItemBlurEvent(taskId, taskObj, index, "add");
-        // } else {
-        //     //Remove the empty data from alltaskIds..
-        //     onTaskItemBlurEvent(taskId, null, index, "remove");
-        // }
+
 
     }
 
@@ -481,10 +484,9 @@ class TaskItem extends PureComponent {
                             } {/* Other Container div end */}
                         </div>
                     </div>
-
                 }
                 {
-                    isEmpty && !isScrolling && !isEditable && 
+                    isEmpty && !isScrolling && !isEditable &&
                     <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onMouseDown={this.onWriteTask}>
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>
@@ -503,7 +505,7 @@ class TaskItem extends PureComponent {
                     </div>
                 }
                 {
-                    isEmpty && !isScrolling && isEditable && 
+                    isEmpty && !isScrolling && isEditable &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>
@@ -516,7 +518,7 @@ class TaskItem extends PureComponent {
 
                             <div className="task-list-item-new-task-title">
                                 <div className="task-list-item-new-task-container">
-                                    <Field name={getTitleFieldName()} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" component={InputField} onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
+                                    <InputField onChange={this.onTitleUpdate} value={title} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
                                 </div>
                             </div>
                         </div>
@@ -609,7 +611,8 @@ const mapActionsToProps = {
     getTaskMembersAction,
     //Model Data Actions..
     updateTaskDueDateAction,
-    updateTaskMembersAction
+    updateTaskMembersAction,
+    onTitleChangeAction,
 
 };
 

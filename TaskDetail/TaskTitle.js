@@ -4,12 +4,22 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 //Custom import..
 import InputElement     from '../ReduxForm/InputElement';
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
 import CustomCheckbox   from '../CustomCheckbox'
-const TaskTitle = ({task, placeholder, rows, onDataChanged, size, isSelected, onTaskCompleted}) =>{
+import {
+  onTitleChangeAction,
+}                      from '../../baseComponents/GridView/components/ModelData/Task/action'
+const TaskTitle = ({taskId, title, placeholder, rows, onTitleChangeAction, size, isSelected, onTaskCompleted}) =>{
+
+  const onDataChanged = (title) => {
+    console.log("Task detail title getting called", title)
+    onTitleChangeAction(taskId, title)
+  }
+
   return (
     <div className="task-detail-task-title-container">
       <div className="task-detail-task-title-completed-container">
@@ -17,7 +27,7 @@ const TaskTitle = ({task, placeholder, rows, onDataChanged, size, isSelected, on
       </div>
       <div style={{float: "left", width: "396.5px"}}>
         <SnaphyForm>
-          <InputElement className="task-detail-task-title-input"  type="text" placeholder={placeholder} size={size} rows={rows} onChange={onDataChanged}></InputElement>
+          <InputElement value={title} className="task-detail-task-title-input" type="text" placeholder={placeholder} size={size} rows={rows} onChange={onDataChanged}></InputElement>
         </SnaphyForm>
       </div>
     </div>
@@ -45,8 +55,22 @@ TaskTitle.propTypes = {
   onTaskCompleted: PropTypes.func,
 }
 
+function mapStateToProps(store, props) {
+  const {taskId} =props;
+  const taskObj = store.ModelDataReducer.task
+  const task = taskObj.byId[taskId]
+  const title = task && task.title ? task.title: ""
+  return {
+     title
+  }
+}
+
+const mapActionsToProps = {
+  onTitleChangeAction,
+}
 
 
-export default TaskTitle;
+
+export default connect(mapStateToProps, mapActionsToProps)(TaskTitle);
 
 
