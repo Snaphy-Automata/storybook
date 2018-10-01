@@ -24,7 +24,6 @@ const PopupField = (props) => {
         trigger={props.triggerComponent}
         content={props.contentComponent}
         on='click'
-        basic
         open={isDialogOpened}
         position={position}
         style={style}

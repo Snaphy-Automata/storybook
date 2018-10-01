@@ -1,11 +1,11 @@
-import React, {PureComponent, Component} from 'react';
+import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import { SortableHandle } from 'react-sortable-hoc';
 import moment from 'moment';
-import {graphql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 //Custom import..
 import './TaskList.css';
@@ -16,7 +16,6 @@ import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 import AssignedUserDialog from '../AssignedUserDialog'
 import DayPicker from 'react-day-picker';
-import OptionPopup from '../OptionPopup'
 
 import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
 import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/User/action';
@@ -25,7 +24,7 @@ import { updateTaskDueDateAction, updateTaskMembersAction } from '../../baseComp
 const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 
 //Import Mutation..
-import {updateEndDateMutation, updateTaskMembersMutation} from '../../baseComponents/GridView/components/graphql/task/mutation'
+import { updateEndDateMutation, updateTaskMembersMutation } from '../../baseComponents/GridView/components/graphql/task/mutation'
 
 //Import Selectors..
 import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
@@ -41,7 +40,7 @@ const DragHandle = SortableHandle(() => (
     </div>
 )); // This can be any component you want
 
-class TaskItem extends PureComponent{
+class TaskItem extends PureComponent {
     static lastTaskStyle = {};
     static taskItemContainerClassName = null;
 
@@ -49,7 +48,7 @@ class TaskItem extends PureComponent{
     static iconObj = null;
     constructor(props) {
         super(props);
-        const { isLastTask, task, isActiveTaskSection, selectedTask, targetTaskId, taskMemberList, findMemberById } = props;
+        const { isLastTask } = props;
         if (isLastTask) {
             this.lastTaskStyle = {
                 borderBottomLeftRadius: "5px",
@@ -128,14 +127,14 @@ class TaskItem extends PureComponent{
 
 
     _onCloseDateDialog = () => {
-        const {taskId, onOpenChangeDateDialogAction} = this.props
+        const { taskId, onOpenChangeDateDialogAction } = this.props
         onOpenChangeDateDialogAction(false, taskId)
 
     }
 
 
     _onOpenDateDialog = (e) => {
-        const {taskId, onOpenChangeDateDialogAction} = this.props
+        const { taskId, onOpenChangeDateDialogAction } = this.props
         onOpenChangeDateDialogAction(true, taskId)
         if (!e) var e = window.event;
         e.cancelBubble = true;
@@ -143,13 +142,13 @@ class TaskItem extends PureComponent{
     }
 
     _onDateDialogStateChange = (stateValue) => {
-        const {taskId, onOpenChangeDateDialogAction} = this.props
+        const { taskId, onOpenChangeDateDialogAction } = this.props
         onOpenChangeDateDialogAction(stateValue, taskId)
     }
 
     _onUpdateDueDate = (endDate) => {
-        const {taskId, updateTaskDueDateAction, updateEndDateMutation} = this.props
-        if(endDate){
+        const { taskId, updateTaskDueDateAction, updateEndDateMutation } = this.props
+        if (endDate) {
             //console.log("Update Due Date action getting called", endDate)
             updateTaskDueDateAction(taskId, endDate, updateEndDateMutation)
         }
@@ -157,20 +156,20 @@ class TaskItem extends PureComponent{
 
     _onDatePickerDateChanged = (day) => {
         console.log("Date Picker Date", day)
-        const {taskId, updateTaskDueDateAction, updateEndDateMutation} = this.props
-        if(day){
+        const { taskId, updateTaskDueDateAction, updateEndDateMutation } = this.props
+        if (day) {
             updateTaskDueDateAction(taskId, day, updateEndDateMutation)
         }
     }
 
     _onDatePickerDialogStateChange = (stateValue) => {
-        const {taskId, onDatePickerOpenedAction} = this.props
+        const { taskId, onDatePickerOpenedAction } = this.props
         onDatePickerOpenedAction(stateValue, taskId)
 
     }
 
     _onOpenDatePickerDialog = (e) => {
-        const {taskId, onDatePickerOpenedAction} = this.props
+        const { taskId, onDatePickerOpenedAction } = this.props
         onDatePickerOpenedAction(true, taskId)
         if (!e) var e = window.event;
         e.cancelBubble = true;
@@ -178,7 +177,7 @@ class TaskItem extends PureComponent{
     }
 
     _onCloseDatePickerDialog = (e) => {
-        const {taskId, onDatePickerOpenedAction} = this.props
+        const { taskId, onDatePickerOpenedAction } = this.props
         onDatePickerOpenedAction(false, taskId)
         if (!e) var e = window.event;
         e.cancelBubble = true;
@@ -186,12 +185,12 @@ class TaskItem extends PureComponent{
     }
 
     _onAssignedUserDialogStateChange = (stateValue) => {
-        const {taskId, onOpenAssignedUserDialogAction} = this.props
+        const { taskId, onOpenAssignedUserDialogAction } = this.props
         onOpenAssignedUserDialogAction(stateValue, taskId)
     }
 
     _onOpenAssignedUserDialog = (e) => {
-        const {taskId, onOpenAssignedUserDialogAction} = this.props
+        const { taskId, onOpenAssignedUserDialogAction } = this.props
         onOpenAssignedUserDialogAction(true, taskId)
         if (!e) var e = window.event;
         e.cancelBubble = true;
@@ -199,7 +198,7 @@ class TaskItem extends PureComponent{
     }
 
     _onCloseAssignedUserDialog = (e) => {
-        const {taskId, onOpenAssignedUserDialogAction} = this.props
+        const { taskId, onOpenAssignedUserDialogAction } = this.props
         onOpenAssignedUserDialogAction(false, taskId)
         if (!e) var e = window.event;
         e.cancelBubble = true;
@@ -207,8 +206,9 @@ class TaskItem extends PureComponent{
     }
 
     _onUpdateTaskMember = (memberIdList) => {
-        const {taskId, updateTaskMembersAction, updateTaskMembersMutation} = this.props
+        const { taskId, updateTaskMembersAction, updateTaskMembersMutation } = this.props
         updateTaskMembersAction(taskId, memberIdList, updateTaskMembersMutation)
+        //onOpenAssignedUserDialogAction(true, taskId)
     }
 
 
@@ -230,8 +230,6 @@ class TaskItem extends PureComponent{
             memberIdList,
             isEmpty,
             isActiveTaskSection,
-            targetTaskId,
-            taskMemberIdList,
             status,
             title,
             totalAttachments,
@@ -246,6 +244,7 @@ class TaskItem extends PureComponent{
             isDatePickerOpened,
             isAssinedUserDialogOpened,
             taskId,
+            loginUser,
             duration //to be fetch later..
         } = this.props;
 
@@ -295,19 +294,37 @@ class TaskItem extends PureComponent{
 
 
                                 <div className={'task-list-item-icon'}>
-                                    {userObj.title && 
-                                    <PopupField 
-                                    triggerComponent={<TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} onClick={this.onOpenAssignedUserDialog}/>}
-                                    contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember}/>}
-                                    position="bottom center"
-                                    style={{ width: "242px", padding: "0" }}
-                                    isDialogOpened={isAssinedUserDialogOpened}
-                                    basic={false}
-                                    onDialogStateChange={this.onAssignedUserDialogStateChange}
-                                   />}
+                                    {userObj.title &&
+                                        <PopupField
+                                            triggerComponent={
+                                                <div onClick={this.onOpenAssignedUserDialog}>
+                                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} />
+                                                </div>
+                                            }
+                                            contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember} loginUser={loginUser} />}
+                                            position="bottom center"
+                                            style={{ width: "242px", padding: "0" }}
+                                            isDialogOpened={isAssinedUserDialogOpened}
+                                            basic={false}
+                                            onDialogStateChange={this.onAssignedUserDialogStateChange}
+                                        />}
 
-                                   
-                                    {userObj.icon && <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} icon={userObj.icon} tooltip={userObj.tooltip} task={task} findMemberById={findMemberById} memberIdList={memberIdList} />}
+
+                                    {userObj.icon &&
+                                        <PopupField
+                                            triggerComponent={
+                                                <div onClick={this.onOpenAssignedUserDialog} >
+                                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} icon={userObj.icon} />
+                                                </div>
+                                            }
+                                            contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember} loginUser={loginUser} />}
+                                            position="bottom center"
+                                            style={{ width: "242px", padding: "0" }}
+                                            isDialogOpened={isAssinedUserDialogOpened}
+                                            basic={false}
+                                            onDialogStateChange={this.onAssignedUserDialogStateChange}
+                                        />
+                                    }
 
                                 </div>
                             </div>}
@@ -374,14 +391,14 @@ class TaskItem extends PureComponent{
                                         !endDate &&
                                         <div className="task-list-item-date-default-container">
                                             <div style={{ position: "relative", top: "2px" }}>
-                                            <PopupField
-                                                triggerComponent={<TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" onClick={this.onOpenDatePickerDialog}></TeamCircleIcon>}
-                                                contentComponent={<DayPicker className = "date-picker-container" onDayClick={this.onDatePickerDateChanged}/>}
-                                                position="bottom center"
-                                                style={{width:"242px", padding:"0"}}
-                                                basic={false}
-                                                isDialogOpened={isDatePickerOpened}
-                                                onDialogStateChange={this.onDatePickerDialogStateChange}
+                                                <PopupField
+                                                    triggerComponent={<TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" onClick={this.onOpenDatePickerDialog}></TeamCircleIcon>}
+                                                    contentComponent={<DayPicker className="date-picker-container" onDayClick={this.onDatePickerDateChanged} />}
+                                                    position="bottom center"
+                                                    style={{ width: "242px", padding: "0" }}
+                                                    basic={false}
+                                                    isDialogOpened={isDatePickerOpened}
+                                                    onDialogStateChange={this.onDatePickerDialogStateChange}
                                                 />
                                             </div>
                                         </div>
@@ -389,16 +406,16 @@ class TaskItem extends PureComponent{
                                     {
                                         endDate &&
                                         <div className="task-list-item-date-container" style={{ color: endDate.colorCode }}>
-                                            <PopupField 
-                                              triggerComponent={ <div className="task-list-item-date-item" style={{ color: endDate.colorCode }} onClick={this.onOpenDateDialog}>{endDate.title}</div>}
-                                              contentComponent={<ChangeDateDialog taskId={taskId} endDate={endDate} onUpdateDueDate={this.onUpdateDueDate} onCloseDateDialog={this.onCloseDateDialog}/>}
-                                              position="bottom left"
-                                              style={{width: "157px", height: "120px", padding:"0"}}
-                                              isDialogOpened={isDateDialogOpened}
-                                              basic={false}
-                                              onDialogStateChange={this.onDateDialogStateChange}
-                                              />
-                                            
+                                            <PopupField
+                                                triggerComponent={<div className="task-list-item-date-item" style={{ color: endDate.colorCode }} onClick={this.onOpenDateDialog}>{endDate.title}</div>}
+                                                contentComponent={<ChangeDateDialog taskId={taskId} endDate={endDate} onUpdateDueDate={this.onUpdateDueDate} onCloseDateDialog={this.onCloseDateDialog} />}
+                                                position="bottom left"
+                                                style={{ width: "157px", height: "120px", padding: "0" }}
+                                                isDialogOpened={isDateDialogOpened}
+                                                basic={false}
+                                                onDialogStateChange={this.onDateDialogStateChange}
+                                            />
+
 
                                             {/* {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
                                                 content="Change Due Date"
@@ -483,15 +500,11 @@ function mapStateToProps(store, props) {
     const dateDialog = taskListReducer.dateDialog;
     const assignedUserDialog = taskListReducer.assignedUserDialog;
     const datePickerDialog = taskListReducer.datePickerDialog;
-    const quickCurrentUpdateDate = taskListReducer.quickCurrentUpdateDate;
     let isAssinedUserDialogOpened = false;
     let isDateDialogOpened = false;
     let isDatePickerOpened = false;
-    let isTodaySelected = false;
-    let isTomorrowSelected = false;
-    let isNextWeekSelected = false;
     let selectedTask = null;
-    let taskMemberList;
+
     let targetTaskId;
     if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
         isAssinedUserDialogOpened = true;
@@ -503,18 +516,6 @@ function mapStateToProps(store, props) {
         isDatePickerOpened = true;
     }
     const modelDataReducer = store.ModelDataReducer;
-    const taskMemberListObj = modelDataReducer.taskMemberListObj;
-
-    if (quickCurrentUpdateDate && quickCurrentUpdateDate.taskId === props.taskId) {
-        isTodaySelected = quickCurrentUpdateDate.isTodaySelected;
-        isTomorrowSelected = quickCurrentUpdateDate.isTomorrowSelected;
-        isNextWeekSelected = quickCurrentUpdateDate.isNextWeekSelected;
-    }
-
-    if (taskMemberListObj && taskMemberListObj.taskId === props.taskId) {
-        taskMemberList = taskMemberListObj.selectedTaskMemberList;
-        targetTaskId = props.taskId;
-    }
 
 
 
@@ -522,10 +523,6 @@ function mapStateToProps(store, props) {
     let selectedTaskId = modelDataReducer.selectedTaskId;
     if (selectedTaskId === props.taskId) {
         selectedTask = allTaskObj.byId[selectedTaskId];
-    }
-    let task;
-    if (props.taskId) {
-        task = allTaskObj.byId[props.taskId];
     }
 
     const {
@@ -546,17 +543,10 @@ function mapStateToProps(store, props) {
 
 
     return {
-        isTodaySelected,
-        isTomorrowSelected,
-        isNextWeekSelected,
         isDateDialogOpened,
         isAssinedUserDialogOpened,
         isDatePickerOpened,
         selectedTask,
-        labelDialogFormDataInit: store.ModelDataReducer.labelDialogFormDataInit,
-        taskMemberList,
-        targetTaskId,
-        task,
         isActiveTaskSection: isActiveTask,
         status,
         title,
@@ -567,7 +557,8 @@ function mapStateToProps(store, props) {
         isDelayed,
         labelObj,
         isCompleted,
-        userObj
+        userObj,
+        loginUser: store.LoginReducer.login
 
     }
 
@@ -590,8 +581,8 @@ const mapActionsToProps = {
 };
 
 const TaskItemMutation = compose(
-    graphql(updateEndDateMutation, {name: "updateEndDateMutation"}),
-    graphql(updateTaskMembersMutation, {name: "updateTaskMembersMutation"})
+    graphql(updateEndDateMutation, { name: "updateEndDateMutation" }),
+    graphql(updateTaskMembersMutation, { name: "updateTaskMembersMutation" })
 )(TaskItem)
 
 
