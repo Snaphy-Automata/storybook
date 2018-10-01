@@ -49,6 +49,7 @@ class SubTasks extends PureComponent{
 
   //On subtask title changed
   _onTitleChanged(title, subtaskId){
+    console.log("Subtask title change mutation getting called.")
     const {taskId, projectId, onTitleChanged} = this.props
     //Dispatch..
     onTitleChanged(projectId, taskId, subtaskId, title)
@@ -57,6 +58,7 @@ class SubTasks extends PureComponent{
   //on subtask completed btn clicked..
   _onSubTaskCompletedBtnClick(isCompleted, subtaskId){
     const {taskId, projectId, onIsCompletedBtnClicked, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation} = this.props
+    console.log("Subtask completed btn click mutation getting called.")
     //Dispatch..
     onIsCompletedBtnClicked(projectId, taskId, subtaskId, isCompleted, updateIsCompletedSubTaskMutation, createOrEditSubTaskMutation)
     .then(subtask=>{
@@ -68,22 +70,24 @@ class SubTasks extends PureComponent{
   }
 
   _onDataSave(subtaskId){
-    const {taskId, projectId, onSubtaskRemove, createOrEditSubTaskMutation} = this.props
+    const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation} = this.props
+    console.log("Subtask save mutation getting called")
     //Dispatch..
-    onSubtaskRemove(projectId, taskId, subtaskId, createOrEditSubTaskMutation)
+    onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation)
     .then(subtask=>{
-      console.log("Subtask removed successfully")
+      console.log("Subtask saved successfully")
     })
     .catch(error=>{
-      console.error("Error removing subtask")
+      console.error("Error saved subtask")
     })
   }
 
 
   _onSubTaskDelete(subtaskId){
-    const {taskId, projectId, onSubtaskSave, deleteSubTaskMutation} = this.props
+    const {taskId, projectId, onSubtaskRemove, deleteSubTaskMutation} = this.props
+    console.log("Subtask Delete mutation getting called")
     //Dispatch..
-    onSubtaskSave(projectId, taskId, subtaskId, deleteSubTaskMutation)
+    onSubtaskRemove(projectId, taskId, subtaskId, deleteSubTaskMutation)
     .then(subtask=>{
       console.log("Subtask saved successfully")
     })
