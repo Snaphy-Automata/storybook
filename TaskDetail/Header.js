@@ -52,6 +52,7 @@ class Header extends PureComponent {
   }
 
   onFileUpload(){
+    console.log("Running attachment onchange")
     //FIXME: Modify this function
     //12th Sept Robins
     //Add mutation here..
