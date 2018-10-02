@@ -518,7 +518,7 @@ class TaskItem extends PureComponent {
 
                             <div className="task-list-item-new-task-title">
                                 <div className="task-list-item-new-task-container">
-                                    <InputField onChange={this.onTitleUpdate} value={title} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
+                                    <InputField onChange={this.onTitleUpdate} value={title} placeholder="Write Task" transparent  fluid className="task-list-item-new-task" onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
                                 </div>
                             </div>
                         </div>

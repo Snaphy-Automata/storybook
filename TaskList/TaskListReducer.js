@@ -91,9 +91,26 @@ const TaskListReducer = (state = initialState, action) => {
         case ON_DUE_DATE_UPDATED_ACTION:{
             state = {
                 ...state,
-                
+
             }
+            break;
         }
+
+        // case "on_task_update":{
+        //   const task = action.payload
+        //   console.time("on_title_update")
+        //   if(task){
+        //     state = {
+        //       ...state,
+        //       [task.id]: {
+        //         ...task
+        //       },
+        //     }
+        //   }
+        //   console.timeEnd("on_title_update")
+        //   break;
+        // }
+
         // case ON_QUICK_UPDATE_DATE_DIALOG:{
         //     state = {
         //         ...state,
@@ -158,7 +175,7 @@ const TaskListReducer = (state = initialState, action) => {
                 if(selectedMemberDataList[i].member === action.payload.memberId){
                     selectedMemberDataList.splice(i, 1, {member: action.payload.memberId, isSelected: action.payload.isSelected});
                     break;
-                } 
+                }
                 listCount++;
             }
             if(listCount === selectedMemberDataList.length){
@@ -254,7 +271,7 @@ const TaskListReducer = (state = initialState, action) => {
                     isDatePickerOpened : action.payload.data,
                     dateData : action.payload.dateData
                 },
-               
+
             }
             break;
         }
