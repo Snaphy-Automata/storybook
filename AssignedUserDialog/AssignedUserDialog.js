@@ -50,7 +50,7 @@ class AssignedUserDailog extends PureComponent {
             findMemberById,
             taskMemberIdList,
             onUpdateTaskMember,
-            loginUser
+            loginUserId
         } = this.props;
         return (
             <div className="assigned-user-dialog-container">
@@ -90,10 +90,10 @@ class AssignedUserDailog extends PureComponent {
                                         if (index < 4) {
                                             return (
                                                 <div key={index} className="assigned-user-dialog-item-container">
-                                                    {loginUser && loginUser.id === memberId &&
+                                                    {loginUserId === memberId &&
                                                         <div className="assined-user-dialog-name-container">Assign to me</div>
                                                     }
-                                                    {loginUser && loginUser.id !== memberId &&
+                                                    {loginUserId !== memberId &&
                                                         <div>
                                                             <TeamCircleIcon className="assined-user-dialog-icon-container" size="mini" title={`${memberObj.firstName}`}></TeamCircleIcon>
                                                             <div className="assined-user-dialog-name-container">{`${memberObj.firstName} ${memberObj.lastName}`}</div>

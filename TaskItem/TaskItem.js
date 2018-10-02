@@ -8,16 +8,15 @@ import moment from 'moment';
 import { graphql, compose } from 'react-apollo';
 
 //Custom import..
-import './TaskList.css';
+import '../TaskList/TaskList.css';
 import TeamCircleIcon from '../TeamCircleIcon'
 import InputField from '../ReduxForm/InputField';
-import TaskHelper from './helper';
 import Label from '../Label';
 import ChangeDateDialog from '../ChangeDateDialog';
 import AssignedUserDialog from '../AssignedUserDialog'
 import DayPicker from 'react-day-picker';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from './TaskListActions';
+import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from '../TaskList/TaskListActions';
 import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/User/action';
 import {
   updateTaskDueDateAction,
@@ -33,6 +32,7 @@ import { updateEndDateMutation, updateTaskMembersMutation } from '../../baseComp
 //Import Selectors..
 import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
 import PopupField from '../PopupField/PopupField';
+import UserCircle from './UserCircle';
 
 /**
  * Drag handle
@@ -78,10 +78,6 @@ class TaskItem extends PureComponent {
         this.onDatePickerDateChanged = this._onDatePickerDateChanged.bind(this)
         this.onOpenDatePickerDialog = this._onOpenDatePickerDialog.bind(this)
         this.onCloseDatePickerDialog = this._onCloseDatePickerDialog.bind(this)
-        this.onAssignedUserDialogStateChange = this._onAssignedUserDialogStateChange.bind(this)
-        this.onOpenAssignedUserDialog = this._onOpenAssignedUserDialog.bind(this)
-        this.onCloseAssignedUserDialog = this._onCloseAssignedUserDialog.bind(this)
-        this.onUpdateTaskMember = this._onUpdateTaskMember.bind(this)
         this.onSelectItem = this._onSelectItem.bind(this)
     }
 
@@ -211,32 +207,7 @@ class TaskItem extends PureComponent {
         if (e.stopPropagation) e.stopPropagation();
     }
 
-    _onAssignedUserDialogStateChange = (stateValue) => {
-        const { taskId, onOpenAssignedUserDialogAction } = this.props
-        onOpenAssignedUserDialogAction(stateValue, taskId)
-    }
-
-    _onOpenAssignedUserDialog = (e) => {
-        const { taskId, onOpenAssignedUserDialogAction } = this.props
-        onOpenAssignedUserDialogAction(true, taskId)
-        if (!e) var e = window.event;
-        e.cancelBubble = true;
-        if (e.stopPropagation) e.stopPropagation();
-    }
-
-    _onCloseAssignedUserDialog = (e) => {
-        const { taskId, onOpenAssignedUserDialogAction } = this.props
-        onOpenAssignedUserDialogAction(false, taskId)
-        if (!e) var e = window.event;
-        e.cancelBubble = true;
-        if (e.stopPropagation) e.stopPropagation();
-    }
-
-    _onUpdateTaskMember = (memberIdList) => {
-        const { taskId, updateTaskMembersAction, updateTaskMembersMutation } = this.props
-        updateTaskMembersAction(taskId, memberIdList, updateTaskMembersMutation)
-        //onOpenAssignedUserDialogAction(true, taskId)
-    }
+ 
 
 
     _onSelectItem = () => {
@@ -323,13 +294,12 @@ class TaskItem extends PureComponent {
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>
-                            {!isScrolling && <div className="task-list-item-side-bar-container">
+                            <div className="task-list-item-side-bar-container">
                                 <div className={'task-list-item-side-line'}>
                                     <DragHandle />
                                 </div>
-
-
-                                <div className={'task-list-item-icon'}>
+                                <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList}/>
+                                {/* <div className={'task-list-item-icon'}>
                                     {userObj.title &&
                                         <PopupField
                                             triggerComponent={
@@ -362,14 +332,13 @@ class TaskItem extends PureComponent {
                                         />
                                     }
 
-                                </div>
-                            </div>}
+                                </div> */}
+                            </div>
 
                             <div className="task-list-item-title" onClick={this.onSelectItem}>
                                 <div className="task-list-item-title-item">{title}</div>
                             </div>
-                            {
-                                !isScrolling &&
+                            
                                 <div className="task-list-item-other-container" onClick={this.onSelectItem}>
                                     <div className="task-list-item-status-duration-container">
                                         {isActiveTaskSection && status &&
@@ -481,12 +450,12 @@ class TaskItem extends PureComponent {
                                     }
 
                                 </div>
-                            } {/* Other Container div end */}
+                             {/* Other Container div end */}
                         </div>
                     </div>
                 }
                 {
-                    isEmpty && !isScrolling && !isEditable &&
+                    isEmpty  && !isEditable &&
                     <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onMouseDown={this.onWriteTask}>
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>
@@ -505,7 +474,7 @@ class TaskItem extends PureComponent {
                     </div>
                 }
                 {
-                    isEmpty && !isScrolling && isEditable &&
+                    isEmpty && isEditable &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>

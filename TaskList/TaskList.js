@@ -8,7 +8,7 @@ import {  reduxForm } from 'redux-form'
 //Custom Import
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading'
-import TaskItem from './TaskItem'
+import TaskItem from '../TaskItem/TaskItem'
 import CustomScrollbar from '../CustomScrollbar'
 
 let ListRef = null
@@ -121,6 +121,7 @@ const SortableTask = SortableElement((props)=>{
             onTaskItemBlurEvent={onTaskItemBlurEvent}
             onTaskItemFocusEvent={onTaskItemFocusEvent}
             onEnterNextNewTask={onEnterNextNewTask}
+            isScrolling={isScrolling}
             />
         </div>
     )
