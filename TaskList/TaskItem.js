@@ -103,7 +103,7 @@ class TaskItem extends PureComponent {
         taskId,
         onTitleChangeAction,
       } = this.props
-      console.log("On Update Title", taskId)
+      //console.log("On Update Title", taskId)
       onTitleChangeAction(taskId, title)
     }
 
@@ -119,7 +119,7 @@ class TaskItem extends PureComponent {
     }
 
     onTitleBlur = (value) => {
-        console.log(" On Title Blur getting called")
+        //console.log(" On Title Blur getting called")
         if(!value || value === ""){
             this.setState({
                 isEditable : false
@@ -241,7 +241,7 @@ class TaskItem extends PureComponent {
 
     _onSelectItem = () => {
         const {taskId, onTaskSelected} = this.props
-        console.log(" On task Selected")
+        //console.log(" On task Selected")
         onTaskSelected(taskId)
     }
 
