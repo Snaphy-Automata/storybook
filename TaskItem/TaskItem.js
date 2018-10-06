@@ -33,6 +33,7 @@ import { updateEndDateMutation, updateTaskMembersMutation } from '../../baseComp
 import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
 import PopupField from '../PopupField/PopupField';
 import UserCircle from './UserCircle';
+import TaskDate from './TaskDate';
 
 /**
  * Drag handle
@@ -392,7 +393,8 @@ class TaskItem extends PureComponent {
 
                                         }
                                     </div>
-                                    {
+                                    <TaskDate taskId={taskId} />
+                                    {/* {
                                         !endDate &&
                                         <div className="task-list-item-date-default-container">
                                             <div style={{ position: "relative", top: "2px" }}>
@@ -422,32 +424,8 @@ class TaskItem extends PureComponent {
                                             />
 
 
-                                            {/* {!isDateDialogOpened && <Popup trigger={<div style={{ display: "inline" }}>{!isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}</div>}
-                                                content="Change Due Date"
-                                                position='bottom center'
-                                                inverted
-                                                style={{ fontSize: '10px', paddingRight: "10px", paddingLeft: "10px", maxWidth: "200px", letterSpacing: "0.5px", wordBreak: "break-word", opacity: "0.8" }}
-                                                size='mini'>
-
-                                            </Popup>}
-                                            <Popup trigger={
-                                                <div style={{ display: "inline" }}>
-                                                    {isDateDialogOpened && <div className="task-list-item-date-item" style={{ color: formattedDueDateObj.colorCode }} onClick={openSelectDateDialog}>{formattedDueDateObj.date}</div>}
-                                                </div>
-                                            }
-                                                content={<ChangeDateDialog isTodaySelected={props.isTodaySelected} isTomorrowSelected={props.isTomorrowSelected} isNextWeekSelected={props.isNextWeekSelected} onSelectDateAction={onSelectDateAction} task={task} dateData={formattedDueDateObj.date} isDateDialogOpened={isDateDialogOpened} onCloseDateDialog={onCloseDateDialog} />}
-                                                position='bottom center'
-                                                on='click'
-                                                open={isDateDialogOpened}
-                                                onClose={onCloseDateDialog}
-                                                style={{ padding: "0", width: "157px", height: "120px" }}
-                                                size='mini'>
-
-                                            </Popup> */}
-
-
                                         </div>
-                                    }
+                                    } */}
 
                                 </div>
                              {/* Other Container div end */}
@@ -487,7 +465,7 @@ class TaskItem extends PureComponent {
 
                             <div className="task-list-item-new-task-title">
                                 <div className="task-list-item-new-task-container">
-                                    <InputField onChange={this.onTitleUpdate} value={title} placeholder="Write Task" transparent  fluid className="task-list-item-new-task" onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
+                                    <InputField onChange={this.onTitleUpdate} value={title} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
                                 </div>
                             </div>
                         </div>
@@ -507,9 +485,6 @@ function mapStateToProps(store, props) {
     let isAssinedUserDialogOpened = false;
     let isDateDialogOpened = false;
     let isDatePickerOpened = false;
-    let selectedTask = null;
-
-    let targetTaskId;
     if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
         isAssinedUserDialogOpened = true;
     }
