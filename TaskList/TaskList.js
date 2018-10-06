@@ -8,7 +8,7 @@ import {  reduxForm } from 'redux-form'
 //Custom Import
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading'
-import TaskItem from './TaskItem'
+import TaskItem from '../TaskItem/TaskItem'
 import CustomScrollbar from '../CustomScrollbar'
 
 let ListRef = null
@@ -91,15 +91,25 @@ const SortableTask = SortableElement((props)=>{
       onQuickUpdateDate,
       memberIdList,
       onQuickUpdateTaskMembers,
-      isScrolling
+      isScrolling,
+      findTaskById
     } = props;
-    let isEmpty = false
+    let isNew = false, sectionId, previousItemId, previousItemObj
     if(task){
+      sectionId = task.sectionId
       if(task.isNew){
-        isEmpty = true
+        isNew = true
       }
     }else{
-      isEmpty = true
+      isNew = true
+      previousItemId = activeTasks[indexValue - 1]
+      previousItemObj = findTaskById(previousItemId)
+      if(previousItemObj.type === "section"){
+        sectionId = previousItemObj.id
+      } else{
+        sectionId = previousItemObj.sectionId
+      }
+
     }
 
     //console.log("Sortable Task", task);
@@ -117,10 +127,12 @@ const SortableTask = SortableElement((props)=>{
             memberIdList={memberIdList}
             onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
             activeSectionId={activeTasks[0]}
-            isEmpty={isEmpty}
+            isNew={isNew}
             onTaskItemBlurEvent={onTaskItemBlurEvent}
             onTaskItemFocusEvent={onTaskItemFocusEvent}
             onEnterNextNewTask={onEnterNextNewTask}
+            isScrolling={isScrolling}
+            sectionId ={sectionId}
             />
         </div>
     )
@@ -244,6 +256,7 @@ class VirtualList extends PureComponent {
               memberIdList={memberIdList}
               isScrolling={isScrolling}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
+              findTaskById={findTaskById}
               ></SortableTask>
           }
           </div>
