@@ -1,40 +1,27 @@
 import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form'
 import { Icon, Input, Popup } from 'semantic-ui-react'
 import { SortableHandle } from 'react-sortable-hoc';
-import moment from 'moment';
-import { graphql, compose } from 'react-apollo';
-
 //Custom import..
 import '../TaskList/TaskList.css';
-import TeamCircleIcon from '../TeamCircleIcon'
 import InputField from '../ReduxForm/InputField';
-import Label from '../Label';
-import ChangeDateDialog from '../ChangeDateDialog';
-import AssignedUserDialog from '../AssignedUserDialog'
-import DayPicker from 'react-day-picker';
 
-import { onOpenChangeDateDialogAction, onOpenAssignedUserDialogAction, onDatePickerOpenedAction, onQuickUpdateCurrentDateAction } from '../TaskList/TaskListActions';
-import { getTaskMembersAction } from '../../baseComponents/GridView/components/ModelData/User/action';
 import {
-  updateTaskDueDateAction,
-  updateTaskMembersAction,
-  onTitleChangeAction,
+    onTitleChangeAction,
 } from '../../baseComponents/GridView/components/ModelData/Task/action'
 
-const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
-
-//Import Mutation..
-import { updateEndDateMutation, updateTaskMembersMutation } from '../../baseComponents/GridView/components/graphql/task/mutation'
 
 //Import Selectors..
 import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
-import PopupField from '../PopupField/PopupField';
 import UserCircle from './UserCircle';
 import TaskDate from './TaskDate';
 import TaskItemTitle from './TaskItemTitle'
+import TaskStats from './TaskStats';
+import TaskDuration from './TaskDuration';
+import TaskItemLabels from './TaskItemLabels';
+import TaskIndicator from './TaskIndicator';
+import TaskStatus from './TaskStatus';
 
 /**
  * Drag handle
@@ -62,7 +49,7 @@ class TaskItem extends PureComponent {
             }
         }
         this.state = {
-            isEditable : false
+            isEditable: false
         }
         this.getWrapperClassName = this.getWrapperClassName.bind(this);
         this.taskItemContainerClassName = `task-list-item-container`;
@@ -72,14 +59,6 @@ class TaskItem extends PureComponent {
         this.onTitleFocus = this.onTitleFocus.bind(this);
         this.onTitleUpdate = this._onTitleUpdate.bind(this)
         this.onEnterData = this.onEnterData.bind(this);
-        this.onDateDialogStateChange = this._onDateDialogStateChange.bind(this)
-        this.onDatePickerDialogStateChange = this._onDatePickerDialogStateChange.bind(this)
-        this.onCloseDateDialog = this._onCloseDateDialog.bind(this)
-        this.onOpenDateDialog = this._onOpenDateDialog.bind(this)
-        this.onUpdateDueDate = this._onUpdateDueDate.bind(this)
-        this.onDatePickerDateChanged = this._onDatePickerDateChanged.bind(this)
-        this.onOpenDatePickerDialog = this._onOpenDatePickerDialog.bind(this)
-        this.onCloseDatePickerDialog = this._onCloseDatePickerDialog.bind(this)
         this.onSelectItem = this._onSelectItem.bind(this)
     }
 
@@ -96,33 +75,33 @@ class TaskItem extends PureComponent {
     }
 
 
-    _onTitleUpdate(title){
-      const {
-        taskId,
-        onTitleChangeAction,
-      } = this.props
-      //console.log("On Update Title", taskId)
-      onTitleChangeAction(taskId, title)
+    _onTitleUpdate(title) {
+        const {
+            taskId,
+            onTitleChangeAction,
+        } = this.props
+        //console.log("On Update Title", taskId)
+        onTitleChangeAction(taskId, title)
     }
 
 
     onWriteTask(e) {
-        const {taskId, onTaskSelected} = this.props
+        const { taskId, onTaskSelected } = this.props
         this.setState({
-            isEditable : true
+            isEditable: true
         })
         onTaskSelected(taskId)
         e.preventDefault()
-       // onAddNewtaskClicked(index, task.sectionId);
+        // onAddNewtaskClicked(index, task.sectionId);
     }
 
     onTitleBlur = (value) => {
         //console.log(" On Title Blur getting called")
-        if(!value || value === ""){
+        if (!value || value === "") {
             this.setState({
-                isEditable : false
+                isEditable: false
             })
-        } else{
+        } else {
             //generate the id..
             //save the value to database..
 
@@ -151,69 +130,9 @@ class TaskItem extends PureComponent {
     }
 
 
-    _onCloseDateDialog = () => {
-        const { taskId, onOpenChangeDateDialogAction } = this.props
-        onOpenChangeDateDialogAction(false, taskId)
-
-    }
-
-
-    _onOpenDateDialog = (e) => {
-        const { taskId, onOpenChangeDateDialogAction } = this.props
-        onOpenChangeDateDialogAction(true, taskId)
-        if (!e) var e = window.event;
-        e.cancelBubble = true;
-        if (e.stopPropagation) e.stopPropagation();
-    }
-
-    _onDateDialogStateChange = (stateValue) => {
-        const { taskId, onOpenChangeDateDialogAction } = this.props
-        onOpenChangeDateDialogAction(stateValue, taskId)
-    }
-
-    _onUpdateDueDate = (endDate) => {
-        const { taskId, updateTaskDueDateAction, updateEndDateMutation } = this.props
-        if (endDate) {
-            //console.log("Update Due Date action getting called", endDate)
-            updateTaskDueDateAction(taskId, endDate, updateEndDateMutation)
-        }
-    }
-
-    _onDatePickerDateChanged = (day) => {
-        console.log("Date Picker Date", day)
-        const { taskId, updateTaskDueDateAction, updateEndDateMutation } = this.props
-        if (day) {
-            updateTaskDueDateAction(taskId, day, updateEndDateMutation)
-        }
-    }
-
-    _onDatePickerDialogStateChange = (stateValue) => {
-        const { taskId, onDatePickerOpenedAction } = this.props
-        onDatePickerOpenedAction(stateValue, taskId)
-
-    }
-
-    _onOpenDatePickerDialog = (e) => {
-        const { taskId, onDatePickerOpenedAction } = this.props
-        onDatePickerOpenedAction(true, taskId)
-        if (!e) var e = window.event;
-        e.cancelBubble = true;
-        if (e.stopPropagation) e.stopPropagation();
-    }
-
-    _onCloseDatePickerDialog = (e) => {
-        const { taskId, onDatePickerOpenedAction } = this.props
-        onDatePickerOpenedAction(false, taskId)
-        if (!e) var e = window.event;
-        e.cancelBubble = true;
-        if (e.stopPropagation) e.stopPropagation();
-    }
-
- 
-
 
     _onSelectItem = () => {
-        const {taskId, onTaskSelected} = this.props
+        const { taskId, onTaskSelected } = this.props
         //console.log(" On task Selected")
         onTaskSelected(taskId)
     }
@@ -231,59 +150,18 @@ class TaskItem extends PureComponent {
             style,
             isNew,
             isScrolling,
-            selectedTask,
-            task,
-            findMemberById,
             memberIdList,
             isEmpty,
             isActiveTaskSection,
-            status,
             title,
-            totalAttachments,
-            totalSubTasks,
-            completedSubTasks,
-            labelObj,
-            endDate,
-            isDelayed,
-            isCompleted,
-            userObj,
-            isDateDialogOpened,
-            isDatePickerOpened,
-            isAssinedUserDialogOpened,
             taskId,
-            loginUser,
-            duration //to be fetch later..
         } = this.props;
-
-        const getTitleFieldName = () => {
-            let titleName;
-            if (task) {
-                if (task.id) {
-                    titleName = `${task.id}.title_new`
-                } else {
-                    titleName = "title_new";
-                }
-            } else {
-                titleName = "title_new";
-            }
-
-            return titleName;
-        }
 
         const getDelayedClassName = () => {
             let delayedClassName = null;
-            if (isActiveTaskSection) {
-                if (isCompleted) {
-                    delayedClassName = `task-item-delayed-block completed`;
-                } else {
-                    delayedClassName = isDelayed ? `task-item-delayed-block delayed` : `task-item-delayed-block`;
-                }
-            } else {
-                delayedClassName = `task-item-delayed-block`;
-            }
+            delayedClassName = `task-item-delayed-block`;
 
             return delayedClassName
-
         }
 
         const { isEditable } = this.state
@@ -295,80 +173,40 @@ class TaskItem extends PureComponent {
                 {!isNew && !isEmpty &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
-                            <div className={getDelayedClassName()}></div>
+                            <TaskIndicator taskId = {taskId} isScrolling={isScrolling} isActiveTaskSection={isActiveTaskSection}/>
                             <div className="task-list-item-side-bar-container">
                                 <div className={'task-list-item-side-line'}>
                                     <DragHandle />
                                 </div>
-                                <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList}/>
+                                <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList} />
                             </div>
 
                             <div className="task-list-item-title" onClick={this.onSelectItem}>
                                 <TaskItemTitle taskId={taskId}></TaskItemTitle>
                             </div>
-                            
-                                <div className="task-list-item-other-container" onClick={this.onSelectItem}>
-                                    <div className="task-list-item-status-duration-container">
-                                        {isActiveTaskSection && status &&
-                                            <div className="task-list-item-status" style={{ color: status.colorCode }}>{status.title}</div>
-                                        }
-                                        {!isActiveTaskSection && duration !== undefined &&
-                                            // Add duration class..
-                                            <div className="task-list-item-status">
-                                                <Icon name="clock outline" style={{ display: "inline", margin: '0' }}></Icon>
-                                                <span className="task-list-item-status-duration">{duration}</span>
-                                            </div>
-                                        }
-                                    </div>
 
-
-                                    <div className="task-list-item-sub-task-attachment-container">
-                                        <div style={{ display: "inline-block", width: "60%" }}>
-                                            {
-                                                totalSubTasks &&
-                                                <div>
-                                                    <Icon name="unordered list" style={{ display: "inline", margin: '0' }}></Icon>
-                                                    <div className="task-list-item-sub-task-stats">{completedSubTasks}/{totalSubTasks}</div>
-                                                </div>
-                                            }
-
-                                        </div>
-
-
-                                        <div style={{ display: "inline-block", width: "40%", textAlign: 'left' }}>
-                                            {
-                                                totalAttachments &&
-                                                <div>
-                                                    <Icon name="attach" style={{ display: "inline" }}></Icon>
-                                                    <div className="task-list-item-attachment-stats">{totalAttachments}</div>
-                                                </div>
-                                            }
-
-                                        </div>
-
-
-                                    </div>
-                                    <div className="task-list-item-tags-container">
-                                        {
-                                            labelObj && labelObj.labelList &&
-                                            labelObj.labelList.length > 0 &&
-                                            <div className="task-list-item-tag-item">
-                                                <Label title={labelObj.labelList[0].title} color={labelObj.labelList[0].colorCode} tooltip={labelObj.labelList[0].title} style={{ float: 'left' }} />
-                                                {labelObj.tooltip &&
-                                                    <Label title="..." style={{ float: 'right' }} tooltip={labelObj.tooltip} />}
-                                            </div>
-
-                                        }
-                                    </div>
-                                    <TaskDate taskId={taskId} />
-
+                            <div className="task-list-item-other-container" onClick={this.onSelectItem}>
+                                <div className="task-list-item-status-duration-container">
+                                    {isActiveTaskSection && 
+                                       <TaskStatus taskId = {taskId} />
+                                    }
+                                    {!isActiveTaskSection &&
+                                        <TaskDuration taskId={taskId}/>
+                                    }
                                 </div>
-                             {/* Other Container div end */}
+
+
+                                <TaskStats taskId={taskId} />
+                                <TaskItemLabels taskId={taskId} isScrolling={isScrolling}/>
+                                <TaskDate taskId={taskId} />
+
+                            </div>
+                            {/* Other Container div end */}
                         </div>
                     </div>
                 }
                 {
-                    isEmpty  && !isEditable &&
+                    isEmpty && !isEditable &&
                     <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onMouseDown={this.onWriteTask}>
                         <div className={this.taskItemContainerClassName} >
                             <div className={getDelayedClassName()}></div>
@@ -413,66 +251,19 @@ class TaskItem extends PureComponent {
 
 
 function mapStateToProps(store, props) {
-    const taskListReducer = store.TaskListReducer;
-    const dateDialog = taskListReducer.dateDialog;
-    const assignedUserDialog = taskListReducer.assignedUserDialog;
-    const datePickerDialog = taskListReducer.datePickerDialog;
-    let isAssinedUserDialogOpened = false;
-    let isDateDialogOpened = false;
-    let isDatePickerOpened = false;
-    if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
-        isAssinedUserDialogOpened = true;
-    }
-    if (dateDialog && dateDialog.taskId === props.taskId) {
-        isDateDialogOpened = true;
-    }
-    if (datePickerDialog && datePickerDialog.taskId === props.taskId) {
-        isDatePickerOpened = true;
-    }
     const modelDataReducer = store.ModelDataReducer;
-
-
-
-    const allTaskObj = store.ModelDataReducer.task;
     let selectedTaskId = modelDataReducer.selectedTaskId;
-    // if (selectedTaskId === props.taskId) {
-    //     selectedTaskId = allTaskObj.byId[selectedTaskId];
-    // }
 
     const {
-        title,
-        status,
         isActiveTask,
-        totalSubTasks,
-        completedSubTasks,
-        endDate,
-        labelObj,
-        totalAttachments,
-        isDelayed,
-        isCompleted,
-        userObj
     } = getTaskData(store, props)
 
 
 
 
     return {
-        isDateDialogOpened,
-        isAssinedUserDialogOpened,
-        isDatePickerOpened,
         selectedTaskId,
         isActiveTaskSection: isActiveTask,
-        status,
-        title,
-        completedSubTasks,
-        totalSubTasks,
-        totalAttachments,
-        endDate,
-        isDelayed,
-        labelObj,
-        isCompleted,
-        userObj,
-        loginUser: store.LoginReducer.login
 
     }
 
@@ -483,22 +274,10 @@ function mapStateToProps(store, props) {
 //Map Redux Actions to Props..
 const mapActionsToProps = {
     //map action here
-    onOpenChangeDateDialogAction,
-    onOpenAssignedUserDialogAction,
-    onDatePickerOpenedAction,
-    onQuickUpdateCurrentDateAction,
-    getTaskMembersAction,
     //Model Data Actions..
-    updateTaskDueDateAction,
-    updateTaskMembersAction,
     onTitleChangeAction,
 
 };
 
-const TaskItemMutation = compose(
-    graphql(updateEndDateMutation, { name: "updateEndDateMutation" }),
-    graphql(updateTaskMembersMutation, { name: "updateTaskMembersMutation" })
-)(TaskItem)
 
-
-export default connect(mapStateToProps, mapActionsToProps)(TaskItemMutation);
+export default connect(mapStateToProps, mapActionsToProps)(TaskItem);

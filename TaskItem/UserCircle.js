@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { compose, graphql } from 'react-apollo'
+
 
 
 //import actions..
@@ -14,6 +16,10 @@ import "../TaskList/TaskList.css"
 import PopupField from '../PopupField'
 import AssignedUserDialog from '../AssignedUserDialog'
 import TeamCircleIcon from '../TeamCircleIcon'
+
+
+//import mutations..
+import {updateTaskMembersMutation} from '../../baseComponents/GridView/components/graphql/task/mutation'
 
 
 class UserCircle extends PureComponent {
@@ -179,4 +185,8 @@ const mapActionsToProps = {
 
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(UserCircle);
+const UserCircleMutation = compose(
+    graphql(updateTaskMembersMutation, { name: "updateTaskMembersMutation" })
+)(UserCircle)
+
+export default connect(mapStateToProps, mapActionsToProps)(UserCircleMutation);

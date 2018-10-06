@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { compose, graphql } from 'react-apollo'
 
 
 import { onOpenChangeDateDialogAction, onDatePickerOpenedAction } from '../TaskList/TaskListActions'
@@ -13,6 +14,9 @@ import {compareDate} from '../../baseComponents/GridView/components/formatDate'
 import PopupField from '../PopupField'
 import TeamCircleIcon from '../TeamCircleIcon'
 import ChangeDateDialog from '../ChangeDateDialog'
+
+//import mutation..
+import {updateEndDateMutation} from '../../baseComponents/GridView/components/graphql/task/mutation'
 
 
 
@@ -223,4 +227,9 @@ const mapActionsToProps = {
 
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(TaskDate)
+const TaskDateMutation = compose(
+    graphql(updateEndDateMutation, { name: "updateEndDateMutation" }),
+)(TaskDate)
+
+
+export default connect(mapStateToProps, mapActionsToProps)(TaskDateMutation)
