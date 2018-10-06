@@ -31,7 +31,7 @@ const COMPLETED_TASK_COLOR_CODE = "#1ed0c1";
 import { updateEndDateMutation, updateTaskMembersMutation } from '../../baseComponents/GridView/components/graphql/task/mutation'
 
 //Import Selectors..
-import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
+import { getTaskData, getTaskTitle } from '../../baseComponents/GridView/components/ModelData/Task/selector'
 import PopupField from '../PopupField/PopupField';
 
 /**
@@ -315,6 +315,7 @@ class TaskItem extends PureComponent {
 
         const { isEditable } = this.state
 
+        console.log("Task Item getting loaded", taskId, title)
 
         return (
 
@@ -330,38 +331,22 @@ class TaskItem extends PureComponent {
 
 
                                 <div className={'task-list-item-icon'}>
-                                    {userObj.title &&
-                                        <PopupField
-                                            triggerComponent={
-                                                <div onClick={this.onOpenAssignedUserDialog}>
-                                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} />
-                                                </div>
-                                            }
-                                            contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember} loginUser={loginUser} />}
-                                            position="bottom center"
-                                            style={{ width: "242px", padding: "0" }}
-                                            isDialogOpened={isAssinedUserDialogOpened}
-                                            basic={false}
-                                            onDialogStateChange={this.onAssignedUserDialogStateChange}
-                                        />}
-
-
-                                    {userObj.icon &&
-                                        <PopupField
-                                            triggerComponent={
-                                                <div onClick={this.onOpenAssignedUserDialog} >
-                                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} icon={userObj.icon} />
-                                                </div>
-                                            }
-                                            contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember} loginUser={loginUser} />}
-                                            position="bottom center"
-                                            style={{ width: "242px", padding: "0" }}
-                                            isDialogOpened={isAssinedUserDialogOpened}
-                                            basic={false}
-                                            onDialogStateChange={this.onAssignedUserDialogStateChange}
-                                        />
-                                    }
-
+                                  {
+                                    userObj &&
+                                    <PopupField
+                                        triggerComponent={
+                                            <div onClick={this.onOpenAssignedUserDialog}>
+                                                <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} icon={userObj.icon} />
+                                            </div>
+                                        }
+                                        contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember} loginUser={loginUser} />}
+                                        position="bottom center"
+                                        style={{ width: "242px", padding: "0" }}
+                                        isDialogOpened={isAssinedUserDialogOpened}
+                                        basic={false}
+                                        onDialogStateChange={this.onAssignedUserDialogStateChange}
+                                    />
+                                  }
                                 </div>
                             </div>}
 
@@ -538,9 +523,7 @@ function mapStateToProps(store, props) {
     let isAssinedUserDialogOpened = false;
     let isDateDialogOpened = false;
     let isDatePickerOpened = false;
-    let selectedTask = null;
 
-    let targetTaskId;
     if (assignedUserDialog && assignedUserDialog.taskId === props.taskId) {
         isAssinedUserDialogOpened = true;
     }
@@ -552,13 +535,7 @@ function mapStateToProps(store, props) {
     }
     const modelDataReducer = store.ModelDataReducer;
 
-
-
-    const allTaskObj = store.ModelDataReducer.task;
     let selectedTaskId = modelDataReducer.selectedTaskId;
-    // if (selectedTaskId === props.taskId) {
-    //     selectedTaskId = allTaskObj.byId[selectedTaskId];
-    // }
 
     const {
         title,
@@ -573,9 +550,6 @@ function mapStateToProps(store, props) {
         isCompleted,
         userObj
     } = getTaskData(store, props)
-
-
-
 
     return {
         isDateDialogOpened,
