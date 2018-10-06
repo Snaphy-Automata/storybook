@@ -34,6 +34,7 @@ import { getTaskData } from '../../baseComponents/GridView/components/ModelData/
 import PopupField from '../PopupField/PopupField';
 import UserCircle from './UserCircle';
 import TaskDate from './TaskDate';
+import TaskItemTitle from './TaskItemTitle'
 
 /**
  * Drag handle
@@ -300,44 +301,10 @@ class TaskItem extends PureComponent {
                                     <DragHandle />
                                 </div>
                                 <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList}/>
-                                {/* <div className={'task-list-item-icon'}>
-                                    {userObj.title &&
-                                        <PopupField
-                                            triggerComponent={
-                                                <div onClick={this.onOpenAssignedUserDialog}>
-                                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} />
-                                                </div>
-                                            }
-                                            contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember} loginUser={loginUser} />}
-                                            position="bottom center"
-                                            style={{ width: "242px", padding: "0" }}
-                                            isDialogOpened={isAssinedUserDialogOpened}
-                                            basic={false}
-                                            onDialogStateChange={this.onAssignedUserDialogStateChange}
-                                        />}
-
-
-                                    {userObj.icon &&
-                                        <PopupField
-                                            triggerComponent={
-                                                <div onClick={this.onOpenAssignedUserDialog} >
-                                                    <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} icon={userObj.icon} />
-                                                </div>
-                                            }
-                                            contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findMemberById} memberIdList={memberIdList} taskMemberIdList={userObj.taskMemberIdList} onUpdateTaskMember={this.onUpdateTaskMember} loginUser={loginUser} />}
-                                            position="bottom center"
-                                            style={{ width: "242px", padding: "0" }}
-                                            isDialogOpened={isAssinedUserDialogOpened}
-                                            basic={false}
-                                            onDialogStateChange={this.onAssignedUserDialogStateChange}
-                                        />
-                                    }
-
-                                </div> */}
                             </div>
 
                             <div className="task-list-item-title" onClick={this.onSelectItem}>
-                                <div className="task-list-item-title-item">{title}</div>
+                                <TaskItemTitle taskId={taskId}></TaskItemTitle>
                             </div>
                             
                                 <div className="task-list-item-other-container" onClick={this.onSelectItem}>
@@ -394,38 +361,6 @@ class TaskItem extends PureComponent {
                                         }
                                     </div>
                                     <TaskDate taskId={taskId} />
-                                    {/* {
-                                        !endDate &&
-                                        <div className="task-list-item-date-default-container">
-                                            <div style={{ position: "relative", top: "2px" }}>
-                                                <PopupField
-                                                    triggerComponent={<TeamCircleIcon className="task-list-item-icon-team-circular" icon="calendar alternate outline" size="tiny" onClick={this.onOpenDatePickerDialog}></TeamCircleIcon>}
-                                                    contentComponent={<DayPicker className="date-picker-container" onDayClick={this.onDatePickerDateChanged} />}
-                                                    position="bottom center"
-                                                    style={{ width: "242px", padding: "0" }}
-                                                    basic={false}
-                                                    isDialogOpened={isDatePickerOpened}
-                                                    onDialogStateChange={this.onDatePickerDialogStateChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    }
-                                    {
-                                        endDate &&
-                                        <div className="task-list-item-date-container" style={{ color: endDate.colorCode }}>
-                                            <PopupField
-                                                triggerComponent={<div className="task-list-item-date-item" style={{ color: endDate.colorCode }} onClick={this.onOpenDateDialog}>{endDate.title}</div>}
-                                                contentComponent={<ChangeDateDialog taskId={taskId} endDate={endDate} onUpdateDueDate={this.onUpdateDueDate} onCloseDateDialog={this.onCloseDateDialog} />}
-                                                position="bottom left"
-                                                style={{ width: "157px", height: "120px", padding: "0" }}
-                                                isDialogOpened={isDateDialogOpened}
-                                                basic={false}
-                                                onDialogStateChange={this.onDateDialogStateChange}
-                                            />
-
-
-                                        </div>
-                                    } */}
 
                                 </div>
                              {/* Other Container div end */}
