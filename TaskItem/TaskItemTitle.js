@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-
-
 class TaskItemTitle extends PureComponent {
 
     static propTypes = {
@@ -43,7 +41,6 @@ function mapStateToProps(store, props) {
 
 
 const mapActionsToProps = {
-
 }
 
 

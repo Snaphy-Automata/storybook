@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {Icon} from 'semantic-ui-react';
 
 class TaskStats extends PureComponent {
 
@@ -70,7 +71,7 @@ function mapStateToProps(store, props) {
     const totalSubTasks = task.totalSubTasks
     const totalAttachments = task.totalAttachments
     return {
-        completedSubTasks,
+        completedSubTasks : completedSubTasks ? completedSubTasks : 0,
         totalSubTasks,
         totalAttachments
     }
