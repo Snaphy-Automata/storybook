@@ -345,10 +345,20 @@ class TaskList extends PureComponent {
   }
 
   handleScrollRaw({ target }) {
+    const {getGridViewScrollRef} = this.props;
     const { scrollTop, scrollLeft } = target;
     if (ListRef) {
       const { Grid: grid } = ListRef;
       grid.handleScrollEvent({ scrollTop, scrollLeft });
+    }
+
+    //Gantt Chart Scroll..
+    const gridListRef = getGridViewScrollRef();
+    console.log("Grid view reference inside task list", gridListRef, scrollTop, scrollLeft)
+    if(gridListRef){
+      gridListRef.scrollTop(scrollTop)
+      // const { Grid: grid } = gridListRef;
+      // grid.handleScrollEvent({ scrollTop, scrollLeft });
     }
   }
 
@@ -427,7 +437,6 @@ class TaskList extends PureComponent {
       height,
       width,
       setScrollRef,
-
     }  = this.props;
 
 
