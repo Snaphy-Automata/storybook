@@ -112,7 +112,7 @@ const SortableTask = SortableElement((props)=>{
 
     }
 
-    //console.log("Sortable Task", task);
+
     return (
         <div style={style}>
            <TaskItem
@@ -169,8 +169,9 @@ class VirtualList extends PureComponent {
     // Constructor
     constructor(props){
       super(props);
-      this.getRowHeight = this._getRowHeight.bind(this)
-      this.rowRenderer  = this._rowRenderer.bind(this)
+      this.getRowHeight    = this._getRowHeight.bind(this)
+      this.rowRenderer     = this._rowRenderer.bind(this)
+      this.onRowsRendered  = this._onRowsRendered.bind(this)
     }
 
 
@@ -190,7 +191,7 @@ class VirtualList extends PureComponent {
         onQuickUpdateDate,
         memberIdList,
         onQuickUpdateTaskMembers,
-        onSectionCollapsed
+        onSectionCollapsed,
       } = this.props
       const {
           index,       // Index of row
@@ -206,6 +207,8 @@ class VirtualList extends PureComponent {
       const isFirst    = activeTasks[0] === taskOrSectionId;
       const isLastTask = isTaskLast(activeTasks, index, findTaskById);
       const isEmptySection = isSectionEmpty(activeTasks, index, findTaskById);
+
+
 
       let itemType;
       if(taskOrSection){
@@ -264,6 +267,18 @@ class VirtualList extends PureComponent {
     }
 
 
+    _onRowsRendered({ overscanStartIndex, overscanStopIndex, startIndex, stopIndex }){
+      const {activeTasks, findTaskById, getGridViewScrollRef} = this.props;
+      console.log("ON Rows rendered", overscanStartIndex, overscanStopIndex, startIndex, stopIndex)
+      const gridListRef = getGridViewScrollRef();
+      console.log("Grid view reference inside task list", gridListRef, startIndex)
+      if(gridListRef){
+        const scrollTop = ((startIndex)*25) + 38
+        console.log("Scroll Top", scrollTop)
+        gridListRef.scrollTop(scrollTop)
+      }
+    }
+
 
     /**
      * Will fetch the row height..
@@ -298,6 +313,7 @@ class VirtualList extends PureComponent {
           }}
           rowHeight={this.getRowHeight}
           rowRenderer={this.rowRenderer}
+          onRowsRendered={this.onRowsRendered}
           rowCount={totalRows}
           height={height}
           width={width}
@@ -341,25 +357,17 @@ class TaskList extends PureComponent {
     this.onSortEnd          = this.onSortEndRaw.bind(this)
     this.onSortStart        = this.onSortStartRaw.bind(this)
     this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
-
   }
 
-  handleScrollRaw({ target }) {
-    const {getGridViewScrollRef} = this.props;
+  handleScrollRaw(event) {
+    const { target } = event
     const { scrollTop, scrollLeft } = target;
     if (ListRef) {
       const { Grid: grid } = ListRef;
-      grid.handleScrollEvent({ scrollTop, scrollLeft });
+      grid.handleScrollEvent({ scrollTop, scrollLeft })
     }
 
-    //Gantt Chart Scroll..
-    const gridListRef = getGridViewScrollRef();
-    console.log("Grid view reference inside task list", gridListRef, scrollTop, scrollLeft)
-    if(gridListRef){
-      gridListRef.scrollTop(scrollTop)
-      // const { Grid: grid } = gridListRef;
-      // grid.handleScrollEvent({ scrollTop, scrollLeft });
-    }
+    event.preventDefault()
   }
 
 
@@ -372,7 +380,6 @@ class TaskList extends PureComponent {
       if(this.SortableList){
         // We need to inform React Virtualized that the items have changed heights
         const instance = this.SortableList.getWrappedInstance();
-        //console.log(instance, ListRef)
         setTimeout(()=>{
           ListRef.recomputeRowHeights();
           instance.forceUpdate();
@@ -437,6 +444,7 @@ class TaskList extends PureComponent {
       height,
       width,
       setScrollRef,
+      getGridViewScrollRef,
     }  = this.props;
 
 
@@ -477,6 +485,7 @@ class TaskList extends PureComponent {
               onSectionCollapsed={this.onSectionCollapsed}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
+              getGridViewScrollRef={getGridViewScrollRef}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
             />
           </div>
