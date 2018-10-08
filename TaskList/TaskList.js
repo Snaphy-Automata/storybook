@@ -389,7 +389,7 @@ class TaskList extends PureComponent {
 
 
   onSectionCollapsedRaw(){
-    console.log("Recomputing Heights getting called");
+    //console.log("Recomputing Heights getting called");
     const instance = this.SortableList.getWrappedInstance();
     setTimeout(()=>{
       ListRef.recomputeRowHeights();

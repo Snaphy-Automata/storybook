@@ -100,7 +100,8 @@ class TaskItem extends PureComponent {
                             <TaskIndicator taskId = {taskId} isScrolling={isScrolling} isActiveTaskSection={isActiveTaskSection}/>
                             <div className="task-list-item-side-bar-container">
                                 <div className={'task-list-item-side-line'}>
-                                    <DragHandle />
+                                    {!isScrolling &&  <DragHandle />}
+                                   
                                 </div>
                                 <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList} />
                             </div>

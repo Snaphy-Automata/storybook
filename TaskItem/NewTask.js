@@ -64,8 +64,10 @@ class NewTask extends PureComponent {
         const {
             taskId,
             onTitleChangeAction,
+            sectionId,
+            previousItemId
         } = this.props
-        onTitleChangeAction(taskId, title)
+        onTitleChangeAction(taskId, title, sectionId, previousItemId)
     }
 
     _onWriteTask(e) {
@@ -82,9 +84,9 @@ class NewTask extends PureComponent {
         const { onTaskSaveOnBlurAction, sectionId, taskId, createOrEditTaskMutation, index, previousItemId, onSectionCollapsed } = this.props
         console.log(" On Title Blur getting called")
         if (!value || value === "") {
-            // this.setState({
-            //     isEditable: false
-            // })
+            this.setState({
+                isEditable: false
+            })
         } else {
             onTaskSaveOnBlurAction(taskId, index, sectionId, previousItemId, createOrEditTaskMutation)
             onSectionCollapsed()

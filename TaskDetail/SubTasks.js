@@ -128,7 +128,7 @@ class SubTasks extends PureComponent{
 
 
   render(){
-    console.log("Task Detail Sub Task getting rendered")
+    //console.log("Task Detail Sub Task getting rendered")
     const {subtasks} = this.props
     return (
       <div className="task-detail-subtask-main-container" >

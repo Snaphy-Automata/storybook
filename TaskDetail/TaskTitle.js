@@ -19,7 +19,7 @@ const TaskTitle = ({taskId, title, placeholder, rows, onTitleChangeAction, size,
     //console.log("Task detail title getting called", title)
     onTitleChangeAction(taskId, title)
   }
-  console.log("task Detail Title getting rendered", title)
+  //console.log("task Detail Title getting rendered", title)
 
   return (
     <div className="task-detail-task-title-container">
