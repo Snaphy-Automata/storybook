@@ -1,7 +1,6 @@
 import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
 import List from 'react-virtualized/dist/commonjs/List';
-import 'react-virtualized/styles.css'; // only needs to be imported once
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import {  reduxForm } from 'redux-form'
 
@@ -284,13 +283,13 @@ class VirtualList extends PureComponent {
         // }
 
         //console.log("Scroll Getting called", scrollToIndex)
-        if(scrollToIndex !== this.startIndex){
+        //if(scrollToIndex !== this.startIndex){
           const scrollTop = ((scrollToIndex)*25) + 38
           //window.requestAnimationFrame(()=>{
             gridListRef.scrollTop(scrollTop)
             this.startIndex = scrollToIndex
           //})
-        }
+        //}
 
       }
     }
@@ -329,7 +328,7 @@ class VirtualList extends PureComponent {
           }}
           rowHeight={this.getRowHeight}
           rowRenderer={this.rowRenderer}
-          onRowsRendered={this.onRowsRendered}
+          //onRowsRendered={this.onRowsRendered}
           rowCount={totalRows}
           height={height}
           width={width}

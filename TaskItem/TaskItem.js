@@ -68,9 +68,9 @@ class TaskItem extends PureComponent {
 
 
     _onSelectItem = () => {
-        const { taskId, onTaskSelected } = this.props
+        const { taskId, onTaskSelected, index } = this.props
         //console.log(" On task Selected")
-        onTaskSelected(taskId)
+        onTaskSelected(taskId, index)
     }
 
     render() {
@@ -94,14 +94,14 @@ class TaskItem extends PureComponent {
         return (
 
             <div style={{ ...style, ...this.lastTaskStyle }} className={this.getWrapperClassName()}>
-                {!isNew && 
+                {!isNew &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
                             <TaskIndicator taskId = {taskId} isScrolling={isScrolling} isActiveTaskSection={isActiveTaskSection}/>
                             <div className="task-list-item-side-bar-container">
                                 <div className={'task-list-item-side-line'}>
                                     {!isScrolling &&  <DragHandle />}
-                                   
+
                                 </div>
                                 <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList} />
                             </div>
@@ -112,7 +112,7 @@ class TaskItem extends PureComponent {
 
                             <div className="task-list-item-other-container" onClick={this.onSelectItem}>
                                 <div className="task-list-item-status-duration-container">
-                                    {isActiveTaskSection && 
+                                    {isActiveTaskSection &&
                                        <TaskStatus taskId = {taskId} />
                                     }
                                     {!isActiveTaskSection &&
@@ -130,7 +130,7 @@ class TaskItem extends PureComponent {
                         </div>
                     </div>
                 }
-                { isNew && 
+                { isNew &&
                     <NewTask taskId ={taskId} isAutoFocus={isAutoFocus} onTaskSelected= {onTaskSelected} index={index} sectionId={sectionId} previousItemId={previousItemId} onSectionCollapsed={onSectionCollapsed}/>
                  }
             </div>
