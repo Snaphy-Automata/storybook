@@ -16,9 +16,10 @@ import {
 const TaskTitle = ({taskId, title, placeholder, rows, onTitleChangeAction, size, isSelected, onTaskCompleted}) =>{
 
   const onDataChanged = (title) => {
-    console.log("Task detail title getting called", title)
+    //console.log("Task detail title getting called", title)
     onTitleChangeAction(taskId, title)
   }
+  console.log("task Detail Title getting rendered", title)
 
   return (
     <div className="task-detail-task-title-container">

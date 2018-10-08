@@ -92,7 +92,8 @@ const SortableTask = SortableElement((props)=>{
       memberIdList,
       onQuickUpdateTaskMembers,
       isScrolling,
-      findTaskById
+      findTaskById,
+      onSectionCollapsed
     } = props;
     let isNew = false, sectionId, previousItemId, previousItemObj
     if(task){
@@ -134,6 +135,7 @@ const SortableTask = SortableElement((props)=>{
             isScrolling={isScrolling}
             sectionId ={sectionId}
             previousItemId={previousItemId}
+            onSectionCollapsed={onSectionCollapsed}
             />
         </div>
     )
@@ -258,6 +260,7 @@ class VirtualList extends PureComponent {
               isScrolling={isScrolling}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
               findTaskById={findTaskById}
+              onSectionCollapsed={onSectionCollapsed}
               ></SortableTask>
           }
           </div>

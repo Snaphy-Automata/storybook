@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Icon } from 'semantic-ui-react'
+import { Icon, Input } from 'semantic-ui-react'
 import { compose, graphql } from 'react-apollo'
+import {Field} from 'redux-form'
 
 //import actions..
-import { onTitleChangeAction, onTaskSaveOnBlurAction } from '../../baseComponents/GridView/components/ModelData/Task/action'
+import { onTitleChangeAction, onTaskSaveOnBlurAction, onTaskSaveEnterAction } from '../../baseComponents/GridView/components/ModelData/Task/action'
 
 //import components
 import InputField from '../ReduxForm/InputField'
@@ -22,6 +23,7 @@ class NewTask extends PureComponent {
         onTaskSelected: PropTypes.func,
         sectionId: PropTypes.string,
         index: PropTypes.number,
+        onSectionCollapsed: PropTypes.func,
         //action
         onTitleChangeAction: PropTypes.func,
         onTaskSaveOnBlurAction: PropTypes.func,
@@ -37,8 +39,18 @@ class NewTask extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            isEditable: false
+            isEditable : props.isAutoFocus
         }
+        // if(props.taskId === props.lastGeneratedTaskId && props.sectionId === props.lastGeneratedSectionId){
+        //     this.state = {
+        //         isEditable: props.isAutoFocus
+        //     }
+        // } else{
+        //     this.state = {
+        //         isEditable: false
+        //     }
+        // }
+      
 
         this.onTitleUpdate = this._onTitleUpdate.bind(this)
         this.onWriteTask = this._onWriteTask.bind(this)
@@ -67,14 +79,15 @@ class NewTask extends PureComponent {
 
 
     _onTitleBlur = (value) => {
-        const { onTaskSaveOnBlurAction, sectionId, taskId, createOrEditTaskMutation, index, previousItemId } = this.props
-        //console.log(" On Title Blur getting called")
+        const { onTaskSaveOnBlurAction, sectionId, taskId, createOrEditTaskMutation, index, previousItemId, onSectionCollapsed } = this.props
+        console.log(" On Title Blur getting called")
         if (!value || value === "") {
-            this.setState({
-                isEditable: false
-            })
+            // this.setState({
+            //     isEditable: false
+            // })
         } else {
             onTaskSaveOnBlurAction(taskId, index, sectionId, previousItemId, createOrEditTaskMutation)
+            onSectionCollapsed()
         }
 
 
@@ -87,10 +100,13 @@ class NewTask extends PureComponent {
     }
 
     _onEnterData = (key, value) => {
-        const { task, onTaskItemBlurEvent, onEnterNextNewTask, index } = this.props;
+        const { taskId, onTaskSaveEnterAction, index, sectionId, previousItemId, createOrEditTaskMutation, onSectionCollapsed } = this.props;
+   
         if (key === "Enter") {
             if (value && value !== "") {
-
+                console.log("On key Press getting called")
+                onTaskSaveEnterAction(taskId, false, sectionId, previousItemId, index, createOrEditTaskMutation)
+                onSectionCollapsed()
             }
         }
     }
@@ -100,6 +116,7 @@ class NewTask extends PureComponent {
     render() {
         const { isEditable } = this.state
         const { title } = this.props
+        //console.log("New Task getting rendered", title)
         return (
             <div>
                 <div className="task-list-item-add-new-task-container" style={{ backgroundColor: "#fcfcfc" }} onMouseDown={this.onWriteTask}>
@@ -120,7 +137,8 @@ class NewTask extends PureComponent {
                         {isEditable &&
                             <div className="task-list-item-new-task-title">
                                 <div className="task-list-item-new-task-container">
-                                    <InputField onChange={this.onTitleUpdate} value={title} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
+                                  
+                                    <InputField onChange={this.onTitleUpdate} value={title} placeholder="Write Task" transparent autoFocus fluid className="task-list-item-new-task" blurOnEnter={false} onBlurEvent={this.onTitleBlur} onFocusEvent={this.onTitleFocus} onKeyPressEvent={this.onEnterData} />
                                 </div>
                             </div>
                         }
@@ -146,11 +164,14 @@ function mapStateToProps(store, props) {
 
 const mapActionsToProps = {
     onTitleChangeAction,
-    onTaskSaveOnBlurAction
+    onTaskSaveOnBlurAction,
+    onTaskSaveEnterAction
 }
 
 const NewTaskMutation = compose(
     graphql(createOrEditTaskMutation, { name: "createOrEditTaskMutation" })
 )(NewTask)
+
+
 
 export default connect(mapStateToProps, mapActionsToProps)(NewTaskMutation)

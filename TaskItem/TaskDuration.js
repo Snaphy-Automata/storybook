@@ -24,6 +24,7 @@ class TaskDuration extends PureComponent {
     }
 
     render() {
+        //console.log("Task Duration getting rendered")
 
         const { durationInText } = this.props
         return (

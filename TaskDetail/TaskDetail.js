@@ -59,7 +59,7 @@ class TaskDetail extends PureComponent{
       taskId,
       projectId,
     } = this.props
-    console.log("Task Detail getting reloaded", taskId);
+    //console.log("Task Detail getting reloaded", taskId);
     return (
       <div>
         {
@@ -67,12 +67,12 @@ class TaskDetail extends PureComponent{
           <div>
           <Header onSubTaskAdded={this.onSubTaskAdded} />
           <div className="task-detail-container">
-            <TaskTitle taskId={taskId} onDataChanged={onTitleChanged}/>
+            {/* <TaskTitle taskId={taskId} onDataChanged={onTitleChanged}/> */}
             {/* Send member id here.. */}
             {/* <AssignTask task={task}  /> */}
             {/* <Dates  taskId={taskId} startDate={task.startDate} endDate={task.endDate} /> */}
-            <Labels taskId={taskId} projectId={projectId} />
-            <SubTasks taskId={taskId} projectId={projectId} />
+            {/* <Labels taskId={taskId} projectId={projectId} /> */}
+            {/* <SubTasks taskId={taskId} projectId={projectId} /> */}
             {/* <Description description={task.description} taskId={task.id} projectId={projectId} /> */}
           </div>
         </div>

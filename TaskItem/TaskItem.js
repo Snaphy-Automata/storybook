@@ -34,7 +34,8 @@ class TaskItem extends PureComponent {
     static taskItemContainerClassName = null;
 
     static defaultProps = {
-        isAutoFocus : false
+        isAutoFocus : false,
+        isActiveTaskSection : false
     }
 
     constructor(props) {
@@ -84,8 +85,11 @@ class TaskItem extends PureComponent {
             onTaskSelected,
             sectionId,
             index,
-            previousItemId
+            previousItemId,
+            onSectionCollapsed
         } = this.props;
+
+        //console.log("Task Item getting rendered")
 
         return (
 
@@ -126,7 +130,7 @@ class TaskItem extends PureComponent {
                     </div>
                 }
                 { isNew && 
-                    <NewTask taskId ={taskId} isAutoFocus={isAutoFocus} onTaskSelected= {onTaskSelected} index={index} sectionId={sectionId} previousItemId={previousItemId}/>
+                    <NewTask taskId ={taskId} isAutoFocus={isAutoFocus} onTaskSelected= {onTaskSelected} index={index} sectionId={sectionId} previousItemId={previousItemId} onSectionCollapsed={onSectionCollapsed}/>
                  }
             </div>
         )
@@ -137,15 +141,21 @@ class TaskItem extends PureComponent {
 function mapStateToProps(store, props) {
     const modelDataReducer = store.ModelDataReducer;
     let selectedTaskId = modelDataReducer.selectedTaskId;
-
-    const {
-        isActiveTask,
-    } = getTaskData(store, props)
-    let isAutoFocus = false
+    let isActiveTaskSection = false, isAutoFocus = false
+    const task = modelDataReducer.task.byId[props.taskId]
+    if(task && task.sectionId === props.activeSectionId){
+        isActiveTaskSection = true
+    }
+    const lastGeneratedTaskId = modelDataReducer.lastGeneratedTaskId
+    const lastGeneratedSectionId = modelDataReducer.lastGeneratedSectionId
+    if(props.sectionId === lastGeneratedSectionId && props.taskId === lastGeneratedTaskId){
+        isAutoFocus = true
+    }
+   // console.log("Task Item Map State to props")
 
     return {
         selectedTaskId,
-        isActiveTaskSection: isActiveTask,
+        isActiveTaskSection,
         isAutoFocus
 
     }
@@ -160,6 +170,5 @@ const mapActionsToProps = {
     //Model Data Actions..
 
 };
-
-
+//export default TaskItem;
 export default connect(mapStateToProps, mapActionsToProps)(TaskItem);

@@ -88,6 +88,7 @@ class Labels extends PureComponent{
   render(){
     const {labelIds, projectId, taskId} = this.props
     const hasLabels = !!labelIds.length
+    console.log("Task Detail Labels getting rendered")
     return (
       <div className="task-detail-labels-container">
         <div onClick={this.onAddLabelBtnClick} className="task-detail-labels-sidebar-icon">

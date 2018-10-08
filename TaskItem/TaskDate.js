@@ -118,6 +118,7 @@ class TaskDate extends PureComponent {
 
 
     render() {
+        //console.log("Task date getting rendered")
 
         const { isDateDialogOpened, isDatePickerOpened, endDateMs, isCompleted, taskId } = this.props
         let endDate
