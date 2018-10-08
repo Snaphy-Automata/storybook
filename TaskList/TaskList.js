@@ -273,7 +273,7 @@ class VirtualList extends PureComponent {
 
     _onRowsRendered(props){
       const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
-      console.timeEnd("Testing_Scroll_TimeLag")
+      //console.timeEnd("Testing_Scroll_TimeLag")
       const {getGridViewScrollRef} = this.props;
       const gridListRef = getGridViewScrollRef();
       //console.log("Grid view reference inside task list", startIndex, this.startIndex)
@@ -286,10 +286,10 @@ class VirtualList extends PureComponent {
         //console.log("Scroll Getting called", scrollToIndex)
         if(scrollToIndex !== this.startIndex){
           const scrollTop = ((scrollToIndex)*25) + 38
-          window.requestAnimationFrame(()=>{
+          //window.requestAnimationFrame(()=>{
             gridListRef.scrollTop(scrollTop)
             this.startIndex = scrollToIndex
-          })
+          //})
         }
 
       }
@@ -382,7 +382,7 @@ class TaskList extends PureComponent {
       const { Grid: grid } = ListRef;
       grid.handleScrollEvent({ scrollTop, scrollLeft })
     }
-    console.time("Testing_Scroll_TimeLag")
+    //console.time("Testing_Scroll_TimeLag")
   }
 
 
