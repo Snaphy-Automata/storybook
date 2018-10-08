@@ -1,6 +1,6 @@
 import React, { PureComponent, Component } from 'react';
 import PropTypes from 'prop-types';
-import { List} from 'react-virtualized';
+import List from 'react-virtualized/dist/commonjs/List';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import {  reduxForm } from 'redux-form'
@@ -14,61 +14,62 @@ import CustomScrollbar from '../CustomScrollbar'
 let ListRef = null
 
 const isTaskLast = (activeTasks, index, findTaskById) => {
-    const nextTaskIndex = index + 1;
-    if(index === 0 && activeTasks.length === 1){
-        return true
-    }else if(index+1 === activeTasks.length){
-        return true
-    }else{
-        const nextTaskId = activeTasks[nextTaskIndex];
-        const nextTask = findTaskById(nextTaskId);
-        if(nextTask){
-            return nextTask.type === "section";
-        } else{
-            return true;
-        }
-
+  const nextTaskIndex = index + 1;
+  if(index === 0 && activeTasks.length === 1){
+    return true
+  }else if(index+1 === activeTasks.length){
+    return true
+  }else{
+    const nextTaskId = activeTasks[nextTaskIndex];
+    const nextTask = findTaskById(nextTaskId);
+    if(nextTask){
+        return nextTask.type === "section";
+    } else{
+        return true;
     }
+  }
 };
 
+
+
 const isSectionEmpty = (activeTasks, index, findTaskById) => {
-    const itemId = activeTasks[index];
-    const item = findTaskById(itemId);
-    if(item && item.type === "section"){
-        const nextItemIndex = index +1;
-        const nextItemId = activeTasks[nextItemIndex];
-        const nextItem = findTaskById(nextItemId);
-        //console.log("Is Section empty", item, nextItem);
-        if(nextItem){
-            if(nextItem.type === "section"){
-                return true;
-            }
-        } else{
-            return true;
-        }
-    }
-    return false;
+  const itemId = activeTasks[index];
+  const item = findTaskById(itemId);
+  if(item && item.type === "section"){
+      const nextItemIndex = index +1;
+      const nextItemId = activeTasks[nextItemIndex];
+      const nextItem = findTaskById(nextItemId);
+      //console.log("Is Section empty", item, nextItem);
+      if(nextItem){
+          if(nextItem.type === "section"){
+              return true;
+          }
+      } else{
+          return true;
+      }
+  }
+  return false;
 }
 
 const SortableHeading = SortableElement((props)=>{
-    const {section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed} = props;
-    return (
-        <div  style={{width:"100%"}}>
-            {!isFirst && <div className="task-list-section-seperator"></div>}
-            <div className="task-list-section-wrapper" style={{background: "#fff"}}>
-                <TaskListHeading
-                isEmptySection={isEmptySection}
-                index={indexValue}
-                sectionId={section.id}
-                onNewTaskAdded={onNewTaskAdded}
-                onSectionStateChanged={onSectionStateChanged}
-                onAddNewtaskClicked={onAddNewtaskClicked}
-                onSectionCollapsed={onSectionCollapsed}
-                />
-            </div>
+  const {section, isFirst, onNewTaskAdded, indexValue, onSectionStateChanged, isEmptySection, onAddNewtaskClicked, onSectionCollapsed} = props;
+  return (
+    <div  style={{width:"100%"}}>
+        {!isFirst && <div className="task-list-section-seperator"></div>}
+        <div className="task-list-section-wrapper" style={{background: "#fff"}}>
+            <TaskListHeading
+            isEmptySection={isEmptySection}
+            index={indexValue}
+            sectionId={section.id}
+            onNewTaskAdded={onNewTaskAdded}
+            onSectionStateChanged={onSectionStateChanged}
+            onAddNewtaskClicked={onAddNewtaskClicked}
+            onSectionCollapsed={onSectionCollapsed}
+            />
         </div>
+    </div>
 
-    )
+  )
 });
 
 
@@ -113,7 +114,7 @@ const SortableTask = SortableElement((props)=>{
 
     }
 
-    //console.log("Sortable Task", task);
+
     return (
         <div style={style}>
            <TaskItem
@@ -172,8 +173,10 @@ class VirtualList extends PureComponent {
     // Constructor
     constructor(props){
       super(props);
-      this.getRowHeight = this._getRowHeight.bind(this)
-      this.rowRenderer  = this._rowRenderer.bind(this)
+      this.getRowHeight    = this._getRowHeight.bind(this)
+      this.rowRenderer     = this._rowRenderer.bind(this)
+      this.onRowsRendered  = this._onRowsRendered.bind(this)
+      this.startIndex      = 0
     }
 
 
@@ -193,7 +196,7 @@ class VirtualList extends PureComponent {
         onQuickUpdateDate,
         memberIdList,
         onQuickUpdateTaskMembers,
-        onSectionCollapsed
+        onSectionCollapsed,
       } = this.props
       const {
           index,       // Index of row
@@ -268,6 +271,30 @@ class VirtualList extends PureComponent {
     }
 
 
+    _onRowsRendered(props){
+      const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
+      console.timeEnd("Testing_Scroll_TimeLag")
+      const {getGridViewScrollRef} = this.props;
+      const gridListRef = getGridViewScrollRef();
+      //console.log("Grid view reference inside task list", startIndex, this.startIndex)
+      if(gridListRef ){
+        let scrollToIndex = startIndex
+        // if((overscanStartIndex+1) === startIndex && this.startIndex === startIndex){
+        //   scrollToIndex = startIndex + 1
+        // }
+
+        //console.log("Scroll Getting called", scrollToIndex)
+        if(scrollToIndex !== this.startIndex){
+          const scrollTop = ((scrollToIndex)*25) + 38
+          window.requestAnimationFrame(()=>{
+            gridListRef.scrollTop(scrollTop)
+            this.startIndex = scrollToIndex
+          })
+        }
+
+      }
+    }
+
 
     /**
      * Will fetch the row height..
@@ -302,6 +329,7 @@ class VirtualList extends PureComponent {
           }}
           rowHeight={this.getRowHeight}
           rowRenderer={this.rowRenderer}
+          onRowsRendered={this.onRowsRendered}
           rowCount={totalRows}
           height={height}
           width={width}
@@ -345,15 +373,16 @@ class TaskList extends PureComponent {
     this.onSortEnd          = this.onSortEndRaw.bind(this)
     this.onSortStart        = this.onSortStartRaw.bind(this)
     this.onSectionCollapsed = this.onSectionCollapsedRaw.bind(this)
-
   }
 
-  handleScrollRaw({ target }) {
+  handleScrollRaw(event) {
+    const { target } = event
     const { scrollTop, scrollLeft } = target;
     if (ListRef) {
       const { Grid: grid } = ListRef;
-      grid.handleScrollEvent({ scrollTop, scrollLeft });
+      grid.handleScrollEvent({ scrollTop, scrollLeft })
     }
+    console.time("Testing_Scroll_TimeLag")
   }
 
 
@@ -366,7 +395,6 @@ class TaskList extends PureComponent {
       if(this.SortableList){
         // We need to inform React Virtualized that the items have changed heights
         const instance = this.SortableList.getWrappedInstance();
-        //console.log(instance, ListRef)
         setTimeout(()=>{
           ListRef.recomputeRowHeights();
           instance.forceUpdate();
@@ -431,7 +459,7 @@ class TaskList extends PureComponent {
       height,
       width,
       setScrollRef,
-
+      getGridViewScrollRef,
     }  = this.props;
 
 
@@ -472,6 +500,7 @@ class TaskList extends PureComponent {
               onSectionCollapsed={this.onSectionCollapsed}
               onQuickUpdateDate={onQuickUpdateDate}
               memberIdList={memberIdList}
+              getGridViewScrollRef={getGridViewScrollRef}
               onQuickUpdateTaskMembers={onQuickUpdateTaskMembers}
             />
           </div>

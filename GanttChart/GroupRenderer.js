@@ -14,16 +14,14 @@ import "./GanttChart.css";
 
 const GroupRenderer = ({group}) => {
     //console.log(group);
-    const title = truncate(group.title,{
-        'length': 24,
-    });
+    const title = group && group.title? truncate(group.title,{'length': 24}):null
 
 
     const icon = getAssignedToIcon(group);
-
+    const id =  group && group.id? group.id:undefined
     //https://github.com/namespace-ee/react-calendar-timeline#grouprenderer
     return (
-        <div id={group.id} className="gantt-chart-group-wrapper">
+        <div id={id} className="gantt-chart-group-wrapper">
             <div style={{
                 display: "inline-block"
             }}>

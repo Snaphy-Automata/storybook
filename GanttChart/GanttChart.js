@@ -3,14 +3,9 @@
  * 25th July 2018
  */
 import React, { Component } from 'react';
-import {connect}            from 'react-redux';
 import PropTypes            from 'prop-types';
-import { AutoSizer }              from 'react-virtualized';
 
-//Custom Import
-// import {
-//   onTaskInitAction,
-// }                           from "./GanttChartActions";
+
 import GanttChartSubHeading from './GanttChartSubHeading';
 import GanttTimeline        from './GanttTimeline';
 import TaskListHeading      from '../TaskList/TaskListHeading';
@@ -29,6 +24,7 @@ class GanttChart extends Component {
       //   onTaskInitAction,
       // } = this.props;
       // onTaskInitAction(tasks);
+      this.setListReference = this.setListReference_.bind(this)
     }
 
     componentDidMount(){
@@ -44,11 +40,12 @@ class GanttChart extends Component {
 
     handleScroll({ target }) {
       const { scrollTop, scrollLeft } = target;
+      //Scroll Gantt Sidebar
       if (ListRef) {
         const { Grid: grid } = ListRef;
         grid.handleScrollEvent({ scrollTop, scrollLeft });
       }
-
+      //Scroll Gantt Canvas..
       if (RowListRef) {
         const { Grid: grid } = RowListRef;
         grid.handleScrollEvent({ scrollTop, scrollLeft });
@@ -60,8 +57,8 @@ class GanttChart extends Component {
       RowListRef = ref;
     }
 
-    setListReference(ref){
-      ListRef = ref;
+    setListReference_(ref){
+      ListRef = ref
     }
 
 
@@ -76,11 +73,12 @@ class GanttChart extends Component {
             isGanttCollapsed,
             onResize,
             onMove,
+            setScrollRef,
         } = this.props;
         //console.log("Gantt Chart getting called", this.props);
         if(items && items.length){
           return (
-            <CustomScroller onScroll={this.handleScroll} id="gantt-chart-custom-scrollbar">
+            <CustomScroller setScrollRef={setScrollRef} onScroll={this.handleScroll} id="gantt-chart-custom-scrollbar">
               {/* <AutoSizer  style={{ width: "inherit", height: "inherit" }}>
                 {({ height, width }) => (
                   <div style={{ width: width, height }}> */}
@@ -105,21 +103,6 @@ class GanttChart extends Component {
 
 
 
-// Retrieve data from store as props
-function mapStateToProps(store) {
-    return {
-        //isTaskLoaded: store.GanttChartReducer.isTaskLoaded,
-    };
-}
-
-
-//Map Redux Actions to Props..
-const mapActionsToProps = {
-    //map action here
-    //onTaskInitAction,
-};
-
-
 
 GanttChart.propTypes = {
     items: PropTypes.array,
@@ -133,4 +116,4 @@ GanttChart.propTypes = {
 };
 
 
-export default connect(mapStateToProps, mapActionsToProps)(GanttChart);
+export default GanttChart;
