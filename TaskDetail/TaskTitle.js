@@ -51,7 +51,6 @@ TaskTitle.propTypes = {
   label: PropTypes.string,
   size: PropTypes.string,
   rows: PropTypes.number,
-  isSelected: PropTypes.bool.func,
   onTaskCompleted: PropTypes.func,
 }
 
