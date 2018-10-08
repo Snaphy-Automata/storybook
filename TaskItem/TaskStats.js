@@ -18,8 +18,6 @@ class TaskStats extends PureComponent {
 
     static defaultProps = {
         completedSubTasks: 0,
-        totalSubTasks: 0,
-        totalAttachments: 0
     }
 
     constructor(props) {

@@ -133,6 +133,7 @@ const SortableTask = SortableElement((props)=>{
             onEnterNextNewTask={onEnterNextNewTask}
             isScrolling={isScrolling}
             sectionId ={sectionId}
+            previousItemId={previousItemId}
             />
         </div>
     )

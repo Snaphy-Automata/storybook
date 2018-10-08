@@ -36,7 +36,7 @@ class TaskIndicator extends PureComponent{
             let isDelayed = false
             if(!isScrolling){
                 const delayedObj = compareDate(new Date(), new Date(endDateMs))
-                if(delayedObj.colorCode === "#ff1744"){
+                if(delayedObj && delayedObj.colorCode === "#ff1744"){
                   isDelayed = true
                 }
                 if (isActiveTaskSection) {

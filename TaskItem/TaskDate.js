@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { compose, graphql } from 'react-apollo'
+import {DayPicker} from 'react-day-picker'
 
 
 import { onOpenChangeDateDialogAction, onDatePickerOpenedAction } from '../TaskList/TaskListActions'

@@ -41,7 +41,7 @@ class UserCircle extends PureComponent {
     }
 
     static defaultProps = {
-
+        taskMemberList : []
     }
 
     constructor(props) {

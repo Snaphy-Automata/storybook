@@ -83,7 +83,8 @@ class TaskItem extends PureComponent {
             isAutoFocus,
             onTaskSelected,
             sectionId,
-            index
+            index,
+            previousItemId
         } = this.props;
 
         return (
@@ -125,7 +126,7 @@ class TaskItem extends PureComponent {
                     </div>
                 }
                 { isNew && 
-                    <NewTask taskId ={taskId} isAutoFocus={isAutoFocus} onTaskSelected= {onTaskSelected} index={index} sectionId={sectionId}/>
+                    <NewTask taskId ={taskId} isAutoFocus={isAutoFocus} onTaskSelected= {onTaskSelected} index={index} sectionId={sectionId} previousItemId={previousItemId}/>
                  }
             </div>
         )
