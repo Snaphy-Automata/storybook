@@ -3,14 +3,9 @@
  * 25th July 2018
  */
 import React, { Component } from 'react';
-import {connect}            from 'react-redux';
 import PropTypes            from 'prop-types';
-import { AutoSizer }              from 'react-virtualized';
 
-//Custom Import
-// import {
-//   onTaskInitAction,
-// }                           from "./GanttChartActions";
+
 import GanttChartSubHeading from './GanttChartSubHeading';
 import GanttTimeline        from './GanttTimeline';
 import TaskListHeading      from '../TaskList/TaskListHeading';
@@ -108,21 +103,6 @@ class GanttChart extends Component {
 
 
 
-// Retrieve data from store as props
-function mapStateToProps(store) {
-    return {
-        //isTaskLoaded: store.GanttChartReducer.isTaskLoaded,
-    };
-}
-
-
-//Map Redux Actions to Props..
-const mapActionsToProps = {
-    //map action here
-    //onTaskInitAction,
-};
-
-
 
 GanttChart.propTypes = {
     items: PropTypes.array,
@@ -136,4 +116,4 @@ GanttChart.propTypes = {
 };
 
 
-export default connect(mapStateToProps, mapActionsToProps)(GanttChart);
+export default GanttChart;
