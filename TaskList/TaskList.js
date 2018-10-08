@@ -272,27 +272,27 @@ class VirtualList extends PureComponent {
 
 
     _onRowsRendered(props){
-      const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
-      console.timeEnd("Testing_Scroll_TimeLag")
-      const {getGridViewScrollRef} = this.props;
-      const gridListRef = getGridViewScrollRef();
-      //console.log("Grid view reference inside task list", startIndex, this.startIndex)
-      if(gridListRef ){
-        let scrollToIndex = startIndex
-        // if((overscanStartIndex+1) === startIndex && this.startIndex === startIndex){
-        //   scrollToIndex = startIndex + 1
-        // }
+      // const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
+      // console.timeEnd("Testing_Scroll_TimeLag")
+      // const {getGridViewScrollRef} = this.props;
+      // const gridListRef = getGridViewScrollRef();
+      // //console.log("Grid view reference inside task list", startIndex, this.startIndex)
+      // if(gridListRef ){
+      //   let scrollToIndex = startIndex
+      //   // if((overscanStartIndex+1) === startIndex && this.startIndex === startIndex){
+      //   //   scrollToIndex = startIndex + 1
+      //   // }
 
-        //console.log("Scroll Getting called", scrollToIndex)
-        if(scrollToIndex !== this.startIndex){
-          const scrollTop = ((scrollToIndex)*25) + 38
-          window.requestAnimationFrame(()=>{
-            gridListRef.scrollTop(scrollTop)
-            this.startIndex = scrollToIndex
-          })
-        }
+      //   //console.log("Scroll Getting called", scrollToIndex)
+      //   if(scrollToIndex !== this.startIndex){
+      //     const scrollTop = ((scrollToIndex)*25) + 38
+      //     window.requestAnimationFrame(()=>{
+      //       gridListRef.scrollTop(scrollTop)
+      //       this.startIndex = scrollToIndex
+      //     })
+      //   }
 
-      }
+      // }
     }
 
 
