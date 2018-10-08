@@ -269,7 +269,7 @@ class VirtualList extends PureComponent {
 
 
     _onRowsRendered(props){
-      console.log(props)
+      //console.log(props)
       const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
       const {getGridViewScrollRef} = this.props;
       const gridListRef = getGridViewScrollRef();
