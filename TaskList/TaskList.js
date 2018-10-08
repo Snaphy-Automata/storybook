@@ -172,6 +172,7 @@ class VirtualList extends PureComponent {
       this.getRowHeight    = this._getRowHeight.bind(this)
       this.rowRenderer     = this._rowRenderer.bind(this)
       this.onRowsRendered  = this._onRowsRendered.bind(this)
+      this.startIndex      = 0
     }
 
 
@@ -267,15 +268,25 @@ class VirtualList extends PureComponent {
     }
 
 
-    _onRowsRendered({ overscanStartIndex, overscanStopIndex, startIndex, stopIndex }){
-      const {activeTasks, findTaskById, getGridViewScrollRef} = this.props;
-      console.log("ON Rows rendered", overscanStartIndex, overscanStopIndex, startIndex, stopIndex)
+    _onRowsRendered(props){
+      console.log(props)
+      const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
+      const {getGridViewScrollRef} = this.props;
       const gridListRef = getGridViewScrollRef();
-      console.log("Grid view reference inside task list", gridListRef, startIndex)
-      if(gridListRef){
-        const scrollTop = ((startIndex)*25) + 38
-        console.log("Scroll Top", scrollTop)
-        gridListRef.scrollTop(scrollTop)
+      //console.log("Grid view reference inside task list", startIndex, this.startIndex)
+      if(gridListRef ){
+        let scrollToIndex = startIndex
+        if((overscanStartIndex+1) === startIndex && this.startIndex === startIndex){
+          scrollToIndex = startIndex + 1
+        }
+
+        //console.log("Scroll Getting called", scrollToIndex)
+        if(scrollToIndex !== this.startIndex){
+          const scrollTop = ((scrollToIndex)*25) + 38
+          gridListRef.scrollTop(scrollTop)
+          this.startIndex = scrollToIndex
+        }
+
       }
     }
 

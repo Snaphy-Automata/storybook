@@ -45,7 +45,6 @@ class GanttChart extends Component {
 
     handleScroll({ target }) {
       const { scrollTop, scrollLeft } = target;
-      console.log("Gantt Chart Scroll is getting called", scrollTop)
       //Scroll Gantt Sidebar
       if (ListRef) {
         const { Grid: grid } = ListRef;
