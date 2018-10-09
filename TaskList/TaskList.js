@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import List from 'react-virtualized/dist/commonjs/List';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
