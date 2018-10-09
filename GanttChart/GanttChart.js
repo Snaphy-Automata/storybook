@@ -19,7 +19,8 @@ class GanttChart extends Component {
 
     constructor(props){
       super(props)
-      this.setListReference = this.setListReference_.bind(this)
+      this.setListReference      = this.setListReference_.bind(this)
+      this.onSectionStateChanged = this.onSectionStateChanged.bind(this)
     }
 
     componentDidMount(){
@@ -33,19 +34,19 @@ class GanttChart extends Component {
 
 
     handleScroll({ target }) {
-      const { scrollTop, scrollLeft } = target;
-      //Scroll Gantt Sidebar
-      if (ListRef) {
-        console.log("Scrolling in GRID VIEW:", scrollTop)
-        const { Grid: grid } = ListRef;
-        grid.handleScrollEvent({ scrollTop, scrollLeft });
+      const { scrollTop, scrollLeft, isGanttCollapsed } = target;
+      if(!isGanttCollapsed){
+        //Scroll Gantt Sidebar
+        if (ListRef) {
+          const { Grid: grid } = ListRef;
+          grid.handleScrollEvent({ scrollTop, scrollLeft });
+        }
+        //Scroll Gantt Canvas..
+        if (RowListRef) {
+          const { Grid: grid } = RowListRef;
+          grid.handleScrollEvent({ scrollTop, scrollLeft });
+        }
       }
-      //Scroll Gantt Canvas..
-      if (RowListRef) {
-        const { Grid: grid } = RowListRef;
-        grid.handleScrollEvent({ scrollTop, scrollLeft });
-      }
-
     }
 
     setRowListRef(ref){
@@ -70,11 +71,10 @@ class GanttChart extends Component {
             onMove,
             setScrollRef,
         } = this.props;
-        //console.log("Gantt Chart getting called", this.props);
         if(items && items.length){
           return (
             <CustomScroller setScrollRef={setScrollRef} onScroll={this.handleScroll} id="gantt-chart-custom-scrollbar">
-              <TaskListHeading projectId={projectId} protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged.bind(this)} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
+              <TaskListHeading projectId={projectId} protectedName="active_tasks" sectionId={sectionId} onSectionStateChanged={this.onSectionStateChanged} iconClassName="gantt-chart-top-heading-arrow" className="gantt-chart-top-header-container" headingClassName="gantt-chart-top-heading-title" heading="Project Plan" isOpened={true} type="fixed" subHeadingComponent={<GanttChartSubHeading />} ></TaskListHeading>
               { !isGanttCollapsed &&
                 <GanttTimeline onMove={onMove} onResize={onResize} projectId={projectId} setRowListRef={this.setRowListRef} items={items} setListReference={this.setListReference}  onTaskResized={onTaskResized} onItemMoved={onItemMoved}></GanttTimeline>
               }
