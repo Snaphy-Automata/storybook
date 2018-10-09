@@ -227,10 +227,8 @@ class VirtualList extends PureComponent {
       if(gridListRef){
         const scrollTop            = gridListRef.getScrollTop()
         const scrollHeight         = gridListRef.getScrollHeight()
-        const val = MathUtil.mapValueInRange(top, 0, scrollHeight, scrollHeight * 0.2, scrollHeight * 0.8);
-        console.log(`Scrolling with calculated value:${val}, prev Scroll Height:${scrollHeight}, Prev Scroll Top: ${scrollTop} Actual Scroll Value: ${top}`)
         this.spring.setCurrentValue(scrollTop).setAtRest()
-        this.spring.setEndValue(val)
+        this.spring.setEndValue(top)
       }
     }
 
@@ -353,10 +351,10 @@ class VirtualList extends PureComponent {
       const {onTaskSelectedAction} = this.props
       onTaskSelectedAction(taskId);
       const actualIndex = index <= 4?index: index - 3
-      if(index > 3){
+      //if(index > 3){
         const top = ((actualIndex)*25)
         this.scrollTop(top)
-      }
+      //}
     }
 
 
