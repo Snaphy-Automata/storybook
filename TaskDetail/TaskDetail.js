@@ -24,8 +24,7 @@ import {
 
 class TaskDetail extends PureComponent{
   static propTypes = {
-    onTitleChanged: PropTypes.func.isRequired,
-    taskId: PropTypes.object.isRequired,
+    taskId: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
   }
 
@@ -67,7 +66,6 @@ class TaskDetail extends PureComponent{
 
   render(){
     const {
-      onTitleChanged,
       taskId,
       projectId,
     } = this.props
@@ -78,7 +76,7 @@ class TaskDetail extends PureComponent{
           <div>
           <Header onDetailViewCloseBtnClick={this.onDetailViewCloseBtnClick} onSubTaskAdded={this.onSubTaskAdded} />
           <div className="task-detail-container">
-            <TaskTitle taskId={taskId} onDataChanged={onTitleChanged}/>
+            <TaskTitle taskId={taskId}/>
             {/* Send member id here.. */}
             {/* <AssignTask task={task}  /> */}
             {/* <Dates  taskId={taskId} startDate={task.startDate} endDate={task.endDate} /> */}

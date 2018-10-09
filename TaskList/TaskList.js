@@ -228,7 +228,7 @@ class VirtualList extends PureComponent {
         const scrollTop            = gridListRef.getScrollTop()
         const scrollHeight         = gridListRef.getScrollHeight()
         const val = MathUtil.mapValueInRange(top, 0, scrollHeight, scrollHeight * 0.2, scrollHeight * 0.8);
-        console.log(`Scrolling with calculated value:${val}, prev Scroll Height:${scrollHeight}, Prev Scroll Top: ${scrollTop}`)
+        console.log(`Scrolling with calculated value:${val}, prev Scroll Height:${scrollHeight}, Prev Scroll Top: ${scrollTop} Actual Scroll Value: ${top}`)
         this.spring.setCurrentValue(scrollTop).setAtRest()
         this.spring.setEndValue(val)
       }
