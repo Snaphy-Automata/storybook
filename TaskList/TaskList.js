@@ -336,13 +336,18 @@ class VirtualList extends PureComponent {
 
     _onRowsRendered(props){
       const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
-      console.log("Grid view reference inside task list", props, this.startIndex)
       let scrollToIndex = startIndex
-      console.log("Scroll Getting called", scrollToIndex)
-      if(scrollToIndex !== this.startIndex){
-        const top = ((scrollToIndex)*25) + 38
+      console.log("Scroll Getting called", props)
+      if(overscanStopIndex === stopIndex){
+        const actualIndex = stopIndex <= 4?stopIndex: stopIndex - 3
+        const top = ((actualIndex)*25)
         this.scrollTop(top)
-        this.startIndex = scrollToIndex
+      }else{
+        if(scrollToIndex !== this.startIndex){
+          const top = ((scrollToIndex)*25) + 38
+          this.scrollTop(top)
+          this.startIndex = scrollToIndex
+        }
       }
     }
 
