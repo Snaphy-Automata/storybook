@@ -36,6 +36,7 @@ class TaskDetail extends PureComponent{
     super(props)
     this.onSubTaskAdded               = this.onAddSubTasksToList.bind(this)
     this.onDetailViewCloseBtnClick    = this._onDetailViewCloseBtnClick.bind(this)
+    this.openShareDialog              = this._openShareDialog.bind(this)
   }
 
 
@@ -63,6 +64,10 @@ class TaskDetail extends PureComponent{
     // onAddSubTask(selectedTask.id, subTaskDataList, "empty", null, null);
   }
 
+  _openShareDialog(){
+
+  }
+
 
   render(){
     const {
@@ -74,7 +79,7 @@ class TaskDetail extends PureComponent{
         {
           taskId &&
           <div>
-          <Header onDetailViewCloseBtnClick={this.onDetailViewCloseBtnClick} onSubTaskAdded={this.onSubTaskAdded} />
+          <Header openShareDialog={this.openShareDialog} onDetailViewCloseBtnClick={this.onDetailViewCloseBtnClick} onSubTaskAdded={this.onSubTaskAdded} />
           <div className="task-detail-container">
             <TaskTitle taskId={taskId}/>
             {/* Send member id here.. */}
