@@ -337,7 +337,6 @@ class VirtualList extends PureComponent {
     _onRowsRendered(props){
       const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
       let scrollToIndex = startIndex
-      console.log("Scroll Getting called", props)
       if(overscanStopIndex === stopIndex){
         const actualIndex = stopIndex <= 4?stopIndex: stopIndex - 3
         const top = ((actualIndex)*25)
