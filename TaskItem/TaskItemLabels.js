@@ -31,16 +31,16 @@ class TaskItemLabels extends PureComponent {
     }
 
     render() {
-        const {isScrolling, labelList, findLabelById } = this.props
+        const {isScrolling, labelList, findLabelById, firstLabel } = this.props
 
         let tooltip = ""
         let firstLabelTitle
         let firstLabelColorCode
-        if(labelList.length>0){
-            const label = findLabelById(labelList[0])
-            firstLabelTitle = label.title
-            firstLabelColorCode = label.colorCode
+        if(labelList.length>0 && firstLabel){
+          firstLabelTitle     = firstLabel.title
+          firstLabelColorCode = firstLabel.colorCode
         }
+
         if (!isScrolling) {
             labelList.forEach((labelId, index) => {
                 let isLast = false;
@@ -82,9 +82,16 @@ class TaskItemLabels extends PureComponent {
 function mapStateToProps(store, props) {
     const allTaskObj = store.ModelDataReducer.task
     const task = allTaskObj.byId[props.taskId]
-    const labelList = task.labels
+    const labelList  = task.labels
+    let firstLabel;
+    if(labelList && labelList.length){
+      const firstLabelId = labelList[0]
+      firstLabel         = store.ModelDataReducer.label.byId[firstLabelId]
+    }
+
     return {
-        labelList
+        labelList,
+        firstLabel,
     }
 }
 
