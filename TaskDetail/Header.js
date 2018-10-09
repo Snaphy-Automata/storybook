@@ -44,6 +44,7 @@ class Header extends PureComponent {
     subtaskLabel: PropTypes.string,
     onSubTaskAdded: PropTypes.func.isRequired,
     isShareDialogOpened: PropTypes.bool,
+    onDetailViewCloseBtnClick: PropTypes.func,
   }
 
   constructor(props){
@@ -77,6 +78,7 @@ class Header extends PureComponent {
       attachmentLabel,
       moveLabel,
       onSubTaskAdded,
+      onDetailViewCloseBtnClick,
     } = this.props
 
     return (
@@ -109,7 +111,7 @@ class Header extends PureComponent {
             <div className="task-detail-header-icon task-detail-header-add-share-button-container" onClick={onSubTaskAdded}>
                 <Icon name="share alternate" style={{ display: "inline" }}></Icon>
             </div>
-            <div className="task-detail-header-icon task-detail-header-add-close-button-container" onClick={onSubTaskAdded}>
+            <div className="task-detail-header-icon task-detail-header-add-close-button-container" onClick={onDetailViewCloseBtnClick}>
                 <Icon name="close" style={{ display: "inline" }}></Icon>
             </div>
           </div>

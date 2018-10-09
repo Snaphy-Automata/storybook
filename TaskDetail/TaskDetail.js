@@ -18,6 +18,10 @@ import Labels            from './Labels'
 import SubTasks          from './SubTasks'
 import Description       from './Description'
 
+import {
+  onTaskUnSelectedAction
+}                        from '../../baseComponents/GridView/components/ModelData/Task/action'
+
 class TaskDetail extends PureComponent{
   static propTypes = {
     onTitleChanged: PropTypes.func.isRequired,
@@ -31,7 +35,16 @@ class TaskDetail extends PureComponent{
 
   constructor(props){
     super(props)
-    this.onSubTaskAdded = this.onAddSubTasksToList.bind(this)
+    this.onSubTaskAdded               = this.onAddSubTasksToList.bind(this)
+    this.onDetailViewCloseBtnClick    = this._onDetailViewCloseBtnClick.bind(this)
+  }
+
+
+
+  _onDetailViewCloseBtnClick(event){
+    const {onTaskUnSelectedAction} =  this.props
+    onTaskUnSelectedAction()
+    console.log("I am getting closed")
   }
 
 
@@ -59,13 +72,12 @@ class TaskDetail extends PureComponent{
       taskId,
       projectId,
     } = this.props
-    //console.log("Task Detail getting reloaded", taskId);
     return (
       <div>
         {
           taskId &&
           <div>
-          <Header onSubTaskAdded={this.onSubTaskAdded} />
+          <Header onDetailViewCloseBtnClick={this.onDetailViewCloseBtnClick} onSubTaskAdded={this.onSubTaskAdded} />
           <div className="task-detail-container">
             <TaskTitle taskId={taskId} onDataChanged={onTitleChanged}/>
             {/* Send member id here.. */}
@@ -100,6 +112,7 @@ function mapStateToProps(store) {
 }
 
 const mapActionsToProps = {
+  onTaskUnSelectedAction,
   // onMarkCompleteClickedAction,
   // onStatusChangedAction,
   // getStatusDataAction,
