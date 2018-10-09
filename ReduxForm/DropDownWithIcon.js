@@ -40,7 +40,7 @@ DropDownFilter.propTypes = {
   className: PropTypes.string,
   placeholder: PropTypes.string.isRequired,
   icon: PropTypes.string,
-  options: PropTypes.object.isRequired,
+  options: PropTypes.array.isRequired,
 }
 
 
