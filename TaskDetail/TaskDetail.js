@@ -25,7 +25,7 @@ import {
 class TaskDetail extends PureComponent{
   static propTypes = {
     onTitleChanged: PropTypes.func.isRequired,
-    task: PropTypes.object.isRequired,
+    taskId: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
   }
 
@@ -44,7 +44,6 @@ class TaskDetail extends PureComponent{
   _onDetailViewCloseBtnClick(event){
     const {onTaskUnSelectedAction} =  this.props
     onTaskUnSelectedAction()
-    console.log("I am getting closed")
   }
 
 
