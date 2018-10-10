@@ -16,7 +16,7 @@ const InputElement = (props) => {
     const {blurOnEnter, onKeyPress} = props
     if(blurOnEnter && e.key === 'Enter'){
         e.preventDefault();
-        e.target.blur();
+        e.target.blur(e);
     }
     onKeyPress? onKeyPress(e): null
   }

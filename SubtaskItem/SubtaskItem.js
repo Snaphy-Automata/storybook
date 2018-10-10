@@ -54,6 +54,7 @@ class SubtaskItem extends PureComponent {
     this.onDataChanged              = this._onDataChanged.bind(this)
     this.onSubTaskDelete            = this._onSubTaskDelete.bind(this)
     this.onDataSave                 = this._onDataSave.bind(this)
+    this.onKeyPress                 = this._onKeyPress.bind(this)
     this.state = {
       forceClose: false
     }
@@ -87,8 +88,18 @@ class SubtaskItem extends PureComponent {
 
 
   _onDataSave(event){
-    const {onDataSave, subtaskId, subtask, indexVal} = this.props
-    onDataSave?onDataSave(subtaskId):null
+    //Event caused by blur..
+    const isBlurEvent = true;
+    const {onDataSave, subtaskId} = this.props
+    onDataSave?onDataSave(subtaskId, isBlurEvent):null
+  }
+
+  _onKeyPress(event){
+    const {onDataSave, subtaskId} = this.props
+    if(event.key === 'Enter'){
+      event.preventDefault();
+      onDataSave?onDataSave(subtaskId):null
+    }
   }
 
   render(){
@@ -113,7 +124,7 @@ class SubtaskItem extends PureComponent {
           </div>
           <div className="task-detail-subtask-item-input-container">
             <SnaphyForm>
-              <InputElement autoFocus={autoFocus} onBlur={this.onDataSave} value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
+              <InputElement onKeyPress={this.onKeyPress} blurOnEnter={false} autoFocus={autoFocus} onBlur={this.onDataSave} value={title} onChange={this.onDataChanged} className="task-detail-subtask-title-input" type="text" placeholder={placeholder} rows={rows} />
             </SnaphyForm>
             <div  className="task-detail-subtask-item-icon-container">
               <OptionPopup
