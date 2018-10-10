@@ -13,6 +13,7 @@ import {onChangeFormatDialogStateAction} from './DescriptionActions';
 import SubmitButton from '../SubmitButton';
 import PopupField from '../../PopupField';
 import './DescriptionField.css';
+//import '../InputElement/InputElement.css'
 import FormattingHelp from '../../FormattingHelp';
 //import {taskTitleDataAction} from '../../baseComponents/GridView/components/AllTaskActions'
 
@@ -106,57 +107,61 @@ const DescriptionField = (props) => {
     //console.log("Input Element Props", defaultValue);
     //console.log("Description Field props", descriptionData);
 
+    let styleObj = {
+        paddingLeft: "11.5px",
+        paddingRight: "11.5px",
+        paddingTop: "5px",
+        paddingBottom: "5px",
+        minHeight: 25,
+        lineHeight: "25px",
+        overflow: "hidden",
+        ...props.style,
+      }
+
+      if(!isFocused && !descriptionData){
+          styleObj = {
+              ...styleObj,
+              //border: "1px solid #eeeeee"
+              backgroundColor: "#f8f7f8",
+              height: 90
+          }
+      }
+    
+      let className = "description-input-element-text-area"
+
 
     return (
        <div>
-            {isFocused && <div>
+            <div>
                 <Form.TextArea
                 placeholder={placeholder}
-                size={size}
                 {...input}
-                autoFocus
                 rows = {rows}
+                style={styleObj}
+                className={className}
                 autoHeight
                 onBlur = {onBlurEvent}
                 onKeyPress = {onKeyPress}
                 onChange={onChange}
+                onFocus={onFocusChanged}
+
             />
-            <PopupField 
+            {isFocused && <PopupField 
                 triggerComponent={<div onMouseDown={onOpenFormatDialog} className="description-field-formatting-help-text">Formatting Help</div>}
                 contentComponent={<FormattingHelp onClose={onCloseFormatDialog}/>}
                 isDialogOpened = {isDialogOpened}
                 onDialogStateChange={onDialogStateChange}
                 style={{padding:0, minHeight:"460px",position:"absolute", left:"650px", right: "auto", bottom: "137px", top: "200px"}} 
-            />
-            {/* <Popup
-            trigger={ <div className="description-field-formatting-help-text">Formatting Help</div>}
-            content={<FormattingHelp/>}
-            on='click'
-            basic
-            open
-            style={{padding:0, minHeight:"460px",position:"absolute", left:"650px", right: "auto", bottom: "137px", top: "200px"}}
-            
-            /> */}
+            />}
 
             
             
-            <div style={{float: 'right'}}>
+            {isFocused && <div style={{float: 'right'}}>
             <SubmitButton  type="submit" size="tiny" disabled={invalid || submitting || pristine} content="Save" ></SubmitButton>
-            </div>
-           
-           
             </div>}
-            {!isFocused && !descriptionData && <Form.TextArea
-                placeholder={placeholder}
-                size={size}
-                {...input}
-                autoHeight
-                rows= {rows}
-                
-                style={{padding: ".67857143em 1em", height: "52px !important", border:'none'}}
-                onFocus = {onFocusChanged}
-                onChange={onChange}
-            />}
+           
+           
+            </div>
             {!isFocused && descriptionData && <div className="description-field-markdown-container" onClick={onMarkdownContainerClicked}><Markdown source={descriptionData} /></div>}
         </div>
     )

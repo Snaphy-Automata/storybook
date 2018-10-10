@@ -122,7 +122,7 @@ class TaskDate extends PureComponent {
 
         const { isDateDialogOpened, isDatePickerOpened, endDateMs, isCompleted, taskId, endTaskDate} = this.props
         let endDate
-        console.log("End Date Ms", endDateMs)
+        //console.log("End Date Ms", endDateMs)
         if (endDateMs && endTaskDate) {
             endDate = compareDate(new Date(), new Date(endDateMs))
             if (isCompleted) {
