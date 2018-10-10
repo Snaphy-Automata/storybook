@@ -8,7 +8,10 @@ import '../TaskList/TaskList.css';
 
 
 //Import Selectors..
-import { getTaskData } from '../../baseComponents/GridView/components/ModelData/Task/selector'
+import {
+  getTaskData,
+  isSelectedTask,
+ } from '../../baseComponents/GridView/components/ModelData/Task/selector'
 import UserCircle from './UserCircle';
 import TaskDate from './TaskDate';
 import TaskItemTitle from './TaskItemTitle'
@@ -53,23 +56,17 @@ class TaskItem extends PureComponent {
     }
 
     getWrapperClassName() {
-        const { className, selectedTaskId, taskId } = this.props;
+        const { className, isSelectedTask, taskId } = this.props;
         let wrapperClassName = className ? className + " task-list-item-wrapper" : "task-list-item-wrapper";
-        if (selectedTaskId) {
-            if (selectedTaskId === taskId) {
-                wrapperClassName = `${wrapperClassName} active`
-            }
+        if (isSelectedTask) {
+          wrapperClassName = `${wrapperClassName} active`
         }
-
         return wrapperClassName;
     }
 
 
-
-
     _onSelectItem = () => {
         const { taskId, onTaskSelected, index } = this.props
-        //console.log(" On task Selected")
         onTaskSelected(taskId, index)
     }
 
@@ -97,13 +94,13 @@ class TaskItem extends PureComponent {
                 {!isNew &&
                     <div className="task-list-item-delayed-wrapper">
                         <div className={this.taskItemContainerClassName} >
+
                             <TaskIndicator taskId = {taskId} isScrolling={isScrolling} isActiveTaskSection={isActiveTaskSection}/>
                             <div className="task-list-item-side-bar-container">
-                                <div className={'task-list-item-side-line'}>
-                                    {!isScrolling &&  <DragHandle />}
-
-                                </div>
-                                <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList} />
+                                  <div className={'task-list-item-side-line'}>
+                                      {!isScrolling &&  <DragHandle />}
+                                  </div>
+                                  <UserCircle taskId={taskId} isScrolling={isScrolling} memberIdList={memberIdList} />
                             </div>
 
                             <div className="task-list-item-title" onClick={this.onSelectItem}>
@@ -111,20 +108,21 @@ class TaskItem extends PureComponent {
                             </div>
 
                             <div className="task-list-item-other-container" onClick={this.onSelectItem}>
-                                <div className="task-list-item-status-duration-container">
-                                    {isActiveTaskSection &&
-                                       <TaskStatus taskId = {taskId} />
-                                    }
-                                    {!isActiveTaskSection &&
-                                        <TaskDuration taskId={taskId}/>
-                                    }
-                                </div>
-
-
-                                <TaskStats taskId={taskId} />
-                                <TaskItemLabels taskId={taskId} isScrolling={isScrolling}/>
-                                <TaskDate taskId={taskId} />
-
+                                  {!isScrolling &&
+                                    <div style={{height:"inherit", width:"inherit"}}>
+                                      <div className="task-list-item-status-duration-container">
+                                        {isActiveTaskSection &&
+                                          <TaskStatus taskId = {taskId} />
+                                        }
+                                        {!isActiveTaskSection &&
+                                            <TaskDuration taskId={taskId}/>
+                                        }
+                                      </div>
+                                      <TaskStats taskId={taskId} />
+                                      <TaskItemLabels taskId={taskId} isScrolling={isScrolling}/>
+                                      <TaskDate taskId={taskId} />
+                                    </div>
+                                  }
                             </div>
                             {/* Other Container div end */}
                         </div>
@@ -132,7 +130,7 @@ class TaskItem extends PureComponent {
                 }
                 { isNew &&
                     <NewTask taskId ={taskId} isAutoFocus={isAutoFocus} onTaskSelected= {onTaskSelected} index={index} sectionId={sectionId} previousItemId={previousItemId} onSectionCollapsed={onSectionCollapsed}/>
-                 }
+                }
             </div>
         )
     }
@@ -141,7 +139,6 @@ class TaskItem extends PureComponent {
 
 function mapStateToProps(store, props) {
     const modelDataReducer = store.ModelDataReducer;
-    let selectedTaskId = modelDataReducer.selectedTaskId;
     let isActiveTaskSection = false, isAutoFocus = false
     const task = modelDataReducer.task.byId[props.taskId]
     if(task && task.sectionId === props.activeSectionId){
@@ -152,10 +149,9 @@ function mapStateToProps(store, props) {
     if(props.sectionId === lastGeneratedSectionId && props.taskId === lastGeneratedTaskId){
         isAutoFocus = true
     }
-   // console.log("Task Item Map State to props")
 
     return {
-        selectedTaskId,
+        isSelectedTask: isSelectedTask(store, props),
         isActiveTaskSection,
         isAutoFocus
 

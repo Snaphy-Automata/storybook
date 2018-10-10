@@ -81,21 +81,20 @@ class UserCircle extends PureComponent {
     }
 
 
-
-
     render() {
         const { isScrolling, taskMemberList, findUserById, memberIdList, loginUserId, isAssinedUserDialogOpened } = this.props
         let userObj = {}, tooltip = ""
         //FIXME: Shift this to helper file..
-        if (!taskMemberList.length) {
+        if(!isScrolling){
+          if (!taskMemberList.length) {
             userObj = {
                 icon: 'user',
                 tooltip: "Assign this task"
             }
-        } else {
-            const member = findUserById(taskMemberList[0])
-            let memberName
-            if (member) {
+          } else {
+              const member = findUserById(taskMemberList[0])
+              let memberName
+              if (member) {
                 memberName = `${member.firstName}`
                 if (member.lastName) {
                     memberName = `${memberName} ${member.lastName}`
@@ -136,23 +135,26 @@ class UserCircle extends PureComponent {
                     }
                 }
             }
+          }
         }
+
         return (
             <div className={'task-list-item-icon'}>
-                    <PopupField
-                        triggerComponent={
-                            <div onClick={this.onOpenAssignedUserDialog}>
-                                <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} icon={userObj.icon} />
-                            </div>
-                        }
-                        contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findUserById} memberIdList={memberIdList} taskMemberIdList={taskMemberList} onUpdateTaskMember={this.onUpdateTaskMember} loginUserId={loginUserId} />}
-                        position="bottom center"
-                        style={{ width: "242px", padding: "0" }}
-                        isDialogOpened={isAssinedUserDialogOpened}
-                        basic={false}
-                        onDialogStateChange={this.onAssignedUserDialogStateChange}
-                    />
-
+              {!isScrolling &&
+                <PopupField
+                    triggerComponent={
+                        <div onClick={this.onOpenAssignedUserDialog}>
+                            <TeamCircleIcon className="task-list-item-icon-team-circular" size="mini" src={userObj.thumbnailUrl} title={userObj.title} icon={userObj.icon} />
+                        </div>
+                    }
+                    contentComponent={<AssignedUserDialog onClose={this.onCloseAssignedUserDialog} findMemberById={findUserById} memberIdList={memberIdList} taskMemberIdList={taskMemberList} onUpdateTaskMember={this.onUpdateTaskMember} loginUserId={loginUserId} />}
+                    position="bottom center"
+                    style={{ width: "242px", padding: "0" }}
+                    isDialogOpened={isAssinedUserDialogOpened}
+                    basic={false}
+                    onDialogStateChange={this.onAssignedUserDialogStateChange}
+                />
+              }
             </div>
         )
     }

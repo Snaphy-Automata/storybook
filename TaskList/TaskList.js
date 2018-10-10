@@ -227,6 +227,8 @@ class VirtualList extends PureComponent {
       if(gridListRef){
         const scrollTop            = gridListRef.getScrollTop()
         const scrollHeight         = gridListRef.getScrollHeight()
+        const diff                 = top - scrollTop
+        console.log(`Difference in Scroll ${diff}. Previous Scroll Position: ${scrollTop}. Current Scroll Top:${top}`)
         this.spring.setCurrentValue(scrollTop).setAtRest()
         this.spring.setEndValue(top)
       }
@@ -299,6 +301,7 @@ class VirtualList extends PureComponent {
               index={index}
               indexValue={index}
               section={taskOrSection}
+              isScrolling={isScrolling}
               onNewTaskAdded={onNewTaskAdded}
               onSectionStateChanged={onSectionStateChanged}
               onSectionCollapsed={onSectionCollapsed}

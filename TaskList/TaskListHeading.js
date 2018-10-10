@@ -21,6 +21,7 @@ const DragHandle = SortableHandle(() => (
 class TaskListHeading extends Component{
   static defaultProps = {
     type: "fixed",
+    isScrolling: false,
   }
 
   static propTypes = {
@@ -39,7 +40,8 @@ class TaskListHeading extends Component{
     onSectionStateChanged: PropTypes.func,
     onAddNewtaskClicked: PropTypes.func,
     onSectionCollapsed: PropTypes.func, //function for recomputing heights on section collpased ..to be removed later..
-    projectId: PropTypes.string //to be send in case of gantt chart only..
+    projectId: PropTypes.string, //to be send in case of gantt chart only..
+    isScrolling: PropTypes.bool,
   }
 
   constructor(props){
@@ -93,6 +95,7 @@ class TaskListHeading extends Component{
       isEmptySection,
       className,
       iconClassName,
+      isScrolling,
     } = this.props;
 
 
@@ -122,7 +125,7 @@ class TaskListHeading extends Component{
         <div className={containerClassName}>
             <div className={iconClassNameStr}>
                 <div className={this.getDragContainerClassName()}>
-                    {protectedName !== "active_tasks" && <DragHandle />}
+                    {protectedName !== "active_tasks" && !isScrolling && <DragHandle />}
                 </div>
                 <div onClick={this.onStateChanged}>
                     <div className="task-list-heading-icon"> <Icon style={{ margin: 0 }} name={getIcon()} ></Icon></div>
@@ -134,7 +137,6 @@ class TaskListHeading extends Component{
 
                     <div className="task-list-heading-title">
                         {(!type || type === "fixed") && <div>{heading}</div>}
-                        {/* {type === "custom" && <Input transparent placeholder="Write Section Name" defaultValue="My Bugs" />} */}
                     </div>
                 </div>
                 {
@@ -160,28 +162,8 @@ class TaskListHeading extends Component{
                 }
             </div>
         </div>
-        {/* {
-            isEmptySection && !isCollapsed && isAddNewTaskVisible &&
-            <div className="task-list-item-delayed-wrapper" style={{backgroundColor:"#fcfcfc"}} onClick={this.onWriteTask}>
-                <div className="task-list-item-container" >
-                <div className="task-item-delayed-block"></div>
-                    <div className="task-list-item-side-bar-container">
-                        <div className={'task-list-item-side-line'}>
-                        </div>
-                        <div className={'task-list-add-item-icon'}>
-                        <Icon size="small" name="add"></Icon>
-                        </div>
-                    </div>
-
-                    <div className="task-list-item-new-task-title" style={{color:"#9e9e9e", paddingLeft:"2px"}}>
-                            Add New task
-                    </div>
-                </div>
-            </div>
-        } */}
       </div>
     )
-
   } //end render func
 
 
