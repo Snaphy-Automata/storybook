@@ -8,14 +8,15 @@ import PropTypes              from 'prop-types';
 import { Field, reduxForm }   from 'redux-form';
 
 //Custom import
-import DescriptionField from '../ReduxForm/DescriptionField';
+import InputElement from '../ReduxForm/InputElement';
+import DescriptionField from '../ReduxForm/DescriptionField'
 import SnaphyForm       from '../ReduxForm/SnaphyForm'
 import CircularIconBox  from '../CircularIconBox'
 
 class Description extends PureComponent {
 
   static defaultProps = {
-    placeholder:"Write a description Here",
+    placeholder:"Add a more detail description",
     size: "large",
     rows: 3,
     label: "TaskDescription",
@@ -53,11 +54,11 @@ class Description extends PureComponent {
     return (
       <div className="task-detail-description-container">
         <div className="task-detail-description-icon-container">
-          <CircularIconBox  className="task-detail-description-icon" icon="tag" />
+          <CircularIconBox isNew={false}  className="task-detail-description-icon" icon="list alternate" />
         </div>
         <div className="task-detail-description-field">
           <SnaphyForm error={error} onSubmit={handleSubmit}>
-            <Field name="description" type="text" placeholder={placeholder} size={size} rows={rows} label={label} component={DescriptionField} invalid={invalid} submitting={submitting} pristine={pristine} descriptionData={description} onUpdateTaskDescription={onUpdateTaskDescription} taskId={taskId}></Field>
+            <Field name="description" type="text" placeholder={placeholder} rows={rows} label={label} component={DescriptionField} invalid={invalid} submitting={submitting} pristine={pristine} descriptionData={description} onUpdateTaskDescription={onUpdateTaskDescription} taskId={taskId}></Field>
           </SnaphyForm>
         </div>
       </div>

@@ -337,6 +337,9 @@ Robins Gupta
 
 
 .task-detail-description-icon-container{
+  float: left;
+  margin-right: 11px;
+  margin-top: 7px;
 
 }
 
@@ -345,7 +348,8 @@ Robins Gupta
 }
 
 .task-detail-description-field{
-
+  float : left;
+  width: 396.5px;
 }
 
 
