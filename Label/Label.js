@@ -36,4 +36,7 @@ const Label = ({title, color, className, style, tooltip}) => {
     )
 }
 
+
+
+
 export default Label

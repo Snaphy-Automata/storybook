@@ -14,7 +14,7 @@ const ItembyIdHoc = (WrappedComponent, projectId)=>{
   class ItemEnhancer extends Component{
     static propTypes = {
       itemId: PropTypes.string.isRequired,
-      item: PropTypes.object.isRequired
+      item: PropTypes.object
     }
 
     render(){

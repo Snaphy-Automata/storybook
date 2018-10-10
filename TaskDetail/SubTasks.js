@@ -71,9 +71,11 @@ class SubTasks extends PureComponent{
   }
 
 
-  _onDataSave(subtaskId){
-    //Save  subtask state..
-    this.setState({lastSavedSubtaskId:subtaskId})
+  _onDataSave(subtaskId, isBlurEvent){
+    if(!isBlurEvent){
+      //Save  subtask state..
+      this.setState({lastSavedSubtaskId:subtaskId})
+    }
     const {taskId, projectId, onSubtaskSave, createOrEditSubTaskMutation, deleteSubTaskMutation} = this.props
     //Dispatch..
     onSubtaskSave(projectId, taskId, subtaskId, createOrEditSubTaskMutation, deleteSubTaskMutation)

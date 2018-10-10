@@ -1,10 +1,10 @@
-import React, { PureComponent, Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import List from 'react-virtualized/dist/commonjs/List';
-import 'react-virtualized/styles.css'; // only needs to be imported once
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-import {  reduxForm } from 'redux-form'
-
+//Usefull for react-custom-scrollbar in performing animation..
+//https://github.com/malte-wessel/react-custom-scrollbars/blob/master/examples/simple/components/SpringScrollbars/SpringScrollbars.js
+import { SpringSystem } from 'rebound';
 //Custom Import
 import './TaskList.css';
 import TaskListHeading from './TaskListHeading'
@@ -151,7 +151,7 @@ class VirtualList extends PureComponent {
       activeTasks: PropTypes.array.isRequired,
       findTaskById: PropTypes.func.isRequired,
       onNewTaskAdded: PropTypes.func.isRequired,
-      onTaskSelected: PropTypes.func.isRequired,
+      onTaskSelectedAction: PropTypes.func.isRequired,
       onTaskItemBlurEvent: PropTypes.func.isRequired,
       onTaskItemFocusEvent: PropTypes.func.isRequired,
       onEnterNextNewTask: PropTypes.func.isRequired,
@@ -160,6 +160,7 @@ class VirtualList extends PureComponent {
       findMemberById: PropTypes.func,
       findLabelById: PropTypes.func,
       onQuickUpdateDate: PropTypes.func,
+      getGridViewScrollRef: PropTypes.func,
       memberIdList: PropTypes.array,
       onQuickUpdateTaskMembers: PropTypes.func,
       height:PropTypes.number,
@@ -173,11 +174,73 @@ class VirtualList extends PureComponent {
     // Constructor
     constructor(props){
       super(props);
-      this.getRowHeight    = this._getRowHeight.bind(this)
-      this.rowRenderer     = this._rowRenderer.bind(this)
-      this.onRowsRendered  = this._onRowsRendered.bind(this)
-      this.startIndex      = 0
+      this.getRowHeight       = this._getRowHeight.bind(this)
+      this.rowRenderer        = this._rowRenderer.bind(this)
+      this.onRowsRendered     = this._onRowsRendered.bind(this)
+      this.startIndex         = 0
+      this.onTaskSelected     = this._onTaskSelected.bind(this)
+      this.handleSpringUpdate = this.handleSpringUpdate.bind(this)
     }
+
+
+    componentDidMount() {
+      this.springSystem = new SpringSystem();
+      this.spring = this.springSystem.createSpring();
+      this.spring.addListener({ onSpringUpdate: this.handleSpringUpdate });
+    }
+
+    componentWillUnmount() {
+        this.springSystem.deregisterSpring(this.spring);
+        this.springSystem.removeAllListeners();
+        this.springSystem = undefined;
+        this.spring.destroy();
+        this.spring = undefined;
+    }
+
+    getScrollTop() {
+      const {getGridViewScrollRef} = this.props
+      const gridListRef            = getGridViewScrollRef()
+      if(gridListRef){
+        return gridListRef.getScrollTop()
+      }
+    }
+
+    getScrollHeight() {
+      const {getGridViewScrollRef} = this.props
+      const gridListRef            = getGridViewScrollRef()
+      if(gridListRef){
+        return gridListRef.getScrollHeight()
+      }
+    }
+
+    getHeight() {
+      const {getGridViewScrollRef} = this.props
+      const gridListRef            = getGridViewScrollRef()
+      if(gridListRef){
+        return gridListRef.getHeight();
+      }
+    }
+
+    scrollTop(top) {
+      const {getGridViewScrollRef} = this.props
+      const gridListRef            = getGridViewScrollRef()
+      if(gridListRef){
+        const scrollTop            = gridListRef.getScrollTop()
+        const scrollHeight         = gridListRef.getScrollHeight()
+        this.spring.setCurrentValue(scrollTop).setAtRest()
+        this.spring.setEndValue(top)
+      }
+    }
+
+    handleSpringUpdate(spring) {
+      const {getGridViewScrollRef} = this.props
+      const gridListRef            = getGridViewScrollRef()
+      if(gridListRef){
+        const val = spring.getCurrentValue();
+        gridListRef.scrollTop(val);
+      }
+    }
+
 
 
     _rowRenderer(props){
@@ -185,7 +248,6 @@ class VirtualList extends PureComponent {
         activeTasks,
         findTaskById,
         onNewTaskAdded,
-        onTaskSelected,
         onTaskItemBlurEvent,
         onTaskItemFocusEvent,
         onEnterNextNewTask,
@@ -198,6 +260,7 @@ class VirtualList extends PureComponent {
         onQuickUpdateTaskMembers,
         onSectionCollapsed,
       } = this.props
+
       const {
           index,       // Index of row
           isScrolling, // The List is currently being scrolled
@@ -250,7 +313,7 @@ class VirtualList extends PureComponent {
               taskId={taskOrSectionId}
               task={taskOrSection}
               activeTasks={activeTasks}
-              onTaskSelected={onTaskSelected}
+              onTaskSelected={this.onTaskSelected}
               onTaskItemBlurEvent={onTaskItemBlurEvent}
               onTaskItemFocusEvent={onTaskItemFocusEvent}
               onEnterNextNewTask={onEnterNextNewTask}
@@ -273,26 +336,29 @@ class VirtualList extends PureComponent {
 
     _onRowsRendered(props){
       const { overscanStartIndex, overscanStopIndex, startIndex, stopIndex } = props
-      //console.timeEnd("Testing_Scroll_TimeLag")
-      const {getGridViewScrollRef} = this.props;
-      const gridListRef = getGridViewScrollRef();
-      //console.log("Grid view reference inside task list", startIndex, this.startIndex)
-      if(gridListRef ){
-        let scrollToIndex = startIndex
-        // if((overscanStartIndex+1) === startIndex && this.startIndex === startIndex){
-        //   scrollToIndex = startIndex + 1
-        // }
-
-        //console.log("Scroll Getting called", scrollToIndex)
+      let scrollToIndex = startIndex
+      if(overscanStopIndex === stopIndex){
+        const actualIndex = stopIndex <= 4?stopIndex: stopIndex - 3
+        const top = ((actualIndex)*25)
+        this.scrollTop(top)
+      }else{
         if(scrollToIndex !== this.startIndex){
-          const scrollTop = ((scrollToIndex)*25) + 38
-          //window.requestAnimationFrame(()=>{
-            gridListRef.scrollTop(scrollTop)
-            this.startIndex = scrollToIndex
-          //})
+          const top = ((scrollToIndex)*25) + 38
+          this.scrollTop(top)
+          this.startIndex = scrollToIndex
         }
-
       }
+    }
+
+
+    _onTaskSelected(taskId, index){
+      const {onTaskSelectedAction} = this.props
+      onTaskSelectedAction(taskId);
+      const actualIndex = index <= 4?index: index - 3
+      //if(index > 3){
+        const top = ((actualIndex)*25)
+        this.scrollTop(top)
+      //}
     }
 
 
@@ -305,7 +371,6 @@ class VirtualList extends PureComponent {
         const taskId    = activeTasks[index];
         const task      = findTaskById(taskId);
         if(task){
-          //console.log(`Task: ${task.title}$$ Task Type: ${task.type}$$ Task Height: ${task.height}`);
           return task.height
         }
         return 41;
@@ -319,9 +384,6 @@ class VirtualList extends PureComponent {
         width,
       } = this.props;
       const totalRows = activeTasks.length;
-
-      //console.log("List getting redendered..", activeTasks);
-
       return (
         <List
           ref={(instance) => {
@@ -382,7 +444,6 @@ class TaskList extends PureComponent {
       const { Grid: grid } = ListRef;
       grid.handleScrollEvent({ scrollTop, scrollLeft })
     }
-    //console.time("Testing_Scroll_TimeLag")
   }
 
 
@@ -445,7 +506,7 @@ class TaskList extends PureComponent {
       findLabelById,
       onItemPositionChanged,
       onNewTaskAdded,
-      onTaskSelected,
+      onTaskSelectedAction,
       onTaskItemBlurEvent,
       onTaskItemFocusEvent,
       onEnterNextNewTask,
@@ -484,7 +545,7 @@ class TaskList extends PureComponent {
               findTaskById={findTaskById}
               onItemPositionChanged={onItemPositionChanged}
               onNewTaskAdded={onNewTaskAdded}
-              onTaskSelected={onTaskSelected}
+              onTaskSelectedAction={onTaskSelectedAction}
               onTaskItemBlurEvent={onTaskItemBlurEvent}
               onTaskItemFocusEvent={onTaskItemFocusEvent}
               onEnterNextNewTask={onEnterNextNewTask}

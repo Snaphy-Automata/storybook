@@ -122,11 +122,11 @@ class UserCircle extends PureComponent {
                               } else {
                                 tooltip = `${tooltip}, ${member.firstName}`;
                               }
-                    
+
                               if (member.lastName) {
                                 tooltip = `${tooltip} ${member.lastName}`;
                               }
-                    
+
                             }
                           });
                           userObj = {

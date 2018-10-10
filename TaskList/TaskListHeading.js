@@ -58,8 +58,7 @@ class TaskListHeading extends Component{
     }
     //console.log("Task List Section Index", index);
     onSectionStateChanged(sectionId, index, isCollapsed, emptySectionId);
-    onSectionCollapsed();
-
+    onSectionCollapsed?onSectionCollapsed():null;
   }
 
   onAddNewTaskClickedRaw(){
@@ -197,13 +196,13 @@ function mapStateToProps(store, props) {
     if(props.projectId){
       projectObj = modelDataReducer.project.byId[props.projectId];
     }
-   
+
     const section      = modelDataReducer.task.byId[props.sectionId];
     let userProjectSetting;
     if(projectObj && projectObj.projectUserSettingId){
         userProjectSetting = modelDataReducer.userProjectSetting.byId[projectObj.projectUserSettingId]
     }
-  
+
     let isCollapsed = false;
     if(section){
         if(section.isCollapsed){

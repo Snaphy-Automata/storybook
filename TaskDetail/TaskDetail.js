@@ -18,10 +18,13 @@ import Labels            from './Labels'
 import SubTasks          from './SubTasks'
 import Description       from './Description'
 
+import {
+  onTaskUnSelectedAction
+}                        from '../../baseComponents/GridView/components/ModelData/Task/action'
+
 class TaskDetail extends PureComponent{
   static propTypes = {
-    onTitleChanged: PropTypes.func.isRequired,
-    task: PropTypes.object.isRequired,
+    taskId: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
   }
 
@@ -31,7 +34,16 @@ class TaskDetail extends PureComponent{
 
   constructor(props){
     super(props)
-    this.onSubTaskAdded = this.onAddSubTasksToList.bind(this)
+    this.onSubTaskAdded               = this.onAddSubTasksToList.bind(this)
+    this.onDetailViewCloseBtnClick    = this._onDetailViewCloseBtnClick.bind(this)
+    this.openShareDialog              = this._openShareDialog.bind(this)
+  }
+
+
+
+  _onDetailViewCloseBtnClick(event){
+    const {onTaskUnSelectedAction} =  this.props
+    onTaskUnSelectedAction()
   }
 
 
@@ -52,22 +64,24 @@ class TaskDetail extends PureComponent{
     // onAddSubTask(selectedTask.id, subTaskDataList, "empty", null, null);
   }
 
+  _openShareDialog(){
+
+  }
+
 
   render(){
     const {
-      onTitleChanged,
       taskId,
       projectId,
     } = this.props
-    //console.log("Task Detail getting reloaded", taskId);
     return (
       <div>
         {
           taskId &&
           <div>
-          <Header onSubTaskAdded={this.onSubTaskAdded} />
+          <Header openShareDialog={this.openShareDialog} onDetailViewCloseBtnClick={this.onDetailViewCloseBtnClick} onSubTaskAdded={this.onSubTaskAdded} />
           <div className="task-detail-container">
-            <TaskTitle taskId={taskId} onDataChanged={onTitleChanged}/>
+            <TaskTitle taskId={taskId}/>
             {/* Send member id here.. */}
             {/* <AssignTask task={task}  /> */}
             {/* <Dates  taskId={taskId} startDate={task.startDate} endDate={task.endDate} /> */}
@@ -100,6 +114,7 @@ function mapStateToProps(store) {
 }
 
 const mapActionsToProps = {
+  onTaskUnSelectedAction,
   // onMarkCompleteClickedAction,
   // onStatusChangedAction,
   // getStatusDataAction,
