@@ -120,9 +120,10 @@ class TaskDate extends PureComponent {
     render() {
         //console.log("Task date getting rendered")
 
-        const { isDateDialogOpened, isDatePickerOpened, endDateMs, isCompleted, taskId } = this.props
+        const { isDateDialogOpened, isDatePickerOpened, endDateMs, isCompleted, taskId, endTaskDate} = this.props
         let endDate
-        if (endDateMs) {
+        console.log("End Date Ms", endDateMs)
+        if (endDateMs && endTaskDate) {
             endDate = compareDate(new Date(), new Date(endDateMs))
             if (isCompleted) {
                 endDate = {
@@ -211,11 +212,13 @@ function mapStateToProps(store, props) {
     const allTaskObj = store.ModelDataReducer.task
     const task = allTaskObj.byId[props.taskId]
     const endDateMs = task.endDateMs
+    const endTaskDate = task.endDate
     const isCompleted = task.isCompleted
     return {
         isDateDialogOpened,
         isDatePickerOpened,
         endDateMs,
+        endTaskDate,
         isCompleted
     }
 }
